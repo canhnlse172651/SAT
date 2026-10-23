@@ -1,12 +1,23 @@
 import { randomUUID } from 'node:crypto';
 import type { Params } from 'nestjs-pino';
 import type { Config } from './config.js';
+import { contextOf, getContext } from './common/context/request-context.js';
 
 /** pino-http for every request (with a propagated `x-request-id`); also backs Nest's own logger. */
 export function loggerParams(level: Config['LOG_LEVEL']): Params {
   return {
     pinoHttp: {
       level,
+      // userId/workspaceId are opaque ids (no PII). The mixin covers app logs inside a request;
+      // customProps covers pino-http's own "request completed" line.
+      mixin: () => {
+        const { userId, workspaceId } = getContext() ?? {};
+        return { userId, workspaceId };
+      },
+      customProps: (req) => {
+        const { userId, workspaceId } = contextOf(req) ?? {};
+        return { userId, workspaceId };
+      },
       redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]'],
       genReqId: (req, res) => {
         const header = req.headers['x-request-id'];

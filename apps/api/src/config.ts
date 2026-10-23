@@ -7,12 +7,31 @@ const EnvSchema = z.object({
   MONGODB_URI: z.string().min(1).default('mongodb://127.0.0.1:27017/sat'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   WEB_DIST_DIR: z.string().min(1).optional(),
+  // Public origin of the app (scheme://host[:port]); the Origin check and cookie `Secure` derive from it.
+  APP_ORIGIN: z.url().optional(),
+  SESSION_TTL_GV_HOURS: z.coerce.number().int().positive().default(8),
+  SESSION_TTL_HV_DAYS: z.coerce.number().int().positive().default(30),
+  // Overrides cookie `Secure` outside production only (hermetic e2e over http).
+  COOKIE_SECURE: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
 });
 
-export type Config = z.infer<typeof EnvSchema>;
+const DEV_APP_ORIGIN = 'http://localhost:5173';
+
+const ConfigSchema = EnvSchema.refine((env) => env.NODE_ENV !== 'production' || env.APP_ORIGIN, {
+  path: ['APP_ORIGIN'],
+  error: 'APP_ORIGIN is required in production',
+}).transform((env) => ({
+  ...env,
+  APP_ORIGIN: new URL(env.APP_ORIGIN ?? DEV_APP_ORIGIN).origin,
+}));
+
+export type Config = z.infer<typeof ConfigSchema>;
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
-  const parsed = EnvSchema.safeParse(env);
+  const parsed = ConfigSchema.safeParse(env);
   if (!parsed.success) {
     throw new Error(`Invalid environment configuration:\n${z.prettifyError(parsed.error)}`);
   }
