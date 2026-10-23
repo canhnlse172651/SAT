@@ -5,7 +5,7 @@
   },
   "paths": {
     "specs": "specs",
-    "src": ["apps"],
+    "src": ["apps", "specs"],
     "tests": ["tests"],
     "adr": "docs/adr"
   },
@@ -16,6 +16,7 @@
     "typecheck": "npm run typecheck",
     "test": "npm test --",
     "test:e2e": "npm run test:e2e --",
+    "test:modules": "node scripts/replay-module-tests.mjs",
     "build": "npm run build",
     "start": "npm start",
     "smoke": "node scripts/smoke.mjs",

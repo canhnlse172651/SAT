@@ -54,9 +54,11 @@ Specs are prepared and clarified by a separate spec agent. `/module` works in **
 ```text
 spec agent prepares spec.md (no open questions)   → status clarified
 [HUMAN] sdd approve NNN                           → status approved   (only a human, in their own terminal)
-/module NNN  → read spec.md → lean plan.md + tasks.md (one task per REQ) + automated analysis.md
-             → implement task by task (tests first, fullstack conventions + nestjs/react/typescript skills)
-             → test-cases.md (≥ 1 per AC, mapped via sdd trace) → run lint/typecheck/test/e2e → verification.md → verified
+/module NNN  → read spec.md → lean plan.md + tasks.md (one task per REQ) + test-cases.md (user-level, ≥ 1 E2E/API per AC)
+             → implement task by task (no test code; lint/typecheck/foundation tests/build stay green) → Handoff
+/test-module NNN  (new session, QA agent + Playwright MCP)
+             → run every test case like a real user → save testing/e2e/TC-###.spec.ts + testing/runs/<stamp>/
+             → test-cases.md statuses + verification.md → all pass: verified · failures: back to /module NNN (fix mode)
 /sdd-ship NNN → PR → CI → staging → [HUMAN] production
 ```
 

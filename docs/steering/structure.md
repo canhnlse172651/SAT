@@ -24,7 +24,8 @@
 │   ├── WORKFLOW.md           # Human guide to the pipeline
 │   └── AGENT-PLAYBOOK.md     # SAT: context layers, module order, hand-off and resume
 ├── specs/
-│   ├── NNN-slug/             # One folder per module: spec.md (contract) + spec.html → plan → tasks → progress (Handoff) → test-cases.md → state.json (generated)
+│   ├── NNN-slug/             # One folder per module: spec.md (contract) + spec.html → plan → tasks → test-cases.md → progress (Handoff) → state.json (generated)
+│   │   └── testing/          #   QA agent (/test-module): e2e/TC-###.spec.ts (replayable scripts) + runs/<stamp>/ (report.md, results.json, screenshots/)
 │   ├── modules.json          # Module registry = scope: names, waves, dependencies, screens
 │   ├── dashboard.html        # Generated progress dashboard (node scripts/sync-state.mjs)
 │   ├── index.html            # Spec overview: decisions, modules, open questions

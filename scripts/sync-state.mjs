@@ -85,6 +85,7 @@ function testCases(text) {
     fail: count(/^fail/),
     manual: count(/thủ công|manual/),
     notRun: count(/chưa chạy|not run/),
+    blocked: count(/bị chặn|blocked/),
     lastRun,
   };
 }
@@ -109,10 +110,12 @@ function nextAction(s) {
     case 'implementing':
       if (s.tasks.blocked)
         return `${s.tasks.blocked} task bị chặn — xem Handoff; rồi /module ${s.id}`;
-      if (s.tasks.total && s.tasks.done === s.tasks.total)
-        return s.tests?.total
-          ? `/module ${s.id} → chạy test và chốt`
-          : `/module ${s.id} → sinh test case và chạy test`;
+      if (s.tasks.total && s.tasks.done === s.tasks.total) {
+        if (!s.tests?.total) return `/module ${s.id} → sinh test-cases.md`;
+        if (s.tests.fail || s.tests.blocked)
+          return `/module ${s.id} → sửa ${s.tests.fail + s.tests.blocked} test case lỗi, rồi /test-module ${s.id}`;
+        return `/test-module ${s.id} (phiên mới) → agent QA chạy test case bằng Playwright MCP`;
+      }
       return `/module ${s.id} → tiếp tục ${s.tasks.next?.id ?? ''}`.trim();
     case 'verified':
       return `/sdd-ship ${s.id}`;

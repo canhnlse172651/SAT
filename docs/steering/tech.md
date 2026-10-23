@@ -125,9 +125,17 @@ Rules that apply to every module:
 
 ## Testing Conventions
 
-- Tests that prove an acceptance criterion cite it as `<feature-id>:AC-<n>.<m>` in the test title,
-  e.g. `it('[003:AC-2.1] rejects an expired invite with 410', …)`. `sdd trace` depends on it.
-- Unit/integration tests are co-located (`*.test.ts(x)`); e2e lives in `tests/e2e/*.spec.ts`. Vitest only — no Jest.
+**Two testing models (constitution II v2):**
+
+| Code | How it is verified | Who |
+|------|--------------------|-----|
+| Foundation: `packages/*`, `apps/api/src/common/**`, `apps/web/src/{app,layouts,lib,components,styles}/**`, `tests/e2e/**` | Automated tests written first, co-located `*.test.ts(x)` (Vitest) + `tests/e2e/*.spec.ts` (Playwright); CI runs them | test-engineer / foundation implementer |
+| Feature modules (`specs/NNN-*`) | **No hand-written test code.** `/module NNN` writes `test-cases.md` (user-level steps per AC) before coding; `/test-module NNN` (QA agent, separate session) runs every case like a real user with **Playwright MCP**, saves `specs/NNN-*/testing/e2e/TC-###.spec.ts` (replayable, title cites `<NNN>:AC-n.m` for `sdd trace`) and results in `specs/NNN-*/testing/runs/<YYYY-MM-DD-HHmm>/` (report.md, results.json, screenshots/) | QA agent; the implementer never edits saved scripts or expected results |
+
+- Replay a module's saved scripts without AI: `node .sdd/scripts/sdd.mjs run test:modules -- <NNN> [TC-…]` (same hermetic
+  server as e2e; results in `testing/runs/<stamp>-replay/`). `/module` uses it in fix mode.
+- Playwright MCP is configured per project: `claude mcp add --scope project playwright -- npx -y @playwright/mcp@0.0.83`.
+- Foundation tests still cite their AC/task token when one exists. Vitest only — no Jest.
 
 | Layer | Kit | Use |
 |-------|-----|-----|

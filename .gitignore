@@ -47,3 +47,6 @@ Thumbs.db
 
 # Local dev adapters (ports): uploaded files
 var/
+
+# Playwright traces/videos of module replays (reports + screenshots are committed)
+specs/*/testing/runs/*/artifacts/

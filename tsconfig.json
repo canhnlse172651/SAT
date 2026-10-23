@@ -5,5 +5,12 @@
     // Playwright callbacks passed to page.evaluate() run in the browser.
     "lib": ["ES2023", "DOM", "DOM.Iterable"]
   },
-  "include": ["vitest.config.ts", "playwright.config.ts", "tests/**/*.ts"]
+  "include": [
+    "vitest.config.ts",
+    "playwright.config.ts",
+    "playwright.modules.config.ts",
+    "tests/**/*.ts",
+    // Replayable scripts saved by the QA agent (/test-module) inside each module folder.
+    "specs/*/testing/e2e/**/*.ts"
+  ]
 }

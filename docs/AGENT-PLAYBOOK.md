@@ -46,7 +46,9 @@ Chi tiết hơn (danh sách task, Handoff) xem trong thư mục module: `tasks.m
 | `plan.md`, `data-model.md`, `contracts/` | Thiết kế kỹ thuật | architect |
 | `tasks.md` | Danh sách task theo thứ tự, test trước code; trạng thái `[ ] [~] [x] [!]` | task-planner; đổi trạng thái bằng `sdd task` |
 | `progress.md` | Nhật ký + các khối **Handoff** (đã làm gì, dở gì, bước tiếp) | agent làm việc |
-| `test-cases.md` | **Test case** cho từng AC + kết quả Pass/Fail lần chạy gần nhất | test-engineer, sau khi implement |
+| `test-cases.md` | **Test case** cho từng AC (kịch bản người dùng) + trạng thái Pass/Fail/Bị chặn lần chạy gần nhất | `/module` viết trước khi code; `/test-module` ghi trạng thái |
+| `testing/e2e/TC-###.spec.ts` | Script Playwright agent QA lưu lại từ lần chạy thật, chạy lại được không cần AI | `/test-module` |
+| `testing/runs/<thời điểm>/` | Kết quả mỗi lần chạy: `report.md`, `results.json`, `screenshots/` | `/test-module`, `run test:modules` |
 | `analysis.md`, `verification.md` | Bằng chứng qua cổng kiểm tra | reviewer, /sdd-verify |
 | `state.json` | **File trạng thái** của module, sinh tự động từ các file trên | `node scripts/sync-state.mjs` |
 
@@ -58,20 +60,47 @@ nằm ở [specs/modules.json](../specs/modules.json); sửa file này khi phạ
 ## 3. Lệnh `/module NNN`
 
 **Bản rút gọn để tiết kiệm token.** Spec do agent khác chuẩn bị sẵn; `/module` làm mọi việc trong **một phiên, không gọi
-agent con**: đọc spec → implement theo pattern fullstack → sinh test case → chạy test.
+agent con**: đọc spec → sinh test case → implement theo pattern fullstack → bàn giao cho agent QA.
+Module **không viết code test**; việc kiểm chứng do `/test-module NNN` (phiên khác) làm bằng Playwright MCP — xem mục kế tiếp.
 
 | Bước | Agent làm |
 |------|-----------|
 | 0. Đồng bộ | `sync-state` → đọc `state.json`. Dừng nếu module hoãn, spec còn câu hỏi mở, hoặc chưa được bạn duyệt. Có Handoff dở dang thì làm tiếp từ đó. |
-| 1. Đọc | Chỉ `spec.md` của module + đúng các file code sẽ sửa (tìm bằng grep). Nạp skill fullstack theo tầng: `nestjs-expert` (backend), `react-expert` (frontend), `typescript-pro`, `test-master` / `playwright-expert` (test). Quy ước trong `tech.md`/`structure.md` luôn được ưu tiên. |
-| 2. Plan gọn | Nếu chưa có: `plan.md` ≤ 60 dòng, `tasks.md` **mỗi REQ một task**, `analysis.md` từ `sdd check`. |
-| 3. Implement | Từng task: viết test cho AC trước (đỏ) → code theo quy ước → test xanh → `sdd task done` → commit → cập nhật dashboard. |
-| 4. Test case | `test-cases.md`: mỗi AC ≥ 1 test case gắn với test thật; test thủ công cho UI/email. |
-| 5. Chạy test | lint, typecheck, test (+ e2e) một lần; ghi Pass/Fail thật; xanh hết → `verification.md` ngắn, chuyển Đã kiểm chứng. |
+| 1. Đọc | Chỉ `spec.md` của module + đúng các file code sẽ sửa (tìm bằng grep). Nạp skill fullstack theo tầng: `nestjs-expert` (backend), `react-expert` (frontend), `typescript-pro`. Quy ước trong `tech.md`/`structure.md` luôn được ưu tiên. |
+| 2. Plan gọn + test case | Nếu chưa có: `plan.md` ≤ 60 dòng, `tasks.md` **mỗi REQ một task**, **`test-cases.md`** (mỗi AC ≥ 1 test case E2E/API viết như người dùng thật), `analysis.md` từ `sdd check`. |
+| 3. Implement | Từng task: code theo quy ước (không viết test) → lint, typecheck, test nền tảng, build xanh → `sdd task done` → commit → cập nhật dashboard. |
+| 4. Bàn giao QA | Cập nhật `test-cases.md` theo đúng giao diện đã làm; Handoff với bước tiếp "`/test-module NNN` trong phiên mới". Trạng thái vẫn là Đang implement. |
+| 5. Sửa lỗi | Khi lần chạy QA có test case Fail: đọc `testing/runs/<mới nhất>/report.md`, sửa code ứng dụng (không sửa script hay kết quả mong đợi), chạy lại nhanh bằng `run test:modules -- NNN TC-…`, rồi nhờ `/test-module NNN` chạy lại. |
 | Luôn luôn | Trước khi dừng: Handoff, commit, `sync-state`, báo 6 dòng. |
 
 Cần kiểm tra sâu hơn (review code, bảo mật) cho một module quan trọng: chạy thêm `/sdd-verify NNN` (bản đầy đủ, tốn token hơn).
 Quy trình đầy đủ nhiều agent (`/sdd-auto`) vẫn còn nếu sau này cần.
+
+### Lệnh `/test-module NNN` (agent QA)
+
+Chạy trong **phiên Claude Code mới** sau khi `/module` bàn giao. Agent QA dựng app giống CI (bản build + MongoDB tạm, dữ liệu
+mẫu), dùng **Playwright MCP** để mở trình duyệt và làm từng test case như người dùng thật (GV ở 1280 px, HV ở 390 px), kiểm
+đúng câu chữ trong AC, chụp màn hình, xem lỗi console/API. Với mỗi test case, agent lưu một script Playwright chạy lại được
+vào `testing/e2e/` (tiêu đề trích `NNN:AC-x.y` để `sdd trace` nối AC với kiểm chứng) và kết quả vào `testing/runs/<thời điểm>/`.
+Tất cả Pass → `verification.md` PASS → module Đã kiểm chứng. Có lỗi → báo cáo chi tiết, quay lại `/module NNN` để sửa.
+Agent QA không bao giờ sửa code ứng dụng hay spec.
+
+Chạy lại các script đã lưu mà không cần AI (kiểm tra hồi quy): `node .sdd/scripts/sdd.mjs run test:modules -- NNN`.
+
+### Cài đặt quy trình QA (một lần, bạn tự chạy)
+
+Các file được hook bảo vệ nên agent chỉ soạn sẵn trong `docs/tooling/`. Chạy trong terminal ở thư mục dự án:
+
+```powershell
+Copy-Item docs\tooling\skills\module\SKILL.md .claude\skills\module\SKILL.md -Force
+New-Item -ItemType Directory -Force .claude\skills\test-module | Out-Null
+Copy-Item docs\tooling\skills\test-module\SKILL.md .claude\skills\test-module\SKILL.md -Force
+Copy-Item docs\tooling\constitution.v2.md docs\constitution.md -Force   # constitution 2.0.0 (nguyên tắc II, III)
+Copy-Item docs\tooling\CLAUDE.v2.md CLAUDE.md -Force                     # vai trò QA, quy ước test
+claude mcp add --scope project playwright -- npx -y @playwright/mcp@0.0.83
+```
+
+Sau đó mở phiên Claude Code mới để skill và MCP có hiệu lực.
 
 ### Cài đặt `/module` (một lần)
 

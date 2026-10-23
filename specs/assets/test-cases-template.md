@@ -7,30 +7,40 @@ last_run: {{YYYY-MM-DD HH:mm}}
 # Test cases — {{NNN}} {{Tên module}}
 
 <!--
-Written by the test-engineer after implementation (step "Test cases" of /module NNN), kept up to date
-after every re-run. scripts/sync-state.mjs reads this file for the dashboard:
-  - one table row per test case, first cell "TC-###", LAST cell = status: Pass | Fail | Chưa chạy | Thủ công
-  - front-matter last_run = time of the last automated run (Vietnam time)
-Rules:
-  - Every AC of spec.md has ≥ 1 test case; testable NFRs too (performance, accessibility…).
-  - Automated cases name the real test: `path/to/file.test.ts › [NNN:AC-x.y] title` (same AC tag sdd trace scans).
-  - Manual cases (UI look & feel, e-mail content, real devices) reference the prototype screen: specs/screen-flow-design.html#T07.
-  - Status comes from an actual run in this session (`node .sdd/scripts/sdd.mjs run test`, `… run test:e2e`) — never guessed.
-Prose in Vietnamese; IDs, AC tags and file paths stay as-is.
+Viết bởi /module NNN (trước khi code, cập nhật lại khi code xong); trạng thái do /test-module NNN ghi sau mỗi lần chạy
+(agent QA chạy từng test case như người dùng thật bằng Playwright MCP). scripts/sync-state.mjs đọc file này cho dashboard:
+  - mỗi test case một dòng bảng, ô đầu "TC-###", ô CUỐI = trạng thái: Pass | Fail | Chưa chạy | Thủ công | Bị chặn
+  - front-matter last_run = thời điểm chạy gần nhất (giờ Việt Nam)
+Quy tắc viết:
+  - Mỗi AC của spec.md có ≥ 1 test case; NFR kiểm được (hiệu năng, truy cập…) cũng vậy.
+  - Viết như kịch bản cho người dùng thật: vai trò (GV / HV), tiền điều kiện (dữ liệu cần có, đăng nhập), các bước bằng thao
+    tác trên giao diện, kết quả mong đợi dùng ĐÚNG câu chữ trong AC ("Lưu nháp", "Không tìm thấy nội dung bạn yêu cầu.").
+  - Màn hình: mã màn hình + liên kết prototype specs/screen-flow-design.html#T07.
+  - Loại: E2E (thao tác giao diện) | API (gọi API trong trình duyệt, khi không có giao diện) | Thủ công (cần người: email
+    thật, thiết bị thật, cảm nhận thẩm mỹ).
+  - Cột Script: đường dẫn script do agent QA lưu lại (testing/e2e/TC-###.spec.ts) — để trống khi chưa chạy.
+  - Không viết code test trong module; code test duy nhất là script agent QA sinh ra từ lần chạy thật.
+Văn xuôi tiếng Việt; mã TC, mã AC và đường dẫn giữ nguyên.
 -->
 
 ## Tóm tắt
 
-| Tổng | Pass | Fail | Chưa chạy | Thủ công | Lần chạy cuối |
-|------|------|------|-----------|----------|---------------|
-| 0 | 0 | 0 | 0 | 0 | {{YYYY-MM-DD HH:mm}} |
+| Tổng | Pass | Fail | Bị chặn | Chưa chạy | Thủ công | Lần chạy cuối |
+|------|------|------|---------|-----------|----------|---------------|
+| 0 | 0 | 0 | 0 | 0 | 0 | {{YYYY-MM-DD HH:mm}} |
+
+## Dữ liệu và tài khoản dùng chung
+
+<!-- Dữ liệu mẫu mọi test case dùng (workspace, GV, HV, lớp, giáo trình…) và cách tạo: qua giao diện, qua API, hay có sẵn
+     từ seed (`npm run seed -w @sat/api`: workspace "Workspace của Cô Lan", GV "Cô Lan", 3 HV). -->
 
 ## Danh sách test case
 
-| TC | AC / NFR | Loại | Tiền điều kiện | Các bước | Kết quả mong đợi | Test tự động | Trạng thái |
-|----|----------|------|----------------|----------|------------------|--------------|------------|
-| TC-001 | AC-1.1 | unit | … | 1. … 2. … | … | `apps/api/src/modules/…/x.test.ts › [NNN:AC-1.1] …` | Chưa chạy |
+| TC | AC / NFR | Loại | Vai trò | Tiền điều kiện | Các bước | Kết quả mong đợi | Màn hình | Script | Trạng thái |
+|----|----------|------|---------|----------------|----------|------------------|----------|--------|------------|
+| TC-001 | AC-1.1 | E2E | GV | … | 1. … 2. … | … | [T01](../screen-flow-design.html#T01) | | Chưa chạy |
 
 ## Ghi chú lần chạy
 
-<!-- Newest first: date, command, summary line of the runner output, failures and their cause. -->
+<!-- Mới nhất ở trên: thời điểm, người chạy (/test-module), báo cáo testing/runs/<thời điểm>/report.md, tóm tắt
+     x/y Pass, các lỗi tìm thấy (TC, hiện tượng, mong đợi, ảnh chụp). -->
