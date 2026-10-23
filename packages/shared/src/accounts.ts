@@ -137,14 +137,23 @@ export const noteSchema = optionalText(
  * Runs even when other fields are invalid, so every wrong field shows its message at once (AC-2.4). Field rules
  * therefore never abort: a field may carry several issues and the first one is the one to show.
  */
-const withConfirmation = <T extends z.ZodRawShape>(shape: T, field: string, confirmField: string) =>
-  z.object({ ...shape, [confirmField]: z.string().optional() }).refine(
-    (v) => {
-      const raw = v as Record<string, unknown>;
-      return !!raw[confirmField] && raw[confirmField] === raw[field];
-    },
-    { path: [confirmField], error: ACCOUNT_MESSAGES.passwordMismatch, when: () => true },
-  );
+const withConfirmation = <T extends z.ZodRawShape, K extends string>(
+  shape: T,
+  field: keyof T & string,
+  confirmField: K,
+) =>
+  z
+    .object({
+      ...shape,
+      ...({ [confirmField]: z.string().optional() } as Record<K, z.ZodOptional<z.ZodString>>),
+    })
+    .refine(
+      (v) => {
+        const raw = v as Record<string, unknown>;
+        return !!raw[confirmField] && raw[confirmField] === raw[field];
+      },
+      { path: [confirmField], error: ACCOUNT_MESSAGES.passwordMismatch, when: () => true },
+    );
 
 /* ---------- requests ---------- */
 

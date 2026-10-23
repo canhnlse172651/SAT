@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
+import { LogoutButton } from '../features/account/LogoutButton';
 import { useSessionStore } from '../features/session/session-store';
 import './layouts.css';
 
@@ -32,8 +33,7 @@ export function TeacherShell() {
         </nav>
         <details className="teacher-shell__user">
           <summary>{user?.displayName ?? 'Tài khoản'}</summary>
-          {/* Placeholder: sign-out is built by module 001. */}
-          <button type="button">Đăng xuất</button>
+          <LogoutButton variant="ghost" />
         </details>
       </aside>
       <main className="teacher-shell__main">

@@ -28,8 +28,9 @@ function resetStores(session?: TestSession) {
           user: { id: 'u1', role: session.role, displayName: session.displayName ?? 'Cô Lan' },
           workspace: { id: 'w1', name: session.workspaceName ?? 'Lớp cô Lan' },
           reason: null,
+          notice: null,
         }
-      : { status: 'idle', user: null, workspace: null, reason: null },
+      : { status: 'idle', user: null, workspace: null, reason: null, notice: null },
   );
 }
 

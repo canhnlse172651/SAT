@@ -207,6 +207,7 @@ describe('PortsModule dev mode (MongoDB + disk)', () => {
       html: '<p>secret-body</p>',
       text: 'secret-body',
       tag: 'activation',
+      fromName: 'SAT',
     });
     const logged = JSON.stringify(logSpy.mock.calls);
     logSpy.mockRestore();
@@ -216,7 +217,7 @@ describe('PortsModule dev mode (MongoDB + disk)', () => {
     const reader = ref.get(DevOutboxReader);
     const found = await reader.findByRecipient('hv@example.com', 'activation');
     expect(found).toHaveLength(1);
-    expect(found[0]).toMatchObject({ id, text: 'secret-body', tag: 'activation' });
+    expect(found[0]).toMatchObject({ id, text: 'secret-body', tag: 'activation', fromName: 'SAT' });
     expect((await reader.latest(5))[0]?.id).toBe(id);
     expect(await reader.findByRecipient('hv@example.com', 'other')).toHaveLength(0);
 

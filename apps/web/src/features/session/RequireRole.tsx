@@ -18,6 +18,7 @@ export function RequireRole({ role, otherwise }: Props) {
   const user = useSessionStore((s) => s.user);
   const load = useSessionStore((s) => s.load);
   const reason = useSessionStore((s) => s.reason);
+  const notice = useSessionStore((s) => s.notice);
   const location = useLocation();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function RequireRole({ role, otherwise }: Props) {
     return <p role="status">Đang tải…</p>;
   }
   if (!user) {
-    const state: LoginNoticeState = { notice: sessionNotice(reason) };
+    const state: LoginNoticeState = { notice: notice ?? sessionNotice(reason) };
     return (
       <Navigate
         replace

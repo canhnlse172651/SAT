@@ -11,6 +11,8 @@ export interface EmailMessage {
   /** Machine-readable kind, e.g. 'activation'; lets e2e find a message. */
   tag: string;
   workspaceId?: string;
+  /** Display name of the sender (the address comes from the provider configuration). */
+  fromName?: string;
 }
 
 export interface EmailSender {
@@ -101,19 +103,21 @@ export const devOutboxSchema = new Schema(
     text: { type: String, required: true },
     tag: { type: String, required: true },
     workspaceId: { type: String },
+    fromName: { type: String },
   },
   { collection: 'dev_outbox', timestamps: { createdAt: true, updatedAt: false } },
 );
 devOutboxSchema.index({ createdAt: -1 });
 
-interface OutboxDoc extends Omit<EmailMessage, 'workspaceId'> {
+interface OutboxDoc extends Omit<EmailMessage, 'workspaceId' | 'fromName'> {
   _id: { toString(): string };
   workspaceId?: string | null;
+  fromName?: string | null;
   createdAt: Date;
 }
 
 function toStored(doc: OutboxDoc): StoredEmail {
-  const { _id, workspaceId, createdAt, to, subject, html, text, tag } = doc;
+  const { _id, workspaceId, fromName, createdAt, to, subject, html, text, tag } = doc;
   return {
     id: _id.toString(),
     to,
@@ -122,6 +126,7 @@ function toStored(doc: OutboxDoc): StoredEmail {
     text,
     tag,
     ...(workspaceId ? { workspaceId } : {}),
+    ...(fromName ? { fromName } : {}),
     createdAt,
   };
 }

@@ -1,4 +1,5 @@
 import type { RouteObject } from 'react-router';
+import { RedirectIfSignedIn } from '../features/auth/RedirectIfSignedIn';
 import { HomeRedirect } from '../features/session/HomeRedirect';
 import { RequireRole } from '../features/session/RequireRole';
 import { AuthLayout } from '../layouts/AuthLayout';
@@ -7,13 +8,19 @@ import { TeacherShell } from '../layouts/TeacherShell';
 import { homePath, NOT_FOUND_PATH } from '../lib/home-path';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { RootLayout, RouteError } from './RootLayout';
+import { SCREEN_PAGES } from './screen-pages';
 import { SCREENS, type Screen, type ScreenArea } from './screens';
 
 /** Each module replaces its screen's loader with the real page; until then a placeholder shows. */
 function screenRoute(screen: Screen): RouteObject {
+  const page = SCREEN_PAGES[screen.id];
   return {
     path: screen.path,
     lazy: async () => {
+      if (page) {
+        const Page = await page();
+        return { element: <Page /> };
+      }
       const { PlaceholderPage } = await import('../pages/PlaceholderPage');
       return { element: <PlaceholderPage id={screen.id} name={screen.name} /> };
     },
@@ -48,7 +55,11 @@ export function createAppRoutes(): RouteObject[] {
       errorElement: <RouteError />,
       children: [
         { path: '/', element: <HomeRedirect /> },
-        { element: <AuthLayout />, children: inArea('auth') },
+        {
+          // A01–A03: a signed-in user goes to the role home (001 AC-3.5).
+          element: <RedirectIfSignedIn />,
+          children: [{ element: <AuthLayout />, children: inArea('auth') }],
+        },
         { path: NOT_FOUND_PATH, element: <NotFoundPage /> },
         ...devRoutes,
         {

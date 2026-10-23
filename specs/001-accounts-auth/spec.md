@@ -2,7 +2,7 @@
 id: 001
 slug: accounts-auth
 title: Accounts and Authentication
-status: tasked
+status: implementing
 branch: feat/001-accounts-auth
 created: 2026-10-18
 updated: 2026-10-23

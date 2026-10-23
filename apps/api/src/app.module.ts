@@ -15,7 +15,12 @@ import { SessionModule } from './modules/session/session.module.js';
 
 export type AppConfig = Pick<
   Config,
-  'MONGODB_URI' | 'LOG_LEVEL' | 'UPLOADS_DIR' | 'UPLOAD_MAX_BYTES' | 'DEV_EMAIL_DELAY_MS'
+  | 'MONGODB_URI'
+  | 'LOG_LEVEL'
+  | 'UPLOADS_DIR'
+  | 'UPLOAD_MAX_BYTES'
+  | 'DEV_EMAIL_DELAY_MS'
+  | 'APP_ORIGIN'
 > &
   AuthConfig;
 
@@ -39,7 +44,7 @@ export class AppModule {
         }),
         TenancyModule,
         AuthModule.forRoot(config),
-        AccountsModule,
+        AccountsModule.forRoot({ appOrigin: config.APP_ORIGIN }),
         HealthModule,
         SessionModule,
         FilesModule,
