@@ -2,12 +2,12 @@
 id: 001
 slug: accounts-auth
 title: Accounts and Authentication
-status: clarified
+status: tasked
 branch: feat/001-accounts-auth
 created: 2026-10-18
 updated: 2026-10-23
-approved_by:
-approved_at:
+approved_by: Tên
+approved_at: 2026-10-23
 ---
 
 # Accounts and Authentication — Tài khoản & Xác thực
