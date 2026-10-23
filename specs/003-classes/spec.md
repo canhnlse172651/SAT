@@ -2,12 +2,12 @@
 id: 003
 slug: classes
 title: Class Management
-status: draft
+status: approved
 branch: feat/003-classes
 created: 2026-10-18
-updated: 2026-10-18
-approved_by:
-approved_at:
+updated: 2026-10-23
+approved_by: canh
+approved_at: 2026-10-23
 ---
 
 # Class Management
