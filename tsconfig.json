@@ -1,7 +1,9 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "types": ["node"]
+    "types": ["node"],
+    // Playwright callbacks passed to page.evaluate() run in the browser.
+    "lib": ["ES2023", "DOM", "DOM.Iterable"]
   },
   "include": ["vitest.config.ts", "playwright.config.ts", "tests/**/*.ts"]
 }
