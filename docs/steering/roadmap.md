@@ -11,7 +11,7 @@ previous wave is `verified`. Modules in the same wave may run in parallel (separ
 
 | Wave | Module(s) | Depends on | Notes |
 |------|-----------|------------|-------|
-| 0 | Foundation ADRs (no feature) | — | See §2. Decide while planning the first module that needs each one. |
+| 0 | Foundation ([plan](../plans/foundation-plan.md), ADR-0005…0008) | — | See §2. Provider ADRs are decided while planning the first module that needs each one. |
 | 1 | **001** Tài khoản & Xác thực | — | Needs the email ADR (activation, reset). |
 | 2 | **002** Giáo trình & Bài | 001 | T05, T06, T18 shell, T21. |
 | 3 | **003** Lớp học — core | 001, 002 | Classes, members, hide/show, S01/S02/S11. Deadline + reminder REQs (REQ-21…26) need sets from 005 → tasks for them wait for wave 4 (mark `blocked` with a note). |
@@ -29,13 +29,20 @@ Before any wave: the module's open questions are answered → `/sdd-clarify NNN`
 
 ## 2. Foundation decisions (ADRs in `docs/adr/`, owned by the architect)
 
-| ADR | Decision needed | First needed by |
-|-----|-----------------|-----------------|
-| 0003 | Hosting / deploy target (currently undecided; `deploy:*` toolchain commands are null) | before first `/sdd-ship` |
-| next free | Transactional email provider (activation, password reset, deadline reminders) | 001 |
-| next free | File / object storage for uploads (video ≤ 500 MB, documents, images, avatars) | 004 |
-| next free | Scheduled jobs (08:00 reminders, retention clean-ups) | 003 wave 4b |
-| next free | AI provider and data handling for lesson generation (with 010 Q-1…Q-3 answers) | 010 |
+| ADR | Decision | Status / first needed by |
+|-----|----------|--------------------------|
+| [0005](../adr/0005-authentication-and-sessions.md) | Authentication and sessions (server-side sessions, scrypt, Origin check) | **decided** 2026-10-23 (wave 0) |
+| [0006](../adr/0006-workspace-isolation-and-data-conventions.md) | Workspace isolation and data conventions (`scoped()`, uniform 404, `version`/409, archive) | **decided** 2026-10-23 (wave 0) |
+| [0007](../adr/0007-shared-package-and-frontend-routing.md) | Shared package `@sat/shared` + `react-router` | **decided** 2026-10-23 (wave 0) |
+| [0008](../adr/0008-infrastructure-ports.md) | Infrastructure ports (Clock, EmailSender, FileStorage, JobScheduler) with dev adapters | **decided** 2026-10-23 (wave 0) |
+| 0003 | Hosting / deploy target (currently undecided; `deploy:*` toolchain commands are null) | open — before first `/sdd-ship` |
+| next free (0009+) | Transactional email provider (activation, password reset, deadline reminders) — production adapter for `EmailSender` | open — 001 |
+| next free (0009+) | File / object storage for uploads (video ≤ 500 MB, documents, images, avatars) — production adapter for `FileStorage`, upload limits | open — 004 |
+| next free (0009+) | Scheduled jobs (08:00 reminders, retention clean-ups) — production adapter for `JobScheduler` | open — 003 wave 4b |
+| next free (0009+) | AI provider and data handling for lesson generation (with 010 Q-1…Q-3 answers) — `AiProvider` port | open — 010 |
+
+Production cannot start while `EmailSender` or `JobScheduler` is bound to a dev adapter (ADR-0008), so the email and
+scheduler ADRs are prerequisites of the first production deploy.
 
 New dependencies need a line in the feature's `plan.md` (constitution IV).
 

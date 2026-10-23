@@ -11,7 +11,8 @@ whenever an ADR changes the stack. Commands live in .sdd/config.json → toolcha
 |-------|--------|-----|
 | Runtime | Node.js 24 LTS (`.nvmrc`), npm 11 workspaces | 0002 |
 | Language | TypeScript 6.0, `strict` + `noUncheckedIndexedAccess`, ESM everywhere | 0002 |
-| Frontend | React 19, Vite 8, Zustand 5 (`apps/web`) | 0002 |
+| Frontend | React 19, Vite 8, Zustand 5, React Router 8 (library/data mode) (`apps/web`) | 0002, 0007 |
+| Shared code | npm workspace `packages/shared` (`@sat/shared`: Zod contracts, enums, error codes, VN time, pinyin), built with `tsc` to `dist` | 0007 |
 | Backend | NestJS 12 on Express 5 (`@nestjs/platform-express`), Zod 4, nestjs-pino, helmet (`apps/api`) | 0004 |
 | Database | MongoDB 8 via Mongoose 9 (`@nestjs/mongoose`) | 0002, 0004 |
 | Testing | Vitest 5 + Testing Library + Supertest + `@nestjs/testing` + mongodb-memory-server; Playwright e2e | 0002, 0004 |
@@ -80,7 +81,8 @@ whenever an ADR changes the stack. Commands live in .sdd/config.json → toolcha
 
 Runtime — api: `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/mongoose`,
 `reflect-metadata`, `rxjs`, `express`, `mongoose`, `zod`, `pino`, `pino-http`, `nestjs-pino`, `helmet`;
-web: `react`, `react-dom`, `zustand`.
+web: `react`, `react-dom`, `zustand`, `react-router` (ADR-0007); workspace: `@sat/shared` (api + web; its only
+dependency is `zod`).
 Anything new requires a line (why, alternatives, licence) in the feature's `plan.md`.
 
 ## Installed skills vs. these conventions
