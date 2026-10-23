@@ -154,7 +154,7 @@ Mã `F0x` dùng cho thư mục `specs/000-foundation/` không bắt buộc — t
 | F12 | Web test kit: renderWithProviders, fetch stub, reset store | F09 | S | Test mẫu dùng kit chạy xanh | ✅ xong |
 | F13 | Walking skeleton E2E: fixtures đăng nhập dev, GV desktop + HV mobile, các trường hợp mở sai màn hình | F06, F09 | M | Playwright xanh ở 1280 và 390 px | ✅ xong — 10 e2e xanh (578205e) |
 | F14 | Tài liệu: tech.md, structure.md, AGENT-PLAYBOOK (cách dùng common), `.env.example` biến mới | F03–F13 | S | Agent module đọc là đủ dùng | ✅ xong |
-| F15 | Chạy `sdd ci --e2e`, sửa lỗi, Handoff, PR | tất cả | S | CI xanh, PR mở | ⏳ chưa xong |
+| F15 | Chạy `sdd ci --e2e`, sửa lỗi, Handoff, PR | tất cả | S | CI xanh, PR mở | ⏳ gần xong — lint, typecheck, build, test API + shared (98), e2e (10), check --all đều xanh; còn chạy test web khi có Node 24 và mở PR khi repo có remote |
 
 ## 9. Thứ tự và chạy song song bằng subagent
 
