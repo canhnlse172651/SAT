@@ -1,0 +1,3032 @@
+[
+  {
+    "tc": "TC-001",
+    "acs": [
+      "AC-1.1",
+      "AC-1.2",
+      "AC-4.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2275,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK1', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Đường dẫn' }).getByRole('link', { name: 'Giáo trình' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "name"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-001-1.png",
+      "screenshots/TC-001-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-002",
+    "acs": [
+      "AC-1.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1632,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/'"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'     '"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK2', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'x'.repeat(101"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-002-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-003",
+    "acs": [
+      "AC-1.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1446,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "`  tc-003   HÁN NGỮ một ${u.toUpperCase("
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK1', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-003-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-004",
+    "acs": [
+      "AC-1.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1705,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK3', exact: true })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Mô tả')",
+        "value": "'m'.repeat(2001"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-004-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-005",
+    "acs": [
+      "AC-1.6",
+      "AC-1.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2481,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK1', exact: true })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Mô tả')",
+        "value": "'abc'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "name"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-005-1.png",
+      "screenshots/TC-005-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-006",
+    "acs": [
+      "AC-3.1",
+      "AC-3.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1536,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/'"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-006-1.png",
+      "screenshots/TC-006-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-007",
+    "acs": [
+      "AC-3.2",
+      "AC-3.3",
+      "AC-3.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2505,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/'"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: /^HSK1\\b/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Điều hướng chính' }).getByRole('link', { name: 'Tài khoản' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Điều hướng chính' }).getByRole('link', { name: 'Giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa bộ lọc' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-007-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-008",
+    "acs": [
+      "AC-3.6",
+      "NFR-1"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5165,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/'"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Phân trang' }).getByRole('button', { name: 'Trang 2' })"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-008-1.png"
+    ],
+    "errors": [],
+    "notes": [
+      "T05 page 1 with 300 curricula: 281 ms"
+    ]
+  },
+  {
+    "tc": "TC-009",
+    "acs": [
+      "AC-2.1",
+      "AC-2.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3662,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Sửa thông tin' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "`tc-009 khác ${u}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "newName"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Mô tả')",
+        "value": "'Mô tả mới'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK2', exact: true })"
+      },
+      {
+        "action": "setInputFiles",
+        "target": "getByLabel('Chọn tệp ảnh bìa')",
+        "value": "{ name: 'bia.png', mimeType: 'image/png', buffer: png("
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "newName"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name: newName })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Gỡ ảnh bìa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-009-1.png",
+      "screenshots/TC-009-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-010",
+    "acs": [
+      "AC-2.3",
+      "AC-2.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3901,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Sửa thông tin' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK3', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Đổi cấp độ' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-010-1.png",
+      "screenshots/TC-010-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-011",
+    "acs": [
+      "AC-4.1",
+      "AC-4.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1475,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name: 'Bài 1' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-011-1.png",
+      "screenshots/TC-011-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-012",
+    "acs": [
+      "AC-4.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1588,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${a.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Dùng bởi 0 lớp' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${b.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Dùng bởi 2 lớp' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-012-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-013",
+    "acs": [
+      "AC-13.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2065,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa giáo trình' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "name"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-013-1.png",
+      "screenshots/TC-013-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-014",
+    "acs": [
+      "AC-13.2",
+      "AC-13.5"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3588,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu trữ' })"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('switch', { name: 'Đã lưu trữ' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Đổi tên' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByLabel('Tên bài')",
+        "value": "'Bài 1 – mới'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByRole('button', { name: 'Lưu' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-014-1.png",
+      "screenshots/TC-014-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-015",
+    "acs": [
+      "AC-13.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1643,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa giáo trình' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-015-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-016",
+    "acs": [
+      "AC-13.4"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2285,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Đóng' })"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa giáo trình' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-016-1.png",
+      "screenshots/TC-016-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-017",
+    "acs": [
+      "AC-13.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1449,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('switch', { name: 'Đã lưu trữ' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: `Khôi phục ${name}` })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('switch', { name: 'Đã lưu trữ' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-017-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-018",
+    "acs": [
+      "AC-5.1",
+      "AC-5.2",
+      "AC-7.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 9013,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bài' }).last()"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name: c.name })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bài' }).first()"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bài' })"
+      },
+      {
+        "action": "goBack",
+        "target": ""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-018-1.png",
+      "screenshots/TC-018-2.png",
+      "screenshots/TC-018-fail.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByRole('dialog', { name: 'Thêm bài' }).getByLabel('Tên bài')\nExpected: \"Bài 2\"\nReceived: \"Bài 1\"\nTimeout:  5000ms"
+    ]
+  },
+  {
+    "tc": "TC-019",
+    "acs": [
+      "AC-5.3",
+      "AC-5.4",
+      "NFR-8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2247,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Đổi tên' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên bài')",
+        "value": "''"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên bài')",
+        "value": "'b'.repeat(101"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên bài')",
+        "value": "'Bài 1 – 你好 nǐ hǎo'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name: 'Bài 1 – 你好 nǐ hǎo' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với bài', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Đổi tên' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByLabel('Tên bài')",
+        "value": "'Bài 1 – 你好 (sửa"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Đường dẫn' }).getByRole('link', { name: c.name })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-019-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-020",
+    "acs": [
+      "AC-5.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2643,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-020-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-021",
+    "acs": [
+      "AC-6.1",
+      "AC-6.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1653,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "dragTo",
+        "target": "getByRole('button', { name: 'Kéo để sắp xếp: Bài 4' })",
+        "value": "lessonRow(page, 'Bài 1'"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "dragTo",
+        "target": "getByRole('button', { name: 'Kéo để sắp xếp: Bài 2' })",
+        "value": "page.getByRole('heading', { level: 1 }"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-021-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-022",
+    "acs": [
+      "AC-6.2",
+      "AC-6.3",
+      "NFR-5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1659,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "focus",
+        "target": "getByRole('button', { name: 'Kéo để sắp xếp: Bài 1' })"
+      },
+      {
+        "action": "press",
+        "target": "Space"
+      },
+      {
+        "action": "press",
+        "target": "ArrowDown"
+      },
+      {
+        "action": "press",
+        "target": "ArrowDown"
+      },
+      {
+        "action": "press",
+        "target": "Space"
+      },
+      {
+        "action": "focus",
+        "target": "getByRole('button', { name: 'Kéo để sắp xếp: Bài 2' })"
+      },
+      {
+        "action": "press",
+        "target": "Space"
+      },
+      {
+        "action": "press",
+        "target": "ArrowDown"
+      },
+      {
+        "action": "press",
+        "target": "Escape"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lên trên' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 5' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Lên đầu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 5' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xuống cuối' })"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-022-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-023",
+    "acs": [
+      "AC-6.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1549,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "setOffline",
+        "target": "true"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuống dưới' })"
+      },
+      {
+        "action": "setOffline",
+        "target": "false"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l1.id}/bai-hoc`"
+      },
+      {
+        "action": "setOffline",
+        "target": "true"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 1' }).getByRole('button', { name: 'Xuống dưới' })"
+      },
+      {
+        "action": "setOffline",
+        "target": "false"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-023-1.png",
+      "screenshots/TC-023-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-024",
+    "acs": [
+      "AC-6.5",
+      "AC-6.6",
+      "AC-8.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1589,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lên trên' })"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-024-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-025",
+    "acs": [
+      "AC-7.3",
+      "AC-7.4",
+      "AC-7.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1195,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-025-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-026",
+    "acs": [
+      "AC-7.5",
+      "AC-7.11",
+      "AC-7.14",
+      "AC-8.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1616,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Soạn thủ công' })"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-026-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-027",
+    "acs": [
+      "AC-7.6",
+      "AC-7.10"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1624,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bước học' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm sau' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bộ bài tập' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-027-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-028",
+    "acs": [
+      "AC-7.8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1609,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Soạn thủ công' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bước học' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bộ bài tập' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bộ bài tập' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-028-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-029",
+    "acs": [
+      "AC-7.9"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2100,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-029-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-030",
+    "acs": [
+      "AC-7.12",
+      "AC-7.13"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2332,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'S1 sửa'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'S2 sửa'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /^Bài tập/ })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'E1 sửa'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /^Bài học/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Ở lại' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Rời đi' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /^Bài học/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-030-1.png",
+      "screenshots/TC-030-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-031",
+    "acs": [
+      "AC-8.2"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 894,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-032",
+    "acs": [
+      "AC-8.3",
+      "AC-10.2"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 2589,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${lessons[1]}/bai-hoc`"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${lessons[1]}/xem-truoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-032-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-033",
+    "acs": [
+      "AC-9.1",
+      "AC-9.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1401,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuất bản' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'Chào hỏi'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Nội dung khối 1')",
+        "value": "'你好 nǐ hǎo — Xin chào'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuất bản' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bộ bài tập 1' }).getByRole('button', { name: 'Xuất bản' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-033-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-034",
+    "acs": [
+      "AC-9.3",
+      "AC-9.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 2450,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xuất bản bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuất bản bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-034-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-035",
+    "acs": [
+      "AC-9.5",
+      "AC-9.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1192,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuất bản bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-035-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-036",
+    "acs": [
+      "AC-9.6",
+      "AC-9.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2107,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      },
+      {
+        "action": "press",
+        "target": "Escape"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuất bản bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài học/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-036-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-037",
+    "acs": [
+      "AC-10.1",
+      "AC-10.3"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 1904,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-038",
+    "acs": [
+      "AC-10.5",
+      "AC-17.3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Bị chặn",
+    "durationMs": 7716,
+    "steps": [],
+    "evidence": [
+      "screenshots/TC-038-1.png",
+      "screenshots/TC-038-2.png",
+      "screenshots/TC-038-fail.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Không tìm thấy nội dung bạn yêu cầu.' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found"
+    ],
+    "blockedBy": "S11 (module 003) chưa có trong bản 002 — trang tạm \"Đang xây dựng · S11 Trang bài\"."
+  },
+  {
+    "tc": "TC-039",
+    "acs": [
+      "AC-10.4",
+      "AC-11.2",
+      "AC-11.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3561,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name: 'Bài 1' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Soạn thủ công' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bước học' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'S2'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Nội dung khối 1')",
+        "value": "'谢谢 xièxie'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu nháp' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lên trên' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 1' }).getByRole('button', { name: 'Xuất bản' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với bài', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Đổi tên' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByLabel('Tên bài')",
+        "value": "'Bài 1 AI'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "reload",
+        "target": ""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-039-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-040",
+    "acs": [
+      "AC-10.6",
+      "NFR-4"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 2082,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-041",
+    "acs": [
+      "AC-10.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1936,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 1' }).getByRole('button', { name: 'Lưu trữ' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Đường dẫn' }).getByRole('link', { name: c.name })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 1' }).getByRole('button', { name: 'Khôi phục' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Về Soạn bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('navigation', { name: 'Đường dẫn' }).getByRole('link', { name: c.name })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-041-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-042",
+    "acs": [
+      "AC-11.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1391,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${id}`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-042-1.png",
+      "screenshots/TC-042-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-043",
+    "acs": [
+      "AC-11.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1731,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'AI · Chờ duyệt' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'AI · Đang tạo 10%' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${a.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'AI · Chờ duyệt' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-043-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-044",
+    "acs": [
+      "AC-11.5",
+      "AC-11.7",
+      "AC-19.2",
+      "AC-19.3",
+      "AC-19.6"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3125,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'AI 1 sửa'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu thay đổi' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuống dưới' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu trữ' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-044-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-045",
+    "acs": [
+      "AC-11.6"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1033,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-046",
+    "acs": [
+      "AC-19.1"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 906,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-047",
+    "acs": [
+      "AC-19.4"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 986,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-048",
+    "acs": [
+      "AC-19.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1211,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bộ bài tập' })"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-049",
+    "acs": [
+      "AC-12.1",
+      "AC-12.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1625,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Nội dung khối 1')",
+        "value": "'đang sửa dở'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-049-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-050",
+    "acs": [
+      "AC-12.3",
+      "AC-12.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1530,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bộ bài tập 1' }).getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bộ bài tập 2' }).getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-050-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-051",
+    "acs": [
+      "AC-12.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1496,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 2' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-051-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-052",
+    "acs": [
+      "AC-12.5",
+      "AC-12.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2173,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${a.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với bài', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Đã hiểu' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài B' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Đã hiểu' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-052-1.png",
+      "screenshots/TC-052-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-053",
+    "acs": [
+      "AC-12.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1364,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài AI' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Xóa bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-053-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-054",
+    "acs": [
+      "AC-18.1",
+      "AC-18.2",
+      "AC-18.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 2406,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bộ bài tập 1' }).getByRole('button', { name: 'Lưu trữ' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Khôi phục' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xóa' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-054-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-055",
+    "acs": [
+      "AC-18.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1407,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Soạn thủ công' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'B2 sửa'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu thay đổi' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-055-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-056",
+    "acs": [
+      "AC-18.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1311,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/thu-cong`"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "'E1 sửa'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu thay đổi' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-056-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-057",
+    "acs": [
+      "AC-14.1",
+      "AC-14.2",
+      "AC-14.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1880,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 2 – 你好' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Nhân bản bài' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Soạn thủ công' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-057-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-058",
+    "acs": [
+      "AC-14.1",
+      "AC-14.4"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 984,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-059",
+    "acs": [
+      "AC-14.5",
+      "AC-15.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 6795,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Nhân bản bài' })"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản' })"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "`${name} (bản sao`"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "`${name} (bản sao`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-059-1.png",
+      "screenshots/TC-059-fail.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Nhân bản không thành công. Vui lòng thử lại.', { exact: true }).first()\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found"
+    ]
+  },
+  {
+    "tc": "TC-060",
+    "acs": [
+      "AC-15.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1423,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản', exact: true })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "''"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK5', exact: true })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-060-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-061",
+    "acs": [
+      "AC-15.2",
+      "AC-15.3",
+      "AC-15.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2057,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK3', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-061-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-062",
+    "acs": [
+      "AC-15.6",
+      "AC-17.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4437,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Nhân bản', exact: true })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-062-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-063",
+    "acs": [
+      "AC-16.1",
+      "AC-16.10"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1534,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xem như học viên: Bài 1' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Soạn thủ công' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-063-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-064",
+    "acs": [
+      "AC-16.1",
+      "AC-16.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1413,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/xem-truoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài học/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thoát xem trước' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xem như học viên: Bài 1' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-064-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-065",
+    "acs": [
+      "AC-16.3",
+      "AC-16.4",
+      "AC-16.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1400,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/xem-truoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "check",
+        "target": "getByRole('radio', { name: 'Tạm biệt' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thoát xem trước' })"
+      },
+      {
+        "action": "goBack",
+        "target": ""
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-065-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-066",
+    "acs": [
+      "AC-16.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1639,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xem như học viên: Bài 25' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thoát xem trước' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-066-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-067",
+    "acs": [
+      "AC-16.7",
+      "AC-16.8",
+      "AC-16.9"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2342,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "url"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('tab', { name: /Bài tập/ })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('switch', { name: 'Gồm cả mục Nháp' })"
+      },
+      {
+        "action": "check",
+        "target": "getByRole('radio', { name: 'Xin chào' }).first()"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('radio', { name: 'Mobile' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thoát xem trước' })"
+      },
+      {
+        "action": "goto",
+        "target": "url"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/tai-khoan'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Đăng xuất' }).first()"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog', { name: 'Đăng xuất khỏi SAT?' }).getByRole('button', { name: 'Đăng xuất' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('textbox', { name: 'Email', exact: true })",
+        "value": "'lan@sat.dev'"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('textbox', { name: 'Mật khẩu', exact: true })",
+        "value": "'LanHSK2026'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Đăng nhập' })"
+      },
+      {
+        "action": "goto",
+        "target": "url"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-067-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-068",
+    "acs": [
+      "AC-17.1",
+      "AC-17.2",
+      "NFR-6"
+    ],
+    "type": "API",
+    "role": "GV (2 workspace)",
+    "status": "Pass",
+    "durationMs": 2876,
+    "steps": [],
+    "evidence": [
+      "screenshots/TC-068-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-069",
+    "acs": [
+      "AC-17.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4518,
+    "steps": [
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: `Thao tác với ${from}` })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Đổi tên' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByLabel('Tên bài')",
+        "value": "to"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Đổi tên bài' }).getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "dragTo",
+        "target": "getByRole('button', { name: 'Kéo để sắp xếp: Bài 2' })",
+        "value": "lessonRow(y, 'Bài 1 (Y"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuống dưới' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Sửa thông tin' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Mô tả')",
+        "value": "'Mô tả của X'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('menuitem', { name: 'Sửa thông tin' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('dialog', { name: 'Sửa thông tin giáo trình' }).getByLabel('Mô tả')",
+        "value": "'Mô tả của Y'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Sửa thông tin giáo trình' }).getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Lưu' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Hủy' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 2' }).getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('alertdialog').getByRole('button', { name: 'Xóa' })"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('region', { name: 'Bước học 2' }).getByLabel('Tên')",
+        "value": "'S2 của X'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 2' }).getByRole('button', { name: 'Lưu nháp' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-069-1.png",
+      "screenshots/TC-069-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-070",
+    "acs": [
+      "AC-17.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2541,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK1', exact: true })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bài' }).last()"
+      },
+      {
+        "action": "reload",
+        "target": ""
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Xuất bản bài' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${cid}`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thao tác với Bài 1' })"
+      },
+      {
+        "action": "dblclick",
+        "target": "getByRole('menuitem', { name: 'Nhân bản bài' })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-070-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-071",
+    "acs": [
+      "NFR-2"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5550,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}`"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${big.id}`"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${big.id}/bai-hoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 2', exact: true }).getByRole('button', { name: 'Lên trên' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 3', exact: true }).getByRole('button', { name: 'Xuất bản' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('region', { name: 'Bước học 1', exact: true }).getByRole('button', { name: 'Lưu trữ' })"
+      },
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${big.id}/xem-truoc`"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('radiogroup', { name: 'Chế độ hiển thị' }).getByRole('radio', { name: 'Mobile' })"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "notes": [
+      "T06 100 bài: 262 ms · T18 30+30: 179 ms · Lên trên 132 ms · Xuất bản mục 133 ms · Lưu trữ 124 ms · Đổi tên 18 ms · Web→Mobile 45 ms · Duyệt AI 30+30: 17 ms"
+    ]
+  },
+  {
+    "tc": "TC-072",
+    "acs": [
+      "NFR-3"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 13182,
+    "steps": [],
+    "evidence": [],
+    "errors": [],
+    "notes": [
+      "Nhân bản Bài 60 mục: 29 ms · giáo trình 20 Bài / 400 mục: 100 ms"
+    ]
+  },
+  {
+    "tc": "TC-073",
+    "acs": [
+      "NFR-5"
+    ],
+    "type": "Thủ công",
+    "role": "GV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [],
+    "evidence": [],
+    "errors": [],
+    "notes": [
+      "Thủ công: bàn phím + trình đọc màn hình + axe (NFR-5)."
+    ]
+  },
+  {
+    "tc": "TC-074",
+    "acs": [
+      "NFR-7"
+    ],
+    "type": "Thủ công",
+    "role": "GV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [],
+    "evidence": [],
+    "errors": [],
+    "notes": [
+      "Thủ công: đọc log máy chủ có cấu trúc (NFR-7)."
+    ]
+  },
+  {
+    "tc": "TC-075",
+    "acs": [
+      "NFR-8",
+      "AC-3.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2384,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' }).first()"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tên')",
+        "value": "name"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'HSK1', exact: true })"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Mô tả')",
+        "value": "desc"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Tạo giáo trình' })"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('button', { name: 'Thêm bài' }).last()"
+      },
+      {
+        "action": "fill",
+        "target": "getByRole('dialog', { name: 'Thêm bài' }).getByLabel('Tên bài')",
+        "value": "lessonName"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('dialog', { name: 'Thêm bài' }).getByRole('button', { name: 'Thêm bài' })"
+      },
+      {
+        "action": "goto",
+        "target": "page.url("
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      },
+      {
+        "action": "fill",
+        "target": "getByLabel('Tìm giáo trình')",
+        "value": "'汉语'"
+      },
+      {
+        "action": "click",
+        "target": "getByRole('link', { name })"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-075-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-076",
+    "acs": [
+      "AC-2.4",
+      "AC-10.6"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 1964,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-077",
+    "acs": [
+      "AC-7.2",
+      "AC-8.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1223,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "`/gv/giao-trinh/${c.id}/bai/${l.id}/bai-hoc`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-077-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-078",
+    "acs": [
+      "AC-17.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 967,
+    "steps": [
+      {
+        "action": "goto",
+        "target": "'/'"
+      },
+      {
+        "action": "goto",
+        "target": "'/gv/giao-trinh'"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-078-1.png"
+    ],
+    "errors": []
+  }
+]
