@@ -18,9 +18,9 @@ import {
   curriculumSchema,
   lessonSchema,
 } from './curriculum.model.js';
+import { CurriculumReader } from './curriculum-reader.js';
 import {
   AI_DRAFTS,
-  CURRICULUM_CLASSES,
   CurriculumFaults,
   DevCurriculumLinks,
   LEARNING_DATA,
@@ -55,9 +55,9 @@ export class CurriculumModule implements NestModule {
         ...(options.devHelpers ? [CurriculumDevController] : []),
       ],
       providers: [
-        // 003, 005 and 010 re-bind these when they exist (curriculum.ports.ts).
+        // 005 and 010 re-bind these when they exist (curriculum.ports.ts); `CURRICULUM_CLASSES` is bound by 003
+        // (ClassesModule, global).
         DevCurriculumLinks,
-        { provide: CURRICULUM_CLASSES, useExisting: DevCurriculumLinks },
         { provide: LEARNING_DATA, useExisting: DevCurriculumLinks },
         { provide: AI_DRAFTS, useExisting: DevCurriculumLinks },
         CurriculumFaults,
@@ -66,8 +66,9 @@ export class CurriculumModule implements NestModule {
         LessonsService,
         AiReplaceService,
         LearnService,
+        CurriculumReader,
       ],
-      exports: [CurriculumService, LessonsService, AiReplaceService],
+      exports: [CurriculumService, LessonsService, AiReplaceService, CurriculumReader],
     };
   }
 

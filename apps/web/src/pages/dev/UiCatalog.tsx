@@ -8,6 +8,7 @@ import {
   Checkbox,
   ConfirmDialog,
   DataTable,
+  Calendar,
   DatePicker,
   Dialog,
   Drawer,
@@ -211,6 +212,7 @@ function Showcase({ mobile }: { mobile: boolean }) {
             onChange={setDate}
             hint="23:59 giờ Việt Nam"
           />
+          <Calendar selected={date} onSelect={setDate} />
           <Checkbox
             label="Ghi nhớ đăng nhập"
             checked={checked}

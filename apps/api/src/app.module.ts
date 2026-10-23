@@ -9,6 +9,7 @@ import type { Config } from './config.js';
 import { DatabaseModule } from './database.module.js';
 import { loggerParams } from './logger.js';
 import { AccountsModule } from './modules/accounts/accounts.module.js';
+import { ClassesModule } from './modules/classes/classes.module.js';
 import { CurriculumModule } from './modules/curriculum/curriculum.module.js';
 import { FilesModule } from './modules/files/files.module.js';
 import { HealthModule } from './modules/health/health.module.js';
@@ -30,6 +31,8 @@ export type AppConfig = Pick<
 export class AppModule {
   static forRoot(config: AppConfig): DynamicModule {
     assertNoDevAdaptersInProduction(config.NODE_ENV);
+    const devHelpers = config.NODE_ENV === 'development' || config.NODE_ENV === 'test';
+    const curriculum = CurriculumModule.forRoot({ devHelpers });
     return {
       module: AppModule,
       imports: [
@@ -46,9 +49,8 @@ export class AppModule {
         TenancyModule,
         AuthModule.forRoot(config),
         AccountsModule.forRoot({ appOrigin: config.APP_ORIGIN }),
-        CurriculumModule.forRoot({
-          devHelpers: config.NODE_ENV === 'development' || config.NODE_ENV === 'test',
-        }),
+        curriculum,
+        ClassesModule.forRoot({ curriculum, appOrigin: config.APP_ORIGIN, devHelpers }),
         HealthModule,
         SessionModule,
         FilesModule,

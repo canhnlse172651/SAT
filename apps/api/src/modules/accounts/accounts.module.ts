@@ -30,7 +30,7 @@ import {
   StudentImportService,
   studentImportSchema,
 } from './student-import.service.js';
-import { NoStudentLinks, STUDENT_LINKS } from './student-links.js';
+import { StudentDirectory } from './student-directory.js';
 import { StudentMailService } from './student-mail.service.js';
 import { StudentsController } from './students.controller.js';
 import { StudentsService } from './students.service.js';
@@ -71,10 +71,10 @@ export class AccountsModule implements NestModule {
         StudentMailService,
         StudentsService,
         StudentImportService,
-        // 003, 005 and 012–015 re-bind this when they exist (student-links.ts).
-        { provide: STUDENT_LINKS, useClass: NoStudentLinks },
+        // `STUDENT_LINKS` (student-links.ts) is bound by 003 (ClassesModule, global); 005 and 012–015 extend it.
+        StudentDirectory,
       ],
-      exports: [WORKSPACE_DIRECTORY, SESSION_PRINCIPAL_RESOLVER, STUDENT_LINKS],
+      exports: [WORKSPACE_DIRECTORY, SESSION_PRINCIPAL_RESOLVER, StudentDirectory],
     };
   }
 

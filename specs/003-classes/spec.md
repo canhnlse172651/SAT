@@ -2,7 +2,7 @@
 id: 003
 slug: classes
 title: Class Management
-status: tasked
+status: implementing
 branch: feat/003-classes
 created: 2026-10-18
 updated: 2026-10-23

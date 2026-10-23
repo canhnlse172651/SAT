@@ -10,6 +10,7 @@ export {
   type SortDirection,
   type SortState,
 } from './DataTable/DataTable';
+export { Calendar, type CalendarProps } from './Calendar/Calendar';
 export { DatePicker, type DatePickerProps } from './DatePicker/DatePicker';
 export { ConfirmDialog, type ConfirmDialogProps } from './Dialog/ConfirmDialog';
 export { Dialog, type DialogProps } from './Dialog/Dialog';

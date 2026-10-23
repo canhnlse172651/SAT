@@ -363,6 +363,8 @@ export const mailContentSchema = z.object({
   paragraphs: z.array(z.string()),
   credentials: z.array(z.object({ label: z.string(), value: z.string() })),
   items: z.array(z.object({ title: z.string(), detail: z.string() })),
+  /** A line after the items, before the button (003 AC-25.3). */
+  note: z.string().optional(),
   button: z.object({ label: z.string(), href: z.string() }).nullable(),
   after: z.array(z.string()),
   footer: z.string(),

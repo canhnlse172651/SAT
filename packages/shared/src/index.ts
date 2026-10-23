@@ -10,3 +10,4 @@ export * from './ids.js';
 export * from './accounts.js';
 export * from './text.js';
 export * from './curriculum.js';
+export * from './classes.js';

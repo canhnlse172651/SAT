@@ -100,6 +100,7 @@ export function renderMail(content: MailContent): { subject: string; text: strin
     ...content.paragraphs,
     '',
     ...content.items.flatMap((i) => [`- ${i.title}`, `  ${i.detail}`]),
+    ...(content.note ? [content.note] : []),
     ...content.credentials.map((c) => `${c.label}: ${c.value}`),
     '',
     ...(content.button ? [`${content.button.label}: ${content.button.href}`, ''] : []),
@@ -113,6 +114,7 @@ export function renderMail(content: MailContent): { subject: string; text: strin
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:8px;padding:20px;font:15px/1.5 Arial,sans-serif;color:#1d2433;word-wrap:break-word">
 ${content.paragraphs.map(p).join('\n')}
 ${content.items.length ? `<ul style="padding-left:20px;margin:0 0 12px">${content.items.map((i) => `<li><b>${esc(i.title)}</b><br>${esc(i.detail)}</li>`).join('')}</ul>` : ''}
+${content.note ? p(content.note) : ''}
 ${content.credentials.length ? `<div style="background:#f5f6f8;border-radius:6px;padding:12px;margin:0 0 12px">${content.credentials.map((c) => `<div>${esc(c.label)}: <b style="font-family:monospace">${esc(c.value)}</b></div>`).join('')}</div>` : ''}
 ${content.button ? `<p style="margin:0 0 16px"><a href="${esc(content.button.href)}" style="display:inline-block;background:#c8102e;color:#fff;text-decoration:none;padding:10px 18px;border-radius:6px;font-weight:bold">${esc(content.button.label)}</a></p>` : ''}
 ${content.after.map(p).join('\n')}
