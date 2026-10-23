@@ -1,0 +1,164 @@
+/* Design tokens — "Mực & giấy" (docs/design/DESIGN.md). Light theme only. */
+:root {
+  /* paper & surfaces */
+  --bg: #f6f3ec;
+  --bg-sunk: #ece7dc;
+  --surface: #ffffff;
+  --surface-2: #faf8f3;
+  --paper-card: #fcfaf4;
+  --side-bg: #f0ebe1;
+  --border: #e6e0d4;
+  --border-strong: #d2cabb;
+  --border-input: #958c7a;
+  --control-off: #857f74;
+  /* ink */
+  --text: #1a2130;
+  --text-2: #4c5260;
+  --text-3: #62666f;
+  --ink: #1b2333;
+  --ink-2: #263147;
+  --ink-3: #3b4863;
+  --on-dark: #ffffff;
+  --on-dark-2: #bcc2cd;
+  --on-dark-line: rgba(255, 255, 255, 0.45);
+  /* accent: vermilion seal */
+  --brand: #c0362c;
+  --brand-strong: #96271f;
+  --brand-soft: #f8e6e1;
+  --brand-wash: #fdf6f3;
+  --brand-line: #eec4bb;
+  --brand-on-dark: #f0806f;
+  /* action: indigo ink */
+  --primary: #263d7a;
+  --primary-strong: #1a2c5c;
+  --primary-soft: #e8ebf4;
+  --primary-wash: #f3f5fa;
+  --primary-line: #c3cbe2;
+  --primary-text: #1d2f62;
+  /* feedback */
+  --success: #1f6b43;
+  --success-soft: #e5f0e7;
+  --success-line: #a9cdb4;
+  --success-text: #154d30;
+  --success-on-dark: #8fd9ac;
+  --warn: #8a5600;
+  --warn-soft: #fbf0d8;
+  --warn-line: #e6c77e;
+  --warn-text: #6b4300;
+  --warn-strong: #74480a;
+  --warn-on-dark: #ffd27a;
+  --danger: #b42318;
+  --danger-soft: #fbe9e6;
+  --danger-line: #efbab2;
+  --danger-text: #861a11;
+  --danger-strong: #8f1d14;
+  --danger-wash: #fdf5f3;
+  /* tracking status */
+  --st-todo: #575c68;
+  --st-todo-bg: #eeebe4;
+  --st-done: #1f6b43;
+  --st-done-bg: #e5f0e7;
+  --st-pending: #8a5600;
+  --st-pending-bg: #fbf0d8;
+  --st-over: #b42318;
+  --st-over-bg: #fbe9e6;
+  /* AI (010) */
+  --ai: #5a3fb4;
+  --ai-strong: #432f8a;
+  --ai-soft: #efebfa;
+  --ai-wash: #f6f3fd;
+  --ai-line: #d3c8f2;
+  --ai-text: #33236f;
+  /* HSK 1–9 badges */
+  --hsk1: #2e7d32;
+  --hsk2: #00796b;
+  --hsk3: #0277bd;
+  --hsk4: #3949ab;
+  --hsk5: #6a1b9a;
+  --hsk6: #ad1457;
+  --hsk7: #c62828;
+  --hsk8: #bf360c;
+  --hsk9: #6d4c41;
+  /* data */
+  --medal-1: #e9b949;
+  --medal-1-ink: #4a3500;
+  --medal-2: #d9d6cf;
+  --medal-2-ink: #2f3440;
+  --medal-3: #dfa577;
+  --medal-3-ink: #4a2508;
+  --file-pdf: #b42318;
+  --file-doc: #2b579a;
+  --file-xls: #1d6f42;
+  --file-media: #6e4a86;
+  --file-other: #676b75;
+  --chart-bar: #aab5d4;
+  --me-wash: #fdf4e3;
+  --me-line: #e6c77e;
+  --scrim: rgba(21, 26, 36, 0.5);
+
+  /* typography */
+  --font-ui: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Newsreader', 'Be Vietnam Pro', Georgia, serif;
+  --font-han-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-han: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  /* pinyin: Be Vietnam Pro first, then faces that carry the third-tone vowels (ǎ ǐ ǒ ǔ ǚ) */
+  --font-pinyin:
+    'Be Vietnam Pro', 'Noto Sans', 'Noto Sans SC', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --fs-2xs: 11px;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-base: 14px;
+  --fs-md: 15px;
+  --fs-lg: 17px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 30px;
+  --fs-han-md: 22px;
+  --fs-han-lg: 28px;
+  --fs-han-xl: 40px;
+  --fs-han-hero: 76px;
+  --lh-base: 1.5;
+  --lh-read: 1.75;
+  --lh-han: 1.9;
+
+  /* space, radius, elevation, motion */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --touch: 44px;
+  --r-xs: 3px;
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 8px;
+  --r-xl: 12px;
+  --r-pill: 999px;
+  --shadow-card: 0 1px 0 rgba(27, 35, 51, 0.04);
+  --shadow-raise: 0 1px 2px rgba(27, 35, 51, 0.07), 0 2px 8px rgba(27, 35, 51, 0.05);
+  --shadow-pop: 0 2px 6px rgba(27, 35, 51, 0.08), 0 18px 44px -12px rgba(27, 35, 51, 0.32);
+  --focus: 0 0 0 3px rgba(38, 61, 122, 0.24);
+  --focus-color: #263d7a;
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-flip: 380ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 1ms;
+    --dur-2: 1ms;
+    --dur-flip: 1ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

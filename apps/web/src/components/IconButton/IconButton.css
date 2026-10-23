@@ -1,0 +1,29 @@
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--touch);
+  height: var(--touch);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-2);
+  transition:
+    background-color var(--dur-1),
+    color var(--dur-1);
+}
+.icon-btn--sm {
+  width: 36px;
+  height: 36px;
+}
+.icon-btn:hover:not(:disabled) {
+  background: var(--bg-sunk);
+  color: var(--text);
+}
+.icon-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

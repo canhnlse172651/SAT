@@ -1,0 +1,51 @@
+.check {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 32px;
+  cursor: pointer;
+}
+.check__input {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.check__box {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--control-off);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: transparent;
+  transition:
+    background-color var(--dur-1),
+    border-color var(--dur-1);
+}
+.check__input:checked + .check__box {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-dark);
+}
+.check__input:focus-visible + .check__box {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+.check__input:disabled ~ * {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.check__label {
+  font-size: var(--fs-base);
+}
+@media (pointer: coarse) {
+  .check {
+    min-height: var(--touch);
+  }
+}

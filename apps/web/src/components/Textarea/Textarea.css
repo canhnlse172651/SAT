@@ -1,0 +1,9 @@
+.counter {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+.counter--full {
+  color: var(--danger-text);
+  font-weight: 600;
+}

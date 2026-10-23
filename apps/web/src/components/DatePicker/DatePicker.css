@@ -1,0 +1,120 @@
+.datepicker {
+  position: relative;
+}
+.datepicker__input {
+  padding-right: 48px;
+  font-variant-numeric: tabular-nums;
+}
+.datepicker__trigger {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 100%;
+  min-height: 40px;
+  border: 0;
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  background: transparent;
+  color: var(--text-2);
+}
+.datepicker__trigger:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--bg-sunk);
+}
+.datepicker__trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.datepicker__pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  width: 308px;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  animation: datepicker-drop var(--dur-2) var(--ease);
+}
+.datepicker__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+}
+.datepicker__caption {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+.datepicker__step {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-2);
+}
+.datepicker__step:hover:not(:disabled) {
+  background: var(--bg-sunk);
+  color: var(--text);
+}
+.datepicker__step:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.datepicker__grid {
+  width: 100%;
+  table-layout: fixed;
+}
+.datepicker__grid td {
+  padding: 1px;
+  text-align: center;
+}
+.datepicker__dow {
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.datepicker__day {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  font-size: var(--fs-base);
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--dur-1);
+}
+.datepicker__day:hover:not(:disabled) {
+  background: var(--primary-soft);
+}
+.datepicker__day[aria-current='date'] {
+  border-color: var(--brand);
+}
+.datepicker__day--sel,
+.datepicker__day--sel:hover:not(:disabled) {
+  background: var(--primary);
+  color: var(--on-dark);
+  font-weight: 700;
+}
+.datepicker__day:disabled {
+  color: var(--text-3);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+@keyframes datepicker-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

@@ -1,0 +1,36 @@
+.audio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.audio__btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--touch);
+  height: var(--touch);
+  padding: 0;
+  border: 1px solid var(--primary-line);
+  border-radius: 50%;
+  background: var(--primary-wash);
+  color: var(--primary-text);
+  transition:
+    background-color var(--dur-1),
+    color var(--dur-1);
+}
+.audio__btn:hover {
+  background: var(--primary-soft);
+}
+.audio__btn[aria-pressed='true'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-dark);
+}
+.audio__btn--error {
+  border-color: var(--danger-line);
+  background: var(--danger-soft);
+  color: var(--danger-text);
+}
+.audio__err {
+  font-size: var(--fs-xs);
+  color: var(--danger-text);
+}

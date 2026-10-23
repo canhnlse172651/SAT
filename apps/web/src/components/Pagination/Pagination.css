@@ -1,0 +1,44 @@
+.pager {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.pager__btn {
+  display: inline-grid;
+  place-items: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--dur-1),
+    border-color var(--dur-1);
+}
+.pager__btn:hover:not(:disabled) {
+  background: var(--bg-sunk);
+}
+.pager__btn[aria-current='page'] {
+  background: var(--primary);
+  color: var(--on-dark);
+}
+.pager__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.pager__gap {
+  min-width: 24px;
+  text-align: center;
+  color: var(--text-3);
+}
+@media (pointer: coarse) {
+  .pager__btn {
+    min-width: var(--touch);
+    height: var(--touch);
+  }
+}

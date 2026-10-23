@@ -1,0 +1,16 @@
+/* .han / .py base rules live in styles/base.css; this adds the size steps. */
+.han--md {
+  font-size: var(--fs-han-md);
+}
+.han--lg {
+  font-size: var(--fs-han-lg);
+}
+.han--xl {
+  font-size: var(--fs-han-xl);
+  line-height: 1.4;
+}
+.han--hero {
+  font-size: var(--fs-han-hero);
+  line-height: 1.2;
+  font-weight: 600;
+}

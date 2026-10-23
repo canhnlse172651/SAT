@@ -1,0 +1,30 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.chip--done {
+  background: var(--st-done-bg);
+  color: var(--st-done);
+}
+.chip--todo {
+  background: var(--st-todo-bg);
+  color: var(--st-todo);
+}
+.chip--pending {
+  background: var(--st-pending-bg);
+  color: var(--st-pending);
+}
+.chip--danger {
+  background: var(--st-over-bg);
+  color: var(--st-over);
+}
+.chip--info {
+  background: var(--primary-soft);
+  color: var(--primary-text);
+}

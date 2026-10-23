@@ -1,0 +1,150 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+}
+.overlay__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  animation: overlay-fade var(--dur-2) var(--ease);
+}
+.overlay__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  background: var(--surface);
+  box-shadow: var(--shadow-pop);
+  outline: none;
+}
+.overlay__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-5) 0;
+}
+.overlay__title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.25;
+  padding-top: 4px;
+}
+.overlay__desc {
+  padding: var(--sp-2) var(--sp-5) 0;
+  color: var(--text-2);
+  font-size: var(--fs-base);
+  line-height: var(--lh-read);
+}
+.overlay__body {
+  padding: var(--sp-4) var(--sp-5);
+  overflow-y: auto;
+}
+.overlay__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5) var(--sp-5);
+}
+
+/* centred dialog */
+.overlay--dialog {
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+}
+.overlay--dialog .overlay__panel {
+  width: 100%;
+  border-radius: var(--r-lg);
+  animation: overlay-rise var(--dur-2) var(--ease);
+}
+.overlay--dialog .overlay__panel--sm {
+  max-width: 400px;
+}
+.overlay--dialog .overlay__panel--md {
+  max-width: 520px;
+}
+.overlay--dialog .overlay__panel--lg {
+  max-width: 720px;
+}
+
+/* desktop side drawer */
+.overlay--drawer {
+  justify-content: flex-end;
+}
+.overlay--drawer .overlay__panel {
+  height: 100%;
+  border-radius: 0;
+  animation: overlay-slide var(--dur-2) var(--ease);
+}
+.overlay--drawer .overlay__panel--sm {
+  width: 360px;
+}
+.overlay--drawer .overlay__panel--md {
+  width: 480px;
+}
+.overlay--drawer .overlay__panel--lg {
+  width: 640px;
+}
+.overlay--drawer .overlay__panel {
+  max-width: 100%;
+}
+
+/* mobile bottom sheet */
+.overlay--sheet {
+  align-items: flex-end;
+}
+.overlay--sheet .overlay__panel {
+  width: 100%;
+  max-height: 90%;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  animation: overlay-sheet var(--dur-2) var(--ease);
+}
+.overlay--sheet .overlay__head {
+  padding-top: var(--sp-4);
+}
+.overlay--sheet .overlay__foot {
+  padding-bottom: var(--sp-4);
+}
+.overlay--sheet .overlay__foot > * {
+  flex: 1;
+}
+.overlay__grab {
+  align-self: center;
+  width: 36px;
+  height: 4px;
+  margin-top: var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--border-strong);
+}
+.overlay--sheet .overlay__head .icon-btn {
+  width: var(--touch);
+  height: var(--touch);
+}
+
+@keyframes overlay-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes overlay-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes overlay-slide {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+@keyframes overlay-sheet {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

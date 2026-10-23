@@ -1,0 +1,12 @@
+.hsk {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-xs);
+  background: var(--hc, var(--hsk1));
+  color: var(--on-dark);
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
