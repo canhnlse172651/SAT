@@ -155,3 +155,30 @@ rồi node scripts/sync-state.mjs.
 | `node scripts/design/verify-prototype.cjs` | Bấm thử toàn bộ prototype |
 | `node .sdd/scripts/sdd.mjs trace NNN` | Ma trận AC → task → test |
 | `node .sdd/scripts/sdd.mjs ci --e2e` | lint → typecheck → test → build → e2e → check |
+
+## 8. Nền tảng (wave 0)
+
+Wave 0 (nhánh `feat/000-foundation`, kế hoạch [docs/plans/foundation-plan.md](plans/foundation-plan.md), ADR-0005…0008) đã dựng
+sẵn hạ tầng dùng chung. Module chỉ viết logic nghiệp vụ. Cách dùng chi tiết: `docs/steering/tech.md`; vị trí file: `structure.md`.
+
+| Phần | Ở đâu | Có gì |
+|------|-------|-------|
+| Dùng chung api + web | `packages/shared` (`@sat/shared`) | Vai trò, bậc HSK, mã lỗi, `objectId`, phân trang, giờ Việt Nam, định dạng số/điểm, pinyin |
+| Backend | `apps/api/src/common/` | Phiên + `AuthGuard` toàn cục, `@Public/@Roles/@CurrentUser`, `scoped()` theo workspace, `notFound()`, `baseSchemaOptions`, `updateWithVersion` (409), `paginate`, `parse()`, cổng `CLOCK / EMAIL_SENDER / FILE_STORAGE / JOB_SCHEDULER` |
+| Endpoint hạ tầng | `apps/api/src/modules/{health,session,files}`, `common/dev` | `GET /api/session`, `GET /api/files/:id`; chỉ dev/test: `POST /api/dev/session`, `GET /api/dev/outbox`; `npm run seed -w @sat/api` |
+| Frontend | `apps/web/src/{app,layouts,features/session,features/toast,components,styles}` | Bảng route theo mã màn hình (`app/screens.ts`) với trang "Đang xây dựng", khung GV/HV, `RequireRole`, `session-store`, `toast-store`, `apiRequest`, UI kit + `/dev/ui`, design tokens |
+| Bộ test | `apps/api/src/test`, `apps/web/src/test`, `tests/e2e/fixtures.ts` | `createTestApp`, `loginAs`, factories; `renderWithProviders`, `stubFetch`; `loginAs(page, role)` cho e2e |
+
+Quy tắc bắt buộc khi implement một module:
+
+1. **Mọi truy vấn dữ liệu nghiệp vụ đi qua `scoped()` / `WorkspaceScopedRepository`**; schema có `workspaceIdField` và chỉ mục
+   `workspaceIndex`. Không tìm thấy, khác workspace, sai vai trò, id hỏng → đều `notFound()` (A05). Mỗi endpoint có test truy cập chéo workspace.
+2. **Mỗi controller khai báo `@Roles('GV')` hoặc `@Roles('HV')`** (route công khai dùng `@Public()`); validate mọi input bằng `parse(schema, input)`;
+   thời gian lấy từ `CLOCK`, gửi email qua `EMAIL_SENDER` — không `new Date()`, không gọi dịch vụ ngoài trực tiếp.
+3. **Thay placeholder bằng trang thật**: màn hình đã có trong `app/screens.ts`; cho `lazy` của mã màn hình đó trong `app/routes.tsx` import trang ở
+   `features/<domain>/`. Không tự tạo đường dẫn mới, không tự viết guard/khung.
+4. **Giao diện chỉ dùng UI kit (`components/index.ts`) và token trong `styles/tokens.css`**; gọi API qua `apiRequest` và store Zustand; định dạng
+   ngày giờ/điểm/pinyin bằng `@sat/shared`. Thiếu component dùng chung thì thêm vào `components/` + test + `/dev/ui`.
+5. **Test bằng bộ kit**: API `createTestApp` + `loginAs` + factories; web `renderWithProviders` + `stubFetch`; e2e `loginAs` trong `tests/e2e/fixtures.ts`.
+   Không dùng `dev_*` cho nghiệp vụ: `common/directory` và `dev_workspaces`/`dev_users` là bản tạm, **module 001 thay bằng collection thật**
+   (gắn `WORKSPACE_DIRECTORY`, sửa factories và seed).

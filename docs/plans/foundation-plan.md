@@ -3,7 +3,13 @@
 > Kế hoạch cho **wave 0** (trước module 001). Đây là việc `[infra]`: được phép làm khi spec module chưa được duyệt
 > (CLAUDE.md, ground rule 1). Nền tảng chỉ cung cấp **cơ chế dùng chung**; mọi hành vi nghiệp vụ (đăng ký, đăng nhập,
 > kích hoạt HV, giáo trình…) vẫn thuộc module của nó và chỉ làm khi spec được duyệt.
-> Ngày lập: 2026-10-23 · Trạng thái: **đề xuất — chờ chốt các quyết định ở §3**.
+> Ngày lập: 2026-10-23 · Trạng thái: **đang thực hiện** — ADR-0005…0008 đã chấp nhận; F00–F12 và F14 xong, F13 và F15 còn lại (§8).
+>
+> **Khác với bản đề xuất:**
+> - Frontend dùng **`react-router` v8** (`^8.5.0`, chế độ thư viện/data), không phải v7: lúc quyết định v8 là bản `latest`, v7 chỉ còn
+>   nhánh bảo trì; quyết định "react-router ở chế độ thư viện" không đổi (ADR-0007). Mọi chỗ ghi "v7" bên dưới hiểu là v8.
+> - **Test unit web chờ Node 24 trên máy local**: máy phát triển hiện chạy Node 20 nên chưa chạy được bộ test `apps/web` (dự án yêu cầu
+>   Node ≥ 24.15: `engines`, `.nvmrc`); CI chạy Node 24. Cần chạy lại `node .sdd/scripts/sdd.mjs run test` trên Node 24 trước khi đóng F15.
 
 ## 1. Mục tiêu và tiêu chí xong
 
@@ -35,7 +41,7 @@ và adapter cho dev), giao diện các màn hình nghiệp vụ.
 |-----|-----------|---------|--------|
 | 0005 | Xác thực và phiên | **Phiên phía server lưu MongoDB + cookie `httpOnly` `Secure` `SameSite=Lax`** chứa id phiên ngẫu nhiên (≥ 256 bit, chỉ lưu bản băm). Băm mật khẩu bằng `node:crypto` **scrypt** (không thêm thư viện). Chống CSRF: cùng origin + kiểm tra header `Origin` với request ghi + `SameSite`. | 001 yêu cầu: HV hết phiên sau 30 ngày không thao tác, GV 8 giờ, nhiều phiên đồng thời, đăng xuất chỉ thiết bị hiện tại, đổi mật khẩu đăng xuất phiên khác, khóa tài khoản có hiệu lực ngay. JWT không thu hồi được tức thì nên không hợp. |
 | 0006 | Tách biệt workspace và quy ước dữ liệu | Mọi tài liệu nghiệp vụ có `workspaceId`. **Ngữ cảnh request** (AsyncLocalStorage) giữ `{ userId, role, workspaceId, requestId }`. Repository dùng helper `scoped(model)` tự thêm `workspaceId` vào mọi truy vấn. Sai workspace hoặc không tồn tại → cùng một lỗi `404 NOT_FOUND` (A05). Id công khai là chuỗi ObjectId. `timestamps`, `version` cho kiểm tra xung đột (`409 CONFLICT` khi `expectedVersion` lệch). Không xóa cứng dữ liệu có học tập — lưu trữ. | Nguyên tắc "Workspace isolation" và "Never lose learning data" (product.md); 004 AC-2.3 và 016 AC-1.5 cần phát hiện sửa đồng thời. |
-| 0007 | Gói dùng chung và router frontend | Thêm workspace **`packages/shared`** (`@sat/shared`): schema Zod của hợp đồng API, enum (vai trò, trạng thái, cấp HSK 7 bậc), mã lỗi, tiện ích giờ Việt Nam và pinyin. Build bằng `tsc` ra `dist` (ESM), api và web cùng import. Frontend thêm **`react-router` v7** (chế độ thư viện). | ~50 màn hình có tham số, layout lồng nhau và guard theo vai trò: tự viết router không đáng. `react-router` là MIT, phổ biến nhất; phương án khác: router tự viết (~150 dòng, thiếu lazy-load và scroll restore). |
+| 0007 | Gói dùng chung và router frontend | Thêm workspace **`packages/shared`** (`@sat/shared`): schema Zod của hợp đồng API, enum (vai trò, trạng thái, cấp HSK 7 bậc), mã lỗi, tiện ích giờ Việt Nam và pinyin. Build bằng `tsc` ra `dist` (ESM), api và web cùng import. Frontend thêm **`react-router` v7** (chế độ thư viện) — *thực tế dùng v8, xem đầu file*. | ~50 màn hình có tham số, layout lồng nhau và guard theo vai trò: tự viết router không đáng. `react-router` là MIT, phổ biến nhất; phương án khác: router tự viết (~150 dòng, thiếu lazy-load và scroll restore). |
 | 0008 | Cổng hạ tầng (ports) | Định nghĩa interface `EmailSender`, `FileStorage`, `Clock`, `JobScheduler` trong API; wave 0 chỉ có adapter dev: email ghi vào collection `dev_outbox` + log, lưu tệp ra thư mục `var/uploads`, `SystemClock` / `FixedClock` cho test. Nhà cung cấp thật chọn ở các ADR đã liệt kê trong roadmap §2. | Module 001, 003, 004, 006, 012–016 cần email, tệp, đồng hồ (hạn nộp 23:59, giờ thi, SRS) — dựng cổng sớm để test không phụ thuộc dịch vụ ngoài. |
 
 Phụ thuộc mới đề xuất (mỗi cái một dòng trong ADR): `react-router` (web). Không thêm thư viện băm mật khẩu, cookie,
@@ -131,24 +137,24 @@ apps/web/src/
 Mã `F0x` dùng cho thư mục `specs/000-foundation/` không bắt buộc — task được theo dõi ngay trong file này và trong commit
 (`chore(000): F03 …`). Kích cỡ: S ≤ 2 giờ agent, M ≤ nửa ngày, L ≤ 1 ngày.
 
-| Task | Việc | Phụ thuộc | Cỡ | Xong khi |
-|------|------|-----------|----|----------|
-| F00 | `git init`, commit nền, tạo nhánh `feat/000-foundation` | — | S | Có commit đầu, nhánh mới |
-| F01 | Viết ADR-0005 … 0008 (architect), cập nhật bảng ADR trong roadmap | F00 | M | 4 ADR trạng thái *proposed* → con người chấp nhận |
-| F02 | `packages/shared`: cấu hình workspace, build, exports; roles, hsk, errors, time, numbers, pinyin + test | F01 | M | api và web import được; test giờ VN và pinyin xanh |
-| F03 | API context + auth: RequestContext, Session model/service, cookie, scrypt, AuthGuard, `@Public/@Roles/@CurrentUser`, Origin check | F02 | L | Test: thiếu phiên 401, hết hạn theo vai trò, thu hồi phiên, sai vai trò 404 |
-| F04 | API tenancy + persistence: `scoped()`, baseSchemaOptions, toDto, version/conflict, pagination | F02 | M | Test chéo workspace luôn NOT_FOUND; CONFLICT khi lệch version |
-| F05 | API ports + adapter dev: Clock, EmailSender (outbox), FileStorage (đĩa), JobScheduler (stub) | F02 | M | Inject được trong test với FixedClock; outbox đọc được |
-| F06 | API endpoints hạ tầng + DevModule + seed: `GET /api/session`, `POST /api/dev/session`, `GET /api/dev/outbox`, `npm run seed` | F03, F04, F05 | M | Production không đăng ký DevModule (có test); seed chạy được |
-| F07 | API test kit: createTestApp, withMongo, loginAs, factories | F03, F04 | S | Test mẫu dùng kit chạy xanh |
-| F08 | Web nền: tokens.css + base.css + font từ DESIGN.md, router v7, route table A/T/S, placeholder, A05, ErrorBoundary | F02 | M | Mọi mã màn hình có route; A05 hiển thị đúng |
-| F09 | Web layouts + session: TeacherShell, StudentShell (360 px), AuthLayout, session-store, RequireRole, api-client mới | F08 | M | Điều hướng sai vai trò đúng 001 (S01 / T01 / A05); chưa đăng nhập → A01 kèm returnTo |
-| F10 | UI kit đợt 1: Button, IconButton, StatusChip, HskBadge, Tabs, SegmentedControl, form controls, FormField | F08 | M | Test role/label; có trong `/dev/ui` |
-| F11 | UI kit đợt 2: Dialog/Confirm, Drawer/BottomSheet, Toast, DataTable, EmptyState/ErrorState/Skeleton, Avatar, Pagination, DatePicker, HanziText/PinyinText, AudioButton | F08 | L | Như F10; DatePicker dd/MM/yyyy giờ VN |
-| F12 | Web test kit: renderWithProviders, fetch stub, reset store | F09 | S | Test mẫu dùng kit chạy xanh |
-| F13 | Walking skeleton E2E: fixtures đăng nhập dev, GV desktop + HV mobile, các trường hợp mở sai màn hình | F06, F09 | M | Playwright xanh ở 1280 và 390 px |
-| F14 | Tài liệu: tech.md, structure.md, AGENT-PLAYBOOK (cách dùng common), `.env.example` biến mới | F03–F13 | S | Agent module đọc là đủ dùng |
-| F15 | Chạy `sdd ci --e2e`, sửa lỗi, Handoff, PR | tất cả | S | CI xanh, PR mở |
+| Task | Việc | Phụ thuộc | Cỡ | Xong khi | Trạng thái |
+|------|------|-----------|----|----------|------------|
+| F00 | `git init`, commit nền, tạo nhánh `feat/000-foundation` | — | S | Có commit đầu, nhánh mới | ✅ xong |
+| F01 | Viết ADR-0005 … 0008 (architect), cập nhật bảng ADR trong roadmap | F00 | M | 4 ADR trạng thái *proposed* → con người chấp nhận | ✅ xong |
+| F02 | `packages/shared`: cấu hình workspace, build, exports; roles, hsk, errors, time, numbers, pinyin + test | F01 | M | api và web import được; test giờ VN và pinyin xanh | ✅ xong |
+| F03 | API context + auth: RequestContext, Session model/service, cookie, scrypt, AuthGuard, `@Public/@Roles/@CurrentUser`, Origin check | F02 | L | Test: thiếu phiên 401, hết hạn theo vai trò, thu hồi phiên, sai vai trò 404 | ✅ xong |
+| F04 | API tenancy + persistence: `scoped()`, baseSchemaOptions, toDto, version/conflict, pagination | F02 | M | Test chéo workspace luôn NOT_FOUND; CONFLICT khi lệch version | ✅ xong |
+| F05 | API ports + adapter dev: Clock, EmailSender (outbox), FileStorage (đĩa), JobScheduler (stub) | F02 | M | Inject được trong test với FixedClock; outbox đọc được | ✅ xong |
+| F06 | API endpoints hạ tầng + DevModule + seed: `GET /api/session`, `POST /api/dev/session`, `GET /api/dev/outbox`, `npm run seed` | F03, F04, F05 | M | Production không đăng ký DevModule (có test); seed chạy được | ✅ xong |
+| F07 | API test kit: createTestApp, withMongo, loginAs, factories | F03, F04 | S | Test mẫu dùng kit chạy xanh | ✅ xong |
+| F08 | Web nền: tokens.css + base.css + font từ DESIGN.md, router v8 (ADR-0007), route table A/T/S, placeholder, A05, ErrorBoundary | F02 | M | Mọi mã màn hình có route; A05 hiển thị đúng | ✅ xong |
+| F09 | Web layouts + session: TeacherShell, StudentShell (360 px), AuthLayout, session-store, RequireRole, api-client mới | F08 | M | Điều hướng sai vai trò đúng 001 (S01 / T01 / A05); chưa đăng nhập → A01 kèm returnTo | ✅ xong |
+| F10 | UI kit đợt 1: Button, IconButton, StatusChip, HskBadge, Tabs, SegmentedControl, form controls, FormField | F08 | M | Test role/label; có trong `/dev/ui` | ✅ xong |
+| F11 | UI kit đợt 2: Dialog/Confirm, Drawer/BottomSheet, Toast, DataTable, EmptyState/ErrorState/Skeleton, Avatar, Pagination, DatePicker, HanziText/PinyinText, AudioButton | F08 | L | Như F10; DatePicker dd/MM/yyyy giờ VN | ✅ xong |
+| F12 | Web test kit: renderWithProviders, fetch stub, reset store | F09 | S | Test mẫu dùng kit chạy xanh | ✅ xong |
+| F13 | Walking skeleton E2E: fixtures đăng nhập dev, GV desktop + HV mobile, các trường hợp mở sai màn hình | F06, F09 | M | Playwright xanh ở 1280 và 390 px | ✅ xong — 10 e2e xanh (578205e) |
+| F14 | Tài liệu: tech.md, structure.md, AGENT-PLAYBOOK (cách dùng common), `.env.example` biến mới | F03–F13 | S | Agent module đọc là đủ dùng | ✅ xong |
+| F15 | Chạy `sdd ci --e2e`, sửa lỗi, Handoff, PR | tất cả | S | CI xanh, PR mở | ⏳ chưa xong |
 
 ## 9. Thứ tự và chạy song song bằng subagent
 
