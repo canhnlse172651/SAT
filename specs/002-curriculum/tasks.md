@@ -17,7 +17,7 @@ foundation files touched by [infra] tasks keep their Vitest tests.
 ## Phase 1: Foundation
 
 - [x] T001 [infra] Shared curriculum contracts (schemas, messages, error codes), HSK levels 1–9 + `HskBadge` level, `foldSearch` — files: `packages/shared/src/curriculum.ts`, `packages/shared/src/hsk.ts`, `packages/shared/src/text.ts`, `apps/web/src/components/HskBadge/HskBadge.tsx`
-- [ ] T002 [infra] Curriculum module skeleton: `curricula` / `lessons` models, ports for 003/005/010 with the dev links adapter and dev controller, interim item content, web feature folder and routes — files: `apps/api/src/modules/curriculum/curriculum.module.ts`, `apps/api/src/modules/curriculum/curriculum.model.ts`, `apps/api/src/modules/curriculum/curriculum.ports.ts`, `apps/api/src/modules/curriculum/item-content.ts`, `apps/api/src/modules/curriculum/curriculum-dev.controller.ts`, `apps/api/src/app.module.ts`, `apps/web/src/app/screen-pages.ts`
+- [x] T002 [infra] Curriculum module skeleton: `curricula` / `lessons` models, ports for 003/005/010 with the dev links adapter and dev controller, interim item content, web feature folder and routes — files: `apps/api/src/modules/curriculum/curriculum.module.ts`, `apps/api/src/modules/curriculum/curriculum.model.ts`, `apps/api/src/modules/curriculum/curriculum.ports.ts`, `apps/api/src/modules/curriculum/item-content.ts`, `apps/api/src/modules/curriculum/curriculum-dev.controller.ts`, `apps/api/src/app.module.ts`, `apps/web/src/app/screen-pages.ts`
 
 ## Phase 2: Curricula (US-1, US-9)
 

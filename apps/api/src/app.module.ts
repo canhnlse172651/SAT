@@ -9,6 +9,7 @@ import type { Config } from './config.js';
 import { DatabaseModule } from './database.module.js';
 import { loggerParams } from './logger.js';
 import { AccountsModule } from './modules/accounts/accounts.module.js';
+import { CurriculumModule } from './modules/curriculum/curriculum.module.js';
 import { FilesModule } from './modules/files/files.module.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { SessionModule } from './modules/session/session.module.js';
@@ -45,6 +46,9 @@ export class AppModule {
         TenancyModule,
         AuthModule.forRoot(config),
         AccountsModule.forRoot({ appOrigin: config.APP_ORIGIN }),
+        CurriculumModule.forRoot({
+          devHelpers: config.NODE_ENV === 'development' || config.NODE_ENV === 'test',
+        }),
         HealthModule,
         SessionModule,
         FilesModule,
