@@ -30,8 +30,9 @@ whenever an ADR changes the stack. Commands live in .sdd/config.json → toolcha
 | Everything CI runs | `node .sdd/scripts/sdd.mjs ci --e2e` |
 | One test file / filter | `node .sdd/scripts/sdd.mjs run test -- apps/api/src/modules/users` |
 | Local dev | `docker compose up -d mongo` then `npm run dev` (api :3000, web :5173 proxying `/api`) |
-| Dev data | `npm run seed -w @sat/api` (after a build): workspace "Workspace của Cô Lan", 1 GV, 3 HV in `dev_*` |
-| Dev sign-in | `POST /api/dev/session` `{ "role": "GV" \| "HV", "userId?", "workspaceId?" }` (dev/test only) |
+| Dev data | `npm run seed -w @sat/api` (after a build): workspace "Workspace của Cô Lan", GV `lan@sat.dev` / `LanHSK2026`, HV `hv1…hv3@sat.dev` / `HocVien2026` (module 001 accounts) |
+| Dev sign-in | A01 with the seed accounts, or `POST /api/dev/session` `{ "role": "GV" \| "HV", "userId?", "workspaceId?" }` (dev/test only) |
+| Dev QA helpers | `POST /api/dev/clock { advanceMs }` / `DELETE /api/dev/clock` (move the server clock), `DELETE /api/dev/throttles` (clear rate limits); outbox recipients `reject@….invalid` are refused, other `….invalid` addresses bounce (dev/test only) |
 
 `@sat/shared` is consumed from `dist/` by the api build and typecheck (the `typecheck` / `build` tasks rebuild it);
 Vite and Vitest alias it to `src/`, so tests see edits immediately.
@@ -81,7 +82,7 @@ Vite and Vitest alias it to `src/`, so tests see edits immediately.
 | Concurrent edits | `updateWithVersion(this.scope, { _id }, expectedVersion, changes)` (`common/persistence/version.js`) | Bumps `version`; stale → `409 CONFLICT` with `details: { currentVersion, updatedAt }`; missing → 404 |
 | Pagination | query `paginationQuerySchema` (`@sat/shared`) → `paginate(scope.find(f).sort(s), page)` → `{ items, page, limit, total }`; or `cursorPage(query, { after, limit })` → `{ items, nextCursor }` (`common/persistence/pagination.js`) | Limit clamped to `MAX_PAGE_LIMIT` (100); bad cursor → 404 |
 | Time | `@Inject(CLOCK) clock: Clock` → `clock.now()`; `vnToday(clock)` (`common/ports/index.js`) | Never `new Date()` / `Date.now()` in business rules |
-| Email | `@Inject(EMAIL_SENDER) mail: EmailSender` → `send({ to, subject, html, text, tag, workspaceId? })` | Dev adapter writes `dev_outbox` (read via `GET /api/dev/outbox?to=&tag=`); `tag` identifies the mail kind for tests |
+| Email | `@Inject(EMAIL_SENDER) mail: EmailSender` → `send({ to, subject, html, text, tag, workspaceId?, fromName? })`; provider events (bounces) on `@Inject(EMAIL_EVENTS) EmailEvents`; a permanent refusal throws `EmailRejectedError` | Dev adapter writes `dev_outbox` (read via `GET /api/dev/outbox?to=&tag=`); `tag` identifies the mail kind for tests |
 | Files | `@Inject(FILE_STORAGE) files: FileStorage` → `put({ workspaceId, ownerId, filename, contentType, bytes \| stream })`, `get(id)`, `delete(id)` | Caller checks workspace; `GET /api/files/:id` (module `files`) already does. Errors: 400 `INVALID_FILENAME`, 413 `FILE_TOO_LARGE`, 415 `UNSUPPORTED_FILE_TYPE` |
 | Jobs | `@Inject(JOB_SCHEDULER) jobs: JobScheduler` → `handle(name, fn)`, `schedule(name, runAt, payload?)`, `every(name, 'HH:mm' VN, fn)` | Dev adapter is a no-op that logs; tests use `ManualScheduler.runDue()` |
 
@@ -93,10 +94,10 @@ Rules that apply to every module:
 - **Production guard:** `AppModule.forRoot` calls `assertNoDevAdaptersInProduction` — the API refuses to start with
   `NODE_ENV=production` until real email/scheduler adapters exist (provider ADRs). `/api/dev/*` (`DevModule`) is only
   registered when `NODE_ENV` is `development` or `test`.
-- **Foundation stand-ins:** `common/directory` (`WORKSPACE_DIRECTORY` → `DevWorkspaceDirectory`) and the collections
-  `dev_workspaces`, `dev_users` exist only so `GET /api/session` and the test factories work before module 001. Module 001
-  binds `WORKSPACE_DIRECTORY` to its real user/workspace service, repoints `test/factories.ts` and the seed, and drops
-  the `dev_*` collections. Do not build features on `dev_*`.
+- **Users and workspaces** belong to module 001 (`modules/accounts`, global): it binds `WORKSPACE_DIRECTORY` (port in
+  `common/directory`) and `SESSION_PRINCIPAL_RESOLVER` (every request re-checks that the account exists and is not locked),
+  and exports `STUDENT_LINKS` — modules 003, 005 and 012–015 re-bind it to report class counts and submissions and to purge
+  a deleted student's data (`modules/accounts/student-links.ts`).
 - Infrastructure endpoints already exist: `GET /api/health`, `GET /api/ready`, `GET /api/session` (`sessionResponseSchema`: `{ user: { id, role,
   displayName }, workspace: { id, name } }` or 401), `GET /api/files/:id`.
 
@@ -141,7 +142,7 @@ Rules that apply to every module:
 |-------|-----|-----|
 | API HTTP | `createTestApp({ clock?, imports?, controllers?, providers?, env? })` (`apps/api/src/test/index.js`) | Real `AppModule` + in-memory MongoDB + temp uploads, logger silent, `CLOCK` = shared `FixedClock`. Returns `{ app, http, clock, origin, close }`; `http` is a supertest agent that already sends `Origin`. Create in `beforeAll`, `close()` in `afterAll` |
 | API sign-in | `loginAs(t.app, 'GV' \| 'HV', { workspaceId?, userId? })` → `{ cookie, token, userId, workspaceId }`; send `.set('Cookie', cookie)` | Creates a session directly (no login flow) |
-| API data | `makeWorkspace(app, { name? })`, `makeGv(app, { workspaceId?, displayName? })`, `makeHv(…)` | Write `dev_*` until module 001 repoints them; always test cross-workspace access returns 404 |
+| API data | `makeWorkspace(app, { name? })`, `makeGv(app, { workspaceId?, displayName? })`, `makeHv(…)` | Write the real `users` / `workspaces` (module 001); `loginAs` without `userId` creates an active user; always test cross-workspace access returns 404 |
 | API time / ports | `t.clock.set(…)` / `t.clock.advance(ms)`; mail via `GET /api/dev/outbox` or `t.app.get(DevOutboxReader)`; service tests without HTTP: `PortsModule.forRoot({ mode: 'test', clock })` → `FixedClock`, `MemoryEmailSender` (`.sent`, `.find(to, tag)`), `MemoryStorage`, `ManualScheduler` (`runDue()`) | |
 | API persistence only | `withMongo()` → `uri()` | Starts/stops an in-memory MongoDB around the file |
 | Web | `renderWithProviders(ui, { route?, session? })` and `renderRoutes(createAppRoutes(), { route, session })` (`apps/web/src/test/render.tsx`); `session: { role, displayName?, workspaceName? }` presets `useSessionStore`, stores are reset each render | Memory router + `RootLayout` (toasts, 401 redirect) |

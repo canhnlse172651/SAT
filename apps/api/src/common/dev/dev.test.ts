@@ -1,5 +1,7 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { getConnectionToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
+import type { Connection } from 'mongoose';
 import { LoggerModule } from 'nestjs-pino';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -87,6 +89,13 @@ describe('dev endpoints (test mode)', () => {
     expect(new Date(res.body.now).getTime() - before).toBe(3_600_000);
     expect((await kit.http.post('/api/dev/clock').send({ advanceMs: 'x' })).status).toBe(400);
     expect((await kit.http.delete('/api/dev/clock')).status).toBe(204);
+  });
+
+  it('[001:AC-4.4] DELETE /api/dev/throttles clears every rate-limit counter', async () => {
+    const throttles = kit.app.get<Connection>(getConnectionToken()).collection('throttles');
+    await throttles.insertOne({ key: 'login:x', count: 5 });
+    expect((await kit.http.delete('/api/dev/throttles')).status).toBe(204);
+    expect(await throttles.countDocuments()).toBe(0);
   });
 
   it('[000:AC-dev] GET /api/dev/outbox returns sent mail filtered by recipient and tag', async () => {

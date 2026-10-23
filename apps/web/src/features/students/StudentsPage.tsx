@@ -158,8 +158,8 @@ export function StudentsPage() {
     if (confirm.type === 'bulk') {
       const { action } = confirm;
       return void run(async () => {
-        await bulkRun(action);
-        push(`Đang gửi email tới ${confirm.eligible} học viên…`, 'info');
+        const res = await bulkRun(action);
+        if (res.queued) push(`Đang gửi email tới ${res.queued} học viên…`, 'info');
       });
     }
     const s = confirm.student;

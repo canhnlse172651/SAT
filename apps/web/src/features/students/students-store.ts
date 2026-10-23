@@ -73,7 +73,7 @@ interface StudentsState {
   unlock: (id: string) => Promise<Student>;
   mailAction: (student: Student, action: 'activate' | 'resend' | 'reset-password') => Promise<void>;
   bulkPreview: (action: BulkAction) => Promise<BulkPreview>;
-  bulkRun: (action: BulkAction) => Promise<void>;
+  bulkRun: (action: BulkAction) => Promise<MailActionResponse>;
   /** Checks every tracked batch; returns those that finished. */
   poll: () => Promise<BatchOutcome[]>;
 
@@ -206,6 +206,7 @@ export const useStudentsStore = create<StudentsState>()((set, get) => {
         set({
           summary: `${verb} xong: 0 đã gửi email, 0 gửi email thất bại, ${res.skipped} bỏ qua.`,
         });
+      return res;
     },
     poll: async () => {
       const done: BatchOutcome[] = [];

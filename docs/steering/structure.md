@@ -90,8 +90,8 @@ apps/api/src/
 │   ├── validation/parse.ts   # parse(schema, input) for controllers
 │   ├── ports/                # index.ts barrel: CLOCK, EMAIL_SENDER, FILE_STORAGE, JOB_SCHEDULER + dev/test adapters,
 │   │                         #   PortsModule.forRoot({ mode: 'dev' | 'test' }), assertNoDevAdaptersInProduction
-│   ├── directory/            # FOUNDATION-ONLY: WORKSPACE_DIRECTORY over dev_workspaces/dev_users (module 001 replaces)
-│   └── dev/                  # DevModule (dev/test only): POST /api/dev/session, GET /api/dev/outbox; seedDev()
+│   ├── directory/            # WORKSPACE_DIRECTORY port (bound by module 001 accounts)
+│   └── dev/                  # DevModule (dev/test only): /api/dev/session, /outbox, /clock, /throttles
 ├── modules/
 │   ├── health/               # GET /api/health, /api/ready (public)
 │   ├── session/              # GET /api/session — who is signed in (infrastructure, not the 001 login flow)

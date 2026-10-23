@@ -10,7 +10,9 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/mongoose';
 import type { Request, Response } from 'express';
+import type { Connection } from 'mongoose';
 import { AUTH_OPTIONS, type AuthOptions } from '../auth/auth.types.js';
 import { sessionCookie } from '../auth/cookie.js';
 import { Public } from '../auth/decorators.js';
@@ -34,6 +36,7 @@ export class DevController {
     private readonly outbox: DevOutboxReader,
     @Inject(AUTH_OPTIONS) private readonly auth: AuthOptions,
     @Inject(CLOCK) private readonly clock: Clock & AdjustableClock,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   @Post('session')
@@ -68,6 +71,13 @@ export class DevController {
   @HttpCode(204)
   resetClock(): void {
     this.clock.reset?.();
+  }
+
+  /** QA: forgets every rate-limit counter (`throttles`: sign-in locks, per-address limits) between test cases. */
+  @Delete('throttles')
+  @HttpCode(204)
+  async resetThrottles(): Promise<void> {
+    await this.connection.collection('throttles').deleteMany({});
   }
 
   @Get('outbox')

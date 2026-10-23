@@ -224,13 +224,8 @@ export class StudentsService {
     selection: BulkSelection,
   ): Promise<MailActionResponse> {
     const { selected, eligible } = await this.resolveBulk(p, action, selection);
-    if (!eligible.length) {
-      throw new AppError(
-        400,
-        E.NOTHING_ELIGIBLE,
-        action === 'activate' ? M.noPendingSelected : M.noFailedSelected,
-      );
-    }
+    // AC-7.5: students that changed state since the dialog opened are skipped, even all of them.
+    if (!eligible.length) return { batchId: null, queued: 0, skipped: selected };
     if (eligible.length > BULK_MAX) {
       throw new AppError(
         400,
