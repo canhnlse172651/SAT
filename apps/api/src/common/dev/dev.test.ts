@@ -1,7 +1,5 @@
-import { getModelToken } from '@nestjs/mongoose';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { Test } from '@nestjs/testing';
-import type { Model } from 'mongoose';
 import { LoggerModule } from 'nestjs-pino';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -10,20 +8,19 @@ import { configureApp } from '../../app.js';
 import { loadConfig } from '../../config.js';
 import { DatabaseModule } from '../../database.module.js';
 import { loggerParams } from '../../logger.js';
-import { createTestApp, withMongo, type TestApp } from '../../test/index.js';
+import {
+  createTestApp,
+  makeGv,
+  makeHv,
+  makeWorkspace,
+  withMongo,
+  type TestApp,
+} from '../../test/index.js';
 import { AuthModule } from '../auth/auth.module.js';
 import { ContextModule } from '../context/context.module.js';
-import {
-  DEV_USER_MODEL,
-  DEV_WORKSPACE_MODEL,
-  DirectoryModule,
-  type DevUserDoc,
-  type DevWorkspaceDoc,
-} from '../directory/index.js';
 import { EMAIL_SENDER, type EmailSender, PortsModule } from '../ports/index.js';
 import { TenancyModule } from '../tenancy/tenancy.module.js';
 import { devModules } from './dev.module.js';
-import { SEED_HV_NAMES, SEED_WORKSPACE_NAME, seedDev } from './seed.js';
 
 describe('dev endpoints (test mode)', () => {
   let kit: TestApp;
@@ -34,24 +31,18 @@ describe('dev endpoints (test mode)', () => {
     await kit.close();
   });
 
-  const models = () => ({
-    workspaces: kit.app.get<Model<DevWorkspaceDoc>>(getModelToken(DEV_WORKSPACE_MODEL), {
-      strict: false,
-    }),
-    users: kit.app.get<Model<DevUserDoc>>(getModelToken(DEV_USER_MODEL), { strict: false }),
-  });
-
   it('[000:AC-dev] POST /api/dev/session signs in a seeded user and sets an httpOnly cookie', async () => {
-    const { workspaces, users } = models();
-    const seeded = await seedDev(workspaces, users);
+    const ws = await makeWorkspace(kit.app, { name: 'Workspace dev' });
+    await makeGv(kit.app, { workspaceId: ws.id });
+    const hv = await makeHv(kit.app, { workspaceId: ws.id, displayName: 'Học viên Hai' });
     const res = await request(kit.app.getHttpServer())
       .post('/api/dev/session')
       .set('Origin', kit.origin)
-      .send({ role: 'HV', userId: seeded.hvIds[1] });
+      .send({ role: 'HV', userId: hv.id });
     expect(res.status).toBe(201);
     expect(res.body).toEqual({
-      user: { id: seeded.hvIds[1], role: 'HV', displayName: SEED_HV_NAMES[1] },
-      workspace: { id: seeded.workspaceId, name: SEED_WORKSPACE_NAME },
+      user: { id: hv.id, role: 'HV', displayName: 'Học viên Hai' },
+      workspace: { id: ws.id, name: 'Workspace dev' },
     });
     const cookie = String(res.headers['set-cookie']?.[0]);
     expect(cookie).toMatch(/^sat_sid=.+; HttpOnly; SameSite=Lax/);
@@ -62,10 +53,16 @@ describe('dev endpoints (test mode)', () => {
   });
 
   it('[000:AC-dev] without userId it picks the first user of the role; unknown user is 404', async () => {
-    const { workspaces, users } = models();
-    const seeded = await seedDev(workspaces, users);
-    const gv = await kit.http.post('/api/dev/session').send({ role: 'GV' });
-    expect(gv.body.user.id).toBe(seeded.gvId);
+    const first = await makeGv(kit.app);
+    const gv = await kit.http
+      .post('/api/dev/session')
+      .send({ role: 'GV', workspaceId: first.workspaceId });
+    expect(gv.body.user.id).toBe(first.id);
+    const pending = await makeHv(kit.app, { status: 'pending' });
+    const notSignable = await kit.http
+      .post('/api/dev/session')
+      .send({ role: 'HV', userId: pending.id });
+    expect(notSignable.status).toBe(404);
     const unknown = await kit.http
       .post('/api/dev/session')
       .send({ role: 'GV', userId: '64b7f0c2a1b2c3d4e5f60718' });
@@ -136,7 +133,6 @@ describe('production', () => {
         DatabaseModule.forRoot(config.MONGODB_URI),
         PortsModule.forRoot({ mode: 'dev' }),
         TenancyModule,
-        DirectoryModule,
         AuthModule.forRoot(config),
         ...devModules(config.NODE_ENV),
       ],

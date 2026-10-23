@@ -1,5 +1,6 @@
 import { sessionFailureReasonSchema, sessionResponseSchema } from '@sat/shared';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { Types } from 'mongoose';
 import request from 'supertest';
 import { SessionService } from '../../common/auth/session.service.js';
 import { createTestApp, loginAs, makeGv, makeHv, type TestApp } from '../../test/index.js';
@@ -68,7 +69,8 @@ describe('GET /api/session', () => {
   });
 
   it('[000:AC-session] a session whose user no longer exists in the directory is 401 "missing"', async () => {
-    const { cookie } = await loginAs(kit.app, 'GV');
+    const gone = new Types.ObjectId().toString();
+    const { cookie } = await loginAs(kit.app, 'GV', { userId: gone, workspaceId: gone });
     const res = await get(cookie);
     expect(res.status).toBe(401);
     expect(res.body.error.details).toEqual({ reason: 'missing' });

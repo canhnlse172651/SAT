@@ -3,12 +3,12 @@ import { LoggerModule } from 'nestjs-pino';
 import { AuthModule, type AuthConfig } from './common/auth/auth.module.js';
 import { ContextModule } from './common/context/context.module.js';
 import { devModules } from './common/dev/dev.module.js';
-import { DirectoryModule } from './common/directory/directory.module.js';
 import { PortsModule, assertNoDevAdaptersInProduction } from './common/ports/index.js';
 import { TenancyModule } from './common/tenancy/tenancy.module.js';
 import type { Config } from './config.js';
 import { DatabaseModule } from './database.module.js';
 import { loggerParams } from './logger.js';
+import { AccountsModule } from './modules/accounts/accounts.module.js';
 import { FilesModule } from './modules/files/files.module.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { SessionModule } from './modules/session/session.module.js';
@@ -38,8 +38,8 @@ export class AppModule {
           devEmail: { delayMs: config.DEV_EMAIL_DELAY_MS },
         }),
         TenancyModule,
-        DirectoryModule,
         AuthModule.forRoot(config),
+        AccountsModule,
         HealthModule,
         SessionModule,
         FilesModule,

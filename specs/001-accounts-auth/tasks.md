@@ -17,7 +17,7 @@ foundation files touched by [infra] tasks keep their Vitest tests.
 ## Phase 1: Foundation
 
 - [x] T001 [infra] Shared account contracts and field rules, e-mail port events + dev provider simulation, ApiError details and 401 reason in the session store, fflate dependency — files: `packages/shared/src/accounts.ts`, `apps/api/src/common/ports/email.ts`, `apps/web/src/lib/api-client.ts`, `apps/web/src/features/session/session-store.ts`, `apps/api/package.json`
-- [ ] T002 [infra] Accounts module skeleton: users/workspaces models, WORKSPACE_DIRECTORY + session principal resolver, throttle and audit services; repoint test factories, dev sign-in and seed; drop dev_* collections — files: `apps/api/src/modules/accounts/accounts.module.ts`, `apps/api/src/modules/accounts/accounts.model.ts`, `apps/api/src/common/directory/workspace-directory.ts`, `apps/api/src/test/factories.ts`, `apps/api/src/seed.ts`
+- [x] T002 [infra] Accounts module skeleton: users/workspaces models, WORKSPACE_DIRECTORY + session principal resolver, throttle and audit services; repoint test factories, dev sign-in and seed; drop dev_* collections — files: `apps/api/src/modules/accounts/accounts.module.ts`, `apps/api/src/modules/accounts/accounts.model.ts`, `apps/api/src/common/directory/workspace-directory.ts`, `apps/api/src/test/factories.ts`, `apps/api/src/seed.ts`
 
 ## Phase 2: Sign-up, sign-in, sessions (US-1, US-2, US-6, US-8)
 
