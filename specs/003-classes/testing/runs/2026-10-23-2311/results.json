@@ -1,0 +1,3030 @@
+[
+  {
+    "tc": "TC-001",
+    "acs": [
+      "AC-1.1",
+      "AC-1.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1955,
+    "preconditions": "Đăng nhập GV",
+    "steps": [
+      {
+        "action": "T02 bấm \"Tạo lớp\".",
+        "target": "TC-001"
+      },
+      {
+        "action": "Bấm \"Tiếp tục\" khi chưa nhập gì.",
+        "target": "TC-001"
+      },
+      {
+        "action": "Nhập tên, chọn ngày, \"Tiếp tục\".",
+        "target": "TC-001"
+      }
+    ],
+    "script": "testing/e2e/TC-001.spec.ts",
+    "evidence": [
+      "screenshots/TC-001-1.png",
+      "screenshots/TC-001-2.png",
+      "screenshots/TC-001-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-002",
+    "acs": [
+      "AC-1.3",
+      "AC-1.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 7063,
+    "preconditions": "Có 2 HV, 1 giáo trình",
+    "steps": [
+      {
+        "action": "Bước 1 nhập dữ liệu → bước 2 chọn 2 HV → bước 3 chọn giáo trình → bước",
+        "target": "TC-002"
+      },
+      {
+        "action": "",
+        "target": "TC-002"
+      },
+      {
+        "action": "\"Quay lại\" về bước 3, rồi Back của trình duyệt về bước",
+        "target": "TC-002"
+      },
+      {
+        "action": "",
+        "target": "TC-002"
+      },
+      {
+        "action": "Bấm bước \"Xác nhận\" trên thanh tiến trình.",
+        "target": "TC-002"
+      },
+      {
+        "action": "Bấm bước \"Thông tin lớp\".",
+        "target": "TC-002"
+      }
+    ],
+    "script": "testing/e2e/TC-002.spec.ts",
+    "evidence": [
+      "screenshots/TC-002-fail.png"
+    ],
+    "measurements": [],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed\n\nLocator: getByText('Bước 2/4 · Thêm học viên', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:"
+    ]
+  },
+  {
+    "tc": "TC-003",
+    "acs": [
+      "AC-1.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2140,
+    "preconditions": "—",
+    "steps": [
+      {
+        "action": "T03 nhập \"Tên lớp\".",
+        "target": "TC-003"
+      },
+      {
+        "action": "Bấm \"Hủy\" → \"Ở lại\".",
+        "target": "TC-003"
+      },
+      {
+        "action": "Bấm \"Lớp học\" ở menu bên → \"Bỏ\".",
+        "target": "TC-003"
+      },
+      {
+        "action": "Mở T03, nhập tên, Back của trình duyệt ở bước 1 → \"Bỏ\".",
+        "target": "TC-003"
+      }
+    ],
+    "script": "testing/e2e/TC-003.spec.ts",
+    "evidence": [
+      "screenshots/TC-003-1.png",
+      "screenshots/TC-003-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-004",
+    "acs": [
+      "AC-1.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1307,
+    "preconditions": "—",
+    "steps": [
+      {
+        "action": "T03 nhập \"Tên lớp\".",
+        "target": "TC-004"
+      },
+      {
+        "action": "Tải lại trang (chấp nhận hộp rời trang).",
+        "target": "TC-004"
+      },
+      {
+        "action": "Mở lại T03.",
+        "target": "TC-004"
+      }
+    ],
+    "script": "testing/e2e/TC-004.spec.ts",
+    "evidence": [
+      "screenshots/TC-004-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-005",
+    "acs": [
+      "AC-2.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1023,
+    "preconditions": "—",
+    "steps": [
+      {
+        "action": "Xem bước",
+        "target": "TC-005"
+      },
+      {
+        "action": "",
+        "target": "TC-005"
+      },
+      {
+        "action": "Dán 600 ký tự vào \"Mô tả\", 250 ký tự vào \"Lịch học\".",
+        "target": "TC-005"
+      }
+    ],
+    "script": "testing/e2e/TC-005.spec.ts",
+    "evidence": [
+      "screenshots/TC-005-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-006",
+    "acs": [
+      "AC-2.2",
+      "AC-2.3",
+      "AC-2.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1625,
+    "preconditions": "Có lớp \"Lớp Trùng X\" (Đã kết thúc)",
+    "steps": [
+      {
+        "action": "\"Tên lớp\" = \"   \" → \"Tiếp tục\".",
+        "target": "TC-006"
+      },
+      {
+        "action": "101 ký tự → \"Tiếp tục\".",
+        "target": "TC-006"
+      },
+      {
+        "action": "\"  lớp trùng x \" → \"Tiếp tục\".",
+        "target": "TC-006"
+      }
+    ],
+    "script": "testing/e2e/TC-006.spec.ts",
+    "evidence": [
+      "screenshots/TC-006-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-007",
+    "acs": [
+      "AC-2.5",
+      "AC-2.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1499,
+    "preconditions": "Hôm nay = D",
+    "steps": [
+      {
+        "action": "Để trống ngày → \"Tiếp tục\".",
+        "target": "TC-007"
+      },
+      {
+        "action": "Nhập ngày D+",
+        "target": "TC-007"
+      },
+      {
+        "action": "",
+        "target": "TC-007"
+      },
+      {
+        "action": "Chọn hôm nay.",
+        "target": "TC-007"
+      },
+      {
+        "action": "Chọn D−10.",
+        "target": "TC-007"
+      }
+    ],
+    "script": "testing/e2e/TC-007.spec.ts",
+    "evidence": [
+      "screenshots/TC-007-1.png",
+      "screenshots/TC-007-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-008",
+    "acs": [
+      "AC-3.1",
+      "AC-14.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 28518,
+    "preconditions": "Workspace có 25 HV (1 Chưa kích hoạt, 1 Gửi email thất bại, 1 Đã khóa); GV B có HV riêng",
+    "steps": [
+      {
+        "action": "Bước",
+        "target": "TC-008"
+      },
+      {
+        "action": "",
+        "target": "TC-008"
+      },
+      {
+        "action": "Trang 2.",
+        "target": "TC-008"
+      }
+    ],
+    "script": "testing/e2e/TC-008.spec.ts",
+    "evidence": [
+      "screenshots/TC-008-1.png",
+      "screenshots/TC-008-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-009",
+    "acs": [
+      "AC-3.2",
+      "NFR-2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 13381,
+    "preconditions": "HV \"Nguyễn Văn An\" `an@x.dev`",
+    "steps": [
+      {
+        "action": "Gõ \"nguyen\".",
+        "target": "TC-009"
+      },
+      {
+        "action": "Gõ \"AN@X\".",
+        "target": "TC-009"
+      },
+      {
+        "action": "Gõ \"zzz\".",
+        "target": "TC-009"
+      }
+    ],
+    "script": "testing/e2e/TC-009.spec.ts",
+    "evidence": [
+      "screenshots/TC-009-1.png",
+      "screenshots/TC-009-2.png"
+    ],
+    "measurements": [
+      "NFR-2: search \"nguyen\" shown after 362 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-010",
+    "acs": [
+      "AC-3.3",
+      "AC-3.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5461,
+    "preconditions": "25 HV",
+    "steps": [
+      {
+        "action": "Chọn 2 HV trang 1, 1 HV trang",
+        "target": "TC-010"
+      },
+      {
+        "action": "",
+        "target": "TC-010"
+      },
+      {
+        "action": "Đổi từ khóa, xóa từ khóa.",
+        "target": "TC-010"
+      },
+      {
+        "action": "Bỏ chọn một HV ở khu \"Đã chọn (3)\".",
+        "target": "TC-010"
+      },
+      {
+        "action": "Sang bước 3, quay lại.",
+        "target": "TC-010"
+      },
+      {
+        "action": "Bỏ chọn hết, \"Tiếp tục\".",
+        "target": "TC-010"
+      }
+    ],
+    "script": "testing/e2e/TC-010.spec.ts",
+    "evidence": [
+      "screenshots/TC-010-1.png",
+      "screenshots/TC-010-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-011",
+    "acs": [
+      "AC-3.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 6384,
+    "preconditions": "Bước 2, đã chọn 1 HV, bước 1 đã nhập",
+    "steps": [
+      {
+        "action": "\"Tạo học viên mới\" → T12 thêm 2 HV (một người một lần).",
+        "target": "TC-011"
+      },
+      {
+        "action": "Đóng T12.",
+        "target": "TC-011"
+      }
+    ],
+    "script": "testing/e2e/TC-011.spec.ts",
+    "evidence": [
+      "screenshots/TC-011-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-012",
+    "acs": [
+      "AC-3.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 12623,
+    "preconditions": "99 HV đã chọn ở bước 2 (hoặc chọn sẵn 98 rồi T12 nhập Excel 5 HV)",
+    "steps": [
+      {
+        "action": "Chọn thêm 2 HV.",
+        "target": "TC-012"
+      },
+      {
+        "action": "T12 Import Excel 5 HV.",
+        "target": "TC-012"
+      }
+    ],
+    "script": "testing/e2e/TC-012.spec.ts",
+    "evidence": [
+      "screenshots/TC-012-1.png",
+      "screenshots/TC-012-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-013",
+    "acs": [
+      "AC-3.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1523,
+    "preconditions": "GV mới (workspace trống)",
+    "steps": [
+      {
+        "action": "T03 bước 2.",
+        "target": "TC-013"
+      }
+    ],
+    "script": "testing/e2e/TC-013.spec.ts",
+    "evidence": [
+      "screenshots/TC-013-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-014",
+    "acs": [
+      "AC-4.1",
+      "AC-4.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1916,
+    "preconditions": "Giáo trình \"B HSK2\", \"A HSK2\", \"C HSK1\", 1 giáo trình đã lưu trữ; \"A HSK2\" có 2 Bài đã xuất bản, 1 lớp dùng",
+    "steps": [
+      {
+        "action": "Bước",
+        "target": "TC-014"
+      },
+      {
+        "action": "",
+        "target": "TC-014"
+      },
+      {
+        "action": "Lọc \"HSK2\".",
+        "target": "TC-014"
+      },
+      {
+        "action": "Thêm từ khóa \"a\".",
+        "target": "TC-014"
+      },
+      {
+        "action": "Từ khóa \"zzz\".",
+        "target": "TC-014"
+      }
+    ],
+    "script": "testing/e2e/TC-014.spec.ts",
+    "evidence": [
+      "screenshots/TC-014-1.png",
+      "screenshots/TC-014-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-015",
+    "acs": [
+      "AC-4.3",
+      "AC-4.4",
+      "AC-4.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2002,
+    "preconditions": "Giáo trình X (có Bài đã xuất bản), Y (chưa có Bài đã xuất bản)",
+    "steps": [
+      {
+        "action": "Bước 3 \"Tiếp tục\" khi chưa chọn.",
+        "target": "TC-015"
+      },
+      {
+        "action": "Chọn X rồi chọn Y.",
+        "target": "TC-015"
+      },
+      {
+        "action": "\"Tiếp tục\".",
+        "target": "TC-015"
+      }
+    ],
+    "script": "testing/e2e/TC-015.spec.ts",
+    "evidence": [
+      "screenshots/TC-015-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-016",
+    "acs": [
+      "AC-4.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2269,
+    "preconditions": "GV mới chưa có giáo trình",
+    "steps": [
+      {
+        "action": "Bước",
+        "target": "TC-016"
+      },
+      {
+        "action": "",
+        "target": "TC-016"
+      },
+      {
+        "action": "Mở liên kết tới T05 (thẻ mới), tạo giáo trình.",
+        "target": "TC-016"
+      },
+      {
+        "action": "Về thẻ wizard, \"Tải lại danh sách\".",
+        "target": "TC-016"
+      }
+    ],
+    "script": "testing/e2e/TC-016.spec.ts",
+    "evidence": [
+      "screenshots/TC-016-1.png",
+      "screenshots/TC-016-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-017",
+    "acs": [
+      "AC-5.1",
+      "AC-5.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1792,
+    "preconditions": "Wizard đủ dữ liệu, 0 HV, giáo trình chưa có Bài đã xuất bản",
+    "steps": [
+      {
+        "action": "Bước",
+        "target": "TC-017"
+      },
+      {
+        "action": "",
+        "target": "TC-017"
+      },
+      {
+        "action": "Bấm \"Sửa\" ở phần Học viên, quay lại bước 4.",
+        "target": "TC-017"
+      }
+    ],
+    "script": "testing/e2e/TC-017.spec.ts",
+    "evidence": [
+      "screenshots/TC-017-1.png",
+      "screenshots/TC-017-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-018",
+    "acs": [
+      "AC-5.3",
+      "AC-5.6",
+      "NFR-1"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4245,
+    "preconditions": "3 HV (gồm hv1), giáo trình có Bài",
+    "steps": [
+      {
+        "action": "Hoàn thành wizard, bấm \"Tạo lớp\" 3 lần liên tiếp.",
+        "target": "TC-018"
+      },
+      {
+        "action": "T02.",
+        "target": "TC-018"
+      },
+      {
+        "action": "hv1 mở S01.",
+        "target": "TC-018"
+      },
+      {
+        "action": "Đo \"Tạo lớp\" với 100 HV.",
+        "target": "TC-018"
+      }
+    ],
+    "script": "testing/e2e/TC-018.spec.ts",
+    "evidence": [
+      "screenshots/TC-018-1.png",
+      "screenshots/TC-018-2.png"
+    ],
+    "measurements": [
+      "NFR-1: create with 100 HV: 50 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-019",
+    "acs": [
+      "AC-5.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4563,
+    "preconditions": "Hai thẻ trình duyệt mở wizard cùng tên \"TC-019 Lớp\"; giáo trình G; HV P đã chọn",
+    "steps": [
+      {
+        "action": "Thẻ A tạo lớp.",
+        "target": "TC-019"
+      },
+      {
+        "action": "Thẻ B bấm \"Tạo lớp\".",
+        "target": "TC-019"
+      },
+      {
+        "action": "Thẻ B đổi tên; trong lúc đó GV lưu trữ G (T06); \"Tạo lớp\".",
+        "target": "TC-019"
+      },
+      {
+        "action": "Chọn giáo trình khác; xóa HV P ở T11; \"Tạo lớp\".",
+        "target": "TC-019"
+      }
+    ],
+    "script": "testing/e2e/TC-019.spec.ts",
+    "evidence": [
+      "screenshots/TC-019-1.png",
+      "screenshots/TC-019-2.png",
+      "screenshots/TC-019-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-020",
+    "acs": [
+      "AC-5.5",
+      "AC-5.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1811,
+    "preconditions": "Wizard ở bước 4",
+    "steps": [
+      {
+        "action": "Ngắt mạng (Playwright offline), \"Tạo lớp\".",
+        "target": "TC-020"
+      },
+      {
+        "action": "Bật mạng, \"Tạo lớp\".",
+        "target": "TC-020"
+      }
+    ],
+    "script": "testing/e2e/TC-020.spec.ts",
+    "evidence": [
+      "screenshots/TC-020-1.png",
+      "screenshots/TC-020-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-021",
+    "acs": [
+      "AC-6.1",
+      "AC-6.5",
+      "AC-14.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1492,
+    "preconditions": "Lớp Sắp bắt đầu, Đang học, Đã kết thúc",
+    "steps": [
+      {
+        "action": "Mở T02.",
+        "target": "TC-021"
+      },
+      {
+        "action": "Bấm một lớp.",
+        "target": "TC-021"
+      }
+    ],
+    "script": "testing/e2e/TC-021.spec.ts",
+    "evidence": [
+      "screenshots/TC-021-1.png",
+      "screenshots/TC-021-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-022",
+    "acs": [
+      "AC-6.2",
+      "AC-6.3",
+      "NFR-1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5457,
+    "preconditions": "25 lớp Đang học tên có \"Hán ngữ\", 2 lớp Đã kết thúc; (đo: 300 lớp)",
+    "steps": [
+      {
+        "action": "Bộ lọc \"Đã kết thúc\", \"Sắp bắt đầu\", \"Đang học\", \"Tất cả\".",
+        "target": "TC-022"
+      },
+      {
+        "action": "Từ khóa \"han ngu\".",
+        "target": "TC-022"
+      },
+      {
+        "action": "Từ khóa \"zzz\" → \"Xóa bộ lọc\".",
+        "target": "TC-022"
+      },
+      {
+        "action": "Đo T02 với 300 lớp.",
+        "target": "TC-022"
+      }
+    ],
+    "script": "testing/e2e/TC-022.spec.ts",
+    "evidence": [
+      "screenshots/TC-022-1.png",
+      "screenshots/TC-022-2.png"
+    ],
+    "measurements": [
+      "NFR-1: T02 with 300 classes shown in 145 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-023",
+    "acs": [
+      "AC-6.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1570,
+    "preconditions": "GV mới",
+    "steps": [
+      {
+        "action": "Mở T02.",
+        "target": "TC-023"
+      }
+    ],
+    "script": "testing/e2e/TC-023.spec.ts",
+    "evidence": [
+      "screenshots/TC-023-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-024",
+    "acs": [
+      "AC-7.1",
+      "AC-7.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1796,
+    "preconditions": "Lớp Đang học, giáo trình 3 Bài đã xuất bản, 1 phần đang ẩn",
+    "steps": [
+      {
+        "action": "Mở T04.",
+        "target": "TC-024"
+      },
+      {
+        "action": "Bấm liên kết giáo trình.",
+        "target": "TC-024"
+      },
+      {
+        "action": "Quay lại, \"Xem tab Nội dung\".",
+        "target": "TC-024"
+      }
+    ],
+    "script": "testing/e2e/TC-024.spec.ts",
+    "evidence": [
+      "screenshots/TC-024-1.png",
+      "screenshots/TC-024-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-025",
+    "acs": [
+      "AC-7.3",
+      "AC-7.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3761,
+    "preconditions": "Lớp Đang học bắt đầu cách đây 400 ngày (tạo qua API rồi dời đồng hồ), hv1 trong lớp",
+    "steps": [
+      {
+        "action": "\"Sửa thông tin lớp\": đổi tên, mô tả, lịch học → \"Lưu\".",
+        "target": "TC-025"
+      },
+      {
+        "action": "Đổi ngày bắt đầu sang ngày mai → \"Lưu\".",
+        "target": "TC-025"
+      },
+      {
+        "action": "Tên trùng lớp khác.",
+        "target": "TC-025"
+      }
+    ],
+    "script": "testing/e2e/TC-025.spec.ts",
+    "evidence": [
+      "screenshots/TC-025-1.png",
+      "screenshots/TC-025-2.png",
+      "screenshots/TC-025-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-026",
+    "acs": [
+      "AC-7.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2416,
+    "preconditions": "Lớp mở ở hai thẻ",
+    "steps": [
+      {
+        "action": "Thẻ A mở \"Sửa thông tin lớp\".",
+        "target": "TC-026"
+      },
+      {
+        "action": "Thẻ B đổi mô tả, lưu.",
+        "target": "TC-026"
+      },
+      {
+        "action": "Thẻ A lưu.",
+        "target": "TC-026"
+      }
+    ],
+    "script": "testing/e2e/TC-026.spec.ts",
+    "evidence": [
+      "screenshots/TC-026-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-027",
+    "acs": [
+      "AC-8.1",
+      "AC-8.7",
+      "NFR-1",
+      "NFR-6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 9573,
+    "preconditions": "Lớp có 4 HV: Đã kích hoạt, Chưa kích hoạt, Gửi email thất bại, Đã khóa; lớp trống khác",
+    "steps": [
+      {
+        "action": "Tab Học viên.",
+        "target": "TC-027"
+      },
+      {
+        "action": "Tìm theo email một HV.",
+        "target": "TC-027"
+      },
+      {
+        "action": "Lớp trống: tab Học viên.",
+        "target": "TC-027"
+      },
+      {
+        "action": "T02, phần đầu T04.",
+        "target": "TC-027"
+      },
+      {
+        "action": "Đo tab với 100 HV.",
+        "target": "TC-027"
+      }
+    ],
+    "script": "testing/e2e/TC-027.spec.ts",
+    "evidence": [
+      "screenshots/TC-027-1.png",
+      "screenshots/TC-027-2.png"
+    ],
+    "measurements": [
+      "NFR-1: tab Học viên with 100 HV in 206 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-028",
+    "acs": [
+      "AC-8.2",
+      "AC-8.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 8461,
+    "preconditions": "Lớp có hv1; hv2, hv3 chưa trong lớp",
+    "steps": [
+      {
+        "action": "\"Thêm học viên\".",
+        "target": "TC-028"
+      },
+      {
+        "action": "Chọn hv2, hv3 → \"Thêm (2)\".",
+        "target": "TC-028"
+      },
+      {
+        "action": "hv2 mở S01.",
+        "target": "TC-028"
+      }
+    ],
+    "script": "testing/e2e/TC-028.spec.ts",
+    "evidence": [
+      "screenshots/TC-028-1.png",
+      "screenshots/TC-028-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-029",
+    "acs": [
+      "AC-8.4",
+      "AC-8.3"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2550,
+    "preconditions": "Lớp có 98 HV; 4 HV ngoài lớp",
+    "steps": [
+      {
+        "action": "Gửi đồng thời 2 yêu cầu `POST /api/classes/<id>/students` mỗi yêu cầu 2 HV khác nhau.",
+        "target": "TC-029"
+      },
+      {
+        "action": "Thêm 3 HV khi sĩ số",
+        "target": "TC-029"
+      },
+      {
+        "action": "",
+        "target": "TC-029"
+      },
+      {
+        "action": "Thêm cùng một HV ở 2 yêu cầu đồng thời vào lớp còn chỗ.",
+        "target": "TC-029"
+      }
+    ],
+    "script": "testing/e2e/TC-029.spec.ts",
+    "evidence": [
+      "screenshots/TC-029-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-030",
+    "acs": [
+      "AC-8.5",
+      "AC-8.6"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4533,
+    "preconditions": "hv1 thuộc lớp A và B; ở lớp A hv1 có bài nộp (stand-in 005)",
+    "steps": [
+      {
+        "action": "Tab Học viên lớp A: \"Gỡ khỏi lớp\" ở hv1 → xác nhận.",
+        "target": "TC-030"
+      },
+      {
+        "action": "hv1 mở S01.",
+        "target": "TC-030"
+      },
+      {
+        "action": "GV thêm lại hv1 vào lớp A.",
+        "target": "TC-030"
+      },
+      {
+        "action": "hv1 mở S11 bộ đã nộp.",
+        "target": "TC-030"
+      }
+    ],
+    "script": "testing/e2e/TC-030.spec.ts",
+    "evidence": [
+      "screenshots/TC-030-1.png",
+      "screenshots/TC-030-2.png",
+      "screenshots/TC-030-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-031",
+    "acs": [
+      "AC-8.9"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 18769,
+    "preconditions": "Lớp có 10 HV: 2 Chưa kích hoạt, 1 Gửi email thất bại, 1 Đã khóa",
+    "steps": [
+      {
+        "action": "`GET /api/classes/<id>/tracked-students` (danh sách 008/009 dùng cho tab Tiến độ, Xếp hạng).",
+        "target": "TC-031"
+      },
+      {
+        "action": "Kích hoạt 1 HV Chưa kích hoạt, gọi lại.",
+        "target": "TC-031"
+      }
+    ],
+    "script": "testing/e2e/TC-031.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-032",
+    "acs": [
+      "AC-8.8"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4347,
+    "preconditions": "HV mới Chưa kích hoạt đã thêm vào lớp hôm qua",
+    "steps": [
+      {
+        "action": "T11 \"Kích hoạt\" HV.",
+        "target": "TC-032"
+      },
+      {
+        "action": "HV đăng nhập lần đầu.",
+        "target": "TC-032"
+      },
+      {
+        "action": "GV xem tab Học viên.",
+        "target": "TC-032"
+      }
+    ],
+    "script": "testing/e2e/TC-032.spec.ts",
+    "evidence": [
+      "screenshots/TC-032-1.png",
+      "screenshots/TC-032-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-033",
+    "acs": [
+      "AC-9.1",
+      "AC-9.2"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 5310,
+    "preconditions": "Lớp Sắp bắt đầu dùng giáo trình G1 (1 phần ẩn, 1 hạn nộp), chưa có bài nộp; G2 có Bài",
+    "steps": [
+      {
+        "action": "\"Đổi giáo trình\".",
+        "target": "TC-033"
+      },
+      {
+        "action": "Chọn G2 → xác nhận.",
+        "target": "TC-033"
+      },
+      {
+        "action": "Tab Nội dung.",
+        "target": "TC-033"
+      },
+      {
+        "action": "HV (sau ngày bắt đầu, dời đồng hồ) mở S02.",
+        "target": "TC-033"
+      }
+    ],
+    "script": "testing/e2e/TC-033.spec.ts",
+    "evidence": [
+      "screenshots/TC-033-1.png",
+      "screenshots/TC-033-2.png",
+      "screenshots/TC-033-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-034",
+    "acs": [
+      "AC-9.3",
+      "AC-9.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4217,
+    "preconditions": "Lớp Đang học chưa có bài nộp",
+    "steps": [
+      {
+        "action": "GV mở hộp \"Đổi giáo trình\", chọn G2.",
+        "target": "TC-034"
+      },
+      {
+        "action": "HV nộp một bộ (stand-in 005).",
+        "target": "TC-034"
+      },
+      {
+        "action": "GV xác nhận.",
+        "target": "TC-034"
+      },
+      {
+        "action": "Tải lại T04.",
+        "target": "TC-034"
+      }
+    ],
+    "script": "testing/e2e/TC-034.spec.ts",
+    "evidence": [
+      "screenshots/TC-034-1.png",
+      "screenshots/TC-034-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-035",
+    "acs": [
+      "AC-10.1",
+      "AC-10.6",
+      "AC-14.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 5133,
+    "preconditions": "Lớp Đang học, hv1 đã nộp bộ X",
+    "steps": [
+      {
+        "action": "\"Kết thúc lớp\" → xác nhận.",
+        "target": "TC-035"
+      },
+      {
+        "action": "Tab Tổng quan.",
+        "target": "TC-035"
+      },
+      {
+        "action": "hv1 mở S02, S11, S06 của X; thử bắt đầu bộ Y.",
+        "target": "TC-035"
+      },
+      {
+        "action": "Xem T03 và \"Sửa thông tin lớp\".",
+        "target": "TC-035"
+      }
+    ],
+    "script": "testing/e2e/TC-035.spec.ts",
+    "evidence": [
+      "screenshots/TC-035-1.png",
+      "screenshots/TC-035-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-036",
+    "acs": [
+      "AC-10.2",
+      "AC-10.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5964,
+    "preconditions": "Lớp Sắp bắt đầu; lớp Đã kết thúc",
+    "steps": [
+      {
+        "action": "T04 lớp Sắp bắt đầu.",
+        "target": "TC-036"
+      },
+      {
+        "action": "T04 lớp Đã kết thúc: sửa tên/mô tả/lịch học; thử đổi ngày, thêm/gỡ HV, đổi giáo trình, ẩn/hiện, đặt hạn.",
+        "target": "TC-036"
+      }
+    ],
+    "script": "testing/e2e/TC-036.spec.ts",
+    "evidence": [
+      "screenshots/TC-036-1.png",
+      "screenshots/TC-036-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-037",
+    "acs": [
+      "AC-10.4",
+      "AC-10.5"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3919,
+    "preconditions": "Lớp Đang học, hv1 có lượt làm dở bộ X (stand-in 005)",
+    "steps": [
+      {
+        "action": "GV kết thúc lớp.",
+        "target": "TC-037"
+      },
+      {
+        "action": "hv1 lưu tiếp, rồi nộp lượt X.",
+        "target": "TC-037"
+      },
+      {
+        "action": "GV \"Mở lại lớp\" → xác nhận.",
+        "target": "TC-037"
+      },
+      {
+        "action": "hv1 nộp X.",
+        "target": "TC-037"
+      }
+    ],
+    "script": "testing/e2e/TC-037.spec.ts",
+    "evidence": [
+      "screenshots/TC-037-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-038",
+    "acs": [
+      "AC-11.1",
+      "AC-11.2"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6321,
+    "preconditions": "Lớp Sắp bắt đầu \"TC-038 Lớp\" có hv1, hv2; hv1 thuộc lớp khác",
+    "steps": [
+      {
+        "action": "\"Xóa lớp\" → xác nhận.",
+        "target": "TC-038"
+      },
+      {
+        "action": "hv1 S01.",
+        "target": "TC-038"
+      },
+      {
+        "action": "Tạo lớp mới cùng tên.",
+        "target": "TC-038"
+      }
+    ],
+    "script": "testing/e2e/TC-038.spec.ts",
+    "evidence": [
+      "screenshots/TC-038-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-039",
+    "acs": [
+      "AC-11.3",
+      "AC-11.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4169,
+    "preconditions": "Lớp L1 có bài nộp bài tập của HV đã bị gỡ; lớp L2 chỉ có bài nộp bài thi tự động (stand-in 006); lớp L3 chưa có bài nộp",
+    "steps": [
+      {
+        "action": "T04 L1, L2.",
+        "target": "TC-039"
+      },
+      {
+        "action": "L3: mở hộp xóa; HV nộp một bộ; GV xác nhận.",
+        "target": "TC-039"
+      }
+    ],
+    "script": "testing/e2e/TC-039.spec.ts",
+    "evidence": [
+      "screenshots/TC-039-1.png",
+      "screenshots/TC-039-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-040",
+    "acs": [
+      "AC-11.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 228,
+    "preconditions": "Lớp L chưa có bài nộp được giao 2 bài thi (stand-in 006), mỗi bài thi cũng giao lớp M",
+    "steps": [
+      {
+        "action": "Xóa L.",
+        "target": "TC-040"
+      },
+      {
+        "action": "Xem danh sách lớp được giao của 2 bài thi (dev).",
+        "target": "TC-040"
+      }
+    ],
+    "script": "testing/e2e/TC-040.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-041",
+    "acs": [
+      "AC-12.1",
+      "AC-12.2",
+      "NFR-3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3629,
+    "preconditions": "hv1 thuộc lớp Đang học A (bắt đầu 01/10), Đang học B (15/10), Sắp bắt đầu C (05/11), Sắp bắt đầu D (01/11), Đã kết thúc E",
+    "steps": [
+      {
+        "action": "Mở S01 (390 px).",
+        "target": "TC-041"
+      },
+      {
+        "action": "Chạm thẻ A.",
+        "target": "TC-041"
+      },
+      {
+        "action": "Đo S01 với 10 lớp.",
+        "target": "TC-041"
+      }
+    ],
+    "script": "testing/e2e/TC-041.spec.ts",
+    "evidence": [
+      "screenshots/TC-041-1.png"
+    ],
+    "measurements": [
+      "NFR-3: S01 with 10 classes in 97 ms (desktop CPU, local network)"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-042",
+    "acs": [
+      "AC-12.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3068,
+    "preconditions": "HV đã kích hoạt, không thuộc lớp nào",
+    "steps": [
+      {
+        "action": "Mở S01.",
+        "target": "TC-042"
+      }
+    ],
+    "script": "testing/e2e/TC-042.spec.ts",
+    "evidence": [
+      "screenshots/TC-042-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-043",
+    "acs": [
+      "AC-13.1",
+      "AC-13.2",
+      "AC-13.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3564,
+    "preconditions": "Lớp Đang học có lịch học; giáo trình Bài 1 (2 bước, 2 bộ có hạn, hv1 đã nộp 1), Bài 2 Nháp, Bài 3 (1 bước, 1 bộ có hạn)",
+    "steps": [
+      {
+        "action": "Mở S02.",
+        "target": "TC-043"
+      },
+      {
+        "action": "Chạm Bài 3.",
+        "target": "TC-043"
+      }
+    ],
+    "script": "testing/e2e/TC-043.spec.ts",
+    "evidence": [
+      "screenshots/TC-043-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-044",
+    "acs": [
+      "AC-13.4",
+      "AC-13.5",
+      "AC-13.7"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 3877,
+    "preconditions": "Lớp: Bài 1 chỉ bước học; Bài 2 đã xuất bản, mọi mục Nháp; Bài 3 có bộ chưa đặt hạn; lớp khác: giáo trình không có Bài đã xuất bản",
+    "steps": [
+      {
+        "action": "S02 lớp thứ nhất.",
+        "target": "TC-044"
+      },
+      {
+        "action": "S11 Bài",
+        "target": "TC-044"
+      },
+      {
+        "action": "",
+        "target": "TC-044"
+      },
+      {
+        "action": "S02 lớp thứ hai.",
+        "target": "TC-044"
+      }
+    ],
+    "script": "testing/e2e/TC-044.spec.ts",
+    "evidence": [
+      "screenshots/TC-044-1.png",
+      "screenshots/TC-044-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-045",
+    "acs": [
+      "AC-13.6",
+      "AC-17.3",
+      "AC-22.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 5173,
+    "preconditions": "hv1 thuộc lớp A và B cùng giáo trình; A ẩn phần Bài tập của Bài 2 và đặt hạn bộ X (Bài 1); B không",
+    "steps": [
+      {
+        "action": "hv1 S02/S11 lớp A.",
+        "target": "TC-045"
+      },
+      {
+        "action": "hv1 S02/S11 lớp B.",
+        "target": "TC-045"
+      },
+      {
+        "action": "GV tab Nội dung lớp B.",
+        "target": "TC-045"
+      },
+      {
+        "action": "GV xuất bản Bài 4 mới.",
+        "target": "TC-045"
+      }
+    ],
+    "script": "testing/e2e/TC-045.spec.ts",
+    "evidence": [
+      "screenshots/TC-045-1.png",
+      "screenshots/TC-045-2.png",
+      "screenshots/TC-045-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-046",
+    "acs": [
+      "AC-13.8",
+      "AC-17.8"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 3517,
+    "preconditions": "Lớp Đang học được giao 2 bài thi HV thấy được + 1 bài thi Nháp (stand-in 006); lớp khác không có bài thi",
+    "steps": [
+      {
+        "action": "S02.",
+        "target": "TC-046"
+      },
+      {
+        "action": "Chạm lối vào.",
+        "target": "TC-046"
+      },
+      {
+        "action": "GV ẩn mọi phần mọi Bài; HV mở lại S02.",
+        "target": "TC-046"
+      },
+      {
+        "action": "S02 lớp không có bài thi.",
+        "target": "TC-046"
+      }
+    ],
+    "script": "testing/e2e/TC-046.spec.ts",
+    "evidence": [
+      "screenshots/TC-046-1.png",
+      "screenshots/TC-046-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-047",
+    "acs": [
+      "AC-14.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3396,
+    "preconditions": "Lớp bắt đầu ngày mai, hv1 trong lớp",
+    "steps": [
+      {
+        "action": "S02.",
+        "target": "TC-047"
+      },
+      {
+        "action": "Dời đồng hồ tới 00:00 (UTC+7) ngày bắt đầu + 30 s.",
+        "target": "TC-047"
+      },
+      {
+        "action": "Tải lại S02.",
+        "target": "TC-047"
+      }
+    ],
+    "script": "testing/e2e/TC-047.spec.ts",
+    "evidence": [
+      "screenshots/TC-047-1.png",
+      "screenshots/TC-047-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-048",
+    "acs": [
+      "AC-14.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3394,
+    "preconditions": "Lớp Sắp bắt đầu có Bài đã xuất bản",
+    "steps": [
+      {
+        "action": "S02.",
+        "target": "TC-048"
+      },
+      {
+        "action": "Mở trực tiếp S11 của một Bài, S03 của một bước, S05 của một bộ.",
+        "target": "TC-048"
+      }
+    ],
+    "script": "testing/e2e/TC-048.spec.ts",
+    "evidence": [
+      "screenshots/TC-048-1.png",
+      "screenshots/TC-048-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-049",
+    "acs": [
+      "AC-14.5",
+      "AC-20.7"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 3839,
+    "preconditions": "hv1 thuộc lớp A (đang mở S02, S11), lớp B sẽ bị xóa",
+    "steps": [
+      {
+        "action": "GV gỡ hv1 khỏi A.",
+        "target": "TC-049"
+      },
+      {
+        "action": "hv1 bấm chuyển tab ở S11 / tải lại S02; mở danh sách Thành viên của A qua đường dẫn.",
+        "target": "TC-049"
+      },
+      {
+        "action": "hv1 nộp bài ở A (stand-in).",
+        "target": "TC-049"
+      },
+      {
+        "action": "GV xóa B; hv1 mở S02 của B.",
+        "target": "TC-049"
+      }
+    ],
+    "script": "testing/e2e/TC-049.spec.ts",
+    "evidence": [
+      "screenshots/TC-049-1.png",
+      "screenshots/TC-049-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-050",
+    "acs": [
+      "AC-14.6",
+      "NFR-7"
+    ],
+    "type": "API",
+    "role": "GV (2 workspace)",
+    "status": "Pass",
+    "durationMs": 3691,
+    "preconditions": "GV A có lớp, HV, giáo trình; GV B ở workspace khác",
+    "steps": [
+      {
+        "action": "GV B mở T04 của lớp A.",
+        "target": "TC-050"
+      },
+      {
+        "action": "GV B gọi mọi API của lớp A (sửa, thêm/gỡ HV, ẩn/hiện, hạn nộp, đổi giáo trình, kết thúc, xóa).",
+        "target": "TC-050"
+      },
+      {
+        "action": "GV A gọi thêm HV / tạo lớp / đổi giáo trình với id HV hay giáo trình của B.",
+        "target": "TC-050"
+      },
+      {
+        "action": "Id sai định dạng.",
+        "target": "TC-050"
+      }
+    ],
+    "script": "testing/e2e/TC-050.spec.ts",
+    "evidence": [
+      "screenshots/TC-050-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-051",
+    "acs": [
+      "AC-15.1",
+      "AC-15.2",
+      "AC-15.3",
+      "NFR-1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 8881,
+    "preconditions": "Giáo trình: Bài 1 (2 bước, 3 bộ đã xuất bản, 1 bộ Nháp), Bài 2 Nháp, Bài 3 không có mục đã xuất bản; (đo: 50 Bài)",
+    "steps": [
+      {
+        "action": "Tab Nội dung.",
+        "target": "TC-051"
+      },
+      {
+        "action": "Bấm tên Bài",
+        "target": "TC-051"
+      },
+      {
+        "action": "",
+        "target": "TC-051"
+      },
+      {
+        "action": "Ẩn phần Bài học của Bài 2 (Nháp), xuất bản Bài 2, HV mở S02.",
+        "target": "TC-051"
+      },
+      {
+        "action": "Đo với 50 Bài.",
+        "target": "TC-051"
+      }
+    ],
+    "script": "testing/e2e/TC-051.spec.ts",
+    "evidence": [
+      "screenshots/TC-051-1.png",
+      "screenshots/TC-051-2.png"
+    ],
+    "measurements": [
+      "NFR-1: tab Nội dung with 50 Bài in 239 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-052",
+    "acs": [
+      "AC-15.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1553,
+    "preconditions": "Lớp dùng giáo trình \"G rỗng\" chưa có Bài",
+    "steps": [
+      {
+        "action": "Tab Nội dung.",
+        "target": "TC-052"
+      },
+      {
+        "action": "Bấm liên kết.",
+        "target": "TC-052"
+      }
+    ],
+    "script": "testing/e2e/TC-052.spec.ts",
+    "evidence": [
+      "screenshots/TC-052-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-053",
+    "acs": [
+      "AC-16.1",
+      "AC-16.2",
+      "AC-17.4",
+      "AC-17.6"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7401,
+    "preconditions": "Lớp A, B cùng giáo trình; hv1 (lớp A) đã nộp bộ X của Bài 2",
+    "steps": [
+      {
+        "action": "Lớp A: \"Ẩn với lớp\" ở phần Bài tập Bài 2 → xác nhận.",
+        "target": "TC-053"
+      },
+      {
+        "action": "hv1 S02, S11 Bài 2, mở trực tiếp S06 của X.",
+        "target": "TC-053"
+      },
+      {
+        "action": "\"Hiện với lớp\" → xác nhận.",
+        "target": "TC-053"
+      },
+      {
+        "action": "hv1 S11, S06.",
+        "target": "TC-053"
+      }
+    ],
+    "script": "testing/e2e/TC-053.spec.ts",
+    "evidence": [
+      "screenshots/TC-053-1.png",
+      "screenshots/TC-053-2.png",
+      "screenshots/TC-053-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-054",
+    "acs": [
+      "AC-16.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7408,
+    "preconditions": "2 HV có lượt làm dở trong phần Bài tập Bài 1 (stand-in)",
+    "steps": [
+      {
+        "action": "\"Ẩn với lớp\" phần Bài tập Bài 1.",
+        "target": "TC-054"
+      }
+    ],
+    "script": "testing/e2e/TC-054.spec.ts",
+    "evidence": [
+      "screenshots/TC-054-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-055",
+    "acs": [
+      "AC-16.4",
+      "NFR-4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5994,
+    "preconditions": "Giáo trình 4 Bài (1 Nháp), Bài 2 đã ẩn Bài tập; (đo: 50 Bài)",
+    "steps": [
+      {
+        "action": "Đầu cột Bài tập: \"Ẩn Bài tập ở mọi bài\" → xác nhận.",
+        "target": "TC-055"
+      },
+      {
+        "action": "\"Hiện cả bài\" ở dòng Bài",
+        "target": "TC-055"
+      },
+      {
+        "action": "",
+        "target": "TC-055"
+      },
+      {
+        "action": "Ẩn cả hai cột.",
+        "target": "TC-055"
+      },
+      {
+        "action": "Đo ẩn hàng loạt 50 Bài.",
+        "target": "TC-055"
+      }
+    ],
+    "script": "testing/e2e/TC-055.spec.ts",
+    "evidence": [
+      "screenshots/TC-055-1.png",
+      "screenshots/TC-055-2.png"
+    ],
+    "measurements": [
+      "NFR-4: bulk hide on 50 Bài in 19 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-056",
+    "acs": [
+      "AC-16.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2571,
+    "preconditions": "Lỗi giả lập cho lần ẩn/hiện kế tiếp (dev) hoặc mạng ngắt",
+    "steps": [
+      {
+        "action": "Ẩn một phần → xác nhận.",
+        "target": "TC-056"
+      },
+      {
+        "action": "Ẩn hàng loạt → xác nhận.",
+        "target": "TC-056"
+      }
+    ],
+    "script": "testing/e2e/TC-056.spec.ts",
+    "evidence": [
+      "screenshots/TC-056-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-057",
+    "acs": [
+      "AC-16.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2838,
+    "preconditions": "Tab Nội dung mở ở hai thẻ",
+    "steps": [
+      {
+        "action": "Thẻ A ẩn phần Bài học Bài",
+        "target": "TC-057"
+      },
+      {
+        "action": "",
+        "target": "TC-057"
+      },
+      {
+        "action": "Thẻ B (cũ) \"Ẩn với lớp\" cùng phần → xác nhận.",
+        "target": "TC-057"
+      }
+    ],
+    "script": "testing/e2e/TC-057.spec.ts",
+    "evidence": [
+      "screenshots/TC-057-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-058",
+    "acs": [
+      "AC-17.1",
+      "AC-17.2",
+      "AC-17.5"
+    ],
+    "type": "API",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 3638,
+    "preconditions": "Lớp Đang học: Bài 1 có bước Nháp S1, bước lưu trữ S2, bước đã xuất bản S3; Bài 2 Nháp; Bài 3 ẩn cả hai phần",
+    "steps": [
+      {
+        "action": "`GET /api/my-classes/<lớp>/items/<S1",
+        "target": "TC-058"
+      }
+    ],
+    "script": "testing/e2e/TC-058.spec.ts",
+    "evidence": [
+      "screenshots/TC-058-1.png",
+      "screenshots/TC-058-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-059",
+    "acs": [
+      "AC-17.7"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3539,
+    "preconditions": "Bài có nhãn AI \"AI · Chờ duyệt\" (dev 002) và mục do AI tạo đã duyệt",
+    "steps": [
+      {
+        "action": "`GET /api/my-classes`, `/my-classes/<id>`, `/lessons/<bài>`, `/items/<mục>`.",
+        "target": "TC-059"
+      },
+      {
+        "action": "Xem S01, S02, S11.",
+        "target": "TC-059"
+      }
+    ],
+    "script": "testing/e2e/TC-059.spec.ts",
+    "evidence": [
+      "screenshots/TC-059-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-060",
+    "acs": [
+      "AC-18.1",
+      "AC-18.3"
+    ],
+    "type": "API",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 7298,
+    "preconditions": "hv1 mở bước học S3 của Bài 1",
+    "steps": [
+      {
+        "action": "GV ẩn phần Bài học Bài",
+        "target": "TC-060"
+      },
+      {
+        "action": "",
+        "target": "TC-060"
+      },
+      {
+        "action": "Sau 5 giây hv1 gọi `GET /api/my-classes/<lớp>/items/<bước kế tiếp>?continue=1` (lần chuyển bước của S03).",
+        "target": "TC-060"
+      },
+      {
+        "action": "GV ẩn cả phần Bài tập Bài 1, hv1 gọi lại.",
+        "target": "TC-060"
+      }
+    ],
+    "script": "testing/e2e/TC-060.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-061",
+    "acs": [
+      "AC-18.2"
+    ],
+    "type": "API",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 2306,
+    "preconditions": "hv1 có lượt làm dở bộ X (stand-in 005)",
+    "steps": [
+      {
+        "action": "GV ẩn phần Bài tập.",
+        "target": "TC-061"
+      },
+      {
+        "action": "hv1 lưu, rồi nộp X (stand-in).",
+        "target": "TC-061"
+      },
+      {
+        "action": "GV hiện lại; hv1 nộp.",
+        "target": "TC-061"
+      }
+    ],
+    "script": "testing/e2e/TC-061.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-062",
+    "acs": [
+      "AC-19.1",
+      "AC-19.2",
+      "AC-19.6",
+      "NFR-3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5199,
+    "preconditions": "Bài 1: 3 bước, 2 bộ có hạn; Bài 2: chỉ bước; Bài 3: đã xuất bản, mục Nháp; (đo: Bài 40 mục)",
+    "steps": [
+      {
+        "action": "S11 Bài",
+        "target": "TC-062"
+      },
+      {
+        "action": "",
+        "target": "TC-062"
+      },
+      {
+        "action": "S11 Bài",
+        "target": "TC-062"
+      },
+      {
+        "action": "",
+        "target": "TC-062"
+      },
+      {
+        "action": "S11 Bài",
+        "target": "TC-062"
+      },
+      {
+        "action": "",
+        "target": "TC-062"
+      },
+      {
+        "action": "Đo S11 40 mục.",
+        "target": "TC-062"
+      }
+    ],
+    "script": "testing/e2e/TC-062.spec.ts",
+    "evidence": [
+      "screenshots/TC-062-1.png",
+      "screenshots/TC-062-2.png"
+    ],
+    "measurements": [
+      "NFR-3: S11 with 40 items in 98 ms (desktop CPU, local network)"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-063",
+    "acs": [
+      "AC-19.3",
+      "AC-19.5",
+      "AC-19.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3758,
+    "preconditions": "Bộ A có hạn chưa qua, chưa làm; B có lượt dở; C đã nộp 8/10, nộp muộn; D chưa đặt hạn; E quá hạn chưa nộp",
+    "steps": [
+      {
+        "action": "Tab Bài tập.",
+        "target": "TC-063"
+      },
+      {
+        "action": "Chạm từng bộ.",
+        "target": "TC-063"
+      }
+    ],
+    "script": "testing/e2e/TC-063.spec.ts",
+    "evidence": [
+      "screenshots/TC-063-1.png",
+      "screenshots/TC-063-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-064",
+    "acs": [
+      "AC-19.4",
+      "AC-19.8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3726,
+    "preconditions": "HV mới trong lớp Đang học, Bài 1–3 mỗi Bài 2 bước, chưa làm gì",
+    "steps": [
+      {
+        "action": "S02 mở Bài 3, bước 2 của Bài",
+        "target": "TC-064"
+      },
+      {
+        "action": "",
+        "target": "TC-064"
+      },
+      {
+        "action": "Mở bộ bài tập thứ 2 trước bộ 1 (cả hai có hạn).",
+        "target": "TC-064"
+      }
+    ],
+    "script": "testing/e2e/TC-064.spec.ts",
+    "evidence": [
+      "screenshots/TC-064-1.png",
+      "screenshots/TC-064-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-065",
+    "acs": [
+      "AC-19.9",
+      "AC-23.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3071,
+    "preconditions": "Bộ Q chưa đặt hạn, HV chưa nộp",
+    "steps": [
+      {
+        "action": "Tab Bài tập S11.",
+        "target": "TC-065"
+      },
+      {
+        "action": "Chạm / Enter trên dòng Q.",
+        "target": "TC-065"
+      }
+    ],
+    "script": "testing/e2e/TC-065.spec.ts",
+    "evidence": [
+      "screenshots/TC-065-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-066",
+    "acs": [
+      "AC-20.1",
+      "AC-20.2",
+      "AC-20.5",
+      "NFR-3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 14240,
+    "preconditions": "Lớp có An (hv đang đăng nhập), Bình, Chi, Dũng (đã kích hoạt), Em (Chưa kích hoạt); (đo: 100 HV)",
+    "steps": [
+      {
+        "action": "S02.",
+        "target": "TC-066"
+      },
+      {
+        "action": "\"Thành viên (4)\".",
+        "target": "TC-066"
+      },
+      {
+        "action": "Chạm Bình.",
+        "target": "TC-066"
+      },
+      {
+        "action": "Chạm dòng của An.",
+        "target": "TC-066"
+      },
+      {
+        "action": "Đo danh sách 100 HV.",
+        "target": "TC-066"
+      }
+    ],
+    "script": "testing/e2e/TC-066.spec.ts",
+    "evidence": [
+      "screenshots/TC-066-1.png"
+    ],
+    "measurements": [
+      "NFR-3: members list of 100 in 147 ms (desktop CPU, local network)"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-067",
+    "acs": [
+      "AC-20.3",
+      "AC-20.4",
+      "NFR-7"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 10994,
+    "preconditions": "Lớp có HV Đã khóa, HV Gửi email thất bại, HV đã bị gỡ, HV đã bị xóa",
+    "steps": [
+      {
+        "action": "`GET /api/my-classes/<id>/members`.",
+        "target": "TC-067"
+      }
+    ],
+    "script": "testing/e2e/TC-067.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-068",
+    "acs": [
+      "AC-20.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3217,
+    "preconditions": "Lớp chỉ có hv1 (đã kích hoạt) và 1 HV Chưa kích hoạt",
+    "steps": [
+      {
+        "action": "\"Thành viên (1)\".",
+        "target": "TC-068"
+      }
+    ],
+    "script": "testing/e2e/TC-068.spec.ts",
+    "evidence": [
+      "screenshots/TC-068-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-069",
+    "acs": [
+      "AC-21.1",
+      "AC-21.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1589,
+    "preconditions": "Bài 1 có bộ 1, 2 đã xuất bản (bộ 1 hạn 30/10/2026), bộ 3 Nháp, bộ 4 lưu trữ",
+    "steps": [
+      {
+        "action": "Tab Nội dung, ô Bài tập của Bài 1.",
+        "target": "TC-069"
+      }
+    ],
+    "script": "testing/e2e/TC-069.spec.ts",
+    "evidence": [
+      "screenshots/TC-069-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-070",
+    "acs": [
+      "AC-21.2",
+      "NFR-6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2289,
+    "preconditions": "Lớp Đang học, bộ 1 có hạn",
+    "steps": [
+      {
+        "action": "Bấm ô hạn bộ 1 (bằng bàn phím: Tab + Enter).",
+        "target": "TC-070"
+      },
+      {
+        "action": "Di chuyển ngày bằng phím mũi tên, chọn ngày.",
+        "target": "TC-070"
+      },
+      {
+        "action": "Esc.",
+        "target": "TC-070"
+      },
+      {
+        "action": "Mở lại, bấm ra ngoài.",
+        "target": "TC-070"
+      }
+    ],
+    "script": "testing/e2e/TC-070.spec.ts",
+    "evidence": [
+      "screenshots/TC-070-1.png",
+      "screenshots/TC-070-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-071",
+    "acs": [
+      "AC-21.3",
+      "AC-21.6"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4588,
+    "preconditions": "Bộ 1 \"Đặt hạn\"",
+    "steps": [
+      {
+        "action": "Chọn 30/10/2026 → \"Áp dụng\".",
+        "target": "TC-071"
+      },
+      {
+        "action": "HV S11.",
+        "target": "TC-071"
+      },
+      {
+        "action": "Mở lịch bộ 1 → \"Xóa\".",
+        "target": "TC-071"
+      },
+      {
+        "action": "HV S11.",
+        "target": "TC-071"
+      }
+    ],
+    "script": "testing/e2e/TC-071.spec.ts",
+    "evidence": [
+      "screenshots/TC-071-1.png",
+      "screenshots/TC-071-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-072",
+    "acs": [
+      "AC-21.4",
+      "AC-21.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2173,
+    "preconditions": "Hôm nay D lúc 09:00 (dời đồng hồ); lớp bắt đầu D+5",
+    "steps": [
+      {
+        "action": "Lịch bộ 1: chọn D−",
+        "target": "TC-072"
+      },
+      {
+        "action": "",
+        "target": "TC-072"
+      },
+      {
+        "action": "\"Áp dụng\".",
+        "target": "TC-072"
+      },
+      {
+        "action": "Chọn D (hôm nay, sau 08:00).",
+        "target": "TC-072"
+      },
+      {
+        "action": "Chọn D+3 (trước ngày bắt đầu).",
+        "target": "TC-072"
+      }
+    ],
+    "script": "testing/e2e/TC-072.spec.ts",
+    "evidence": [
+      "screenshots/TC-072-1.png",
+      "screenshots/TC-072-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-073",
+    "acs": [
+      "AC-21.8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2079,
+    "preconditions": "Bộ 1 có hạn, bộ 2 không; Bài 2 không bộ nào có hạn",
+    "steps": [
+      {
+        "action": "Mở lịch bộ",
+        "target": "TC-073"
+      },
+      {
+        "action": "",
+        "target": "TC-073"
+      },
+      {
+        "action": "Mở lịch bộ",
+        "target": "TC-073"
+      },
+      {
+        "action": "",
+        "target": "TC-073"
+      },
+      {
+        "action": "Mở \"Đặt hạn cho mọi bộ của bài\" của Bài 1, rồi Bài 2.",
+        "target": "TC-073"
+      }
+    ],
+    "script": "testing/e2e/TC-073.spec.ts",
+    "evidence": [
+      "screenshots/TC-073-1.png",
+      "screenshots/TC-073-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-074",
+    "acs": [
+      "AC-22.1",
+      "AC-22.2",
+      "NFR-4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3050,
+    "preconditions": "Bài 3 có 3 bộ đã xuất bản (1 bộ hạn 01/11), 1 bộ Nháp; (đo: Bài 20 bộ)",
+    "steps": [
+      {
+        "action": "\"Đặt hạn cho mọi bộ của bài\" Bài 3: 05/11/2026 → \"Áp dụng\".",
+        "target": "TC-074"
+      },
+      {
+        "action": "Mở lại → \"Xóa\".",
+        "target": "TC-074"
+      },
+      {
+        "action": "Đo đặt/xóa hàng loạt 20 bộ.",
+        "target": "TC-074"
+      }
+    ],
+    "script": "testing/e2e/TC-074.spec.ts",
+    "evidence": [
+      "screenshots/TC-074-1.png",
+      "screenshots/TC-074-2.png"
+    ],
+    "measurements": [
+      "NFR-4: bulk deadline 2026-11-05 for 20 sets in 12 ms",
+      "NFR-4: bulk deadline clear for 20 sets in 12 ms"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-075",
+    "acs": [
+      "AC-22.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1938,
+    "preconditions": "Lỗi giả lập cho lần cập nhật hạn kế tiếp (dev)",
+    "steps": [
+      {
+        "action": "Đặt hạn một bộ.",
+        "target": "TC-075"
+      },
+      {
+        "action": "Đặt hạn hàng loạt.",
+        "target": "TC-075"
+      },
+      {
+        "action": "Xóa hạn.",
+        "target": "TC-075"
+      }
+    ],
+    "script": "testing/e2e/TC-075.spec.ts",
+    "evidence": [
+      "screenshots/TC-075-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-076",
+    "acs": [
+      "AC-22.5",
+      "AC-22.6"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 12212,
+    "preconditions": "Bộ X (Bài 2) hạn hôm nay; hv1 chưa nộp",
+    "steps": [
+      {
+        "action": "Ẩn phần Bài tập Bài",
+        "target": "TC-076"
+      },
+      {
+        "action": "",
+        "target": "TC-076"
+      },
+      {
+        "action": "Tab Nội dung Bài",
+        "target": "TC-076"
+      },
+      {
+        "action": "",
+        "target": "TC-076"
+      },
+      {
+        "action": "Lưu trữ X (002), chạy lượt nhắc 08:00 (dev).",
+        "target": "TC-076"
+      },
+      {
+        "action": "Khôi phục X, hiện phần, HV S11.",
+        "target": "TC-076"
+      }
+    ],
+    "script": "testing/e2e/TC-076.spec.ts",
+    "evidence": [
+      "screenshots/TC-076-1.png",
+      "screenshots/TC-076-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-077",
+    "acs": [
+      "AC-23.1",
+      "AC-23.2",
+      "AC-23.3",
+      "AC-23.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3517,
+    "preconditions": "Hôm nay 21/10/2026; X hạn 25/10, Y hạn 21/10, Z hạn 18/10 (có lượt dở), W hạn 05/01/2027; chưa nộp bộ nào",
+    "steps": [
+      {
+        "action": "S11 tab Bài tập.",
+        "target": "TC-077"
+      },
+      {
+        "action": "Mở S05 của Y.",
+        "target": "TC-077"
+      },
+      {
+        "action": "Mở Z, nộp (stand-in).",
+        "target": "TC-077"
+      }
+    ],
+    "script": "testing/e2e/TC-077.spec.ts",
+    "evidence": [
+      "screenshots/TC-077-1.png",
+      "screenshots/TC-077-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-078",
+    "acs": [
+      "AC-23.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3210,
+    "preconditions": "Lớp Đã kết thúc, bộ X hạn đã qua, Y hạn hôm nay, chưa nộp",
+    "steps": [
+      {
+        "action": "S11 tab Bài tập.",
+        "target": "TC-078"
+      }
+    ],
+    "script": "testing/e2e/TC-078.spec.ts",
+    "evidence": [
+      "screenshots/TC-078-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-079",
+    "acs": [
+      "AC-23.7",
+      "NFR-4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6491,
+    "preconditions": "Bộ P \"Chưa mở\"; hv1 chưa nộp, hv2 đã nộp P lúc trước khi xóa hạn",
+    "steps": [
+      {
+        "action": "GV đặt hạn P.",
+        "target": "TC-079"
+      },
+      {
+        "action": "≤ 5 giây sau, hv1 tải lại S11.",
+        "target": "TC-079"
+      },
+      {
+        "action": "GV xóa hạn P.",
+        "target": "TC-079"
+      },
+      {
+        "action": "hv1, hv2 tải lại S11.",
+        "target": "TC-079"
+      }
+    ],
+    "script": "testing/e2e/TC-079.spec.ts",
+    "evidence": [
+      "screenshots/TC-079-1.png",
+      "screenshots/TC-079-2.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-080",
+    "acs": [
+      "AC-24.1",
+      "AC-24.2",
+      "NFR-10"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 14371,
+    "preconditions": "Lớp Đang học: An đã nộp X, Bình chưa nộp, Chi chưa nộp nhưng Đã khóa, Dũng Chưa kích hoạt, Em đã bị gỡ; X, Y hạn hôm nay; Z hạn mai; lớp Sắp bắt đầu có bộ hạn hôm nay; lớp Đã kết thúc có bộ hạn hôm nay",
+    "steps": [
+      {
+        "action": "Dời đồng hồ 08:00 VN, chạy lượt nhắc (dev).",
+        "target": "TC-080"
+      },
+      {
+        "action": "Xem outbox.",
+        "target": "TC-080"
+      }
+    ],
+    "script": "testing/e2e/TC-080.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-081",
+    "acs": [
+      "AC-24.3",
+      "AC-24.5"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3994,
+    "preconditions": "Như TC-080 sau lượt nhắc",
+    "steps": [
+      {
+        "action": "10:00 GV đặt hạn hôm nay cho bộ V.",
+        "target": "TC-081"
+      },
+      {
+        "action": "Chạy lại lượt nhắc (dev).",
+        "target": "TC-081"
+      },
+      {
+        "action": "GV đổi hạn X sang mai rồi về hôm nay.",
+        "target": "TC-081"
+      },
+      {
+        "action": "Bình nộp Y.",
+        "target": "TC-081"
+      }
+    ],
+    "script": "testing/e2e/TC-081.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-082",
+    "acs": [
+      "AC-24.4"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 8449,
+    "preconditions": "Bình đã nhận nhắc cho X hôm nay",
+    "steps": [
+      {
+        "action": "GV dời hạn X sang ngày mai.",
+        "target": "TC-082"
+      },
+      {
+        "action": "Dời đồng hồ tới 08:00 ngày mai, chạy lượt nhắc.",
+        "target": "TC-082"
+      }
+    ],
+    "script": "testing/e2e/TC-082.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-083",
+    "acs": [
+      "AC-24.6"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3840,
+    "preconditions": "Bộ hạn hôm nay; lượt 08:00 chưa chạy",
+    "steps": [
+      {
+        "action": "Đồng hồ 11:00, gọi khôi phục (dev).",
+        "target": "TC-083"
+      },
+      {
+        "action": "Gọi khôi phục lần nữa.",
+        "target": "TC-083"
+      },
+      {
+        "action": "Ngày hôm sau (bộ hạn ngày đó), đồng hồ 20:30, gọi khôi phục.",
+        "target": "TC-083"
+      }
+    ],
+    "script": "testing/e2e/TC-083.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-084",
+    "acs": [
+      "AC-25.1",
+      "AC-25.2",
+      "AC-25.5",
+      "NFR-6"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 7739,
+    "preconditions": "Bình chưa nộp 3 bộ hạn hôm nay ở Bài 2 (bộ 2), Bài 1 (bộ 1, bộ 3)",
+    "steps": [
+      {
+        "action": "Chạy lượt nhắc, mở email trong outbox (cả bản HTML ở 390 px).",
+        "target": "TC-084"
+      }
+    ],
+    "script": "testing/e2e/TC-084.spec.ts",
+    "evidence": [
+      "screenshots/TC-084-360.png",
+      "screenshots/TC-084-430.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-085",
+    "acs": [
+      "AC-25.3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4423,
+    "preconditions": "23 bộ hạn hôm nay chưa nộp trong một lớp",
+    "steps": [
+      {
+        "action": "Chạy lượt nhắc.",
+        "target": "TC-085"
+      }
+    ],
+    "script": "testing/e2e/TC-085.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-086",
+    "acs": [
+      "AC-25.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 7361,
+    "preconditions": "Email 1 bộ (lớp A) và email 2 bộ (lớp B)",
+    "steps": [
+      {
+        "action": "Đã đăng nhập: mở liên kết \"Làm bài ngay\" của email",
+        "target": "TC-086"
+      },
+      {
+        "action": "",
+        "target": "TC-086"
+      },
+      {
+        "action": "Của email",
+        "target": "TC-086"
+      },
+      {
+        "action": "",
+        "target": "TC-086"
+      },
+      {
+        "action": "Đăng xuất, mở liên kết email 1, đăng nhập.",
+        "target": "TC-086"
+      },
+      {
+        "action": "Bị gỡ khỏi lớp B rồi mở liên kết email 2.",
+        "target": "TC-086"
+      }
+    ],
+    "script": "testing/e2e/TC-086.spec.ts",
+    "evidence": [
+      "screenshots/TC-086-1.png",
+      "screenshots/TC-086-2.png",
+      "screenshots/TC-086-3.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-087",
+    "acs": [
+      "AC-26.1",
+      "AC-26.2"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 17496,
+    "preconditions": "Hai HV Đã kích hoạt trong lớp, sau đó đổi Email (T11 \"Sửa\") sang `reject@x.invalid` (bị từ chối) và `bounce@x.invalid` (không nhận thư) mà trạng thái vẫn \"Đã kích hoạt\"; GV vừa dùng hết giới hạn thư mật khẩu của 001",
+    "steps": [
+      {
+        "action": "Chạy lượt nhắc.",
+        "target": "TC-087"
+      },
+      {
+        "action": "Chạy lại.",
+        "target": "TC-087"
+      },
+      {
+        "action": "Xem T11, log máy chủ.",
+        "target": "TC-087"
+      }
+    ],
+    "script": "testing/e2e/TC-087.spec.ts",
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-088",
+    "acs": [
+      "AC-26.3"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 8552,
+    "preconditions": "Sau lượt nhắc của TC-080",
+    "steps": [
+      {
+        "action": "`GET /api/classes/<id>/reminders` (thông tin cho 009).",
+        "target": "TC-088"
+      },
+      {
+        "action": "Xem tab Nội dung.",
+        "target": "TC-088"
+      },
+      {
+        "action": "Đổi hạn X, gọi lại.",
+        "target": "TC-088"
+      }
+    ],
+    "script": "testing/e2e/TC-088.spec.ts",
+    "evidence": [
+      "screenshots/TC-088-1.png"
+    ],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-089",
+    "acs": [
+      "NFR-5"
+    ],
+    "type": "Thủ công",
+    "role": "GV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "preconditions": "5 GV lần đầu dùng; 10 HV, 1 giáo trình",
+    "steps": [
+      {
+        "action": "Tạo lớp 10 HV.",
+        "target": "TC-089"
+      },
+      {
+        "action": "Ẩn phần Bài tập của mọi Bài.",
+        "target": "TC-089"
+      }
+    ],
+    "script": null,
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-090",
+    "acs": [
+      "NFR-6"
+    ],
+    "type": "Thủ công",
+    "role": "GV, HV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "preconditions": "Dữ liệu như TC-051, TC-063",
+    "steps": [
+      {
+        "action": "Chỉ bàn phím + trình đọc màn hình trên T03, tab Nội dung (kể cả popup hạn), S01, S02, S11.",
+        "target": "TC-090"
+      },
+      {
+        "action": "axe; đo tương phản; S01/S02/S11 ở 360–430 px, T02–T04 ở 1024 px.",
+        "target": "TC-090"
+      }
+    ],
+    "script": null,
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-091",
+    "acs": [
+      "NFR-8"
+    ],
+    "type": "Thủ công",
+    "role": "GV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "preconditions": "`npm run dev`",
+    "steps": [
+      {
+        "action": "Tạo, sửa, đổi giáo trình, thêm/gỡ HV, kết thúc, mở lại, xóa lớp, ẩn/hiện (đơn và hàng loạt), đặt/xóa hạn (đơn và hàng loạt); chạy lượt nhắc.",
+        "target": "TC-091"
+      },
+      {
+        "action": "Xem log.",
+        "target": "TC-091"
+      }
+    ],
+    "script": null,
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-092",
+    "acs": [
+      "NFR-9"
+    ],
+    "type": "Thủ công",
+    "role": "—",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "preconditions": "Môi trường có dịch vụ gửi thư thật (chưa có — ADR)",
+    "steps": [
+      {
+        "action": "20.000 email nhắc trong một lượt.",
+        "target": "TC-092"
+      }
+    ],
+    "script": null,
+    "evidence": [],
+    "measurements": [],
+    "errors": []
+  }
+]
