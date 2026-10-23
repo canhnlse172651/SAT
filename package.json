@@ -10,7 +10,9 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "concurrently -k -n api,web -c blue,magenta \"npm run dev -w @sat/api\" \"npm run dev -w @sat/web\"",
+    "dev": "npm run build -w @sat/shared && concurrently -k -n api,web -c blue,magenta \"npm run dev -w @sat/api\" \"npm run dev -w @sat/web\"",
+    "dev:db": "node scripts/dev-db.mjs",
+    "dev:seed": "npm run build -w @sat/shared && npm run build -w @sat/api && npm run seed -w @sat/api",
     "lint": "eslint . --max-warnings 0 && prettier --check .",
     "format": "prettier --write .",
     "typecheck": "tsc -p tsconfig.json && npm run build -w @sat/shared && npm run typecheck --workspaces --if-present",

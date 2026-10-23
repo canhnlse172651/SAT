@@ -198,7 +198,22 @@ rồi node scripts/sync-state.mjs.
 | `node .sdd/scripts/sdd.mjs trace NNN` | Ma trận AC → task → test |
 | `node .sdd/scripts/sdd.mjs ci --e2e` | lint → typecheck → test → build → e2e → check |
 
-## 8. Nền tảng (wave 0)
+## 8. Chạy thử local (FE + BE)
+
+Mở 2 terminal ở thư mục dự án (Node 24 khuyến nghị; Node 20 vẫn chạy được dev):
+
+```bash
+npm install            # lần đầu
+npm run dev:db         # terminal 1: MongoDB cục bộ ở 127.0.0.1:27017, dữ liệu lưu ở var/dev-mongo (giữ cửa sổ này mở)
+npm run dev:seed       # terminal 2, lần đầu: tạo workspace "Cô Lan", 1 GV, 3 HV
+npm run dev            # terminal 2: API http://localhost:3000 + web http://localhost:5173
+```
+
+Mở http://localhost:5173 → màn đăng nhập (đang xây dựng) → **"Đăng nhập nhanh (dev)"** → chọn vai Giáo viên hoặc Học viên.
+Trang `/dev/login` và danh mục giao diện `/dev/ui` chỉ có khi chạy dev. Có Docker thì `docker compose up -d mongo` thay cho
+`npm run dev:db`.
+
+## 9. Nền tảng (wave 0)
 
 Wave 0 (nhánh `feat/000-foundation`, kế hoạch [docs/plans/foundation-plan.md](plans/foundation-plan.md), ADR-0005…0008) đã dựng
 sẵn hạ tầng dùng chung. Module chỉ viết logic nghiệp vụ. Cách dùng chi tiết: `docs/steering/tech.md`; vị trí file: `structure.md`.

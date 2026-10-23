@@ -32,6 +32,13 @@ export function createAppRoutes(): RouteObject[] {
             return { element: <UiCatalog /> };
           },
         },
+        {
+          path: '/dev/login',
+          lazy: async () => {
+            const { DevLoginPage } = await import('../pages/dev/DevLoginPage');
+            return { element: <DevLoginPage /> };
+          },
+        },
       ]
     : [];
 
