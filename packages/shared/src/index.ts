@@ -8,3 +8,5 @@ export * from './api/pagination.js';
 export * from './api/session.js';
 export * from './ids.js';
 export * from './accounts.js';
+export * from './text.js';
+export * from './curriculum.js';

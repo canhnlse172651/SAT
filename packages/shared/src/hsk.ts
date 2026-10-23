@@ -25,3 +25,12 @@ export function hskOrder(band: HskBand): number {
 export function compareHsk(a: HskBand, b: HskBand): number {
   return hskOrder(a) - hskOrder(b);
 }
+
+/** Curriculum level (002 AC-1.1): exactly one of HSK1 … HSK9. */
+export const HSK_LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+export type HskLevel = (typeof HSK_LEVELS)[number];
+
+export const hskLevelSchema = z.literal(HSK_LEVELS);
+
+/** 'HSK1' … 'HSK9' (prototype wording of the level chips). */
+export const hskLevelLabel = (level: HskLevel): string => `HSK${level}`;
