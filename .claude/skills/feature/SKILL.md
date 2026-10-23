@@ -16,7 +16,8 @@ Save tokens: work from the indexes below; open a module's spec.md only when it i
 - `specs/modules.json` — every module: name, summary, screens, wave, deps, mvp.
 - Requirement index: `grep -n "^### REQ-" specs/*/spec.md` (titles only).
 - `docs/steering/decisions.md` — Active rows only; `docs/steering/product.md` is already in context.
-- Screen IDs: the inventory in product.md + `screens` in modules.json; UI reference `specs/screen-flow-design.html#<ID>`.
+- Screen IDs: the inventory in product.md + `screens` in modules.json; UI reference `specs/screen-flow-design.html#<ID>`
+  (never read it whole — `node scripts/find-in-prototype.mjs "<text>"` shows what a screen says today).
 
 ## 2. Route the need
 

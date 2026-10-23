@@ -6,7 +6,7 @@ held to deterministic gates.
 
 ```
 idea ─▶ /sdd-spec ─▶ /sdd-clarify ─▶ [HUMAN: sdd approve] ─▶ /sdd-plan ─▶ /sdd-tasks ─▶ /sdd-analyze
-     ─▶ /sdd-implement (TDD loop) ─▶ /sdd-verify ─▶ /sdd-ship (PR) ─▶ CI ─▶ staging ─▶ [HUMAN] ─▶ prod
+     ─▶ /module NNN (test-cases.md → code) ─▶ /test-module NNN (QA, Playwright MCP) ─▶ /sdd-ship (PR) ─▶ CI ─▶ staging ─▶ [HUMAN] ─▶ prod
 ```
 
 ## Project context (always loaded)
@@ -45,7 +45,8 @@ idea ─▶ /sdd-spec ─▶ /sdd-clarify ─▶ [HUMAN: sdd approve] ─▶ /sd
 | product-analyst | `spec.md`, `docs/steering/product.md` | code, plan |
 | architect | `plan.md`, `research.md`, `data-model.md`, `contracts/`, `docs/adr/`, `docs/steering/tech.md` | spec requirements |
 | task-planner | `tasks.md` | spec, plan, code |
-| test-engineer | tests (`tests/`, `*.test.*`), `verification.md` §1–3 | production code |
+| test-engineer | foundation tests (`packages/`, `apps/*/src/{common,app,layouts,lib,components}`, `tests/e2e/`) | production code |
+| QA (`/test-module`) | `specs/NNN-*/testing/`, status/Script columns of `test-cases.md`, QA section of `verification.md` | application code, specs, expected results |
 | implementer | production code (`src/`), `progress.md` | spec, tests' assertions |
 | reviewer | `analysis.md`, review sections of `verification.md` | everything else (read-only) |
 | security-auditor | security section of `verification.md` | everything else (read-only) |
@@ -72,8 +73,9 @@ Statuses: `draft → clarified → approved → planned → tasked → implement
 - **Branches:** `feat/NNN-slug` (created by `sdd new`). Never commit to `main` directly.
 - **Commits:** Conventional Commits, scoped by feature and task: `feat(003): T012 add token refresh`.
   One task per commit. Tests and implementation of the same AC may share the task's commit.
-- **Tests cite criteria:** every test that proves an AC contains `<feature-id>:AC-<n>.<m>` in its
-  title or docstring. That token is how `sdd trace` links tests to the spec.
+- **Tests cite criteria:** modules have no hand-written tests; every AC has test cases in `test-cases.md`, and the QA agent's
+  saved script for a test case (`specs/NNN-*/testing/e2e/TC-###.spec.ts`) contains `<feature-id>:AC-<n>.<m>` in its title. That
+  token is how `sdd trace` links the spec to verification. Foundation code keeps its own automated tests (constitution II).
 - **Decisions:** significant or hard-to-reverse choices → ADR in `docs/adr/` from `.sdd/templates/adr-template.md`.
 - **Secrets:** never read `.env*` or print secrets. Use `.env.example` for documentation.
 

@@ -89,7 +89,20 @@ Chạy lại các script đã lưu mà không cần AI (kiểm tra hồi quy): `
 
 ### Cài đặt quy trình QA (một lần, bạn tự chạy)
 
-Các file được hook bảo vệ nên agent chỉ soạn sẵn trong `docs/tooling/`. Chạy trong terminal ở thư mục dự án:
+Các file được hook bảo vệ nên agent chỉ soạn sẵn trong `docs/tooling/`. Chạy trong terminal ở thư mục dự án.
+
+Git Bash:
+
+```bash
+cp docs/tooling/skills/module/SKILL.md .claude/skills/module/SKILL.md
+cp docs/tooling/skills/feature/SKILL.md .claude/skills/feature/SKILL.md
+mkdir -p .claude/skills/test-module && cp docs/tooling/skills/test-module/SKILL.md .claude/skills/test-module/SKILL.md
+cp docs/tooling/constitution.v2.md docs/constitution.md
+cp docs/tooling/CLAUDE.v2.md CLAUDE.md
+claude mcp add --scope project playwright -- npx -y @playwright/mcp@0.0.83
+```
+
+PowerShell:
 
 ```powershell
 Copy-Item docs\tooling\skills\module\SKILL.md .claude\skills\module\SKILL.md -Force

@@ -18,15 +18,23 @@ approved `spec.md`. If implementation reveals the spec is wrong, stop, move the 
 (`sdd set-status <id> draft --reason ...`) and get the change re-approved. Agents never silently
 "fix" requirements.
 
-## II. Test-first (non-negotiable)
+## II. Verified behaviour (test-first for the foundation, user-level QA for modules)
 
-For every acceptance criterion a failing test is written **before** the implementation, and seen to
-fail for the right reason. Implementation is done when that test passes and nothing else broke.
-Tests are never deleted, skipped or weakened to make a build green.
+- **Foundation and shared code** — `packages/*`, `apps/api/src/common/**`, `apps/web/src/{app,layouts,lib,components,styles}/**`,
+  `tests/e2e/**` — is test-first: a failing automated test is written before the implementation and seen to fail for the right
+  reason; CI runs these tests on every change.
+- **Feature modules** (`specs/NNN-*`) get no hand-written test code. Before implementation every acceptance criterion gets at
+  least one user-level test case in `test-cases.md` (role, preconditions, steps, expected result in the spec's exact wording),
+  and every AC has at least one E2E or API case. After implementation a separate QA agent (`/test-module NNN`) executes every
+  test case like a real user through the Playwright MCP browser, saves one replayable script per test case
+  (`specs/NNN-*/testing/e2e/`) and the results (`specs/NNN-*/testing/runs/`). A module is verified only when every E2E/API case
+  passes on the current code.
+- Saved scripts and expected results are never deleted, skipped or weakened to make a run green; the agent that implements a
+  module never edits them.
 
 ## III. Traceability
 
-Every requirement maps to tasks and to tests: `REQ-n → AC-n.m → T### → test citing <feature>:AC-n.m`.
+Every requirement maps to tasks and to verification: `REQ-n → AC-n.m → T### → TC-### → saved script citing <feature>:AC-n.m`.
 `sdd trace` must show zero gaps before a feature is verified.
 
 ## IV. Simplicity
@@ -55,7 +63,8 @@ human approval.
 
 ## VIII. Single toolchain contract
 
-Humans, agents, hooks and CI run the same commands via `node .sdd/scripts/sdd.mjs run <task>`.
+Humans, agents, hooks and CI run the same commands via `node .sdd/scripts/sdd.mjs run <task>`
+(module scripts are replayed with `… run test:modules -- NNN`).
 Nobody hard-codes `npm test` / `pytest` / `go test` in prompts or pipelines.
 
 ## Amendment log
@@ -63,3 +72,4 @@ Nobody hard-codes `npm test` / `pytest` / `go test` in prompts or pipelines.
 | Version | Date | Change | Approved by |
 |---------|------|--------|-------------|
 | 1.0.0 | 2026-10-15 | Initial constitution | — |
+| 2.0.0 | 2026-10-23 | II redefined: test-first only for foundation code; modules verified by user-level test cases run by a QA agent with Playwright MCP (saved scripts + results in the module folder). III: trace via TC-### and saved scripts. | Project lead |
