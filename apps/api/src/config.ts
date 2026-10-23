@@ -11,6 +11,14 @@ const EnvSchema = z.object({
   APP_ORIGIN: z.url().optional(),
   SESSION_TTL_GV_HOURS: z.coerce.number().int().positive().default(8),
   SESSION_TTL_HV_DAYS: z.coerce.number().int().positive().default(30),
+  // Dev FileStorage root (relative to the process cwd).
+  UPLOADS_DIR: z.string().min(1).default('var/uploads'),
+  // Max bytes per stored file (default 20 MiB).
+  UPLOAD_MAX_BYTES: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(20 * 1024 * 1024),
   // Overrides cookie `Secure` outside production only (hermetic e2e over http).
   COOKIE_SECURE: z
     .enum(['true', 'false'])

@@ -1,6 +1,6 @@
 import { type DynamicModule, Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CLOCK, FixedClock, SystemClock } from './clock.js';
+import { CLOCK, type Clock, FixedClock, SystemClock } from './clock.js';
 import {
   DEV_OUTBOX_MODEL,
   DevOutboxEmailSender,
@@ -27,6 +27,8 @@ export interface PortsOptions {
   /** Root directory for LocalDiskStorage (default `var/uploads`). */
   uploadsDir?: string;
   storage?: StorageOptions;
+  /** Overrides the clock of either mode (the test kit passes a shared FixedClock). */
+  clock?: Clock;
 }
 
 @Global()
@@ -39,13 +41,13 @@ export class PortsModule {
       return {
         module: PortsModule,
         providers: [
-          { provide: CLOCK, useValue: new FixedClock() },
+          { provide: CLOCK, useValue: options.clock ?? new FixedClock() },
           { provide: EMAIL_SENDER, useClass: MemoryEmailSender },
           { provide: FILE_STORAGE, useValue: new MemoryStorage(storage) },
           {
             provide: JOB_SCHEDULER,
             inject: [CLOCK],
-            useFactory: (clock: FixedClock) => new ManualScheduler(clock),
+            useFactory: (clock: Clock) => new ManualScheduler(clock),
           },
         ],
         exports,
@@ -60,7 +62,7 @@ export class PortsModule {
         ]),
       ],
       providers: [
-        { provide: CLOCK, useClass: SystemClock },
+        { provide: CLOCK, useValue: options.clock ?? new SystemClock() },
         { provide: STORAGE_ROOT, useValue: options.uploadsDir ?? 'var/uploads' },
         { provide: STORAGE_OPTIONS, useValue: storage },
         DevOutboxEmailSender,

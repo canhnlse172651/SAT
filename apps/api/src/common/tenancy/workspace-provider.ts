@@ -1,4 +1,4 @@
-/** Supplies the workspace of the current request. F06 binds this to F03's request context. */
+/** Supplies the workspace of the current request. `TenancyModule` binds this to the request context. */
 export interface WorkspaceProvider {
   workspaceId(): string;
 }

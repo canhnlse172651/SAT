@@ -1,6 +1,6 @@
 // Tenancy proof (ADR-0006): workspace B can never see or change workspace A's documents.
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose, { type Connection, type Model, Schema, Types } from 'mongoose';
+import { withMongo } from '../../test/with-mongo.js';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { baseSchemaOptions, workspaceIdField } from '../persistence/base-schema.js';
 import { NOT_FOUND_MESSAGE, notFound, orNotFound } from './not-found.js';
@@ -12,15 +12,14 @@ interface Item {
   qty: number;
 }
 
-let mongo: MongoMemoryServer;
+const mongo = withMongo();
 let conn: Connection;
 let Items: Model<Item>;
 const wsA = new Types.ObjectId();
 const wsB = new Types.ObjectId();
 
 beforeAll(async () => {
-  mongo = await MongoMemoryServer.create();
-  conn = await mongoose.createConnection(mongo.getUri('tenancy')).asPromise();
+  conn = await mongoose.createConnection(mongo.uri('tenancy')).asPromise();
   Items = conn.model<Item>(
     'Item',
     new Schema({ workspaceId: workspaceIdField, name: String, qty: Number }, baseSchemaOptions),
@@ -29,7 +28,6 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await conn.close();
-  await mongo.stop();
 });
 
 let aDoc: { _id: Types.ObjectId };

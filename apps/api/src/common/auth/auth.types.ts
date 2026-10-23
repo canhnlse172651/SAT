@@ -1,5 +1,5 @@
 import type { Request } from 'express';
-import type { Role } from '@sat/shared';
+import type { Role, SessionFailureReason } from '@sat/shared';
 
 /** The authenticated caller, resolved from the session on every request. */
 export interface AuthPrincipal {
@@ -10,7 +10,7 @@ export interface AuthPrincipal {
 }
 
 /** Why authentication failed; sent as `details.reason` of the 401 (ADR-0005). */
-export type AuthFailureReason = 'missing' | 'expired' | 'locked';
+export type AuthFailureReason = SessionFailureReason;
 
 export type AuthedRequest = Request & { auth?: AuthPrincipal };
 

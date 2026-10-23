@@ -1,25 +1,17 @@
 // Integration test against a real (in-memory) MongoDB — proves the persistence path end to end.
 import { getConnectionToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose, { type Connection } from 'mongoose';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { DB_READY, type DbReady, DatabaseModule } from './database.module.js';
+import { withMongo } from './test/with-mongo.js';
 
-let mongo: MongoMemoryServer;
-
-beforeAll(async () => {
-  mongo = await MongoMemoryServer.create();
-});
-
-afterAll(async () => {
-  await mongo.stop();
-});
+const mongo = withMongo();
 
 describe('DatabaseModule', () => {
   it('connects, round-trips a document, and reports readiness', async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [DatabaseModule.forRoot(mongo.getUri('sat-test'))],
+      imports: [DatabaseModule.forRoot(mongo.uri('sat-test'))],
     }).compile();
     await moduleRef.init();
     const isDbReady = moduleRef.get<DbReady>(DB_READY);

@@ -8,7 +8,8 @@
     "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
     "start": "node --env-file-if-exists=../../.env --enable-source-maps dist/main.js",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "seed": "node --env-file-if-exists=../../.env --enable-source-maps dist/seed.js"
   },
   "dependencies": {
     "@nestjs/common": "^12.2.0",

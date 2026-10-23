@@ -1,22 +1,12 @@
 import { Controller, Get, Post } from '@nestjs/common';
-import type { NestExpressApplication } from '@nestjs/platform-express';
-import { Test } from '@nestjs/testing';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { Types } from 'mongoose';
-import { LoggerModule } from 'nestjs-pino';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { configureApp } from '../../app.js';
-import { loadConfig } from '../../config.js';
-import { DatabaseModule } from '../../database.module.js';
-import { loggerParams } from '../../logger.js';
-import { ContextModule } from '../context/context.module.js';
+import { loginAs } from '../../test/login-as.js';
+import { createTestApp, type TestApp } from '../../test/create-test-app.js';
 import { requireContext } from '../context/request-context.js';
 import { FixedClock } from '../ports/clock.js';
-import { AuthModule } from './auth.module.js';
 import type { AuthPrincipal } from './auth.types.js';
 import { CurrentUser, Public, Roles } from './decorators.js';
-import { SessionService } from './session.service.js';
 
 @Controller('probe')
 class ProbeController {
@@ -45,45 +35,28 @@ class ProbeController {
 }
 
 const ORIGIN = 'https://sat.example.com';
-const config = loadConfig({ NODE_ENV: 'test', APP_ORIGIN: ORIGIN });
 const START = '2026-03-01T08:00:00.000Z';
 
-let mongo: MongoMemoryServer;
-let app: NestExpressApplication;
-let sessions: SessionService;
+let kit: TestApp;
 const clock = new FixedClock(START);
 
 async function login(role: 'GV' | 'HV') {
-  const { token, session } = await sessions.create({
-    userId: new Types.ObjectId().toString(),
-    workspaceId: new Types.ObjectId().toString(),
-    role,
-  });
-  return { cookie: `sat_sid=${token}`, session };
+  const { cookie, userId, workspaceId } = await loginAs(kit.app, role);
+  return { cookie, session: { userId, workspaceId } };
 }
 
-const http = () => request(app.getHttpServer());
+const http = () => request(kit.app.getHttpServer());
 
 beforeAll(async () => {
-  mongo = await MongoMemoryServer.create();
-  const moduleRef = await Test.createTestingModule({
-    imports: [
-      LoggerModule.forRoot(loggerParams('silent')),
-      ContextModule,
-      DatabaseModule.forRoot(mongo.getUri('sat-auth-test')),
-      AuthModule.forRoot(config, { clock }),
-    ],
+  kit = await createTestApp({
+    clock,
+    env: { APP_ORIGIN: ORIGIN },
     controllers: [ProbeController],
-  }).compile();
-  app = moduleRef.createNestApplication<NestExpressApplication>({ bufferLogs: true });
-  configureApp(app);
-  await app.init();
-  sessions = app.get(SessionService);
+  });
 });
 
 afterAll(async () => {
-  await app.close();
-  await mongo.stop();
+  await kit.close();
 });
 
 describe('AuthGuard', () => {

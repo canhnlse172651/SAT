@@ -25,3 +25,20 @@ describe('loadConfig auth settings', () => {
     );
   });
 });
+
+describe('loadConfig upload settings', () => {
+  it('defaults to var/uploads and 20 MiB, and parses overrides', () => {
+    expect(loadConfig({})).toMatchObject({
+      UPLOADS_DIR: 'var/uploads',
+      UPLOAD_MAX_BYTES: 20971520,
+    });
+    expect(loadConfig({ UPLOADS_DIR: '/data/u', UPLOAD_MAX_BYTES: '1024' })).toMatchObject({
+      UPLOADS_DIR: '/data/u',
+      UPLOAD_MAX_BYTES: 1024,
+    });
+  });
+
+  it('rejects a non-positive UPLOAD_MAX_BYTES', () => {
+    expect(() => loadConfig({ UPLOAD_MAX_BYTES: '0' })).toThrow(/UPLOAD_MAX_BYTES/);
+  });
+});

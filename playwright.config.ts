@@ -14,7 +14,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  // Production build + hermetic backend (in-memory MongoDB): no Docker or external services needed.
+  // Production build + hermetic backend (in-memory MongoDB, NODE_ENV=test for dev endpoints): no Docker needed.
   webServer: {
     command: 'npm run build && node tests/e2e/server.mjs',
     url: `http://127.0.0.1:${PORT}/api/ready`,
