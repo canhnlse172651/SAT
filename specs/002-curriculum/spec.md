@@ -2,7 +2,7 @@
 id: 002
 slug: curriculum
 title: Curriculum & Lessons
-status: tasked
+status: implementing
 branch: feat/002-curriculum
 created: 2026-10-18
 updated: 2026-10-23

@@ -188,3 +188,15 @@
   color: var(--danger);
   font-size: 12px;
 }
+
+/* Prototype utilities used by list rows and toolbars (`.grow`, `.muted-3`, `.strong`). */
+.grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.muted-3 {
+  color: var(--text-3);
+}
+.strong {
+  font-weight: 600;
+}

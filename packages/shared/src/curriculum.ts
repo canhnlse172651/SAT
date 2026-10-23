@@ -428,3 +428,12 @@ export const learnCurriculumSchema = z.object({
   lessons: z.array(learnLessonSchema),
 });
 export type LearnCurriculum = z.infer<typeof learnCurriculumSchema>;
+
+export const coverUploadResponseSchema = z.object({ fileId: z.string(), url: z.string() });
+export const copyNameResponseSchema = z.object({ name: z.string(), hsk: hskLevelSchema });
+export const addItemResponseSchema = z.object({ lesson: lessonSchema, itemId: z.string() });
+export const moveItemResponseSchema = z.object({
+  lesson: lessonSchema,
+  position: z.number(),
+  total: z.number(),
+});

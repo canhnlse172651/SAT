@@ -36,6 +36,14 @@ export const ICON_PATHS = {
   close: 'M6 6l12 12M18 6L6 18',
   send: 'M4 12l16-8-6 16-2-7z',
   camera: 'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  grip: 'M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  copy: 'M8 8h12v12H8zM4 16V4h12',
+  up: 'M6 15l6-6 6 6',
+  down: 'M6 9l6 6 6-6',
+  archive: 'M3 4h18v4H3zM5 8v12h14V8M10 12h4',
+  image: 'M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15.5 9.5h.01',
+  text: 'M4 6h16M4 10h16M4 14h10M4 18h12',
 } as const;
 
 export type IconName = keyof typeof ICON_PATHS;

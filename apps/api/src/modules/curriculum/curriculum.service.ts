@@ -9,6 +9,7 @@ import {
   type HskLevel,
   type LessonRow,
   type UsingClass,
+  copyName,
   foldSearch,
   inUseMessage,
 } from '@sat/shared';
@@ -416,6 +417,16 @@ export class CurriculumService {
   }
 
   /* ---------- duplicate (REQ-15) ---------- */
+
+  /** AC-15.1: "<name> (bản sao)", or " (bản sao 2)", " (bản sao 3)"… when taken (archived curricula included). */
+  async copyNameFor(p: AuthPrincipal, id: string): Promise<{ name: string; hsk: HskLevel }> {
+    const c = await this.find(p, id);
+    const scope = scoped(this.curricula, p.workspaceId);
+    for (let n = 1; ; n++) {
+      const name = copyName(c.name, n);
+      if (!(await scope.exists({ nameKey: foldSearch(name) }))) return { name, hsk: c.hsk };
+    }
+  }
 
   /**
    * AC-15.2 … AC-15.6: the copy is written hidden (`copyState: copying`) and only becomes visible once every Bài is in;

@@ -4,6 +4,7 @@ import {
   type SessionResponse,
 } from '@sat/shared';
 import { create } from 'zustand';
+import { clearSessionPrefs } from '../curriculum/session-prefs';
 import { apiRequest, sessionFailureReason } from '../../lib/api-client';
 
 export type SessionStatus = 'idle' | 'loading' | 'ok' | 'error';
@@ -39,9 +40,14 @@ export const useSessionStore = create<SessionState>()((set) => ({
       set({ status: 'error', user: null, workspace: null, reason: sessionFailureReason(err) });
     }
   },
-  signedIn: ({ user, workspace }) =>
-    set({ status: 'ok', user, workspace, reason: null, notice: null }),
+  signedIn: ({ user, workspace }) => {
+    clearSessionPrefs();
+    set({ status: 'ok', user, workspace, reason: null, notice: null });
+  },
   // Signed out / session expired: 'error' (not 'idle') so the guard redirects instead of reloading.
-  clear: (reason = null, notice = null) =>
-    set({ status: 'error', user: null, workspace: null, reason, notice }),
+  clear: (reason = null, notice = null) => {
+    // Choices kept "for this sign-in" (002 AC-3.2, AC-16.8) end with it.
+    clearSessionPrefs();
+    set({ status: 'error', user: null, workspace: null, reason, notice });
+  },
 }));

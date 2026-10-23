@@ -99,6 +99,11 @@ export class CurriculumController {
     return this.curricula.restore(p, pathId(id));
   }
 
+  @Get(':id/copy-name')
+  copyName(@CurrentUser() p: AuthPrincipal, @Param('id') id: string) {
+    return this.curricula.copyNameFor(p, pathId(id));
+  }
+
   @Post(':id/duplicate')
   @HttpCode(201)
   duplicate(
