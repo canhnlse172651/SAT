@@ -1,10 +1,11 @@
 // Walking-skeleton e2e: proves browser → SPA → API → MongoDB. Infrastructure only, so it cites no AC.
 import { expect, test } from '@playwright/test';
 
-test('the app loads and reports a healthy API', async ({ page }) => {
+test('the app loads and the API reports healthy', async ({ page, request }) => {
+  // `/` is HomeRedirect now: an anonymous visitor lands on A01 (the old "SAT / API is healthy" page is gone).
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'SAT' })).toBeVisible();
-  await expect(page.getByRole('status')).toHaveText('API is healthy');
+  await expect(page).toHaveURL(/\/dang-nhap/);
+  expect((await request.get('/api/health')).status()).toBe(200);
 });
 
 test('readiness reports MongoDB as up', async ({ request }) => {
