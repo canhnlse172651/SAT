@@ -60,6 +60,24 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
   công tắc "Hiện mục lưu trữ (n)"; mỗi mục là vùng "Bước học k" / "Bộ bài tập k" với ô "Tên", nút "Lưu nháp", "Xuất bản",
   "Lưu thay đổi", "Lên trên", "Xuống dưới", "Lưu trữ" / "Khôi phục", "Thêm sau", "Xóa". T21: "Thoát xem trước", tab "Bài học" /
   "Bài tập", công tắc "Gồm cả mục Nháp", nhóm "Chế độ hiển thị" ("Web", "Mobile").
+- **Chi tiết đã xây dựng (cập nhật sau khi code):**
+  - Đường dẫn: T05 `/gv/giao-trinh`, T06 `/gv/giao-trinh/<id>`, T18 `…/bai/<bài>`, T07 `…/bai/<bài>/bai-hoc` (tab Bài học), T09
+    `…/bai/<bài>/thu-cong` (cùng màn T07, mở ở tab Bài tập), T21 `…/bai/<bài>/xem-truoc`, T20 `…/bai/<bài>/review-ai` (010, chưa có),
+    T04 tab Nội dung `/gv/lop-hoc/<lớp>?tab=noi-dung` (003, chưa có). Đường dẫn trong trang (T06, T18, T07, T21) là vùng "Đường dẫn".
+  - Biểu mẫu giáo trình: ô "Tên", các nút cấp độ "HSK1"…"HSK9" (nhóm "Cấp độ HSK"), "Mô tả"; ảnh bìa chọn qua nút "Chọn ảnh" hoặc trực
+    tiếp `setInputFiles` vào ô tệp ẩn "Chọn tệp ảnh bìa"; nút "Tạo giáo trình" / "Lưu" / "Nhân bản" (khi đang nhân bản: "Đang nhân bản…").
+    Hộp đổi cấp độ: "Đổi cấp độ" / "Hủy". Nút bộ lọc trên T05 có số đi kèm ("HSK1 2", "Tất cả 3").
+  - "Thêm bài" / "Nhân bản bài" khi đủ 100 Bài: `aria-disabled` kèm chú thích "Mỗi giáo trình tối đa 100 bài". Hộp chặn xóa Bài:
+    tiêu đề "Không thể xóa bài", nút "Đã hiểu". Hộp chặn xóa giáo trình đang dùng: tiêu đề "Không thể xóa: giáo trình đang được dùng bởi
+    N lớp.", nội dung tên lớp, nút "Lưu trữ" / "Đóng"; có dữ liệu học tập: tiêu đề "Không thể xóa giáo trình", nội dung theo AC-13.3.
+  - Trình soạn tạm thời trong T07 (004/005 sẽ thay): mỗi mục là vùng "Bước học k" / "Bộ bài tập k" (k = vị trí trong phần, tính cả mục
+    Lưu trữ); ô "Tên"; bước học: ô "Nội dung khối 1"…, nút "Thêm khối Văn bản"; bộ bài tập: ô "Nội dung câu 1", "Câu 1 · Phương án A"…"D",
+    nút chọn "Phương án A là đáp án đúng", nút "Thêm câu trắc nghiệm". Nhãn "Chưa hoàn chỉnh" khi mục chưa sẵn sàng, "Chưa lưu" khi có
+    thay đổi chưa lưu; tab hiển thị "Bài tập · 1 chưa lưu" khi tab đó có mục chưa lưu; thanh công cụ ghi "k mục chưa lưu" hoặc
+    "Đã lưu lúc HH:mm". Lưu nội dung: thông báo "Đã lưu lúc HH:mm".
+  - Nhãn AI giả lập (`/api/dev/curriculum/ai-label`): "AI · Đang tạo 45%" / "AI · Chờ duyệt" là nút; T18 mở bằng `#tao-bang-ai` thì tiêu
+    điểm ở panel "Tạo bằng AI".
+  - **Thông báo (toast)** tự biến mất sau 2,8 giây (cảnh báo / lỗi 5 giây), tối đa 2 thông báo cùng lúc — kiểm tra ngay sau thao tác.
 
 ## Danh sách test case
 
