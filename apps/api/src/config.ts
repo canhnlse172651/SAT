@@ -19,6 +19,8 @@ const EnvSchema = z.object({
     .int()
     .positive()
     .default(20 * 1024 * 1024),
+  // Dev e-mail outbox: how long a simulated send takes, so "Đang gửi email" is visible (0 in API tests).
+  DEV_EMAIL_DELAY_MS: z.coerce.number().int().min(0).max(60_000).default(1_500),
   // Overrides cookie `Secure` outside production only (hermetic e2e over http).
   COOKIE_SECURE: z
     .enum(['true', 'false'])

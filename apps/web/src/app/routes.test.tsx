@@ -139,4 +139,30 @@ describe('401 handling', () => {
     expect(router.state.location.search).toBe(`?returnTo=${encodeURIComponent('/gv/lop-hoc')}`);
     expect(useSessionStore.getState().user).toBeNull();
   });
+
+  it('[001:AC-5.4] [001:AC-12.3] the 401 reason reaches A01 as a notice', async () => {
+    const { apiRequest } = await import('../lib/api-client');
+    const { useSessionStore } = await import('../features/session/session-store');
+    stubFetch({
+      'GET /api/classes': {
+        status: 401,
+        body: {
+          error: {
+            code: 'UNAUTHENTICATED',
+            message: 'x',
+            details: { reason: 'locked' },
+            requestId: 'r',
+          },
+        },
+      },
+    });
+    const { router } = open('/gv/lop-hoc', gv);
+    await screen.findByRole('heading', { name: /T02/ });
+    await expect(apiRequest('/classes')).rejects.toMatchObject({ status: 401 });
+    await vi.waitFor(() => expect(router.state.location.pathname).toBe('/dang-nhap'));
+    expect(router.state.location.state).toEqual({
+      notice: 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ giáo viên của bạn.',
+    });
+    expect(useSessionStore.getState().reason).toBe('locked');
+  });
 });

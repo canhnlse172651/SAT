@@ -10,7 +10,13 @@ import { DatabaseModule } from '../../database.module.js';
 import {
   CLOCK,
   DevOutboxReader,
+  EMAIL_EVENTS,
   EMAIL_SENDER,
+  EmailEvents,
+  EmailRejectedError,
+  devDeliveryOutcome,
+  OffsetClock,
+  type EmailEvent,
   FILE_STORAGE,
   FixedClock,
   JOB_SCHEDULER,
@@ -43,6 +49,49 @@ describe('Clock', () => {
     // 20:00 UTC on 1 Mar = 03:00 on 2 Mar in Vietnam
     const clock = new FixedClock('2026-03-01T20:00:00.000Z');
     expect(vnToday(clock).toISOString()).toBe('2026-03-01T17:00:00.000Z');
+  });
+});
+
+describe('OffsetClock', () => {
+  it('[001:AC-5.2] follows system time and can be moved and reset (dev time travel)', () => {
+    const clock = new OffsetClock();
+    const drift = () => clock.now().getTime() - Date.now();
+    expect(Math.abs(drift())).toBeLessThan(50);
+    clock.advance(3_600_000);
+    expect(drift()).toBeGreaterThan(3_599_000);
+    clock.reset();
+    expect(Math.abs(drift())).toBeLessThan(50);
+  });
+});
+
+describe('EmailEvents and the dev provider simulation', () => {
+  it('[001:AC-18.2] delivers events to listeners, survives a failing listener, and can unsubscribe', async () => {
+    const bus = new EmailEvents();
+    const seen: string[] = [];
+    vi.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
+    bus.on(() => {
+      throw new Error('boom');
+    });
+    const off = bus.on((e) => {
+      seen.push(e.messageId);
+    });
+    await bus.emit({ messageId: 'm1', type: 'bounced', at: new Date() });
+    off();
+    await bus.emit({ messageId: 'm2', type: 'bounced', at: new Date() });
+    expect(seen).toEqual(['m1']);
+  });
+
+  it('[001:AC-18.2] only .invalid recipients are refused or bounce', () => {
+    expect(devDeliveryOutcome('an@mail.example')).toEqual({ refuse: false, bounceAfterMs: null });
+    expect(devDeliveryOutcome('Reject@x.invalid')).toEqual({ refuse: true, bounceAfterMs: null });
+    expect(devDeliveryOutcome('late-bounce@x.invalid')).toEqual({
+      refuse: false,
+      bounceAfterMs: 10_000,
+    });
+    expect(devDeliveryOutcome('hv@khong-ton-tai.invalid')).toEqual({
+      refuse: false,
+      bounceAfterMs: 1_000,
+    });
   });
 });
 
@@ -170,6 +219,29 @@ describe('PortsModule dev mode (MongoDB + disk)', () => {
     expect(found[0]).toMatchObject({ id, text: 'secret-body', tag: 'activation' });
     expect((await reader.latest(5))[0]?.id).toBe(id);
     expect(await reader.findByRecipient('hv@example.com', 'other')).toHaveLength(0);
+
+    // provider simulation: refusal throws and stores nothing; .invalid addresses bounce after acceptance
+    await expect(
+      sender.send({
+        to: 'reject@x.invalid',
+        subject: 's',
+        html: 'h',
+        text: 't',
+        tag: 'activation',
+      }),
+    ).rejects.toBeInstanceOf(EmailRejectedError);
+    expect(await reader.findByRecipient('reject@x.invalid')).toHaveLength(0);
+    const bounced = new Promise<EmailEvent>((resolve) =>
+      ref.get<EmailEvents>(EMAIL_EVENTS).on(resolve),
+    );
+    const accepted = await sender.send({
+      to: 'hv@nowhere.invalid',
+      subject: 's',
+      html: 'h',
+      text: 't',
+      tag: 'activation',
+    });
+    expect(await bounced).toMatchObject({ messageId: accepted.id, type: 'bounced' });
 
     // storage
     const storage = ref.get<FileStorage>(FILE_STORAGE);

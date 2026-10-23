@@ -15,7 +15,7 @@ import { SessionModule } from './modules/session/session.module.js';
 
 export type AppConfig = Pick<
   Config,
-  'MONGODB_URI' | 'LOG_LEVEL' | 'UPLOADS_DIR' | 'UPLOAD_MAX_BYTES'
+  'MONGODB_URI' | 'LOG_LEVEL' | 'UPLOADS_DIR' | 'UPLOAD_MAX_BYTES' | 'DEV_EMAIL_DELAY_MS'
 > &
   AuthConfig;
 
@@ -35,6 +35,7 @@ export class AppModule {
           mode: 'dev',
           uploadsDir: config.UPLOADS_DIR,
           storage: { maxBytes: config.UPLOAD_MAX_BYTES },
+          devEmail: { delayMs: config.DEV_EMAIL_DELAY_MS },
         }),
         TenancyModule,
         DirectoryModule,

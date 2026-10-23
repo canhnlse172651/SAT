@@ -1,11 +1,15 @@
 import { type DynamicModule, Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CLOCK, type Clock, FixedClock, SystemClock } from './clock.js';
+import { CLOCK, type Clock, FixedClock, OffsetClock } from './clock.js';
 import {
+  DEV_EMAIL_OPTIONS,
   DEV_OUTBOX_MODEL,
+  type DevEmailOptions,
   DevOutboxEmailSender,
   DevOutboxReader,
+  EMAIL_EVENTS,
   EMAIL_SENDER,
+  EmailEvents,
   MemoryEmailSender,
   devOutboxSchema,
 } from './email.js';
@@ -29,6 +33,8 @@ export interface PortsOptions {
   storage?: StorageOptions;
   /** Overrides the clock of either mode (the test kit passes a shared FixedClock). */
   clock?: Clock;
+  /** Dev outbox simulation (`DEV_EMAIL_DELAY_MS`). */
+  devEmail?: DevEmailOptions;
 }
 
 @Global()
@@ -36,13 +42,14 @@ export interface PortsOptions {
 export class PortsModule {
   static forRoot(options: PortsOptions): DynamicModule {
     const storage = options.storage ?? {};
-    const exports = [CLOCK, EMAIL_SENDER, FILE_STORAGE, JOB_SCHEDULER];
+    const exports = [CLOCK, EMAIL_SENDER, EMAIL_EVENTS, FILE_STORAGE, JOB_SCHEDULER];
     if (options.mode === 'test') {
       return {
         module: PortsModule,
         providers: [
           { provide: CLOCK, useValue: options.clock ?? new FixedClock() },
           { provide: EMAIL_SENDER, useClass: MemoryEmailSender },
+          { provide: EMAIL_EVENTS, useValue: new EmailEvents() },
           { provide: FILE_STORAGE, useValue: new MemoryStorage(storage) },
           {
             provide: JOB_SCHEDULER,
@@ -62,9 +69,12 @@ export class PortsModule {
         ]),
       ],
       providers: [
-        { provide: CLOCK, useValue: options.clock ?? new SystemClock() },
+        // OffsetClock = system time unless the dev-only POST /api/dev/clock moves it.
+        { provide: CLOCK, useValue: options.clock ?? new OffsetClock() },
         { provide: STORAGE_ROOT, useValue: options.uploadsDir ?? 'var/uploads' },
         { provide: STORAGE_OPTIONS, useValue: storage },
+        { provide: EMAIL_EVENTS, useValue: new EmailEvents() },
+        { provide: DEV_EMAIL_OPTIONS, useValue: options.devEmail ?? { delayMs: 0 } },
         DevOutboxEmailSender,
         DevOutboxReader,
         { provide: EMAIL_SENDER, useExisting: DevOutboxEmailSender },

@@ -13,6 +13,26 @@ export class SystemClock implements Clock {
   }
 }
 
+/**
+ * Development clock: system time plus an offset that only the dev-only `POST /api/dev/clock` changes, so QA can
+ * check rules that span hours or days (session expiry, lockouts, sending limits) against a running server.
+ */
+export class OffsetClock implements Clock {
+  private offsetMs = 0;
+
+  now(): Date {
+    return new Date(Date.now() + this.offsetMs);
+  }
+
+  advance(ms: number): void {
+    this.offsetMs += ms;
+  }
+
+  reset(): void {
+    this.offsetMs = 0;
+  }
+}
+
 /** Test clock: frozen until set or advanced. */
 export class FixedClock implements Clock {
   private current: Date;

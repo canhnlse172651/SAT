@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ApiError, apiRequest, setUnauthorizedHandler } from './api-client';
+import { ApiError, apiRequest, sessionFailureReason, setUnauthorizedHandler } from './api-client';
 import { stubFetch } from '../test/stub-fetch';
 
 afterEach(() => {
@@ -47,5 +47,40 @@ describe('apiRequest', () => {
     expect(handler).toHaveBeenCalledTimes(1);
     await expect(apiRequest('/a', { handleUnauthorized: false })).rejects.toBeInstanceOf(ApiError);
     expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('[001:AC-5.4] keeps error.details and exposes the 401 reason', async () => {
+    const handler = vi.fn();
+    setUnauthorizedHandler(handler);
+    stubFetch({
+      'GET /api/b': {
+        status: 401,
+        body: {
+          error: {
+            code: 'UNAUTHENTICATED',
+            message: 'x',
+            details: { reason: 'locked' },
+            requestId: 'r',
+          },
+        },
+      },
+      'GET /api/c': {
+        status: 400,
+        body: {
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'x',
+            details: [{ path: ['email'] }],
+            requestId: 'r',
+          },
+        },
+      },
+    });
+    const err = await apiRequest('/b').catch((e: unknown) => e);
+    expect(handler).toHaveBeenCalledWith(err);
+    expect(sessionFailureReason(err)).toBe('locked');
+    const bad = await apiRequest('/c').catch((e: unknown) => e);
+    expect(bad).toMatchObject({ details: [{ path: ['email'] }] });
+    expect(sessionFailureReason(bad)).toBeNull();
   });
 });

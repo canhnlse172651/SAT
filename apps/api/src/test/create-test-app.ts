@@ -54,6 +54,7 @@ export async function createTestApp(options: TestAppOptions = {}): Promise<TestA
       LOG_LEVEL: 'silent',
       MONGODB_URI: mongo.getUri('sat-test'),
       UPLOADS_DIR: uploads,
+      DEV_EMAIL_DELAY_MS: '0',
       ...options.env,
     });
     const moduleRef = await Test.createTestingModule({

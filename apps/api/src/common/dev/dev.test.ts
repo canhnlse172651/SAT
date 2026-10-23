@@ -83,6 +83,15 @@ describe('dev endpoints (test mode)', () => {
     expect(evil.status).toBe(403);
   });
 
+  it('[001:AC-5.2] POST /api/dev/clock moves the server clock; the body is validated', async () => {
+    const before = kit.clock.now().getTime();
+    const res = await kit.http.post('/api/dev/clock').send({ advanceMs: 3_600_000 });
+    expect(res.status).toBe(200);
+    expect(new Date(res.body.now).getTime() - before).toBe(3_600_000);
+    expect((await kit.http.post('/api/dev/clock').send({ advanceMs: 'x' })).status).toBe(400);
+    expect((await kit.http.delete('/api/dev/clock')).status).toBe(204);
+  });
+
   it('[000:AC-dev] GET /api/dev/outbox returns sent mail filtered by recipient and tag', async () => {
     const sender = kit.app.get<EmailSender>(EMAIL_SENDER);
     const mail = { subject: 's', html: '<p>x</p>', text: 'x' };

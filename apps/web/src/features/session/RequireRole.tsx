@@ -2,6 +2,7 @@ import type { Role } from '@sat/shared';
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import { loginPathWithReturn } from '../../lib/home-path';
+import { type LoginNoticeState, sessionNotice } from './session-notice';
 import { useSessionStore } from './session-store';
 
 interface Props {
@@ -16,6 +17,7 @@ export function RequireRole({ role, otherwise }: Props) {
   const status = useSessionStore((s) => s.status);
   const user = useSessionStore((s) => s.user);
   const load = useSessionStore((s) => s.load);
+  const reason = useSessionStore((s) => s.reason);
   const location = useLocation();
 
   useEffect(() => {
@@ -26,7 +28,14 @@ export function RequireRole({ role, otherwise }: Props) {
     return <p role="status">Đang tải…</p>;
   }
   if (!user) {
-    return <Navigate replace to={loginPathWithReturn(location.pathname + location.search)} />;
+    const state: LoginNoticeState = { notice: sessionNotice(reason) };
+    return (
+      <Navigate
+        replace
+        to={loginPathWithReturn(location.pathname + location.search)}
+        state={state}
+      />
+    );
   }
   if (user.role !== role) {
     return <Navigate replace to={otherwise} />;
