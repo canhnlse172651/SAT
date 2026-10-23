@@ -1,0 +1,107 @@
+/* Structural layout only; visual styling uses the design tokens (styles/tokens.css). */
+.auth-layout {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-4, 16px);
+  background: var(--bg, #f6f3ec);
+}
+.auth-layout__main {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e6e0d4);
+  border-radius: var(--r-xl, 12px);
+  padding: var(--sp-6, 24px);
+}
+.auth-layout__brand {
+  margin: 0 0 var(--sp-4, 16px);
+  font-weight: 700;
+  color: var(--brand, #c0362c);
+}
+
+.teacher-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+.teacher-shell__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4, 16px);
+  padding: var(--sp-4, 16px);
+  background: var(--side-bg, #f0ebe1);
+  border-right: 1px solid var(--border, #e6e0d4);
+}
+.teacher-shell__workspace {
+  margin: 0;
+  font-weight: 700;
+}
+.teacher-shell__side ul,
+.student-shell__tabs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.teacher-shell__side nav a {
+  display: block;
+  padding: var(--sp-2, 8px) var(--sp-3, 12px);
+  border-radius: var(--r-md, 6px);
+  color: var(--text-2, #4c5260);
+  text-decoration: none;
+}
+.teacher-shell__side nav a[aria-current='page'] {
+  background: var(--primary-soft, #e8ebf4);
+  color: var(--primary-text, #1d2f62);
+  font-weight: 600;
+}
+.teacher-shell__user {
+  margin-top: auto;
+}
+.teacher-shell__main {
+  padding: var(--sp-6, 24px);
+  min-width: 0;
+}
+
+.student-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.student-shell__main {
+  flex: 1;
+  padding: var(--sp-4, 16px);
+  padding-bottom: calc(64px + var(--sp-4, 16px));
+}
+.student-shell__tabs {
+  position: fixed;
+  inset: auto 0 0 0;
+  background: var(--surface, #fff);
+  border-top: 1px solid var(--border, #e6e0d4);
+}
+.student-shell__tabs ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.student-shell__tabs a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch, 44px);
+  padding: var(--sp-2, 8px) 2px;
+  font-size: 12px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--text-2, #4c5260);
+}
+.student-shell__tabs a[aria-current='page'] {
+  color: var(--primary-text, #1d2f62);
+  font-weight: 700;
+}
+
+.notfound,
+.error-fallback {
+  max-width: 480px;
+  margin: 12vh auto;
+  padding: var(--sp-4, 16px);
+}

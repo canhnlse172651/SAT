@@ -1,3 +1,5 @@
+import { apiErrorSchema, ERROR_CODES } from '@sat/shared';
+
 /** Mirrors the API error contract: { error: { code, message, requestId } }. */
 export class ApiError extends Error {
   constructor(
@@ -11,24 +13,39 @@ export class ApiError extends Error {
   }
 }
 
-interface ErrorBody {
-  error?: { code?: string; message?: string; requestId?: string };
+export interface ApiRequestInit extends RequestInit {
+  /** Set to false for calls where a 401 is an expected answer (e.g. loading the session). */
+  handleUnauthorized?: boolean;
 }
 
-export async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const headers = new Headers(init.headers);
+type UnauthorizedHandler = () => void;
+let unauthorizedHandler: UnauthorizedHandler | null = null;
+
+/** Registers the app-level reaction to a 401 (clear session + navigate); returns an unregister fn. */
+export function setUnauthorizedHandler(handler: UnauthorizedHandler | null): () => void {
+  unauthorizedHandler = handler;
+  return () => {
+    if (unauthorizedHandler === handler) unauthorizedHandler = null;
+  };
+}
+
+export async function apiRequest<T>(path: string, init: ApiRequestInit = {}): Promise<T> {
+  const { handleUnauthorized = true, ...fetchInit } = init;
+  const headers = new Headers(fetchInit.headers);
   headers.set('Accept', 'application/json');
-  if (init.body !== undefined && !headers.has('Content-Type')) {
+  if (fetchInit.body !== undefined && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
-  const res = await fetch(`/api${path}`, { ...init, headers });
+  const res = await fetch(`/api${path}`, { credentials: 'same-origin', ...fetchInit, headers });
   const body: unknown = await res.json().catch(() => null);
   if (!res.ok) {
-    const err = (body as ErrorBody | null)?.error;
+    const parsed = apiErrorSchema.safeParse(body);
+    const err = parsed.success ? parsed.data.error : undefined;
+    if (res.status === 401 && handleUnauthorized) unauthorizedHandler?.();
     throw new ApiError(
       res.status,
-      err?.code ?? 'HTTP_ERROR',
+      err?.code ?? (res.status === 401 ? ERROR_CODES.UNAUTHENTICATED : 'HTTP_ERROR'),
       err?.message ?? (res.statusText || `HTTP ${res.status}`),
       err?.requestId,
     );

@@ -14,6 +14,7 @@
     "@sat/shared": "*",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
+    "react-router": "^8.5.0",
     "zustand": "^5.0.15"
   },
   "devDependencies": {

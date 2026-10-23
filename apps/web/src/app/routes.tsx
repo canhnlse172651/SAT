@@ -1,0 +1,66 @@
+import type { RouteObject } from 'react-router';
+import { HomeRedirect } from '../features/session/HomeRedirect';
+import { RequireRole } from '../features/session/RequireRole';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { StudentShell } from '../layouts/StudentShell';
+import { TeacherShell } from '../layouts/TeacherShell';
+import { homePath, NOT_FOUND_PATH } from '../lib/home-path';
+import { NotFoundPage } from '../pages/NotFoundPage';
+import { RootLayout, RouteError } from './RootLayout';
+import { SCREENS, type Screen, type ScreenArea } from './screens';
+
+/** Each module replaces its screen's loader with the real page; until then a placeholder shows. */
+function screenRoute(screen: Screen): RouteObject {
+  return {
+    path: screen.path,
+    lazy: async () => {
+      const { PlaceholderPage } = await import('../pages/PlaceholderPage');
+      return { element: <PlaceholderPage id={screen.id} name={screen.name} /> };
+    },
+  };
+}
+
+const inArea = (area: ScreenArea) => SCREENS.filter((s) => s.area === area).map(screenRoute);
+
+export function createAppRoutes(): RouteObject[] {
+  const devRoutes: RouteObject[] = import.meta.env.DEV
+    ? [
+        {
+          path: '/dev/ui',
+          lazy: async () => {
+            const { UiCatalog } = await import('../pages/dev/UiCatalog');
+            return { element: <UiCatalog /> };
+          },
+        },
+      ]
+    : [];
+
+  return [
+    {
+      element: <RootLayout />,
+      errorElement: <RouteError />,
+      children: [
+        { path: '/', element: <HomeRedirect /> },
+        { element: <AuthLayout />, children: inArea('auth') },
+        { path: NOT_FOUND_PATH, element: <NotFoundPage /> },
+        ...devRoutes,
+        {
+          // T01–T27: an HV is sent to S01 (001 AC-16.3, AC-20.10).
+          element: <RequireRole role="GV" otherwise={homePath('HV')} />,
+          children: [{ element: <TeacherShell />, children: inArea('gv') }],
+        },
+        {
+          // S01–S12: a GV is sent to T01 (001 AC-16.4).
+          element: <RequireRole role="HV" otherwise={homePath('GV')} />,
+          children: [{ element: <StudentShell />, children: inArea('hv') }],
+        },
+        {
+          // S13–S20: a GV gets A05 (001 AC-20.4).
+          element: <RequireRole role="HV" otherwise={NOT_FOUND_PATH} />,
+          children: [{ element: <StudentShell />, children: inArea('selfStudy') }],
+        },
+        { path: '*', element: <NotFoundPage /> },
+      ],
+    },
+  ];
+}
