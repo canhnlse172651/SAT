@@ -44,3 +44,6 @@ Thumbs.db
 
 # mongodb-memory-server binary cache (CI)
 .mongodb-binaries/
+
+# Local dev adapters (ports): uploaded files
+var/
