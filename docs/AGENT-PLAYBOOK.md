@@ -200,18 +200,24 @@ rồi node scripts/sync-state.mjs.
 
 ## 8. Chạy thử local (FE + BE)
 
-Mở 2 terminal ở thư mục dự án (Node 24 khuyến nghị; Node 20 vẫn chạy được dev):
+Node 24 khuyến nghị (Node 20 vẫn chạy được dev). Lần đầu: `npm install`.
+
+**MongoDB bằng Docker (mặc định)** — cần Docker Desktop đang chạy:
 
 ```bash
-npm install            # lần đầu
-npm run dev:db         # terminal 1: MongoDB cục bộ ở 127.0.0.1:27017, dữ liệu lưu ở var/dev-mongo (giữ cửa sổ này mở)
-npm run dev:seed       # terminal 2, lần đầu: tạo workspace "Cô Lan", 1 GV, 3 HV
-npm run dev            # terminal 2: API http://localhost:3000 + web http://localhost:5173
+npm run db:up          # bật container sat-mongo-1 (mongo:8, cổng 27017, dữ liệu trong volume mongo-data), chờ healthy
+npm run dev:seed       # lần đầu: tạo workspace "Cô Lan", 1 GV, 3 HV (chạy lại không sao — idempotent)
+npm run dev            # API http://localhost:3000 + web http://localhost:5173
 ```
 
+Lệnh khác: `npm run db:down` (dừng container, giữ dữ liệu), `npm run db:logs`, `npm run db:shell` (mongosh vào DB `sat`).
+Xóa sạch dữ liệu: `docker compose down -v` (xóa cả volume — không hoàn tác được).
+
+**Không có Docker:** thay `npm run db:up` bằng `npm run dev:db` (MongoDB cục bộ qua mongodb-memory-server, dữ liệu ở
+`var/dev-mongo`, giữ cửa sổ terminal đó mở). Hai cách dùng chung cổng 27017 — chỉ bật một.
+
 Mở http://localhost:5173 → màn đăng nhập (đang xây dựng) → **"Đăng nhập nhanh (dev)"** → chọn vai Giáo viên hoặc Học viên.
-Trang `/dev/login` và danh mục giao diện `/dev/ui` chỉ có khi chạy dev. Có Docker thì `docker compose up -d mongo` thay cho
-`npm run dev:db`.
+Trang `/dev/login` và danh mục giao diện `/dev/ui` chỉ có khi chạy dev.
 
 ## 9. Nền tảng (wave 0)
 

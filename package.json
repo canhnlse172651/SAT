@@ -11,6 +11,10 @@
   ],
   "scripts": {
     "dev": "npm run build -w @sat/shared && concurrently -k -n api,web -c blue,magenta \"npm run dev -w @sat/api\" \"npm run dev -w @sat/web\"",
+    "db:up": "docker compose up -d --wait mongo",
+    "db:down": "docker compose stop mongo",
+    "db:logs": "docker compose logs -f mongo",
+    "db:shell": "docker compose exec mongo mongosh sat",
     "dev:db": "node scripts/dev-db.mjs",
     "dev:seed": "npm run build -w @sat/shared && npm run build -w @sat/api && npm run seed -w @sat/api",
     "lint": "eslint . --max-warnings 0 && prettier --check .",
