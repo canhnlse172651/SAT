@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitest/config';
 
-// One `vitest run` covers every app; each app's own config defines its environment.
+// One `vitest run` covers every app and package; each app's own config defines its environment.
 export default defineConfig({
   test: {
-    projects: ['apps/*'],
+    projects: ['apps/*', 'packages/*'],
   },
 });

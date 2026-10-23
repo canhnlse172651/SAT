@@ -11,6 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@sat/shared": "*",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "zustand": "^5.0.15"

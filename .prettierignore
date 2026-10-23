@@ -11,3 +11,6 @@ package-lock.json
 playwright-report/
 test-results/
 .mongodb-binaries/
+
+# Dense generated click-through test of the prototype (formatted by its build scripts)
+scripts/design/verify-prototype.cjs

@@ -1,0 +1,25 @@
+{
+  "name": "@sat/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Contracts shared by api and web. The published contract is dist/ (ESM + .d.ts); the web dev server and Vitest alias to src/ for speed (see apps/web/vite.config.ts).",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}

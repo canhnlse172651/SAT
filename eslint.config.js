@@ -29,6 +29,11 @@ export default defineConfig([
     languageOptions: { globals: globals.node },
   },
   {
+    // Static helpers loaded by the spec pages (specs/*/spec.html) run in the browser.
+    files: ['specs/assets/**/*.js'],
+    languageOptions: { globals: globals.browser },
+  },
+  {
     // Nest DI needs value imports for constructor-injected classes; with these options
     // consistent-type-imports leaves decorated files alone instead of breaking the metadata.
     files: ['apps/api/**/*.ts'],

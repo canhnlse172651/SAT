@@ -228,22 +228,55 @@ const totals = {
   tasksDone: mvpStates.reduce((a, s) => a + s.tasks.done, 0),
   tasksTotal: mvpStates.reduce((a, s) => a + s.tasks.total, 0),
 };
-const VN = { draft: 'Nháp', clarified: 'Đã làm rõ', approved: 'Đã duyệt', planned: 'Có plan', tasked: 'Có task', implementing: 'Đang code', verified: 'Đã kiểm chứng', shipped: 'Đã ship' };
-const TONE = { draft: 'muted', clarified: 'warn', approved: 'info', planned: 'info', tasked: 'info', implementing: 'accent', verified: 'ok', shipped: 'ok' };
-const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-const ordered = [...mvpStates].sort((a, b) => (a.wave ?? 99) - (b.wave ?? 99) || a.id.localeCompare(b.id))
+const VN = {
+  draft: 'Nháp',
+  clarified: 'Đã làm rõ',
+  approved: 'Đã duyệt',
+  planned: 'Có plan',
+  tasked: 'Có task',
+  implementing: 'Đang code',
+  verified: 'Đã kiểm chứng',
+  shipped: 'Đã ship',
+};
+const TONE = {
+  draft: 'muted',
+  clarified: 'warn',
+  approved: 'info',
+  planned: 'info',
+  tasked: 'info',
+  implementing: 'accent',
+  verified: 'ok',
+  shipped: 'ok',
+};
+const esc = (v) =>
+  String(v ?? '').replace(
+    /[&<>"]/g,
+    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c],
+  );
+const ordered = [...mvpStates]
+  .sort((a, b) => (a.wave ?? 99) - (b.wave ?? 99) || a.id.localeCompare(b.id))
   .concat(states.filter((s) => !s.mvp));
 
 const row = (s) => {
   const t = s.tasks;
   const pct = t.total ? Math.round((t.done * 100) / t.total) : 0;
-  const status = s.mvp ? `<span class="st ${TONE[s.status] ?? 'muted'}">${esc(VN[s.status] ?? s.status)}</span>` : '<span class="st muted">Hoãn</span>';
-  const progress = !s.mvp ? '—' : t.total
-    ? `<div class="bar"><div style="width:${pct}%"></div></div><span class="small">${t.done}/${t.total} task · ${pct}%${t.blocked ? ` · <b class="danger">${t.blocked} bị chặn</b>` : ''}</span>`
-    : '<span class="small muted">chưa có task</span>';
-  const current = t.next ? `<b>${esc(t.next.id)}</b> <span class="small">${esc(t.next.text.replace(/\s+—\s+files:.*$/, '')).slice(0, 80)}</span>` : '<span class="muted">—</span>';
-  const tests = s.tests ? `${s.tests.pass}/${s.tests.total} đạt${s.tests.fail ? ` · <b class="danger">${s.tests.fail} lỗi</b>` : ''}` : '<span class="muted">—</span>';
-  const next = s.mvp ? `${esc(s.nextAction)}<br><code>${esc(s.command)}</code>` : '<span class="muted">Ngoài MVP</span>';
+  const status = s.mvp
+    ? `<span class="st ${TONE[s.status] ?? 'muted'}">${esc(VN[s.status] ?? s.status)}</span>`
+    : '<span class="st muted">Hoãn</span>';
+  const progress = !s.mvp
+    ? '—'
+    : t.total
+      ? `<div class="bar"><div style="width:${pct}%"></div></div><span class="small">${t.done}/${t.total} task · ${pct}%${t.blocked ? ` · <b class="danger">${t.blocked} bị chặn</b>` : ''}</span>`
+      : '<span class="small muted">chưa có task</span>';
+  const current = t.next
+    ? `<b>${esc(t.next.id)}</b> <span class="small">${esc(t.next.text.replace(/\s+—\s+files:.*$/, '')).slice(0, 80)}</span>`
+    : '<span class="muted">—</span>';
+  const tests = s.tests
+    ? `${s.tests.pass}/${s.tests.total} đạt${s.tests.fail ? ` · <b class="danger">${s.tests.fail} lỗi</b>` : ''}`
+    : '<span class="muted">—</span>';
+  const next = s.mvp
+    ? `${esc(s.nextAction)}<br><code>${esc(s.command)}</code>`
+    : '<span class="muted">Ngoài MVP</span>';
   return `<tr class="${s.mvp ? '' : 'off'}"><td class="id">${s.id}</td><td><a href="${esc(s.folder.replace(/^specs\//, ''))}/spec.html">${esc(s.name)}</a></td><td>${status}</td><td class="prog">${progress}</td><td>${current}</td><td>${tests}</td><td class="next">${next}</td></tr>`;
 };
 

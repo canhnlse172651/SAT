@@ -6,8 +6,15 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const file = join(dirname(fileURLToPath(import.meta.url)), '..', 'specs', 'screen-flow-design.html');
-const raw = readFileSync(file, 'utf8').replace(/\u([0-9a-f]{4})/gi, (_, h) => String.fromCharCode(parseInt(h, 16)));
+const file = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'specs',
+  'screen-flow-design.html',
+);
+const raw = readFileSync(file, 'utf8').replace(/\u([0-9a-f]{4})/gi, (_, h) =>
+  String.fromCharCode(parseInt(h, 16)),
+);
 for (const k of process.argv.slice(2)) {
   const hits = [];
   for (let i = raw.indexOf(k); i >= 0 && hits.length < 4; i = raw.indexOf(k, i + 1))

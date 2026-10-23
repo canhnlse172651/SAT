@@ -5,6 +5,7 @@ ARG NODE_VERSION=24.22.0
 FROM node:${NODE_VERSION}-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
 RUN npm ci --ignore-scripts
@@ -16,9 +17,10 @@ RUN npm run build
 FROM node:${NODE_VERSION}-alpine AS prod-deps
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
-RUN npm ci --omit=dev --ignore-scripts --workspace @sat/api
+RUN npm ci --omit=dev --ignore-scripts --workspace @sat/api --workspace @sat/shared
 
 FROM node:${NODE_VERSION}-alpine AS runtime
 ENV NODE_ENV=production \
@@ -29,6 +31,9 @@ COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
 # package.json marks dist/ as ESM ("type": "module").
 COPY --from=build --chown=node:node /app/apps/api/package.json ./package.json
 COPY --from=build --chown=node:node /app/apps/api/dist ./dist
+# @sat/shared is a workspace symlink (node_modules/@sat/shared -> ../../packages/shared).
+COPY --from=build --chown=node:node /app/packages/shared/package.json ./packages/shared/package.json
+COPY --from=build --chown=node:node /app/packages/shared/dist ./packages/shared/dist
 COPY --from=build --chown=node:node /app/apps/web/dist ./web
 USER node
 EXPOSE 8080

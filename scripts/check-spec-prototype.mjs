@@ -29,11 +29,14 @@ const norm = (s) =>
     .replace(/\s+/g, ' ')
     .trim();
 // Accessible names count as UI text too (icon buttons, popovers): aria-label / title / placeholder values.
-const attrs = [...raw.matchAll(/(?:aria-label|title|placeholder)="([^"$]+)"/g)].map((m) => m[1]).join(' | ');
+const attrs = [...raw.matchAll(/(?:aria-label|title|placeholder)="([^"$]+)"/g)]
+  .map((m) => m[1])
+  .join(' | ');
 const proto = norm(raw.replace(/<[^>]+>/g, ' ') + ' | ' + attrs);
 const protoScreens = new Set([...raw.matchAll(/\b([ASTQ]\d{2})\b/g)].map((m) => m[1]));
 // Sample values ("90/100", "8 bước học · 5 …", "45%") are examples in the spec, not fixed labels.
-const PLACEHOLDER = /(?<!\p{L})[NXYZnxyrm](?!\p{L})|HH:mm|dd\/|[[\]{}<>]|x\s*\/\s*y|\d+\s*·|\d+\s*\/\s*\d+|\d+%/u;
+const PLACEHOLDER =
+  /(?<!\p{L})[NXYZnxyrm](?!\p{L})|HH:mm|dd\/|[[\]{}<>]|x\s*\/\s*y|\d+\s*·|\d+\s*\/\s*\d+|\d+%/u;
 const FRAGMENT =
   /^[,;(—–-]|^(kèm|với|và|cùng|trên|của|hay|khi|dùng|ở|THE SYSTEM|ví dụ|tương đương)(?=\s|$)|≠|^[a-z ]+$|THE SYSTEM|\s(và|hoặc)$|^[)\]]|^(chỉ|trình bày|để)\s/i;
 const MESSAGE = /vui lòng|không |thất bại|tối đa|phải |chưa |hãy |đã hết|bạn |lỗi|hết hạn/i;
