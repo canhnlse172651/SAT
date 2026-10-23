@@ -177,7 +177,7 @@ flowchart TD
         <details class="alt"><summary>E-2 · Ngoại lệ: Email đã được dùng <span class="chip ac">AC-1.2</span></summary><div class="body"><ol><li>Hiển thị “Email này đã được sử dụng.” dưới ô Email, không cho biết đó là tài khoản GV hay HV, thuộc workspace nào.</li><li>Gợi ý: nếu đây là Email của chính mình, dùng “Quên mật khẩu?” (F-3).</li></ol></div></details>
         <details class="alt"><summary>E-3 · Ngoại lệ: mật khẩu không đạt chính sách hoặc xác nhận không khớp <span class="chip ac">AC-2.3</span> <span class="chip ac">AC-2.4</span></summary><div class="body"><ol><li>Hiển thị thông báo tương ứng dưới ô mật khẩu; không tạo tài khoản.</li></ol></div></details>
         <details class="alt"><summary>E-4 · Ngoại lệ: quá 10 lượt đăng ký/giờ từ cùng địa chỉ mạng <span class="chip">NFR-5</span></summary><div class="body"><ol><li>Từ chối trong 15 phút với “Bạn đã thao tác quá nhiều lần. Vui lòng thử lại sau.”</li></ol></div></details>
-        <div class="callout question"><strong>Chờ làm rõ.</strong> Phạm vi duy nhất của Email (Q-1) — xem §14. Ô đồng ý Điều khoản/Chính sách dữ liệu (Q-2 cũ) đã đóng: không có trong MVP (V4-5).</div>
+        <div class="callout note"><strong>Đã chốt 2026-10-23.</strong> Email duy nhất trên toàn hệ thống (Q-1). Ô đồng ý Điều khoản/Chính sách dữ liệu (Q-2 cũ) đã đóng: không có trong MVP (V4-5).</div>
       </div>
 
       <!-- F-2 ───────────── -->
@@ -560,7 +560,7 @@ flowchart TD
             <tr id="AC-1.4"><td class="id">AC-1.4</td><td class="ears">THE SYSTEM SHALL chỉ cho phép tự đăng ký tài khoản vai trò GV và không cung cấp bất kỳ cách tự đăng ký nào tạo ra tài khoản HV.</td></tr>
           </tbody>
         </table>
-        <div class="callout question"><strong>Q-1</strong> Phạm vi duy nhất của Email (áp dụng cho AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3): tạm áp dụng <b>duy nhất trên toàn hệ thống</b>, giữa mọi GV và HV (kể cả HV Chưa kích hoạt). <span class="nc">[NEEDS CLARIFICATION: Email phải duy nhất trên toàn hệ thống (một người chỉ có một tài khoản, kể cả khi học với hai GV khác nhau) hay chỉ cần duy nhất trong từng workspace (khi đó A01 phải có thêm cách chọn workspace khi đăng nhập)?]</span></div>
+        <div class="callout note"><strong>Q-1 đã chốt</strong> Phạm vi duy nhất của Email (áp dụng cho AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3): áp dụng <b>duy nhất trên toàn hệ thống</b> (Q-1 đã chốt 2026-10-23), giữa mọi GV và HV (kể cả HV Chưa kích hoạt). </div>
         <div class="callout note">A02 không có ô đồng ý Điều khoản sử dụng / Chính sách dữ liệu trong MVP (V4-5, xem §13).</div>
       </div>
 
@@ -1310,7 +1310,7 @@ stateDiagram-v2
     <!-- 14 ────────────────────────────────────────────────────────── -->
     <section class="doc" id="open-questions">
       <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
-      <div class="callout question"><strong>Q-1</strong> <span class="nc">[NEEDS CLARIFICATION: Email phải duy nhất trên toàn hệ thống (một người chỉ có một tài khoản, kể cả khi học với hai GV khác nhau) hay chỉ cần duy nhất trong từng workspace (khi đó A01 phải có thêm cách chọn workspace khi đăng nhập)?]</span> — <b>Ảnh hưởng:</b> AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3, màn hình A01, thư kích hoạt. Từ v4, Email còn là nơi nhận mật khẩu, nên câu hỏi quan trọng hơn: duy nhất toàn hệ thống thì đăng nhập đơn giản, nhưng một HV học hai GV (hoặc hai anh chị em dùng chung Email phụ huynh) phải dùng Email khác nhau, và thông báo “Email này đã được sử dụng.” cho GV B biết Email đó tồn tại ở đâu đó (không lộ workspace). Duy nhất theo workspace: linh hoạt hơn cho HV, nhưng A01 cần thêm mã/đường dẫn workspace và quên mật khẩu GV phải xử lý trùng Email. — <b>Đề xuất:</b> duy nhất toàn hệ thống (đang áp dụng tạm).</div>
+      <div class="callout note"><strong>Q-1 đã đóng 2026-10-23: Email duy nhất trên toàn hệ thống.</strong> <b>Bối cảnh:</b> AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3, màn hình A01, thư kích hoạt. Từ v4, Email còn là nơi nhận mật khẩu, nên câu hỏi quan trọng hơn: duy nhất toàn hệ thống thì đăng nhập đơn giản, nhưng một HV học hai GV (hoặc hai anh chị em dùng chung Email phụ huynh) phải dùng Email khác nhau, và thông báo “Email này đã được sử dụng.” cho GV B biết Email đó tồn tại ở đâu đó (không lộ workspace). Duy nhất theo workspace: linh hoạt hơn cho HV, nhưng A01 cần thêm mã/đường dẫn workspace và quên mật khẩu GV phải xử lý trùng Email. — <b>Đề xuất:</b> duy nhất toàn hệ thống (đang áp dụng tạm).</div>
       <div class="callout note"><strong>Đã đóng 2026-10-20 (v4).</strong> Q-2 (ô đồng ý Điều khoản/Chính sách dữ liệu ở A02) — bên liên quan: “bỏ qua mục này”; chuyển sang Ngoài phạm vi (V4-5).</div>
     </section>
 
@@ -1404,6 +1404,10 @@ stateDiagram-v2
         <li>Q: HV mở màn hình T23–T27 thì sao? → A: Về S01 như mọi màn hình GV khác (AC-20.10, đồng nhất với AC-16.3). <em>(source: assumption — giữ một quy tắc duy nhất cho HV mở màn hình GV)</em></li>
         <li>Q: GV chưa đăng nhập mở đường dẫn S13 rồi đăng nhập thì về đâu? → A: T01 theo AC-5.5 (vai trò không được xem màn hình đó → trang chủ theo vai trò), không hiện A05 ngay sau đăng nhập (AC-20.8). <em>(source: assumption — áp dụng nguyên quy tắc chung AC-5.5)</em></li>
         <li>Q: GV có thấy dữ liệu tự học của HV không? → A: Không thấy dữ liệu của riêng HV nào; chỉ số đếm tổng hợp ẩn danh của workspace trên T23 theo 016 (AC-20.5). <em>(source: stakeholder — quyền riêng tư giữ nguyên)</em></li>
+      </ul>
+      <h4>Session 2026-10-23 (chốt Q-1)</h4>
+      <ul>
+        <li>Q: Email phải duy nhất trong phạm vi nào (Q-1)? → A: **Duy nhất trên toàn hệ thống**, giữa mọi GV và HV (kể cả HV "Chưa kích hoạt"); A01 chỉ cần Email + mật khẩu; một người học với hai GV dùng hai Email khác nhau; thông báo "Email này đã được sử dụng." không lộ Email thuộc workspace nào. Q-1 đóng. (source: stakeholder 2026-10-23)</li>
       </ul>
     </section>
 

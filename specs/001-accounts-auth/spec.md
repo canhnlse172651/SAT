@@ -2,10 +2,10 @@
 id: 001
 slug: accounts-auth
 title: Accounts and Authentication
-status: draft
+status: clarified
 branch: feat/001-accounts-auth
 created: 2026-10-18
-updated: 2026-10-22
+updated: 2026-10-23
 approved_by:
 approved_at:
 ---
@@ -85,7 +85,7 @@ SAT cần một cổng vào duy nhất và an toàn cho hai vai trò: Giáo viê
 - AC-1.3: IF Họ tên hoặc Email ở A02 không đúng quy tắc (Họ tên 2–100 ký tự sau khi bỏ khoảng trắng đầu/cuối; Email đúng định dạng địa chỉ thư, chỉ gồm ký tự ASCII, tối đa 254 ký tự) THEN THE SYSTEM SHALL không tạo tài khoản, hiển thị thông báo lỗi ngay dưới từng trường sai và giữ lại các giá trị đã nhập trừ hai ô mật khẩu.
 - AC-1.4: THE SYSTEM SHALL chỉ cho phép tự đăng ký tài khoản vai trò GV và không cung cấp bất kỳ cách tự đăng ký nào tạo ra tài khoản HV.
 
-> Phạm vi duy nhất của Email (áp dụng cho AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3): tạm áp dụng **duy nhất trên toàn hệ thống**, giữa mọi GV và HV (kể cả HV Chưa kích hoạt). [NEEDS CLARIFICATION: Email phải duy nhất trên toàn hệ thống (một người chỉ có một tài khoản, kể cả khi học với hai GV khác nhau) hay chỉ cần duy nhất trong từng workspace (khi đó A01 phải có thêm cách chọn workspace khi đăng nhập)?]
+> Phạm vi duy nhất của Email (áp dụng cho AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3): áp dụng **duy nhất trên toàn hệ thống** (Q-1 đã chốt 2026-10-23), giữa mọi GV và HV (kể cả HV Chưa kích hoạt).
 >
 > A02 không có ô đồng ý Điều khoản sử dụng / Chính sách dữ liệu trong MVP (V4-5, xem §9).
 
@@ -431,7 +431,7 @@ Mã bị bỏ không dùng lại:
 
 ## 11. Open Questions
 
-- Q-1: [NEEDS CLARIFICATION: Email phải duy nhất trên toàn hệ thống (một người chỉ có một tài khoản, kể cả khi học với hai GV khác nhau) hay chỉ cần duy nhất trong từng workspace (khi đó A01 phải có thêm cách chọn workspace khi đăng nhập)?] — Ảnh hưởng: AC-1.2, AC-8.4, AC-9.4, AC-11.6, AC-14.2, AC-14.3, màn hình A01, thư kích hoạt. Từ v4, Email còn là nơi nhận mật khẩu, nên câu hỏi quan trọng hơn: duy nhất toàn hệ thống thì đăng nhập đơn giản, nhưng một HV học hai GV (hoặc hai anh chị em dùng chung Email phụ huynh) phải dùng Email khác nhau, và thông báo "Email này đã được sử dụng." cho GV B biết Email đó tồn tại ở đâu đó (không lộ workspace). Duy nhất theo workspace: linh hoạt hơn cho HV, nhưng A01 cần thêm mã/đường dẫn workspace và quên mật khẩu GV phải xử lý trùng Email. **Đề xuất:** duy nhất toàn hệ thống (đang áp dụng tạm).
+- Q-1 đã đóng 2026-10-23: Email duy nhất trên toàn hệ thống (xem §12).
 
 ## 12. Clarifications Log
 
@@ -526,3 +526,7 @@ Quyết định của bên liên quan ngày 2026-10-22: prototype `specs/screen-
 - Q: HV mở màn hình T23–T27 thì sao? → A: Về S01 như mọi màn hình GV khác (AC-20.10, đồng nhất với AC-16.3). (source: assumption — giữ một quy tắc duy nhất cho HV mở màn hình GV)
 - Q: GV chưa đăng nhập mở đường dẫn S13 rồi đăng nhập thì về đâu? → A: T01 theo AC-5.5 (vai trò không được xem màn hình đó → trang chủ theo vai trò), không hiện A05 ngay sau đăng nhập (AC-20.8). (source: assumption — áp dụng nguyên quy tắc chung AC-5.5)
 - Q: GV có thấy dữ liệu tự học của HV không? → A: Không thấy dữ liệu của riêng HV nào; chỉ số đếm tổng hợp ẩn danh của workspace trên T23 theo 016 (AC-20.5). (source: stakeholder — quyền riêng tư giữ nguyên)
+
+### Session 2026-10-23 (chốt Q-1)
+
+- Q: Email phải duy nhất trong phạm vi nào (Q-1)? → A: **Duy nhất trên toàn hệ thống**, giữa mọi GV và HV (kể cả HV "Chưa kích hoạt"); A01 chỉ cần Email + mật khẩu; một người học với hai GV dùng hai Email khác nhau; thông báo "Email này đã được sử dụng." không lộ Email thuộc workspace nào. Q-1 đóng. (source: stakeholder 2026-10-23)
