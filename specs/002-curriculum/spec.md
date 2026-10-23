@@ -2,12 +2,12 @@
 id: 002
 slug: curriculum
 title: Curriculum & Lessons
-status: draft
+status: tasked
 branch: feat/002-curriculum
 created: 2026-10-18
-updated: 2026-10-21
-approved_by:
-approved_at:
+updated: 2026-10-23
+approved_by: canh
+approved_at: 2026-10-23
 ---
 
 # Curriculum & Lessons
