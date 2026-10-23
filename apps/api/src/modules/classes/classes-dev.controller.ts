@@ -179,11 +179,17 @@ export class ClassesDevController {
     return { ok: true };
   }
 
-  /** The 08:00 sweep of today (by the server clock — move it with `/api/dev/clock`). */
+  /**
+   * The 08:00 sweep of today (by the server clock — move it with `/api/dev/clock`). `reset: true` first forgets that
+   * today was swept (as if 08:00 had not come yet — e.g. the server started after 08:00 and caught up); e-mails
+   * already sent today stay sent (one per HV per class per day).
+   */
   @Roles('GV')
   @Post('reminders/run')
   @HttpCode(200)
-  run() {
+  async run(@Body() body: unknown) {
+    const { reset } = parse(z.object({ reset: z.boolean().default(false) }), body ?? {});
+    if (reset) await this.reminders.forgetToday();
     return this.reminders.sweep();
   }
 

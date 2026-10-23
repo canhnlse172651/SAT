@@ -8,7 +8,7 @@ import { useDocumentTitle } from '../lib/use-document-title';
  * A05 — shared by 404, other-workspace data and wrong-role access (001 AC-16.2). Prototype
  * SCREENS.A05: inside the role's shell, "Về Dashboard" for a GV, "Về trang lớp" for an HV.
  */
-export function NotFoundPage() {
+export function NotFoundPage({ back }: { back?: { to: string; label: string } } = {}) {
   useDocumentTitle('Không tìm thấy nội dung');
   const role = useSessionStore((s) => s.user?.role);
   return (
@@ -18,9 +18,10 @@ export function NotFoundPage() {
       </div>
       <h1 className="notfound__title">Không tìm thấy nội dung bạn yêu cầu.</h1>
       <p>Đường dẫn có thể không đúng hoặc nội dung không còn dành cho bạn.</p>
-      <Link className="btn btn--primary" to={homePath(role)}>
+      <Link className="btn btn--primary" to={back?.to ?? homePath(role)}>
         {role === 'HV' && <Icon name="back" size={18} />}
-        {role === 'GV' ? 'Về Dashboard' : role === 'HV' ? 'Về trang lớp' : 'Về trang đăng nhập'}
+        {back?.label ??
+          (role === 'GV' ? 'Về Dashboard' : role === 'HV' ? 'Về trang lớp' : 'Về trang đăng nhập')}
       </Link>
     </section>
   );

@@ -97,6 +97,11 @@ export class ReminderService implements OnApplicationBootstrap {
     return this.sweep();
   }
 
+  /** Dev/test only (`/api/dev/classes/reminders/run`): today counts as not swept yet. */
+  async forgetToday(): Promise<void> {
+    await this.runs.deleteOne({ _id: todayOf(this.clock) });
+  }
+
   /** The 08:00 sweep of today (AC-24.1 … AC-24.5). */
   async sweep(): Promise<SweepResult> {
     const date = todayOf(this.clock);

@@ -228,26 +228,38 @@ export class ClassesService {
     }
     const curriculum = await this.usableCurriculum(p, input.curriculumId);
 
+    // Memberships first, under a pre-generated id: the class becomes visible only once its members exist.
     const today = todayOf(this.clock);
-    let doc: ClassDoc;
+    const classId = new Types.ObjectId();
+    const memberScope = scoped(this.members, p.workspaceId);
+    await Promise.all(
+      ids.map((studentId) =>
+        memberScope.create({
+          classId,
+          studentId: oid(studentId),
+          joinedAt: today,
+          removedAt: null,
+        }),
+      ),
+    );
     try {
-      doc = (
-        await scope.create({
-          name: input.name,
-          nameKey: nameKeyOf(input.name),
-          searchKey: searchKeyOf(input.name),
-          description: input.description,
-          schedule: input.schedule,
-          startDate: input.startDate,
-          endDate: null,
-          curriculumId: oid(curriculum.id),
-          memberCount: ids.length,
-          hidden: [],
-          deadlines: [],
-          createKey: input.createKey,
-        })
-      ).toObject() as ClassDoc;
+      await scope.create({
+        _id: classId,
+        name: input.name,
+        nameKey: nameKeyOf(input.name),
+        searchKey: searchKeyOf(input.name),
+        description: input.description,
+        schedule: input.schedule,
+        startDate: input.startDate,
+        endDate: null,
+        curriculumId: oid(curriculum.id),
+        memberCount: ids.length,
+        hidden: [],
+        deadlines: [],
+        createKey: input.createKey,
+      });
     } catch (err) {
+      await memberScope.deleteMany({ classId });
       if (isDuplicateKey(err, 'createKey')) {
         const again = await scope.findOne({ createKey: input.createKey }).lean<ClassDoc>();
         if (again) return this.detailOf(p, again);
@@ -255,21 +267,12 @@ export class ClassesService {
       if (isDuplicateKey(err)) throw nameTaken();
       throw err;
     }
-    const memberScope = scoped(this.members, p.workspaceId);
-    await Promise.all(
-      ids.map((studentId) =>
-        memberScope.create({
-          classId: doc._id,
-          studentId: oid(studentId),
-          joinedAt: today,
-          removedAt: null,
-        }),
-      ),
-    );
+    const doc = await scope.findById(classId).lean<ClassDoc>();
+    if (!doc) throw notFound();
     logClass({
       action: 'class.create',
       actorId: p.userId,
-      classId: String(doc._id),
+      classId: String(classId),
       students: ids.length,
     });
     return this.detailOf(p, doc);

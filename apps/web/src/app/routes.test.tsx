@@ -26,7 +26,8 @@ describe('route guard (RequireRole)', () => {
   it('[001:AC-20.10] sends an HV opening a teacher screen to S01', async () => {
     const { router } = open('/gv/giao-trinh', hv);
     await vi.waitFor(() => expect(router.state.location.pathname).toBe('/hv'));
-    expect(await screen.findByRole('heading', { name: /S01 Lớp của tôi/ })).toBeInTheDocument();
+    // S01 is a real page now (003); the HV shell shows it under the student tab bar.
+    expect(await screen.findByRole('navigation', { name: 'Thanh tab' })).toBeInTheDocument();
   });
 
   it('[001:AC-16.4] sends a GV opening S01–S12 to T01', async () => {
@@ -136,12 +137,13 @@ describe('401 handling', () => {
     const { apiRequest } = await import('../lib/api-client');
     const { useSessionStore } = await import('../features/session/session-store');
     stubFetch({ 'GET /api/classes': unauthenticated });
-    const { router } = open('/gv/lop-hoc', gv);
-    await screen.findByRole('heading', { name: /T02/ });
+    // T10 is still a placeholder screen (006), so no page of its own calls the API.
+    const { router } = open('/gv/bai-thi', gv);
+    await screen.findByRole('heading', { name: /T10/ });
 
     await expect(apiRequest('/classes')).rejects.toMatchObject({ status: 401 });
     await vi.waitFor(() => expect(router.state.location.pathname).toBe('/dang-nhap'));
-    expect(router.state.location.search).toBe(`?returnTo=${encodeURIComponent('/gv/lop-hoc')}`);
+    expect(router.state.location.search).toBe(`?returnTo=${encodeURIComponent('/gv/bai-thi')}`);
     expect(useSessionStore.getState().user).toBeNull();
   });
 
@@ -161,8 +163,8 @@ describe('401 handling', () => {
         },
       },
     });
-    const { router } = open('/gv/lop-hoc', gv);
-    await screen.findByRole('heading', { name: /T02/ });
+    const { router } = open('/gv/bai-thi', gv);
+    await screen.findByRole('heading', { name: /T10/ });
     await expect(apiRequest('/classes')).rejects.toMatchObject({ status: 401 });
     await vi.waitFor(() => expect(router.state.location.pathname).toBe('/dang-nhap'));
     expect(router.state.location.state).toEqual({

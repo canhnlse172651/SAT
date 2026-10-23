@@ -1,5 +1,5 @@
 import { ACCOUNT_MESSAGES as M, fieldErrors, studentBodySchema } from '@sat/shared';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Dialog, Tabs } from '../../components';
 import { formFailure } from '../auth/form-errors';
 import { Notice } from '../auth/Notice';
@@ -14,7 +14,7 @@ import './students.css';
 
 export type AddTab = 'one' | 'import';
 
-interface Added {
+export interface Added {
   id: string;
   displayName: string;
   email: string;
@@ -28,10 +28,13 @@ export function AddStudentsDialog({
   open,
   initialTab,
   onClose,
+  onAdded,
 }: {
   open: boolean;
   initialTab: AddTab;
   onClose: () => void;
+  /** Students just added (one by one or by import) — 003 selects them in its pickers (003 AC-3.4). */
+  onAdded?: (students: Added[]) => void;
 }) {
   const create = useStudentsStore((s) => s.create);
   const push = useToastStore((s) => s.push);
@@ -54,7 +57,9 @@ export function AddStudentsDialog({
     setBusy(true);
     try {
       const s = await create(form);
-      setAdded((list) => [...list, { id: s.id, displayName: s.displayName, email: s.email }]);
+      const one = { id: s.id, displayName: s.displayName, email: s.email };
+      setAdded((list) => [...list, one]);
+      onAdded?.([one]);
       setForm(EMPTY_STUDENT);
       setErrors({});
       push(`Đã thêm ${s.displayName} — Chưa kích hoạt.`, 'success');
@@ -66,6 +71,13 @@ export function AddStudentsDialog({
       setBusy(false);
     }
   };
+
+  const reported = useRef<unknown>(null);
+  useEffect(() => {
+    if (!imp.result || reported.current === imp.result) return;
+    reported.current = imp.result;
+    onAdded?.(imp.result.added);
+  }, [imp.result, onAdded]);
 
   const importConfirm = async () => {
     const ok = await imp.confirm();
