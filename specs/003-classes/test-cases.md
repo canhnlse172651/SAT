@@ -35,8 +35,53 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
   `{"questions":[{"type":"mcq","prompt":"你好?","options":["Xin chào","Tạm biệt"],"answer":0}]}`; `POST /api/lessons/<bài>/publish`
   `{"expectedVersion","itemIds":[…]}`; lưu trữ mục `POST /api/lessons/<bài>/items/<mục>/archive`.
 - **Lớp qua API:** `POST /api/classes` `{"name","startDate":"YYYY-MM-DD","curriculumId","studentIds":[…],"createKey":"<uuid>"}`.
-- **Thay cho module chưa có (chỉ dev/test):** đặt sau khi code xong ở mục "Chi tiết đã xây dựng" (bài nộp / lượt làm của 005, bài thi
-  của 006, chạy lượt nhắc 08:00, lỗi giả lập).
+- **Thay cho module chưa có (chỉ dev/test, trong workspace của phiên):**
+  - *Lượt làm / bài nộp (005) — phiên HV:* `POST /api/dev/classes/<lớp>/sets/<bộ>/save` (lưu câu trả lời của lượt dở) và
+    `POST /api/dev/classes/<lớp>/sets/<bộ>/submit` `{"score"?,"maxScore"?}` (nộp; mặc định đúng hết = số câu). Cả hai đi qua đúng cổng của
+    003 mà 005 sẽ gọi: lớp chưa bắt đầu → 409 `CLASS_NOT_STARTED`; lớp đã kết thúc → 409 `CLASS_ENDED` "Lớp đã kết thúc — không thể làm bài
+    mới"; phần bị ẩn → 409 `WORK_UNAVAILABLE` "Bài tập này hiện không khả dụng. Câu trả lời đã lưu của bạn được giữ lại." (`details.back` =
+    S11 hoặc S02); bộ chưa có hạn → 409 `WORK_UNAVAILABLE`; không còn là thành viên → 404 `CLASS_NOT_MEMBER` "Bạn không thuộc lớp này hoặc lớp
+    không còn tồn tại"; đã nộp → 409 `CONFLICT`. Nộp sau 23:59 của hạn → "Nộp muộn" ở S11.
+  - *Bài thi (006) — phiên GV:* `POST /api/dev/classes/exams` `{"classIds":[…],"visible"?:true}` → `{ id }` (`visible:false` = bài thi Nháp
+    HV chưa thấy); `POST /api/dev/classes/exams/<id>/submissions` `{"classId","studentId"?}` (bài nộp, kể cả nộp tự động);
+    `GET /api/dev/classes/exams/<id>` → `{ classIds }`.
+  - *Lượt nhắc 08:00 — phiên GV:* `POST /api/dev/classes/reminders/run` `{"reset":true}` chạy lượt xét gửi của **hôm nay theo đồng hồ máy
+    chủ** (dời bằng `/api/dev/clock`). Máy chủ khởi động sau 08:00 (trước 20:00) đã tự chạy bù lượt của hôm nay, nên lượt đầu tiên của QA
+    trong ngày dùng `"reset":true` (quên rằng hôm nay đã xét; email đã gửi vẫn tính — mỗi HV một email mỗi lớp mỗi ngày); bỏ `reset` để kiểm
+    "chạy lại không gửi thêm". `POST /api/dev/classes/reminders/recover` = khôi phục sau sự cố (AC-24.6): gửi bù một lần nếu hôm nay chưa xét
+    xong và chưa quá 20:00. Để có một ngày "chưa xét", dời đồng hồ sang ngày hôm sau trước 08:00 rồi tới giờ cần kiểm.
+  - *Lỗi giả lập:* `POST /api/dev/classes/faults` `{"op":"create"|"visibility"|"deadlines","fail"?:true,"delayMs"?}` — lần tạo lớp / ẩn-hiện /
+    cập nhật hạn kế tiếp thất bại (500) hoặc chậm.
+  - *Lớp dùng giáo trình của 002* (`/api/dev/curriculum/classes`) vẫn được tính cùng lớp thật ở T06 ngoài production.
+- **API HV:** `GET /api/my-classes` (S01), `GET /api/my-classes/<lớp>` (S02), `/members`, `/lessons/<bài>` (S11),
+  `/items/<mục>` (mục cho S03/S05: 404 `NOT_FOUND` + `details.back` = S02 khi mở thẳng nội dung không hiển thị — AC-17.5; thêm
+  `?continue=1` = thao tác tiếp trên màn hình đang mở → 409 `CONTENT_UNAVAILABLE` "Nội dung này hiện không khả dụng." + `details.back` = S11
+  hoặc S02 — AC-18.1). `GET /api/classes/<lớp>/tracked-students` = danh sách HV của tab Tiến độ / Xếp hạng (008/009, AC-8.9);
+  `GET /api/classes/<lớp>/reminders` = thời điểm + số HV đã nhắc theo bộ (cho 009, AC-26.3).
+- **Chi tiết đã xây dựng (cập nhật sau khi code):**
+  - Đường dẫn: T02 `/gv/lop-hoc`, T03 `/gv/lop-hoc/tao-moi?buoc=1…4` (Back của trình duyệt lùi một bước), T04 `/gv/lop-hoc/<lớp>` với
+    `?tab=hoc-vien` | `noi-dung` | `tien-do` | `xep-hang` (Tiến độ, Xếp hạng = "Đang xây dựng", thuộc 009/008), S01 `/hv`, S02 `/hv/lop/<lớp>`
+    (danh sách Thành viên: `?xem=thanh-vien`), S11 `/hv/lop/<lớp>/bai/<bài>` (`?tab=bai-hoc` | `bai-tap`). S03 `…/buoc/<bước>`, S05
+    `…/bai-tap/<bộ>`, S06 `…/bai-tap/<bộ>/ket-qua`, S07 `/hv/bai-thi`, S09 `/hv/xep-hang`, S10 `/hv/ho-so`, S12 `/hv/hoc-vien/<id>` còn là
+    trang "Đang xây dựng" của module 004/005/006/008/011 — kiểm tra dừng ở việc mở đúng đường dẫn.
+  - T02: nhóm "Lọc theo trạng thái" (nút "Đang hoạt động", "Sắp bắt đầu", "Đang học", "Đã kết thúc", "Tất cả" kèm số), ô "Tìm theo tên lớp",
+    chân bảng "{n} lớp khớp · 20 lớp mỗi trang", nút "Xóa bộ lọc".
+  - T03: danh sách bước "Các bước tạo lớp" (bước đã qua là nút "Quay lại bước n: …"); nút "Hủy", "Quay lại", "Tiếp tục ›", "Tạo lớp"; hộp
+    rời trang: "Ở lại" / "Bỏ". Bước 1: "Tên lớp", "Ngày bắt đầu" (gõ dd/MM/yyyy hoặc nút "Chọn ngày"), "Mô tả", "Lịch học" (bộ đếm dưới ô).
+    Bước 2: ô "Tìm học viên", nhóm "Học viên trong workspace" (mỗi HV một ô chọn mang họ tên), khu "Đã chọn (N)" với nút "Bỏ chọn <họ tên>",
+    nút "Tạo học viên mới" mở T12. Bước 3: nhóm "Lọc theo cấp HSK", ô "Tìm giáo trình", nhóm lựa chọn "Giáo trình"; khi workspace chưa có
+    giáo trình: liên kết "Mở danh sách giáo trình" (thẻ mới) + "Tải lại danh sách". Bước 4: mỗi phần có nút "Sửa <tên phần>".
+  - T04: nút "Sửa thông tin lớp" (hộp có "Lưu"/"Hủy"), "Kết thúc lớp", "Mở lại lớp", "Xóa lớp" (vô hiệu kèm dòng "Không thể xóa lớp đã có bài
+    nộp của học viên."); thẻ Giáo trình có "Đổi giáo trình" (hộp chọn → nút "Đổi giáo trình" → xác nhận). Tab Học viên: ô "Tìm học viên trong
+    lớp", "Thêm học viên" (hộp có nút "Thêm (N)"), mỗi dòng nút "Gỡ khỏi lớp: <họ tên>". Tab Nội dung: nút ô phần "Ẩn với lớp: <Bài học|Bài
+    tập> của <Bài>" / "Hiện với lớp: …", đầu cột "Ẩn Bài tập ở mọi bài" / "Hiện Bài tập ở mọi bài", dòng Bài "Ẩn cả bài: <Bài>" / "Hiện cả
+    bài: <Bài>"; ô hạn của bộ là nút "Hạn nộp <tên bộ>: <dd/MM/yyyy | chưa đặt>" (chữ hiển thị "Đặt hạn" hoặc ngày), ô hàng loạt "Đặt hạn cho
+    mọi bộ của bài <Bài>"; popup là hộp thoại cùng tên với lưới lịch ("Tháng trước", "Tháng sau", ngày "23 tháng 10 năm 2026"), nút "Xóa",
+    "Áp dụng". Lớp Đã kết thúc: các nút này bị vô hiệu, có dòng "Mở lại lớp để thay đổi".
+  - S02: nút "Thành viên (N)", liên kết "Bài thi của lớp (N)", "Bảng xếp hạng ›"; S11: nút quay lại mang tên lớp, tab "Bài học" / "Bài tập";
+    bộ "Chưa mở" là nhóm bị vô hiệu "<tên bộ> — Chưa mở".
+  - Ảnh đại diện mặc định (011 chưa có): chữ cái đầu của họ tên, vai trò ảnh với tên = họ tên HV.
+  - Tiến độ (009 chưa có) theo định nghĩa 009: số bộ đã nộp / số bộ hiển thị có hạn nộp hiệu lực, chỉ các phần không ẩn.
 - **Thời gian:** `POST /api/dev/clock {"advanceMs":…}` dời đồng hồ máy chủ, `DELETE /api/dev/clock` đặt lại; giờ Việt Nam (UTC+7).
 - **Thư:** `GET /api/dev/outbox?to=<email>&tag=deadline_reminder`.
 
@@ -103,7 +148,7 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 | TC-057 | AC-16.6 | E2E | GV | Tab Nội dung mở ở hai thẻ | 1. Thẻ A ẩn phần Bài học Bài 1. 2. Thẻ B (cũ) "Ẩn với lớp" cùng phần → xác nhận. | Không tạo thay đổi; ô cập nhật "Đang ẩn"; "Phần này đã ở trạng thái «Đang ẩn»." | [T04](../screen-flow-design.html#T04) | | Chưa chạy |
 | TC-058 | AC-17.1, AC-17.2, AC-17.5 | API | HV, GV | Lớp Đang học: Bài 1 có bước Nháp S1, bước lưu trữ S2, bước đã xuất bản S3; Bài 2 Nháp; Bài 3 ẩn cả hai phần | 1. `GET /api/my-classes/<lớp>/items/<S1|S2|S3>`. 2. S11 Bài 2, Bài 3 qua đường dẫn. 3. S02. | B1: S3 mở được; S1, S2 → 404. B2: A05 "Không tìm thấy nội dung bạn yêu cầu." kèm nút về S02 của lớp, không lộ tên Bài. B3: chỉ Bài 1. | [S11](../screen-flow-design.html#S11) | | Chưa chạy |
 | TC-059 | AC-17.7 | API | HV | Bài có nhãn AI "AI · Chờ duyệt" (dev 002) và mục do AI tạo đã duyệt | 1. `GET /api/my-classes`, `/my-classes/<id>`, `/lessons/<bài>`, `/items/<mục>`. 2. Xem S01, S02, S11. | Không có trường hay chữ "AI" nào; chỉ nội dung đã duyệt. | [S11](../screen-flow-design.html#S11) | | Chưa chạy |
-| TC-060 | AC-18.1, AC-18.3 | API | HV, GV | hv1 mở bước học S3 của Bài 1 | 1. GV ẩn phần Bài học Bài 1. 2. Sau 5 giây hv1 gọi `GET /api/my-classes/<lớp>/items/<bước kế tiếp>` (lần chuyển bước của S03). 3. GV ẩn cả phần Bài tập Bài 1, hv1 gọi lại. | B2: từ chối, `details.message` "Nội dung này hiện không khả dụng.", `details.back` = S11 của Bài. B3: `details.back` = S02 (Bài không còn hiển thị). | [S03](../screen-flow-design.html#S03) | | Chưa chạy |
+| TC-060 | AC-18.1, AC-18.3 | API | HV, GV | hv1 mở bước học S3 của Bài 1 | 1. GV ẩn phần Bài học Bài 1. 2. Sau 5 giây hv1 gọi `GET /api/my-classes/<lớp>/items/<bước kế tiếp>?continue=1` (lần chuyển bước của S03). 3. GV ẩn cả phần Bài tập Bài 1, hv1 gọi lại. | B2: từ chối (409 `CONTENT_UNAVAILABLE`), thông báo "Nội dung này hiện không khả dụng.", `details.back` = S11 của Bài. B3: `details.back` = S02 (Bài không còn hiển thị). | [S03](../screen-flow-design.html#S03) | | Chưa chạy |
 | TC-061 | AC-18.2 | API | HV, GV | hv1 có lượt làm dở bộ X (stand-in 005) | 1. GV ẩn phần Bài tập. 2. hv1 lưu, rồi nộp X (stand-in). 3. GV hiện lại; hv1 nộp. | B2: từ chối "Bài tập này hiện không khả dụng. Câu trả lời đã lưu của bạn được giữ lại.", về S11 (hoặc S02); lượt dở còn. B3: nộp được. | [S05](../screen-flow-design.html#S05) | | Chưa chạy |
 | TC-062 | AC-19.1, AC-19.2, AC-19.6, NFR-3 | E2E | HV | Bài 1: 3 bước, 2 bộ có hạn; Bài 2: chỉ bước; Bài 3: đã xuất bản, mục Nháp; (đo: Bài 40 mục) | 1. S11 Bài 1. 2. S11 Bài 2. 3. S11 Bài 3. 4. Đo S11 40 mục. | B1: tên Bài, tên lớp, nút quay lại S02, "0/2 bộ bài tập"; tab Bài học (chọn sẵn), Bài tập; bước đánh số 1–3 + tên, không trạng thái đã xem. B2: "Chưa có bài tập", chỉ tab Bài học. B3: "Bài này chưa có nội dung. Giáo viên sẽ cập nhật sau." thay cho tab. B4: ≤ 3 giây. | [S11](../screen-flow-design.html#S11) | | Chưa chạy |
 | TC-063 | AC-19.3, AC-19.5, AC-19.7 | E2E | HV | Bộ A có hạn chưa qua, chưa làm; B có lượt dở; C đã nộp 8/10, nộp muộn; D chưa đặt hạn; E quá hạn chưa nộp | 1. Tab Bài tập. 2. Chạm từng bộ. | B1: số thứ tự, tên, "{n} câu", nhãn hạn, trạng thái "Chưa làm" (A), "Đang làm" (B), "Đã hoàn thành · 8/10" + "Nộp muộn" (C), "Chưa mở" (D), "Quá hạn" (E). Không có "Làm lại". B2: A, B, E → S05; C → S06 "Xem lại bài làm"; D không mở gì. | [S11](../screen-flow-design.html#S11) | | Chưa chạy |
@@ -130,7 +175,7 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 | TC-084 | AC-25.1, AC-25.2, AC-25.5, NFR-6 | API | HV | Bình chưa nộp 3 bộ hạn hôm nay ở Bài 2 (bộ 2), Bài 1 (bộ 1, bộ 3) | 1. Chạy lượt nhắc, mở email trong outbox (cả bản HTML ở 390 px). | Tiêu đề "[SAT] Hôm nay là hạn nộp bài tập – {tên lớp}"; "Chào {Họ tên},"; "Hôm nay ({dd/MM/yyyy}) là hạn nộp 3 bộ bài tập của lớp {tên lớp} mà bạn chưa nộp:"; mỗi bộ tên + "{tên Bài} · Hạn nộp 23:59 {dd/MM/yyyy}" theo thứ tự Bài 1 (bộ 1, bộ 3), Bài 2; nút "Làm bài ngay"; hai câu kết của AC-25.1; người gửi "SAT"; dòng cuối "Đây là thư tự động, vui lòng không trả lời."; không có điểm, HV khác, email/điện thoại GV, bộ đã nộp; không cuộn ngang ở 360–430 px. | — | | Chưa chạy |
 | TC-085 | AC-25.3 | API | HV | 23 bộ hạn hôm nay chưa nộp trong một lớp | 1. Chạy lượt nhắc. | Email liệt kê 20 bộ đầu, rồi "Và 3 bài tập khác cũng hết hạn hôm nay." trước nút "Làm bài ngay". | — | | Chưa chạy |
 | TC-086 | AC-25.4 | E2E | HV | Email 1 bộ (lớp A) và email 2 bộ (lớp B) | 1. Đã đăng nhập: mở liên kết "Làm bài ngay" của email 1. 2. Của email 2. 3. Đăng xuất, mở liên kết email 1, đăng nhập. 4. Bị gỡ khỏi lớp B rồi mở liên kết email 2. | B1: S05 của bộ (005 — màn hình hiện có). B2: S02 lớp B. B3: A01 rồi thẳng tới S05 của bộ. B4: "Bạn không thuộc lớp này hoặc lớp không còn tồn tại", về S01. | [S02](../screen-flow-design.html#S02) | | Chưa chạy |
-| TC-087 | AC-26.1, AC-26.2 | API | GV, HV | HV `reject@x.invalid` (bị từ chối) và `bounce@x.invalid` đã kích hoạt trong lớp; GV vừa dùng hết giới hạn thư mật khẩu của 001 | 1. Chạy lượt nhắc. 2. Chạy lại. 3. Xem T11, log máy chủ. | Các HV khác vẫn nhận email (giới hạn 001 không chặn); 2 email thất bại không được gửi lại; trạng thái tài khoản không đổi; log ghi lần gửi thất bại kèm lý do. | — | | Chưa chạy |
+| TC-087 | AC-26.1, AC-26.2 | API | GV, HV | Hai HV Đã kích hoạt trong lớp, sau đó đổi Email (T11 "Sửa") sang `reject@x.invalid` (bị từ chối) và `bounce@x.invalid` (không nhận thư) mà trạng thái vẫn "Đã kích hoạt"; GV vừa dùng hết giới hạn thư mật khẩu của 001 | 1. Chạy lượt nhắc. 2. Chạy lại. 3. Xem T11, log máy chủ. | Các HV khác vẫn nhận email (giới hạn 001 không chặn); 2 email thất bại không được gửi lại; trạng thái tài khoản không đổi; log ghi lần gửi thất bại kèm lý do. | — | | Chưa chạy |
 | TC-088 | AC-26.3 | API | GV | Sau lượt nhắc của TC-080 | 1. `GET /api/classes/<id>/reminders` (thông tin cho 009). 2. Xem tab Nội dung. 3. Đổi hạn X, gọi lại. | B1: X, Y có thời điểm gửi và số HV (X: 1, Y: 2). B2: ô hạn không hiển thị thông tin này. B3: X không còn thông tin đã gửi. | [T04](../screen-flow-design.html#T04) | | Chưa chạy |
 | TC-089 | NFR-5 | Thủ công | GV | 5 GV lần đầu dùng; 10 HV, 1 giáo trình | 1. Tạo lớp 10 HV. 2. Ẩn phần Bài tập của mọi Bài. | ≥ 80% xong ≤ 3 phút và ≤ 30 giây, không hướng dẫn. | [T03](../screen-flow-design.html#T03) | | Thủ công |
 | TC-090 | NFR-6 | Thủ công | GV, HV | Dữ liệu như TC-051, TC-063 | 1. Chỉ bàn phím + trình đọc màn hình trên T03, tab Nội dung (kể cả popup hạn), S01, S02, S11. 2. axe; đo tương phản; S01/S02/S11 ở 360–430 px, T02–T04 ở 1024 px. | Mọi thao tác làm được bằng bàn phím, có nhãn; "Hiển thị"/"Đang ẩn" và nhãn hạn bằng chữ; tương phản ≥ 4.5:1; không cuộn ngang. | [T04](../screen-flow-design.html#T04) | | Thủ công |
