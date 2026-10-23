@@ -97,11 +97,11 @@ test.describe('HV at 390x844', () => {
       expect(b.left).toBeGreaterThanOrEqual(0);
       expect(b.right).toBeLessThanOrEqual(390);
     }
-    // each label renders on a single text line (no wrapping inside a tab)
+    // each label renders on a single text line (no wrapping inside a tab; the icon sits above it)
     const lineCounts = await tabs.getByRole('link').evaluateAll((els) =>
       els.map((el) => {
         const range = document.createRange();
-        range.selectNodeContents(el);
+        range.selectNodeContents(el.querySelector('span') ?? el);
         return new Set([...range.getClientRects()].map((r) => Math.round(r.top))).size;
       }),
     );

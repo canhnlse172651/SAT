@@ -131,6 +131,7 @@ export class StudentImportService {
         line,
         displayName: raw['displayName'] ?? '',
         email: (raw['email'] ?? '').toLowerCase(),
+        ...(raw['phone'] ? { phone: raw['phone'] } : {}),
         fieldReason: FIELD_ORDER.map((f) => errors[f])
           .filter(Boolean)
           .join(' '),
@@ -268,6 +269,13 @@ export class StudentImportService {
       validCount: rows.length - errors.length,
       errorCount: errors.length,
       errors,
+      rows: rows.map((r) => ({
+        line: r.line,
+        displayName: r.displayName,
+        email: r.email,
+        phone: r.phone ?? '',
+        reason: this.valid(r) ? null : ((r.fieldReason || r.reason) ?? ''),
+      })),
     };
   }
 }

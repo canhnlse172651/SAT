@@ -5,12 +5,12 @@ import {
 } from '@sat/shared';
 import { type FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
-import { Button, TextField } from '../../components';
-import { ChevronLeftIcon } from '../../components/icons';
+import { Button, Icon, TextField } from '../../components';
 import { useDocumentTitle } from '../../lib/use-document-title';
 import type { LoginNoticeState } from '../session/session-notice';
 import { useAuthStore } from './auth-store';
 import { Notice } from './Notice';
+import { PasswordField } from './PasswordField';
 import { PasswordRules } from './PasswordRules';
 import './auth.css';
 
@@ -93,15 +93,26 @@ export function ForgotPasswordPage() {
     setRequestStep('request');
   };
 
+  const stepChip = (i: number) =>
+    i === stepIndex[step]
+      ? 'chip chip--brand'
+      : i < stepIndex[step]
+        ? 'chip chip--done'
+        : 'chip chip--outline';
+
   return (
     <section aria-labelledby="a03-title" data-screen="A03">
-      <Link to="/dang-nhap" className="auth-page__back">
-        <ChevronLeftIcon width={16} height={16} aria-hidden="true" />
+      <Link to="/dang-nhap" className="link auth-back">
+        <Icon name="back" size={16} />
         Đăng nhập
       </Link>
-      <ol className="auth-page__steps" aria-label={`Bước ${stepIndex[step] + 1}/3`}>
+      <ol className="auth-steps" aria-label={`Bước ${stepIndex[step] + 1}/3`}>
         {STEPS.map((label, i) => (
-          <li key={label} aria-current={i === stepIndex[step] ? 'step' : undefined}>
+          <li
+            key={label}
+            className={stepChip(i)}
+            aria-current={i === stepIndex[step] ? 'step' : undefined}
+          >
             {i + 1}. {label}
           </li>
         ))}
@@ -109,14 +120,14 @@ export function ForgotPasswordPage() {
 
       {step === 'request' && (
         <>
-          <h1 id="a03-title" className="auth-page__title">
+          <h1 id="a03-title" className="auth-h">
             Quên mật khẩu
           </h1>
-          <p className="auth-page__sub">
+          <p className="auth-sub">
             Nhập email bạn dùng để đăng nhập. Nếu đó là tài khoản giáo viên, chúng tôi sẽ gửi liên
             kết đặt lại mật khẩu.
           </p>
-          <form className="auth-page__form" noValidate onSubmit={(e) => void sendLink(e)}>
+          <form className="auth-form" noValidate onSubmit={(e) => void sendLink(e)}>
             {failure?.form && <Notice tone="danger">{failure.form}</Notice>}
             <TextField
               label="Email"
@@ -136,61 +147,62 @@ export function ForgotPasswordPage() {
 
       {step === 'sent' && (
         <>
-          <h1 id="a03-title" className="auth-page__title">
+          <div className="auth-sent-ic">
+            <Icon name="send" size={26} />
+          </div>
+          <h1 id="a03-title" className="auth-h">
             Kiểm tra email
           </h1>
-          <Notice tone="success">{M.resetRequested}</Notice>
-          <p className="auth-page__help">
+          <Notice tone="success" className="auth-sent-note">
+            {M.resetRequested}
+          </Notice>
+          <p className="auth-small">
             Liên kết dùng một lần và hết hạn sau 60 phút. Tối đa 3 thư mỗi 60 phút.
           </p>
-          <p className="auth-page__alt">
-            <button type="button" className="link-button" onClick={backToRequest}>
-              Đổi email
-            </button>
-          </p>
+          <Button variant="outline" block onClick={backToRequest}>
+            Đổi email
+          </Button>
         </>
       )}
 
       {step === 'checking' && (
-        <h1 id="a03-title" className="auth-page__title" role="status">
+        <h1 id="a03-title" className="auth-h" role="status">
           Đang kiểm tra liên kết…
         </h1>
       )}
 
       {step === 'invalid' && (
         <>
-          <h1 id="a03-title" className="auth-page__title">
+          <h1 id="a03-title" className="sr-only">
             Đặt mật khẩu mới
           </h1>
-          <Notice tone="danger">{M.resetLinkInvalid}</Notice>
-          <p className="auth-page__alt">
-            <Button size="lg" block onClick={backToRequest}>
-              Gửi lại liên kết
-            </Button>
-          </p>
+          <Notice tone="danger" className="auth-sent-note">
+            {M.resetLinkInvalid}
+          </Notice>
+          <Button block onClick={backToRequest}>
+            Gửi lại liên kết
+          </Button>
         </>
       )}
 
       {step === 'newPassword' && (
         <>
-          <h1 id="a03-title" className="auth-page__title">
+          <h1 id="a03-title" className="auth-h">
             Đặt mật khẩu mới
           </h1>
-          <p className="auth-page__sub">Cho tài khoản {accountEmail}</p>
-          <form className="auth-page__form" noValidate onSubmit={(e) => void savePassword(e)}>
+          <p className="auth-sub">Cho tài khoản {accountEmail}</p>
+          <form className="auth-form" noValidate onSubmit={(e) => void savePassword(e)}>
             {failure?.form && <Notice tone="danger">{failure.form}</Notice>}
-            <TextField
+            <PasswordField
               label="Mật khẩu mới"
-              type="password"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               error={failure?.fields['password']}
             />
             <PasswordRules value={password} />
-            <TextField
+            <PasswordField
               label="Xác nhận mật khẩu"
-              type="password"
               autoComplete="new-password"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}

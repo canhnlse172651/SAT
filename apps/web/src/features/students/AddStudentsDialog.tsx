@@ -1,13 +1,15 @@
 import { ACCOUNT_MESSAGES as M, fieldErrors, studentBodySchema } from '@sat/shared';
 import { useState } from 'react';
-import { Avatar, Button, Dialog, Tabs } from '../../components';
+import { Button, Dialog, Tabs } from '../../components';
 import { formFailure } from '../auth/form-errors';
 import { Notice } from '../auth/Notice';
 import { useToastStore } from '../toast/toast-store';
+import { AddedList } from './AddedList';
 import { ImportTab } from './ImportTab';
 import { EMPTY_STUDENT } from './student-form';
-import { StudentFields, StudentStatusChip } from './StudentFields';
+import { StudentFields } from './StudentFields';
 import { useStudentsStore } from './students-store';
+import { useStudentImport } from './use-student-import';
 import './students.css';
 
 export type AddTab = 'one' | 'import';
@@ -33,13 +35,13 @@ export function AddStudentsDialog({
 }) {
   const create = useStudentsStore((s) => s.create);
   const push = useToastStore((s) => s.push);
+  const imp = useStudentImport();
   const [tab, setTab] = useState<AddTab>(initialTab);
   const [form, setForm] = useState(EMPTY_STUDENT);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [added, setAdded] = useState<Added[]>([]);
-  const [imported, setImported] = useState(false);
 
   const save = async () => {
     if (busy) return;
@@ -52,7 +54,7 @@ export function AddStudentsDialog({
     setBusy(true);
     try {
       const s = await create(form);
-      setAdded((list) => [{ id: s.id, displayName: s.displayName, email: s.email }, ...list]);
+      setAdded((list) => [...list, { id: s.id, displayName: s.displayName, email: s.email }]);
       setForm(EMPTY_STUDENT);
       setErrors({});
       push(`Đã thêm ${s.displayName} — Chưa kích hoạt.`, 'success');
@@ -65,13 +67,19 @@ export function AddStudentsDialog({
     }
   };
 
-  const done = added.length > 0 || imported;
+  const importConfirm = async () => {
+    const ok = await imp.confirm();
+    if (ok) push(`Đã thêm ${imp.report?.validCount ?? 0} học viên — Chưa kích hoạt.`, 'success');
+  };
+
+  const done = added.length > 0 || !!imp.result;
+  const importing = tab === 'import' && !!imp.report && !imp.result;
   return (
     <Dialog
       open={open}
       onClose={onClose}
       title="Thêm học viên"
-      size="lg"
+      size={tab === 'import' && imp.report ? 'xl' : 'lg'}
       footer={
         <>
           <Button variant="outline" onClick={onClose}>
@@ -82,10 +90,20 @@ export function AddStudentsDialog({
               Thêm học viên
             </Button>
           )}
+          {importing && imp.report && (
+            <Button
+              disabled={imp.report.validCount === 0}
+              loading={imp.busy === 'importing'}
+              onClick={() => void importConfirm()}
+            >
+              Nhập {imp.report.validCount} học viên hợp lệ
+            </Button>
+          )}
         </>
       }
     >
       <Tabs
+        className="t12-tabs"
         aria-label="Cách thêm học viên"
         value={tab}
         onChange={(id) => setTab(id as AddTab)}
@@ -101,32 +119,25 @@ export function AddStudentsDialog({
                   void save();
                 }}
               >
-                {formError && <Notice tone="danger">{formError}</Notice>}
+                {formError && (
+                  <Notice tone="danger" className="t12-error">
+                    {formError}
+                  </Notice>
+                )}
                 <StudentFields value={form} onChange={setForm} errors={errors} />
-                <p className="student-form__help">
+                {/* Enter in a field adds the student. */}
+                <button type="submit" hidden aria-hidden="true" tabIndex={-1} />
+                <p className="t12-help">
                   Chỉ cần họ tên và email. Không có mật khẩu: khi bạn bấm “Kích hoạt”, hệ thống tạo
                   mật khẩu ngẫu nhiên và gửi email đăng nhập tới học viên.
                 </p>
-                {/* Enter in a field adds the student. */}
-                <button type="submit" hidden aria-hidden="true" tabIndex={-1} />
                 {added.length > 0 && (
                   <section aria-labelledby="t12-added">
-                    <h3 id="t12-added" className="dialog-section-title">
+                    <h3 id="t12-added" className="t12-added-title">
                       Vừa thêm ({added.length})
                     </h3>
-                    <p className="students__muted">{M.activationHint}</p>
-                    <ul className="added-list" aria-label="Học viên vừa thêm">
-                      {added.map((s) => (
-                        <li key={s.id}>
-                          <Avatar name={s.displayName} size="sm" />
-                          <span className="added-list__who">
-                            <b>{s.displayName}</b>{' '}
-                            <span className="students__muted">{s.email}</span>
-                          </span>
-                          <StudentStatusChip status="pending" />
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="imp-muted">{M.activationHint}</p>
+                    <AddedList students={added} />
                   </section>
                 )}
               </form>
@@ -135,7 +146,7 @@ export function AddStudentsDialog({
           {
             id: 'import',
             label: 'Import Excel',
-            content: <ImportTab onAdded={() => setImported(true)} />,
+            content: <ImportTab state={imp} />,
           },
         ]}
       />

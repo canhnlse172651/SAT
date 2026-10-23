@@ -25,7 +25,7 @@ describe('GET /api/session', () => {
     const res = await get(cookie);
     expect(res.status).toBe(200);
     const body = sessionResponseSchema.parse(res.body);
-    expect(body.user).toEqual({ id: gv.id, role: 'GV', displayName: 'Cô Lan' });
+    expect(body.user).toEqual({ id: gv.id, role: 'GV', displayName: 'Cô Lan', email: gv.email });
     expect(body.workspace.id).toBe(gv.workspaceId);
   });
 

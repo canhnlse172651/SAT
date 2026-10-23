@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Button, ErrorState, Skeleton } from '../../components';
+import { useEffect, useId, useRef, useState } from 'react';
+import { Avatar, Button, ErrorState, Icon, IconButton, Skeleton } from '../../components';
 import { useDocumentTitle } from '../../lib/use-document-title';
 import { Notice } from '../auth/Notice';
 import { useAccountStore } from './account-store';
@@ -8,9 +8,9 @@ import { LogoutButton } from './LogoutButton';
 import './account.css';
 
 /**
- * S10 Hồ sơ của tôi — the part module 001 owns: own sign-in data, password change (REQ-15) with the
- * hint while the password is still the generated one (AC-15.5), and sign-out (AC-5.1, AC-20.9).
- * Module 011 adds the profile (photo, classes, progress, rank) around it.
+ * S10 Hồ sơ của tôi — prototype SCREENS.S10 with the data module 001 owns: the password hint
+ * (AC-15.5), sign-in data, "Đổi mật khẩu" (REQ-15) and sign-out (AC-5.1, AC-20.9). The default cover
+ * and initials avatar stand in until module 011 adds photos and the class list.
  */
 export function StudentAccountPage() {
   useDocumentTitle('Hồ sơ của tôi');
@@ -18,66 +18,118 @@ export function StudentAccountPage() {
   const account = useAccountStore((s) => s.account);
   const load = useAccountStore((s) => s.load);
   const [changing, setChanging] = useState(false);
-  const formRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  const openForm = () => {
-    setChanging(true);
-    requestAnimationFrame(() => formRef.current?.scrollIntoView({ block: 'start' }));
-  };
-
+  if (status === 'error' && !account) return <ErrorState title="Không tải được hồ sơ." />;
+  if (!account) return <Skeleton height={200} />;
   return (
-    <section aria-labelledby="s10-title" data-screen="S10" className="account--mobile">
-      <h1 id="s10-title" className="page-title">
-        Hồ sơ của tôi
-      </h1>
-      {status === 'error' && !account && <ErrorState title="Không tải được hồ sơ." />}
-      {!account && status !== 'error' && <Skeleton height={200} />}
-      {account && (
-        <>
-          {account.passwordSource === 'system' && (
-            <Notice
-              action={
-                <Button variant="outline" onClick={openForm}>
-                  Đổi mật khẩu
-                </Button>
-              }
-            >
-              Bạn đang dùng mật khẩu được gửi qua email. Hãy đổi sang mật khẩu của riêng bạn.
-            </Notice>
-          )}
-          <h2 className="account__section">Thông tin cá nhân</h2>
-          <dl className="account__rows">
-            <div>
-              <dt>Họ tên</dt>
-              <dd>{account.displayName}</dd>
-            </div>
-            <div>
-              <dt>Email đăng nhập</dt>
-              <dd>{account.email}</dd>
-            </div>
-          </dl>
-          <p className="account__muted">Liên hệ giáo viên nếu cần thay đổi thông tin.</p>
-
-          <h2 className="account__section">Bảo mật</h2>
-          {changing ? (
-            <section ref={formRef} aria-label="Đổi mật khẩu" className="account__card">
-              <ChangePasswordForm size="lg" />
-            </section>
-          ) : (
-            <Button variant="outline" size="lg" block onClick={openForm}>
+    <div data-screen="S10" className="s10">
+      {account.passwordSource === 'system' && (
+        <Notice
+          tone="neutral"
+          icon="key"
+          className="s10-hint"
+          action={
+            <Button size="sm" variant="outline" onClick={() => setChanging(true)}>
               Đổi mật khẩu
             </Button>
-          )}
-          <p className="account__muted">Các phiên khác sẽ bị đăng xuất khi bạn đổi mật khẩu.</p>
-          <div className="account__logout">
-            <LogoutButton variant="danger" size="lg" block />
-          </div>
-        </>
+          }
+        >
+          Bạn đang dùng mật khẩu được gửi qua email. Hãy đổi sang mật khẩu của riêng bạn.
+        </Notice>
       )}
-    </section>
+      <div className="prof-head">
+        <div className="pcover" aria-hidden="true" />
+        <div className="prof-av">
+          <Avatar name={account.displayName} size="xxl" />
+        </div>
+        <h2 className="prof-name">{account.displayName}</h2>
+      </div>
+
+      <h2 className="sec-title">Thông tin cá nhân</h2>
+      <dl className="m-card s10-info">
+        <div className="info-row">
+          <dt>Họ tên</dt>
+          <dd>{account.displayName}</dd>
+        </div>
+        <div className="info-row">
+          <dt>Email đăng nhập</dt>
+          <dd>{account.email}</dd>
+        </div>
+        <div className="info-row">
+          <dt>Số điện thoại</dt>
+          <dd>{account.phone ?? 'Chưa có'}</dd>
+        </div>
+      </dl>
+      <p className="s10-help">Liên hệ giáo viên nếu cần thay đổi thông tin.</p>
+
+      <h2 className="sec-title">Bảo mật</h2>
+      <button type="button" className="lrow" onClick={() => setChanging(true)}>
+        <span className="l-ic">
+          <Icon name="key" />
+        </span>
+        <span className="l-main">
+          <span className="l-title">Đổi mật khẩu</span>
+          <span className="l-sub">Các phiên khác sẽ bị đăng xuất</span>
+        </span>
+        <Icon name="fwd" size={18} className="chev" />
+      </button>
+      <div className="s10-logout">
+        <LogoutButton variant="danger-outline" block icon />
+      </div>
+
+      {changing && <PasswordScreen onClose={() => setChanging(false)} />}
+    </div>
+  );
+}
+
+/** Prototype `FSDS.pw`: full-screen "Đổi mật khẩu" dialog on the phone. */
+function PasswordScreen({ onClose }: { onClose: () => void }) {
+  const formId = useId();
+  const titleId = useId();
+  const ref = useRef<HTMLDivElement>(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    ref.current?.querySelector<HTMLElement>('input')?.focus();
+    return () => previous?.focus();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="fsd"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') onClose();
+      }}
+    >
+      <div className="fsd-head">
+        <IconButton aria-label="Đóng" icon={<Icon name="close" size={22} />} onClick={onClose} />
+        <h2 id={titleId}>Đổi mật khẩu</h2>
+      </div>
+      <div className="fsd-body">
+        <ChangePasswordForm
+          formId={formId}
+          confirmLabel="Xác nhận mật khẩu mới"
+          onBusy={setBusy}
+          onDone={onClose}
+        />
+      </div>
+      <div className="fsd-foot">
+        <Button variant="outline" onClick={onClose}>
+          Hủy
+        </Button>
+        <Button type="submit" form={formId} loading={busy}>
+          Lưu mật khẩu
+        </Button>
+      </div>
+    </div>
   );
 }

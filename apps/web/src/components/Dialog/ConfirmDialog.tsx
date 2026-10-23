@@ -34,6 +34,7 @@ export function ConfirmDialog({
       description={message}
       role="alertdialog"
       size="sm"
+      layout="confirm"
       footer={
         <>
           <Button variant="outline" onClick={onCancel} data-autofocus>

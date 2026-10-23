@@ -36,8 +36,11 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 - **Bộ đếm giới hạn (dev/test):** `DELETE /api/dev/throttles` xóa mọi bộ đếm (tạm khóa đăng nhập theo e-mail, 10 lượt đăng ký/giờ và
   50 lần sai/15 phút theo địa chỉ mạng). Gọi ở đầu mỗi test có đăng ký GV hoặc nhập sai mật khẩu, vì mọi lượt chạy QA dùng chung
   một địa chỉ mạng (NFR-5 sẽ chặn sau 10 lần đăng ký).
-- **Nhãn trên giao diện (để chọn phần tử):** A01 ô "Email", "Mật khẩu", nút "Đăng nhập", liên kết "Quên mật khẩu?",
-  "Đăng ký tài khoản giáo viên"; A02 "Họ tên", "Email", "Mật khẩu", "Xác nhận mật khẩu", nút "Tạo tài khoản" (danh sách
+- **Nhãn trên giao diện (để chọn phần tử):** mọi ô mật khẩu có nút "Hiện ký tự đã nhập" bên trong — chọn ô bằng
+  `getByRole('textbox', { name: '<nhãn>', exact: true })` (ô mật khẩu ẩn ký tự vẫn là textbox có tên) hoặc `getByLabel(..., { exact: true })`.
+  A01 (≥ 900 px) ô "Email", "Mật khẩu", nút "Đăng nhập", liên kết "Quên mật khẩu?", "Đăng ký tài khoản giáo viên"; A01 ở
+  điện thoại (< 900 px, như prototype) không có hai liên kết đó mà có hộp "Quên mật khẩu? Hãy liên hệ giáo viên của bạn để được cấp
+  lại mật khẩu."; A02 "Họ tên", "Email", "Mật khẩu", "Xác nhận mật khẩu", nút "Tạo tài khoản" (danh sách
   "Quy tắc mật khẩu"); A03 "Email", "Gửi liên kết đặt lại", rồi "Mật khẩu mới", "Xác nhận mật khẩu", "Đặt lại mật khẩu".
   T11: "Xem mẫu email", "Import Excel", "Thêm học viên", ô tìm "Tìm học viên", nhóm "Lọc trạng thái" (nút "Tất cả 12",
   "Chưa kích hoạt 3"…), ô chọn "Chọn cả trang" / "Chọn <Họ tên>", vùng "Thao tác hàng loạt" ("Kích hoạt", "Gửi lại",
@@ -46,8 +49,11 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
   "Xóa <Họ tên>". T12: tab "Thêm từng người" / "Import Excel", liên kết "Tải tệp mẫu", ô tệp "Chọn tệp Excel", bảng
   "Các dòng lỗi", nút "Nhập N học viên hợp lệ". T17: các thẻ "Hồ sơ" ("Họ tên", "Lưu họ tên"), "Đổi email đăng nhập"
   ("Email mới", "Mật khẩu hiện tại", "Đổi email"), "Đổi mật khẩu" ("Mật khẩu hiện tại", "Mật khẩu mới", "Xác nhận mật khẩu",
-  "Đổi mật khẩu"), "Phiên đăng nhập" ("Đăng xuất") — có hai ô "Mật khẩu hiện tại", chọn trong đúng thẻ. S10: "Đổi mật khẩu"
-  mở biểu mẫu cùng các ô như T17, "Đăng xuất". Thanh bên GV cũng có "Đăng xuất" (mục tên GV).
+  "Đổi mật khẩu"), "Phiên đăng nhập" ("Đăng xuất") — có hai ô "Mật khẩu hiện tại", chọn trong đúng thẻ. Thanh bên GV (như
+  prototype) không có "Đăng xuất": đăng xuất ở T17. S10: nút "Đổi mật khẩu" (trong gợi ý) hoặc dòng "Đổi mật khẩu — Các phiên khác
+  sẽ bị đăng xuất" mở hộp thoại toàn màn hình "Đổi mật khẩu" với "Mật khẩu hiện tại", "Mật khẩu mới", "Xác nhận mật khẩu mới",
+  nút "Lưu mật khẩu" / "Hủy"; "Đăng xuất" ở cuối S10. A05: GV có nút "Về Dashboard", HV "Về trang lớp". Thanh trên cùng của GV có ô
+  "Tìm kiếm" và nút "Thông báo" ở trạng thái vô hiệu (chưa có spec).
 - **Tạo HV nhanh qua API** (khi bước không cần giao diện): đăng nhập GV ở A01 rồi trong trình duyệt gọi `POST /api/students`
   `{"displayName","email"}` → HV Chưa kích hoạt; `POST /api/students/<id>/activate` → kích hoạt. Mỗi test dùng e-mail riêng
   (`<tc>-<số ngẫu nhiên>@sat.dev`) để không phụ thuộc thứ tự chạy.

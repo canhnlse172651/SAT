@@ -15,6 +15,9 @@ import {
   ErrorState,
   HanziText,
   HskBadge,
+  Icon,
+  ICON_PATHS,
+  type IconName,
   IconButton,
   Pagination,
   PinyinText,
@@ -250,6 +253,14 @@ function Showcase({ mobile }: { mobile: boolean }) {
           <Avatar name="Nguyễn Văn An" size="sm" />
           <Avatar name="Trần Thị Bình" />
           <Avatar name="Lê Cường" size="lg" />
+          <Avatar name="Nguyễn Minh Anh" size="xxl" />
+        </Row>
+        <Row>
+          {(Object.keys(ICON_PATHS) as IconName[]).map((name) => (
+            <span key={name} title={name}>
+              <Icon name={name} />
+            </span>
+          ))}
         </Row>
       </Section>
 

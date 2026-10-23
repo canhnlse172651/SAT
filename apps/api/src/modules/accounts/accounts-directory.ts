@@ -17,11 +17,14 @@ import { USER_MODEL, type UserDoc, WORKSPACE_MODEL, type WorkspaceDoc } from './
 const isId = (id: string | undefined): id is string =>
   !!id && Types.ObjectId.isValid(id) && /^[a-f0-9]{24}$/i.test(id);
 
-const toDirectoryUser = (u: Pick<UserDoc, '_id' | 'workspaceId' | 'role' | 'displayName'>) => ({
+const toDirectoryUser = (
+  u: Pick<UserDoc, '_id' | 'workspaceId' | 'role' | 'displayName'> & { email?: string },
+): DirectoryUser => ({
   id: u._id.toString(),
   workspaceId: u.workspaceId.toString(),
   role: u.role,
   displayName: u.displayName,
+  ...(u.email ? { email: u.email } : {}),
 });
 
 /**
@@ -40,7 +43,7 @@ export class AccountsDirectory implements WorkspaceDirectory, SessionPrincipalRe
     if (!isId(userId) || !isId(workspaceId)) return null;
     const doc = await this.users
       .findOne({ _id: userId, workspaceId })
-      .select({ workspaceId: 1, role: 1, displayName: 1 })
+      .select({ workspaceId: 1, role: 1, displayName: 1, email: 1 })
       .lean();
     return doc ? toDirectoryUser(doc) : null;
   }
@@ -62,7 +65,7 @@ export class AccountsDirectory implements WorkspaceDirectory, SessionPrincipalRe
         ...(query.workspaceId ? { workspaceId: query.workspaceId } : {}),
       })
       .sort({ createdAt: 1, _id: 1 })
-      .select({ workspaceId: 1, role: 1, displayName: 1 })
+      .select({ workspaceId: 1, role: 1, displayName: 1, email: 1 })
       .lean();
     return doc ? toDirectoryUser(doc) : null;
   }

@@ -23,9 +23,15 @@
   color: var(--text-3);
 }
 .field__error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: var(--fs-xs);
   font-weight: 500;
-  color: var(--danger-text);
+  color: var(--danger);
+}
+.field__error > svg {
+  flex: none;
 }
 
 /* Shared by TextField, Textarea, Select, DatePicker */

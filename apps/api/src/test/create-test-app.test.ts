@@ -29,7 +29,7 @@ describe('createTestApp', () => {
     const res = await kit.http.get('/api/session').set('Cookie', cookie);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
-      user: { id: gv.id, role: 'GV', displayName: 'Cô Kit' },
+      user: { id: gv.id, role: 'GV', displayName: 'Cô Kit', email: gv.email },
       workspace: { id: ws.id, name: 'Kit workspace' },
     });
   });

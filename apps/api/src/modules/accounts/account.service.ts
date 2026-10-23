@@ -46,6 +46,7 @@ export class AccountService {
       role: user.role,
       displayName: user.displayName,
       email: user.email,
+      phone: user.phone ?? null,
       createdAt: user.createdAt.toISOString(),
       passwordSource: user.role === 'HV' ? (user.passwordSource ?? 'system') : null,
     };

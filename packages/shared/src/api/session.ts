@@ -7,6 +7,8 @@ export const sessionResponseSchema = z.object({
     id: z.string(),
     role: roleSchema,
     displayName: z.string(),
+    /** Sign-in e-mail (shell footer); absent for sessions created by older servers. */
+    email: z.string().optional(),
   }),
   workspace: z.object({
     id: z.string(),

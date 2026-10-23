@@ -15,12 +15,12 @@ describe('NotFoundPage (A05)', () => {
     expect(
       screen.getByRole('heading', { name: 'Không tìm thấy nội dung bạn yêu cầu.' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Về trang chủ' })).toHaveAttribute('href', '/gv');
+    expect(screen.getByRole('link', { name: 'Về Dashboard' })).toHaveAttribute('href', '/gv');
   });
 
   it('links an HV home to S01 and a signed-out visitor to A01', () => {
     renderWithProviders(<NotFoundPage />, { session: { role: 'HV' } });
-    expect(screen.getByRole('link', { name: 'Về trang chủ' })).toHaveAttribute('href', '/hv');
+    expect(screen.getByRole('link', { name: 'Về trang lớp' })).toHaveAttribute('href', '/hv');
   });
 
   it('links a signed-out visitor to the login screen', () => {

@@ -3,12 +3,13 @@ import { cx } from '../cx';
 import { SpinnerIcon } from '../icons';
 import './Button.css';
 
-export type ButtonVariant = 'primary' | 'outline' | 'ghost' | 'danger' | 'success';
-export type ButtonSize = 'md' | 'lg';
+export type ButtonVariant =
+  'primary' | 'outline' | 'ghost' | 'danger' | 'danger-outline' | 'success';
+export type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
-  /** `lg` = 48 px, for the mobile student app. */
+  /** `sm` = 32 px (dense rows, prototype .btn-sm), `lg` = 48 px for the mobile student app. */
   size?: ButtonSize;
   loading?: boolean;
   block?: boolean;
@@ -35,6 +36,7 @@ export function Button({
         'btn',
         `btn--${variant}`,
         size === 'lg' && 'btn--lg',
+        size === 'sm' && 'btn--sm',
         block && 'btn--block',
         className,
       )}

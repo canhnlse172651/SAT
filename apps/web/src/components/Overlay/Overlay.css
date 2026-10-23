@@ -19,35 +19,65 @@
   box-shadow: var(--shadow-pop);
   outline: none;
 }
+/* Prototype .modal-head / .modal-body / .modal-foot */
 .overlay__head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
-  padding: var(--sp-5) var(--sp-5) 0;
+  min-height: 60px;
+  padding: 10px 10px 10px 24px;
+  border-bottom: 1px solid var(--border);
+  flex: none;
 }
 .overlay__title {
   font-family: var(--font-display);
   font-size: 21px;
   font-weight: 600;
   line-height: 1.25;
-  padding-top: 4px;
+  letter-spacing: -0.005em;
 }
 .overlay__desc {
-  padding: var(--sp-2) var(--sp-5) 0;
+  padding: 16px 24px 0;
   color: var(--text-2);
   font-size: var(--fs-base);
   line-height: var(--lh-read);
 }
 .overlay__body {
-  padding: var(--sp-4) var(--sp-5);
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 20px 24px;
   overflow-y: auto;
 }
 .overlay__foot {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-5) var(--sp-5);
+  gap: 10px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  flex: none;
+}
+/* Prototype .confirm: question, impact, actions */
+.overlay__panel--confirm {
+  padding: 24px;
+}
+.overlay__q {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.overlay__panel--confirm .overlay__desc {
+  padding: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.overlay__panel--confirm .overlay__foot {
+  justify-content: flex-start;
+  padding: 0;
+  margin-top: 20px;
+  border-top: 0;
 }
 
 /* centred dialog */
@@ -61,14 +91,20 @@
   border-radius: var(--r-lg);
   animation: overlay-rise var(--dur-2) var(--ease);
 }
+.overlay--dialog .overlay__panel {
+  max-height: calc(100% - 64px);
+}
 .overlay--dialog .overlay__panel--sm {
-  max-width: 400px;
+  max-width: 440px;
 }
 .overlay--dialog .overlay__panel--md {
   max-width: 520px;
 }
 .overlay--dialog .overlay__panel--lg {
-  max-width: 720px;
+  max-width: 680px;
+}
+.overlay--dialog .overlay__panel--xl {
+  max-width: 860px;
 }
 
 /* desktop side drawer */
@@ -84,7 +120,7 @@
   width: 360px;
 }
 .overlay--drawer .overlay__panel--md {
-  width: 480px;
+  width: 440px;
 }
 .overlay--drawer .overlay__panel--lg {
   width: 640px;

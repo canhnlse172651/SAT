@@ -1,21 +1,22 @@
 .tabs__list {
   display: flex;
-  gap: var(--sp-6);
+  gap: 4px;
   border-bottom: 1px solid var(--border);
   overflow-x: auto;
+  overflow-y: hidden;
 }
 .tabs__tab {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
-  padding: 0 2px;
+  padding: 0 16px;
   margin-bottom: -1px;
   border: 0;
   border-bottom: 2px solid transparent;
   background: none;
   color: var(--text-2);
-  font-size: var(--fs-md);
+  font-size: var(--fs-base);
   font-weight: 600;
   white-space: nowrap;
   transition:
@@ -23,6 +24,7 @@
     color var(--dur-1);
 }
 .tabs__tab:hover {
+  color: var(--text);
   border-bottom-color: var(--border-strong);
 }
 .tabs__tab[aria-selected='true'] {

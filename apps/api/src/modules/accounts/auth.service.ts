@@ -97,7 +97,13 @@ export class AuthService {
       workspaceId: workspace._id.toString(),
     });
     return this.openSession(
-      { _id: userId, workspaceId: workspace._id, role: 'GV', displayName: input.displayName },
+      {
+        _id: userId,
+        workspaceId: workspace._id,
+        role: 'GV',
+        displayName: input.displayName,
+        email: input.email,
+      },
       workspace.name,
       client,
     );
@@ -184,7 +190,7 @@ export class AuthService {
   }
 
   private async openSession(
-    user: Pick<UserDoc, '_id' | 'workspaceId' | 'role' | 'displayName'>,
+    user: Pick<UserDoc, '_id' | 'workspaceId' | 'role' | 'displayName' | 'email'>,
     workspaceName: string,
     client: ClientInfo,
   ): Promise<SignedIn> {
@@ -198,7 +204,12 @@ export class AuthService {
       token,
       maxAgeSeconds: session.maxAgeSeconds,
       body: {
-        user: { id: session.userId, role: user.role, displayName: user.displayName },
+        user: {
+          id: session.userId,
+          role: user.role,
+          displayName: user.displayName,
+          email: user.email,
+        },
         workspace: { id: session.workspaceId, name: workspaceName },
       },
     };

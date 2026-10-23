@@ -31,4 +31,16 @@ describe('Button', () => {
     render(<Button variant="danger">Xóa</Button>);
     expect(screen.getByRole('button', { name: 'Xóa' })).toHaveClass('btn--danger');
   });
+
+  it('has the prototype small size and danger-outline variant', () => {
+    render(
+      <Button variant="danger-outline" size="sm">
+        Đăng xuất
+      </Button>,
+    );
+    expect(screen.getByRole('button', { name: 'Đăng xuất' })).toHaveClass(
+      'btn--danger-outline',
+      'btn--sm',
+    );
+  });
 });

@@ -1,13 +1,13 @@
 import { registerBodySchema } from '@sat/shared';
 import { type FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Button, TextField } from '../../components';
-import { ChevronLeftIcon } from '../../components/icons';
+import { Button, Icon, TextField } from '../../components';
 import { homePath } from '../../lib/home-path';
 import { useDocumentTitle } from '../../lib/use-document-title';
 import { useToastStore } from '../toast/toast-store';
 import { useAuthStore } from './auth-store';
 import { Notice } from './Notice';
+import { PasswordField } from './PasswordField';
 import { PasswordRules } from './PasswordRules';
 import './auth.css';
 
@@ -45,15 +45,15 @@ export function RegisterPage() {
   const err = failure?.fields ?? {};
   return (
     <section aria-labelledby="a02-title" data-screen="A02">
-      <Link to="/dang-nhap" className="auth-page__back">
-        <ChevronLeftIcon width={16} height={16} aria-hidden="true" />
+      <Link to="/dang-nhap" className="link auth-back">
+        <Icon name="back" size={16} />
         Đăng nhập
       </Link>
-      <h1 id="a02-title" className="auth-page__title">
+      <h1 id="a02-title" className="auth-h">
         Đăng ký giáo viên
       </h1>
-      <p className="auth-page__sub">Miễn phí. Workspace của bạn chỉ mình bạn quản lý.</p>
-      <form className="auth-page__form" noValidate onSubmit={(e) => void submit(e)}>
+      <p className="auth-sub">Miễn phí. Workspace của bạn chỉ mình bạn quản lý.</p>
+      <form className="auth-form" noValidate onSubmit={(e) => void submit(e)}>
         {failure?.form && <Notice tone="danger">{failure.form}</Notice>}
         <TextField
           label="Họ tên"
@@ -76,20 +76,16 @@ export function RegisterPage() {
           onChange={set('email')}
           error={err['email']}
         />
-        <TextField
+        <PasswordField
           label="Mật khẩu"
-          type="password"
-          required
           autoComplete="new-password"
           value={form.password}
           onChange={set('password')}
           error={err['password']}
         />
         <PasswordRules value={form.password} />
-        <TextField
+        <PasswordField
           label="Xác nhận mật khẩu"
-          type="password"
-          required
           autoComplete="new-password"
           value={form.passwordConfirm}
           onChange={set('passwordConfirm')}
@@ -99,9 +95,7 @@ export function RegisterPage() {
           Tạo tài khoản
         </Button>
       </form>
-      <p className="auth-page__help">
-        Tài khoản học viên do giáo viên tạo — học viên không tự đăng ký.
-      </p>
+      <p className="auth-help">Tài khoản học viên do giáo viên tạo — học viên không tự đăng ký.</p>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import { ACCOUNT_MESSAGES } from '@sat/shared';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Button, type ButtonProps, ConfirmDialog } from '../../components';
+import { Button, type ButtonProps, ConfirmDialog, Icon } from '../../components';
 import { apiRequest } from '../../lib/api-client';
 import { LOGIN_PATH } from '../../lib/home-path';
 import type { LoginNoticeState } from '../session/session-notice';
@@ -13,6 +13,8 @@ interface Props {
   block?: boolean;
   size?: ButtonProps['size'];
   className?: string;
+  /** Prototype: the logout icon before the label. */
+  icon?: boolean;
 }
 
 /**
@@ -20,7 +22,7 @@ interface Props {
  * "Đã đăng xuất." — replacing the history entry so Back cannot show signed-in data again. With unsaved
  * review results the dialog becomes the AC-20.9 warning.
  */
-export function LogoutButton({ variant = 'outline', block, size, className }: Props) {
+export function LogoutButton({ variant = 'outline', block, size, className, icon }: Props) {
   const navigate = useNavigate();
   const clear = useSessionStore((s) => s.clear);
   const unsaved = useLogoutGuardStore((s) => s.unsavedReviews);
@@ -51,6 +53,7 @@ export function LogoutButton({ variant = 'outline', block, size, className }: Pr
         className={className}
         onClick={() => setOpen(true)}
       >
+        {icon && <Icon name="logout" size={18} />}
         Đăng xuất
       </Button>
       {unsaved > 0 ? (

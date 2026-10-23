@@ -1,6 +1,7 @@
 import { STUDENT_STATUS_LABELS, type StudentStatus } from '@sat/shared';
-import { TextField, Textarea } from '../../components';
+import { Icon, type IconName, TextField, Textarea } from '../../components';
 import type { StudentFormValue } from './student-form';
+import '../auth/auth.css';
 import './students.css';
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
   emailReadOnly?: boolean;
 }
 
-/** Họ tên, Email, Số điện thoại, Ghi chú — T12 add and the edit dialog (AC-8.5). */
+/** Họ tên, Email, Số điện thoại, Ghi chú — T12 add and the edit dialog (AC-8.5), prototype grid-2. */
 export function StudentFields({ value, onChange, errors, emailReadOnly }: Props) {
   const set = (key: keyof StudentFormValue) => (e: { target: { value: string } }) =>
     onChange({ ...value, [key]: e.target.value });
@@ -59,7 +60,21 @@ export function StudentFields({ value, onChange, errors, emailReadOnly }: Props)
   );
 }
 
-/** AC-11.1 status label. */
-export function StudentStatusChip({ status }: { status: StudentStatus }) {
-  return <span className={`st-chip st-chip--${status}`}>{STUDENT_STATUS_LABELS[status]}</span>;
+const CHIPS: Record<StudentStatus, { tone: string; icon: IconName }> = {
+  pending: { tone: '', icon: 'mail' },
+  sending: { tone: 'chip--info', icon: 'refresh' },
+  active: { tone: 'chip--done', icon: 'check' },
+  failed: { tone: 'chip--danger', icon: 'alert' },
+  locked: { tone: 'chip--danger', icon: 'lock' },
+};
+
+/** AC-11.1 status label (prototype `stuChip`); `plain` drops the icon (added lists). */
+export function StudentStatusChip({ status, plain }: { status: StudentStatus; plain?: boolean }) {
+  const chip = CHIPS[status];
+  return (
+    <span className={['chip', chip.tone].filter(Boolean).join(' ')}>
+      {!plain && <Icon name={chip.icon} size={14} />}
+      {STUDENT_STATUS_LABELS[status]}
+    </span>
+  );
 }

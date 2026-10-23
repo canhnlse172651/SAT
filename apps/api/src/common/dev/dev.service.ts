@@ -41,7 +41,12 @@ export class DevService {
       token,
       maxAgeSeconds: session.maxAgeSeconds,
       body: {
-        user: { id: user.id, role: user.role, displayName: user.displayName },
+        user: {
+          id: user.id,
+          role: user.role,
+          displayName: user.displayName,
+          ...(user.email ? { email: user.email } : {}),
+        },
         workspace: { id: user.workspaceId, name: workspace?.name ?? '' },
       },
     };

@@ -3,6 +3,7 @@ import { RedirectIfSignedIn } from '../features/auth/RedirectIfSignedIn';
 import { HomeRedirect } from '../features/session/HomeRedirect';
 import { RequireRole } from '../features/session/RequireRole';
 import { AuthLayout } from '../layouts/AuthLayout';
+import { RoleShell } from '../layouts/RoleShell';
 import { StudentShell } from '../layouts/StudentShell';
 import { TeacherShell } from '../layouts/TeacherShell';
 import { homePath, NOT_FOUND_PATH } from '../lib/home-path';
@@ -60,7 +61,6 @@ export function createAppRoutes(): RouteObject[] {
           element: <RedirectIfSignedIn />,
           children: [{ element: <AuthLayout />, children: inArea('auth') }],
         },
-        { path: NOT_FOUND_PATH, element: <NotFoundPage /> },
         ...devRoutes,
         {
           // T01–T27: an HV is sent to S01 (001 AC-16.3, AC-20.10).
@@ -77,7 +77,14 @@ export function createAppRoutes(): RouteObject[] {
           element: <RequireRole role="HV" otherwise={NOT_FOUND_PATH} />,
           children: [{ element: <StudentShell />, children: inArea('selfStudy') }],
         },
-        { path: '*', element: <NotFoundPage /> },
+        {
+          // A05 sits in the signed-in role's shell (prototype); bare for visitors.
+          element: <RoleShell />,
+          children: [
+            { path: NOT_FOUND_PATH, element: <NotFoundPage /> },
+            { path: '*', element: <NotFoundPage /> },
+          ],
+        },
       ],
     },
   ];

@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { cx } from '../cx';
+import { avatarColor } from './avatar-color';
 import './Avatar.css';
 
 export interface AvatarProps {
   /** Full name: the accessible name and the source of the initials. */
   name: string;
   src?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xxl';
   className?: string;
 }
 
@@ -26,7 +27,12 @@ export function Avatar({ name, src, size = 'md', className }: AvatarProps) {
   const [failed, setFailed] = useState(false);
   const showImage = src !== undefined && !failed;
   return (
-    <span role="img" aria-label={name} className={cx('avatar', `avatar--${size}`, className)}>
+    <span
+      role="img"
+      aria-label={name}
+      className={cx('avatar', `avatar--${size}`, className)}
+      style={{ '--av': avatarColor(name) } as CSSProperties}
+    >
       {showImage ? (
         <img src={src} alt="" onError={() => setFailed(true)} className="avatar__img" />
       ) : (

@@ -6,8 +6,8 @@
   width: 36px;
   height: 36px;
   border-radius: var(--r-pill);
-  background: var(--primary-soft);
-  color: var(--primary-text);
+  background: var(--av, var(--ink-3));
+  color: var(--on-dark);
   font-size: var(--fs-sm);
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -19,9 +19,14 @@
   font-size: var(--fs-2xs);
 }
 .avatar--lg {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   font-size: var(--fs-xl);
+}
+.avatar--xxl {
+  width: 96px;
+  height: 96px;
+  font-size: 32px;
 }
 .avatar__img {
   width: 100%;

@@ -18,7 +18,10 @@ export interface OverlayProps {
   role?: 'dialog' | 'alertdialog';
   /** Clicking the scrim closes the layer (default true). */
   closeOnScrim?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  /** Dialog widths 440 / 520 / 680 / 860 px (prototype modal and modal.wide); drawers 360 / 440 / 640. */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** `confirm`: the prototype's confirmation card — question, impact, actions; no header bar or close button. */
+  layout?: 'standard' | 'confirm';
   className?: string;
 }
 
@@ -41,6 +44,7 @@ function OverlayPanel({
   role = 'dialog',
   closeOnScrim = true,
   size = 'md',
+  layout = 'standard',
   className,
 }: PanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -98,15 +102,26 @@ function OverlayPanel({
         aria-describedby={description ? descId : undefined}
         tabIndex={-1}
         onKeyDown={onKeyDown}
-        className={cx('overlay__panel', `overlay__panel--${size}`, className)}
+        className={cx(
+          'overlay__panel',
+          `overlay__panel--${size}`,
+          layout === 'confirm' && 'overlay__panel--confirm',
+          className,
+        )}
       >
         {variant === 'sheet' && <span className="overlay__grab" aria-hidden="true" />}
-        <header className="overlay__head">
-          <h2 id={titleId} className="overlay__title">
+        {layout === 'confirm' ? (
+          <h2 id={titleId} className="overlay__q">
             {title}
           </h2>
-          <IconButton aria-label="Đóng" icon={<CloseIcon />} size="sm" onClick={onClose} />
-        </header>
+        ) : (
+          <header className="overlay__head">
+            <h2 id={titleId} className="overlay__title">
+              {title}
+            </h2>
+            <IconButton aria-label="Đóng" icon={<CloseIcon />} size="sm" onClick={onClose} />
+          </header>
+        )}
         {description && (
           <p id={descId} className="overlay__desc">
             {description}

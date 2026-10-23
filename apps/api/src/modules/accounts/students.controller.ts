@@ -107,14 +107,19 @@ export class StudentsController {
   @Get('email-templates')
   async templates(@CurrentUser() p: AuthPrincipal): Promise<{ templates: MailPreview[] }> {
     const scope = scoped(this.users, p.workspaceId);
-    const [teacher, sample] = await Promise.all([
-      scope.findById(p.userId).select({ displayName: 1 }).lean(),
+    // Prototype: the sample recipient is a not-yet-activated student when there is one.
+    const sampleOf = (status?: string) =>
       scope
-        .findOne({ role: 'HV' })
-        .sort({ status: 1, createdAt: -1 })
+        .findOne({ role: 'HV', ...(status ? { status } : {}) })
+        .sort({ createdAt: -1 })
         .select({ displayName: 1, email: 1 })
-        .lean(),
+        .lean();
+    const [teacher, pending, any] = await Promise.all([
+      scope.findById(p.userId).select({ displayName: 1 }).lean(),
+      sampleOf('pending'),
+      sampleOf(),
     ]);
+    const sample = pending ?? any;
     return {
       templates: mailPreviews({
         teacherName: teacher?.displayName ?? '',

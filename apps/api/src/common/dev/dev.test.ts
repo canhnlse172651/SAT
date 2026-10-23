@@ -43,7 +43,7 @@ describe('dev endpoints (test mode)', () => {
       .send({ role: 'HV', userId: hv.id });
     expect(res.status).toBe(201);
     expect(res.body).toEqual({
-      user: { id: hv.id, role: 'HV', displayName: 'Học viên Hai' },
+      user: { id: hv.id, role: 'HV', displayName: 'Học viên Hai', email: hv.email },
       workspace: { id: ws.id, name: 'Workspace dev' },
     });
     const cookie = String(res.headers['set-cookie']?.[0]);

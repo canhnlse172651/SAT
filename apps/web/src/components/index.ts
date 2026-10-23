@@ -1,5 +1,6 @@
 export { AudioButton, type AudioButtonProps } from './AudioButton/AudioButton';
 export { Avatar, type AvatarProps } from './Avatar/Avatar';
+export { avatarColor } from './Avatar/avatar-color';
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from './Button/Button';
 export { Checkbox, type CheckboxProps } from './Checkbox/Checkbox';
 export {
@@ -19,6 +20,8 @@ export { ErrorState, type ErrorStateProps } from './ErrorState/ErrorState';
 export { FormField, type FieldA11y, type FormFieldProps } from './FormField/FormField';
 export { HanziText, type HanziSize, type HanziTextProps } from './HanziText/HanziText';
 export { PinyinText, type PinyinTextProps } from './HanziText/PinyinText';
+export { Icon, type IconProps } from './Icon/Icon';
+export { ICON_PATHS, type IconName } from './Icon/icon-paths';
 export { HskBadge, type HskBadgeProps } from './HskBadge/HskBadge';
 export { IconButton, type IconButtonProps } from './IconButton/IconButton';
 export { Pagination, type PaginationProps } from './Pagination/Pagination';

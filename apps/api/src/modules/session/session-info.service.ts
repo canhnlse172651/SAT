@@ -21,7 +21,12 @@ export class SessionInfoService {
       throw new AppError(401, UNAUTHENTICATED, 'Authentication required', { reason: 'missing' });
     }
     return {
-      user: { id: user.id, role: principal.role, displayName: user.displayName },
+      user: {
+        id: user.id,
+        role: principal.role,
+        displayName: user.displayName,
+        ...(user.email ? { email: user.email } : {}),
+      },
       workspace: { id: workspace.id, name: workspace.name },
     };
   }

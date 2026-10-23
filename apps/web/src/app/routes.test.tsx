@@ -89,7 +89,7 @@ describe('route table', () => {
 });
 
 describe('shells', () => {
-  it('TeacherShell lists the sidebar in order, with workspace name and sign-out', async () => {
+  it('TeacherShell lists the sidebar in order, with workspace name, screen name and disabled search', async () => {
     open('/gv', { role: 'GV', workspaceName: 'Lớp cô Lan' });
     const nav = await screen.findByRole('navigation', { name: 'Điều hướng chính' });
     expect(
@@ -110,7 +110,11 @@ describe('shells', () => {
       'page',
     );
     expect(screen.getByText('Lớp cô Lan')).toBeInTheDocument();
-    expect(screen.getByText('Đăng xuất')).toBeInTheDocument();
+    expect(
+      within(screen.getByRole('navigation', { name: 'Vị trí' })).getByText('Dashboard'),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Tìm kiếm' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Thông báo' })).toBeDisabled();
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
@@ -122,6 +126,7 @@ describe('shells', () => {
         .getAllByRole('link')
         .map((a) => a.textContent),
     ).toEqual(['Lớp của tôi', 'Bài thi', 'Tự học', 'Xếp hạng', 'Tài khoản']);
+    expect(screen.getByRole('heading', { level: 1, name: 'Lớp của tôi' })).toBeInTheDocument();
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 });

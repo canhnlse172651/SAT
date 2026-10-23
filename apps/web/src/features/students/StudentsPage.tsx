@@ -7,15 +7,16 @@ import {
   type Student,
   type StudentFilter,
 } from '@sat/shared';
-import { type ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Avatar,
   Button,
   Checkbox,
   ConfirmDialog,
-  EmptyState,
   ErrorState,
+  Icon,
   IconButton,
+  type IconName,
   Pagination,
   SegmentedControl,
   Skeleton,
@@ -28,7 +29,6 @@ import { useToastStore } from '../toast/toast-store';
 import { AddStudentsDialog, type AddTab } from './AddStudentsDialog';
 import { EditStudentDialog } from './EditStudentDialog';
 import { EmailPreviewDrawer } from './EmailPreviewDrawer';
-import { EditIcon, KeyIcon, LockIcon, TrashIcon, UnlockIcon } from './row-icons';
 import { StudentStatusChip } from './StudentFields';
 import { useStudentsStore } from './students-store';
 import './students.css';
@@ -216,63 +216,71 @@ export function StudentsPage() {
 
   return (
     <section aria-labelledby="t11-title" data-screen="T11">
-      <header className="students__head">
-        <div>
+      <div className="page-head">
+        <div className="page-head__text">
           <h1 id="t11-title" className="page-title">
             Học viên
           </h1>
-          <p className="students__sub">
+          <div className="page-sub">
             {list?.workspaceTotal ?? 0} học viên trong workspace · tài khoản được kích hoạt bằng
             email
-          </p>
+          </div>
         </div>
-        <div className="students__actions">
+        <div className="page-head__actions">
           <Button variant="ghost" onClick={() => setPreviewOpen(true)}>
+            <Icon name="mail" size={18} />
             Xem mẫu email
           </Button>
           <Button variant="outline" onClick={() => setAddTab('import')}>
+            <Icon name="upload" size={18} />
             Import Excel
           </Button>
-          <Button onClick={() => setAddTab('one')}>Thêm học viên</Button>
+          <Button onClick={() => setAddTab('one')}>
+            <Icon name="plus" size={18} />
+            Thêm học viên
+          </Button>
         </div>
-      </header>
-
-      <div className="students__stack">
-        {summary && (
-          <Notice
-            tone="success"
-            action={
-              <Button variant="ghost" onClick={dismissSummary}>
-                Đóng
-              </Button>
-            }
-          >
-            {summary}
-          </Notice>
-        )}
-        {!!counts?.failed && (
-          <Notice
-            tone="danger"
-            action={
-              <Button variant="outline" onClick={() => setFilter('failed')}>
-                Xem
-              </Button>
-            }
-          >
-            Có {counts.failed} học viên gửi email thất bại.
-          </Notice>
-        )}
       </div>
 
-      <div className="students__toolbar">
-        <input
-          className="input students__search"
-          type="search"
-          aria-label="Tìm học viên"
-          placeholder="Tìm theo họ tên hoặc email"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      {summary && (
+        <Notice
+          tone="success"
+          className="t11-callout"
+          action={
+            <Button size="sm" variant="ghost" onClick={dismissSummary}>
+              Đóng
+            </Button>
+          }
+        >
+          {summary}
+        </Notice>
+      )}
+      {!!counts?.failed && (
+        <Notice
+          tone="danger"
+          className="t11-callout"
+          action={
+            <Button size="sm" variant="outline" onClick={() => setFilter('failed')}>
+              Xem
+            </Button>
+          }
+        >
+          Có {counts.failed} học viên gửi email thất bại.
+        </Notice>
+      )}
+
+      <div className="toolbar">
+        <div className="inp-search">
+          <Icon name="search" size={18} />
+          <input
+            className="input"
+            type="search"
+            aria-label="Tìm học viên"
+            placeholder="Tìm theo họ tên hoặc email"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <SegmentedControl
           aria-label="Lọc trạng thái"
           value={filter}
@@ -285,36 +293,38 @@ export function StudentsPage() {
       </div>
 
       {selectedCount > 0 && (
-        <div className="students__bulk" role="region" aria-label="Thao tác hàng loạt">
+        <div className="bulk-bar" role="region" aria-label="Thao tác hàng loạt">
           <b>Đã chọn {selectedCount} học viên</b>
-          <Button onClick={() => void startBulk('activate')}>Kích hoạt</Button>
-          <Button variant="outline" onClick={() => void startBulk('resend')}>
+          <Button size="sm" onClick={() => void startBulk('activate')}>
+            <Icon name="mail" size={16} />
+            Kích hoạt
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => void startBulk('resend')}>
             Gửi lại
           </Button>
           {pageSelected && !allMatching && (list?.total ?? 0) > items.length && (
-            <Button variant="ghost" onClick={selectAllMatching}>
+            <button type="button" className="link" onClick={selectAllMatching}>
               Chọn tất cả {list?.total} học viên khớp bộ lọc
-            </Button>
+            </button>
           )}
-          <span className="students__bulk-spacer" />
-          <Button variant="ghost" onClick={clearSelection}>
+          <span className="bulk-bar__spacer" />
+          <button type="button" className="link" onClick={clearSelection}>
             Bỏ chọn
-          </Button>
+          </button>
         </div>
       )}
 
-      <div className="students__card">
+      <div className="card">
         {status === 'error' && !list && <ErrorState title="Không tải được danh sách học viên." />}
         {!list && status !== 'error' && <Skeleton height={320} />}
         {list && items.length === 0 && (
-          <EmptyState
-            title={
-              filtered || list.workspaceTotal > 0
-                ? 'Không tìm thấy học viên phù hợp.'
-                : 'Chưa có học viên nào.'
-            }
-            action={
-              filtered || list.workspaceTotal > 0 ? (
+          <div className="empty">
+            {filtered || list.workspaceTotal > 0 ? (
+              <>
+                <div className="empty__ill">
+                  <Icon name="search" size={28} />
+                </div>
+                <h3>Không tìm thấy học viên phù hợp.</h3>
                 <Button
                   variant="outline"
                   onClick={() => {
@@ -324,97 +334,106 @@ export function StudentsPage() {
                 >
                   Xóa bộ lọc
                 </Button>
-              ) : (
-                <span className="students__actions">
+              </>
+            ) : (
+              <>
+                <h3>Chưa có học viên nào.</h3>
+                <div className="empty__actions">
                   <Button onClick={() => setAddTab('one')}>Thêm học viên</Button>
                   <Button variant="outline" onClick={() => setAddTab('import')}>
                     Import Excel
                   </Button>
-                </span>
-              )
-            }
-          />
+                </div>
+              </>
+            )}
+          </div>
         )}
         {items.length > 0 && (
           <>
-            <table className="students__table">
-              <caption className="sr-only">Danh sách học viên</caption>
-              <thead>
-                <tr>
-                  <th scope="col">
-                    <Checkbox
-                      label={<span className="sr-only">Chọn cả trang</span>}
-                      checked={pageSelected}
-                      onChange={togglePage}
-                    />
-                  </th>
-                  <th scope="col">Họ tên · Email</th>
-                  <th scope="col">Số điện thoại</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col" className="num">
-                    Số lớp
-                  </th>
-                  <th scope="col">Đăng nhập gần nhất</th>
-                  <th scope="col" className="num">
-                    Thao tác
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((s) => {
-                  const selected = allMatching || selectedIds.includes(s.id);
-                  return (
-                    <tr key={s.id} aria-selected={selected}>
-                      <td>
-                        <Checkbox
-                          label={<span className="sr-only">Chọn {s.displayName}</span>}
-                          checked={selected}
-                          onChange={() => toggle(s.id)}
-                        />
-                      </td>
-                      <td>
-                        <div className="students__who">
-                          <Avatar name={s.displayName} size="sm" />
-                          <span>
-                            <span className="students__name">{s.displayName}</span>
-                            <span className="students__email">{s.email}</span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="students__muted students__nowrap">{s.phone ?? '—'}</td>
-                      <td>
-                        <div className="students__status">
-                          <StudentStatusChip status={s.status} />
-                          {s.status === 'failed' && s.failReason && (
-                            <span className="students__reason">
-                              {MAIL_FAIL_MESSAGES[s.failReason]}
+            <div className="tbl-scroll">
+              <table className="tbl">
+                <caption className="sr-only">Danh sách học viên</caption>
+                <thead>
+                  <tr>
+                    <th scope="col" className="tbl__check">
+                      <Checkbox
+                        label={<span className="sr-only">Chọn cả trang</span>}
+                        checked={pageSelected}
+                        onChange={togglePage}
+                      />
+                    </th>
+                    <th scope="col">Họ tên · Email</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col" className="r">
+                      Số lớp
+                    </th>
+                    <th scope="col">Đăng nhập gần nhất</th>
+                    <th scope="col" className="r">
+                      Thao tác
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((s) => {
+                    const selected = allMatching || selectedIds.includes(s.id);
+                    return (
+                      <tr
+                        key={s.id}
+                        className={selected ? 'sel-row' : undefined}
+                        aria-selected={selected}
+                      >
+                        <td className="tbl__check">
+                          <Checkbox
+                            label={<span className="sr-only">Chọn {s.displayName}</span>}
+                            checked={selected}
+                            onChange={() => toggle(s.id)}
+                          />
+                        </td>
+                        <td>
+                          <div className="t11-who">
+                            <Avatar name={s.displayName} size="sm" />
+                            <span>
+                              <span className="t11-who__name">{s.displayName}</span>
+                              <span className="t11-who__mail">{s.email}</span>
                             </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="num">{s.classCount}</td>
-                      <td className="students__muted students__nowrap">
-                        {s.lastLoginAt
-                          ? formatVnDateTime(new Date(s.lastLoginAt))
-                          : 'Chưa đăng nhập'}
-                      </td>
-                      <td>
-                        <RowActions
-                          student={s}
-                          disabled={busy}
-                          onActivate={activate}
-                          onResend={resend}
-                          onUnlock={doUnlock}
-                          onEdit={setEditing}
-                          onConfirm={(type) => setConfirm({ type, student: s })}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="students__foot">
+                          </div>
+                        </td>
+                        <td className="num small">{s.phone ?? '—'}</td>
+                        <td>
+                          <div className="t11-status">
+                            <StudentStatusChip status={s.status} />
+                            {s.status === 'failed' && s.failReason && (
+                              <span className="t11-status__reason">
+                                {MAIL_FAIL_MESSAGES[s.failReason]}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="r num">{s.classCount}</td>
+                        <td className="small num muted nowrap">
+                          {s.lastLoginAt
+                            ? formatVnDateTime(new Date(s.lastLoginAt))
+                            : 'Chưa đăng nhập'}
+                        </td>
+                        <td className="r nowrap">
+                          <RowActions
+                            student={s}
+                            disabled={busy}
+                            onActivate={activate}
+                            onResend={resend}
+                            onUnlock={doUnlock}
+                            onEdit={setEditing}
+                            onConfirm={(type) => setConfirm({ type, student: s })}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="tbl-foot">
               <span>{list?.total} học viên khớp · 50 học viên mỗi trang · mới thêm trước</span>
               {list && list.total > list.limit && (
                 <Pagination
@@ -461,7 +480,7 @@ export function StudentsPage() {
   );
 }
 
-/** AC-12.6: the actions offered on a row depend on the student's state. */
+/** AC-12.6 (prototype `rowActs`): the actions offered on a row depend on the student's state. */
 function RowActions({
   student: s,
   disabled,
@@ -483,6 +502,7 @@ function RowActions({
   const text = (label: string, onClick: () => void) => (
     <Button
       key={label}
+      size="sm"
       variant="outline"
       disabled={disabled}
       aria-label={`${label} ${s.displayName}`}
@@ -491,29 +511,30 @@ function RowActions({
       {label}
     </Button>
   );
-  const icon = (label: string, glyph: ReactNode, onClick: () => void) => (
+  const icon = (label: string, name: IconName, onClick: () => void, danger = false) => (
     <IconButton
       key={label}
       size="sm"
-      icon={glyph}
+      className={danger ? 't11-danger' : undefined}
+      icon={<Icon name={name} size={18} />}
       title={label}
       disabled={disabled}
       aria-label={`${label} ${s.displayName}`}
       onClick={onClick}
     />
   );
-  const edit = icon('Sửa', <EditIcon />, () => onEdit(s));
-  const del = icon('Xóa', <TrashIcon />, () => onConfirm('delete'));
-  const reset = icon('Đặt lại mật khẩu', <KeyIcon />, () => onConfirm('reset'));
-  const lock = icon('Khóa tài khoản', <LockIcon />, () => onConfirm('lock'));
+  const edit = icon('Sửa', 'edit', () => onEdit(s));
+  const del = icon('Xóa', 'trash', () => onConfirm('delete'), true);
+  const reset = icon('Đặt lại mật khẩu', 'key', () => onConfirm('reset'));
+  const lock = icon('Khóa tài khoản', 'lock', () => onConfirm('lock'));
   const actions = {
     pending: [text('Kích hoạt', () => onActivate(s)), edit, del],
     sending: [edit, del],
     active: [edit, reset, lock, del],
     failed: [text('Gửi lại', () => onResend(s)), edit, lock, del],
-    locked: [icon('Mở khóa', <UnlockIcon />, () => onUnlock(s)), edit, del],
+    locked: [icon('Mở khóa', 'unlock', () => onUnlock(s)), edit, del],
   }[s.status];
-  return <div className="students__row-actions">{actions}</div>;
+  return <div className="t11-actions">{actions}</div>;
 }
 
 /** Confirmations of AC-7.2, AC-12.5, AC-13.1, AC-13.3, AC-18.4. */

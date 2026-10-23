@@ -11,6 +11,7 @@ export interface DirectoryUser {
   workspaceId: string;
   role: Role;
   displayName: string;
+  email?: string;
 }
 
 export interface DirectoryWorkspace {

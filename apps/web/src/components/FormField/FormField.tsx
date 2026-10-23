@@ -1,4 +1,5 @@
 import { useId, type ReactNode } from 'react';
+import { Icon } from '../Icon/Icon';
 import './FormField.css';
 
 /** Props a control must spread so the label, hint and error stay wired to it. */
@@ -51,6 +52,7 @@ export function FormField({ label, hint, error, required, aside, children }: For
       )}
       {error && (
         <p id={errorId} className="field__error">
+          <Icon name="alert" size={14} />
           {error}
         </p>
       )}

@@ -6,6 +6,7 @@ import { useDocumentTitle } from '../../lib/use-document-title';
 import type { LoginNoticeState } from '../session/session-notice';
 import { useAuthStore } from './auth-store';
 import { Notice } from './Notice';
+import { PasswordField } from './PasswordField';
 import { afterSignIn } from './return-to';
 import './auth.css';
 
@@ -41,13 +42,17 @@ export function LoginPage() {
 
   return (
     <section aria-labelledby="a01-title" data-screen="A01">
-      <h1 id="a01-title" className="auth-page__title">
+      <h1 id="a01-title" className="auth-h">
         Đăng nhập
       </h1>
-      <p className="auth-page__sub">
+      <p className="auth-sub only-desk">
         Một tài khoản cho giáo viên và học viên — hệ thống tự đưa bạn tới đúng trang.
       </p>
-      <form className="auth-page__form" noValidate onSubmit={(e) => void submit(e)}>
+      <p className="auth-sub only-phone">
+        Dùng email và mật khẩu trong thư “Tài khoản học tập của bạn đã sẵn sàng” mà SAT đã gửi cho
+        bạn.
+      </p>
+      <form className="auth-form" noValidate onSubmit={(e) => void submit(e)}>
         {notice && <Notice tone={POSITIVE.has(notice) ? 'success' : 'info'}>{notice}</Notice>}
         {failure?.form && <Notice tone="danger">{failure.form}</Notice>}
         <TextField
@@ -58,27 +63,32 @@ export function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
           error={failure?.fields['email']}
         />
-        <TextField
+        <PasswordField
           label="Mật khẩu"
-          type="password"
           autoComplete="current-password"
+          maxLength={256}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={failure?.fields['password']}
         />
-        <div className="auth-page__row-end">
-          <Link to="/quen-mat-khau">Quên mật khẩu?</Link>
+        <div className="auth-row-end only-desk">
+          <Link to="/quen-mat-khau" className="link">
+            Quên mật khẩu?
+          </Link>
         </div>
         <Button type="submit" size="lg" block loading={status === 'loading'}>
           Đăng nhập
         </Button>
       </form>
-      <p className="auth-page__alt">
-        Giáo viên mới? <Link to="/dang-ky">Đăng ký tài khoản giáo viên</Link>
+      <p className="auth-alt only-desk">
+        Giáo viên mới?{' '}
+        <Link to="/dang-ky" className="link">
+          Đăng ký tài khoản giáo viên
+        </Link>
       </p>
-      <p className="auth-page__help">
-        Học viên quên mật khẩu? Hãy liên hệ giáo viên của bạn để được cấp lại mật khẩu.
-      </p>
+      <Notice tone="neutral" className="only-phone auth-alt-callout">
+        Quên mật khẩu? Hãy liên hệ giáo viên của bạn để được cấp lại mật khẩu.
+      </Notice>
     </section>
   );
 }

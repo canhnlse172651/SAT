@@ -71,14 +71,18 @@ export function EditStudentDialog({
           void save();
         }}
       >
-        {formError && <Notice tone="danger">{formError}</Notice>}
+        {formError && (
+          <Notice tone="danger" className="t12-error">
+            {formError}
+          </Notice>
+        )}
         <StudentFields value={form} onChange={setForm} errors={errors} emailReadOnly={sending} />
         <button type="submit" hidden aria-hidden="true" tabIndex={-1} />
-        <p className="student-form__help">
+        <Notice tone="neutral">
           {sending
             ? 'Đang gửi email — chưa đổi được Email.'
             : 'Đổi email không tự gửi thư; các lần Gửi lại và Đặt lại mật khẩu sau đó dùng email mới.'}
-        </p>
+        </Notice>
       </form>
     </Dialog>
   );

@@ -24,3 +24,20 @@
   - Production e-mail provider and scheduler are still undecided (ADR pending): real bounce webhooks must publish to
     `EMAIL_EVENTS`; NFR-7 (TC-083) needs that provider.
 - Verify with: `node .sdd/scripts/sdd.mjs run test` and `node .sdd/scripts/sdd.mjs run test:e2e`
+
+## Handoff 2026-10-23 15:50 — /module 001 (implementer, UI to prototype)
+- Status: 001-accounts-auth implementing, 21/21 tasks done   Branch: feat/001-accounts-auth
+- Done this session: UI rebuilt to match specs/screen-flow-design.html (user request "giống prototype 100%"):
+  GV shell (logo, icon nav, footer card, top bar with crumb; search + bell shown disabled — no spec yet), HV shell (dark
+  app bar, icon tab bar), auth frame (desk brand panel / phone header), A01–A03, A05 inside the role shell, T11, T12
+  (import steps, full-row report, footer action), e-mail drawer, T17, S10 (profile header with default cover/initials,
+  info rows incl. phone, full-screen "Đổi mật khẩu"). Kit: Icon (prototype set), coloured Avatar + xxl, Button sm +
+  danger-outline, Overlay/ConfirmDialog/Tabs/SegmentedControl metrics, field errors with icon, styles/patterns.css.
+  API: session `user.email`, account `phone`, import report `rows`.
+- Checks (Node 24.22.1): lint ✔, typecheck ✔, test 56 files / 284 passed, build ✔, test:e2e 10 passed; visual
+  comparison A01 (desk + phone), T11, T12 (both tabs, report, result), drawer, T17, confirm, S10, FSD.
+- Decisions (user, 2026-10-23): top-bar search/bell shown disabled ("Sắp có") until a spec owns them; S10 shows the
+  011 frame with 001 data only (no photo buttons, no "Lớp đang học").
+- Next: `/test-module 001` trong phiên mới (agent QA, Playwright MCP). Labels changed — see test-cases.md "Nhãn trên giao diện".
+- Blockers / questions: none new (Node 24 install still recommended).
+- Verify with: `node .sdd/scripts/sdd.mjs run test` and `node .sdd/scripts/sdd.mjs run test:e2e`
