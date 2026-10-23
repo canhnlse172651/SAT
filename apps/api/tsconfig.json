@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // NestJS 12 is ESM-only: Node resolution, `.js` extensions on relative imports.
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    // Nest's dependency injection reads constructor parameter types from decorator metadata.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node"]
+  },
+  "include": ["src", "vitest.config.ts"]
+}

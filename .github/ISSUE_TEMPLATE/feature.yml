@@ -1,0 +1,40 @@
+name: Feature request
+description: Describe a capability you need. A maintainer labels it `sdd:spec` to let the agents draft the spec.
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the **problem and the outcome**, not the implementation. The agents turn this into a spec
+        with testable acceptance criteria; a human reviews and approves it before any code is written.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / opportunity
+      description: Who has the problem, when, and what it costs them today.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What the user can do when this is done. Concrete examples help.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: How will we know it works?
+      description: Example scenarios, rules, limits, error cases.
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints & non-goals
+      description: Deadlines, performance/security/compliance needs, things explicitly out of scope.
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options: ["P1 — needed for MVP / blocking", "P2 — important", "P3 — nice to have"]
+    validations:
+      required: true

@@ -1,0 +1,17 @@
+**/node_modules
+**/dist
+**/coverage
+.git
+.github
+.claude
+.sdd
+docs
+specs
+tests
+playwright-report
+test-results
+.env
+.env.*
+!.env.example
+*.md
+.mongodb-binaries

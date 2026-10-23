@@ -1,0 +1,952 @@
+<!doctype html>
+<!--
+  specs/016-content-library/spec.html — bản trình bày (flow-rich) của spec.md.
+  spec.md là hợp đồng được kiểm tra bằng máy; trang này phản chiếu nguyên văn REQ/AC/NFR của spec.md.
+  Tạo mới 2026-10-22 (V14); viết lại 2026-10-22 theo V15: Kho nội dung tự học của từng workspace do GV quản lý (T23–T27), nạp Bộ nội dung mẫu HSK.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>016 Kho nội dung tự học (GV) — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module 016</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module 016 · Self-study content library</div>
+    <h1>Kho nội dung tự học (GV)</h1>
+    <p class="lede">Mỗi giáo viên có Kho nội dung tự học riêng trong workspace, được nạp sẵn "Bộ nội dung mẫu HSK" — từ vựng kèm âm thanh bản xứ, dữ liệu chữ Hán và nét, bài nghe, kịch bản đóng vai, đề thi thử — mà GV sửa, thêm, ẩn tùy ý trên T23–T27; học viên của workspace dùng nội dung đã xuất bản ở khu Tự học (012–015) mà không cần lớp, không lộ dữ liệu sang workspace khác và không bao giờ mất dữ liệu học.</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Feature 016</span>
+      <span class="pill">Cập nhật 2026-10-22 (V15)</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <p>Quyết định V14 (2026-10-22) thêm khu <strong>Tự học</strong> không cần lớp: học từ vựng thông minh (<a class="chip mod" href="../012-vocabulary-srs/spec.html">012</a>), luyện viết chữ Hán (<a class="chip mod" href="../013-hanzi-writing/spec.html">013</a>), luyện nghe &amp; nói (<a class="chip mod" href="../014-listening-speaking/spec.html">014</a>) và thi thử HSK (<a class="chip mod" href="../015-hsk-mock-tests/spec.html">015</a>). Quyết định <strong>V15</strong> cùng ngày chốt: hệ thống <strong>chỉ có hai vai trò, GV và HV</strong>; quản lý nội dung tự học <strong>gom vào phần quản lý của GV</strong>, GV chỉ quản lý, chức năng tự học <strong>chỉ dành cho HV</strong>. Module 016 vì vậy là <strong>Kho nội dung tự học của từng workspace</strong>: được nạp sẵn <strong>"Bộ nội dung mẫu HSK"</strong> (đội nội dung SAT chuẩn bị ngoài sản phẩm, HSK 1–6 và "HSK 7–9") ngay khi workspace được tạo; sau đó nội dung thuộc về GV — sửa, thêm, ẩn tùy ý trên <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–<a class="chip screen" href="../screen-flow-design.html#T27">T27</a> (mục "Kho tự học" trên thanh bên): nhập tệp có báo cáo lỗi theo dòng, âm thanh, xuất bản, lưu trữ không làm hỏng lịch sử học, phiên bản đề đã có người làm, <strong>nguồn / giấy phép</strong> và lịch sử thay đổi. Mọi HV đã kích hoạt, không bị khóa của workspace dùng nội dung "Đã xuất bản" qua <a class="chip screen" href="../screen-flow-design.html#S13">S13</a>–S20.</p>
+      <div class="callout note"><strong>Viết lại 2026-10-22 theo V15</strong> — thay thế "Kho nội dung hệ thống" của V14 (vai trò Quản trị nội dung, Q01–Q05, kho dùng chung toàn hệ thống). Bảng ánh xạ màn hình: Q01 → T23, Q02 → T24, Q03 → T25, Q04 → T26, Q05 → T27. Phần bị bỏ: <a href="#out-of-scope">§13 Removed</a>.</div>
+      <div class="callout note"><strong>Quy tắc cốt lõi (tóm tắt)</strong>
+        <ul>
+          <li><b>Mỗi workspace một kho:</b> chỉ GV của workspace quản lý, chỉ HV của workspace học; mục của workspace khác → <a class="chip screen" href="../screen-flow-design.html#A05">A05</a> — <a href="#REQ-1">REQ-1</a>.</li>
+          <li><b>Bộ nội dung mẫu HSK</b> được sao trọn gói khi tạo workspace; mục đủ điều kiện "Đã xuất bản" ngay; sau đó thuộc GV; bộ mẫu mới không tự áp vào kho đã nạp — <a href="#REQ-15">REQ-15</a>.</li>
+          <li><b>Nháp → Đã xuất bản → Lưu trữ</b>; HV không bao giờ thấy Nháp; xuất bản/lưu trữ có hiệu lực với HV của workspace ≤ 5 phút — <a href="#REQ-3">REQ-3</a>, <a href="#nfr">NFR-3</a>.</li>
+          <li><b>Lưu trữ không làm mất dữ liệu học</b> — <a href="#AC-3.6">AC-3.6</a>. Chỉ xóa vĩnh viễn được mục chưa từng xuất bản (mục bộ mẫu đã xuất bản chỉ lưu trữ) — <a href="#AC-3.8">AC-3.8</a>.</li>
+          <li><b>Đề đã có người làm</b> được sửa qua <b>phiên bản mới</b>; không chấm lại kết quả cũ — <a href="#REQ-11">REQ-11</a>.</li>
+          <li><b>Riêng tư:</b> GV chỉ thấy số đếm tổng hợp ẩn danh của workspace, ẩn khi &lt; 5 HV — <a href="#AC-1.6">AC-1.6</a>, <a href="#AC-13.4">AC-13.4</a>. GV không dùng S13–S20 (→ A05); HV mở T23–T27 → S01 (<a class="chip mod" href="../001-accounts-auth/spec.html">001</a> REQ-20).</li>
+          <li><b>Nguồn / giấy phép</b> bắt buộc cho mọi mục và mọi lô nhập; lịch sử không sửa/xóa được — <a href="#REQ-14">REQ-14</a>. 7 cấp HSK: HSK 1–6 và "HSK 7–9" — <a href="#AC-2.1">AC-2.1</a>.</li>
+        </ul>
+      </div>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mục tiêu</th><th>Chỉ số</th><th>Ngưỡng</th></tr></thead>
+        <tbody>
+          <tr><td>Kho có nội dung ngay khi GV bắt đầu</td><td>Tỷ lệ workspace mới có Kho tự học nạp xong Bộ nội dung mẫu HSK trong ≤ 5 phút sau khi tạo</td><td>≥ 95% (NFR-11)</td></tr>
+          <tr><td>Bộ mẫu đủ từ vựng cho khu Tự học</td><td>Tỷ lệ từ trong danh sách từ vựng chuẩn của mỗi cấp HSK 1–4 có trong Bộ nội dung mẫu HSK và được nạp ở trạng thái "Đã xuất bản"</td><td>≥ 95% mỗi cấp (điều kiện ra mắt — §10)</td></tr>
+          <tr><td>Từ vựng có phát âm bản xứ</td><td>Tỷ lệ mục từ vựng "Đã xuất bản" của Bộ nội dung mẫu HSK có âm thanh phát âm</td><td>≥ 90% (T23 hiển thị "Từ thiếu âm thanh")</td></tr>
+          <tr><td>013 luyện viết được mọi chữ đã học</td><td>Tỷ lệ chữ Hán xuất hiện trong từ vựng "Đã xuất bản" HSK 1–4 của Bộ nội dung mẫu có dữ liệu chữ "Đã xuất bản" với "Đủ dữ liệu nét"</td><td>≥ 98%</td></tr>
+          <tr><td>Nhập nội dung nhanh</td><td>Thời gian từ khi chọn tệp 5 000 dòng tới khi có báo cáo kiểm tra theo dòng</td><td>≤ 60 giây p95 (NFR-1)</td></tr>
+          <tr><td>Không làm hỏng dữ liệu học</td><td>Số bộ từ cá nhân, trạng thái ôn tập, lịch sử luyện hoặc kết quả thi thử không mở được sau khi nội dung bị lưu trữ hoặc có phiên bản mới</td><td>0 (NFR-7)</td></tr>
+          <tr><td>Cô lập workspace</td><td>Số trường hợp GV xem/sửa được mục kho của workspace khác, hoặc HV dùng được nội dung kho của workspace khác (kiểm thử bảo mật + vận hành)</td><td>0 (NFR-5)</td></tr>
+          <tr><td>Riêng tư dữ liệu tự học</td><td>Số trường hợp GV xem được dữ liệu tự học của một HV cụ thể trên T23–T27</td><td>0 (NFR-5)</td></tr>
+          <tr><td>Nội dung hợp pháp</td><td>Tỷ lệ mục kho có "Nguồn / giấy phép"</td><td>100% (AC-14.1)</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi:</strong> Kho tự học theo workspace (T23–T27) do GV quản lý; nạp Bộ nội dung mẫu HSK khi tạo workspace và khi ra mắt; cô lập workspace; cấp HSK, chương, chủ đề; vòng đời Nháp/Đã xuất bản/Lưu trữ; mục từ vựng + câu ví dụ + âm thanh; nhập từ vựng từ tệp (≤ 5 000 dòng); tải âm thanh hàng loạt; dữ liệu chữ Hán, bộ thủ, cấu tạo, dữ liệu nét; bài nghe/hội thoại; kịch bản đóng vai; đề thi thử và kiểm tra cuối chương + phiên bản; tìm kiếm/lọc/hàng loạt; tổng quan kho với số đếm ẩn danh; nguồn/giấy phép; lịch sử thay đổi.
+      &nbsp; <strong>Ngoài phạm vi:</strong> vai trò quản trị ngoài GV; kho dùng chung toàn hệ thống; tự cập nhật bộ mẫu vào kho đã nạp, "Nạp mục mẫu mới"; GV dùng Tự học như người học; GV xem dữ liệu tự học của từng HV; <b>giai đoạn 2:</b> nhận diện chữ viết tay, chấm phát âm/thanh điệu, đóng vai với AI (chi tiết <a href="#out-of-scope">§13</a>).</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>Chủ và quản trị viên duy nhất của workspace (001), dùng máy tính (≥ 1280 px). Mở Kho tự học từ mục "Kho tự học" trên thanh bên (001 AC-20.2). Chỉ quản lý — không dùng S13–S20 như người học (001 AC-20.4).</td><td>Điều chỉnh Bộ nội dung mẫu HSK cho HV của mình; thêm từ, chữ, bài nghe, kịch bản, đề; nhập tệp; âm thanh; xuất bản, lưu trữ; xem trước bằng "Nghe thử", "Xem thử", "Xem trước", "Xem thứ tự nét".</td></tr>
+          <tr><td><span class="pill hv">Học viên</span></td><td>Mọi HV đã kích hoạt, không bị khóa của workspace, không cần lớp (001 AC-20.3).</td><td>Dùng nội dung "Đã xuất bản" của kho thuộc workspace mình qua 012–015 (S13–S20); không bao giờ vào T23–T27 (→ S01) hay thấy Nháp.</td></tr>
+          <tr><td><span class="pill">Đội nội dung SAT</span></td><td>Ngoài sản phẩm; không có tài khoản hay màn hình trong SAT.</td><td>Chuẩn bị và cập nhật Bộ nội dung mẫu HSK kèm nguồn / giấy phép; hệ thống chỉ sao bộ mẫu vào kho (REQ-15).</td></tr>
+          <tr><td><span class="pill">Module 012–015</span></td><td>Đọc nội dung kho của workspace của HV; ghi dữ liệu học riêng của từng HV.</td><td>Cung cấp cho 016 chỉ số đếm tổng hợp ẩn danh của workspace (AC-13.4) và số lượt làm, số HV khác nhau mỗi đề (AC-11.6).</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">GV của workspace W</th><th class="center">HV của W</th><th class="center">GV / HV của workspace khác</th><th class="center">Khách</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Mở T23–T27 của W, tạo/sửa/nhập/xuất bản/lưu trữ/khôi phục/xóa nháp</td><td class="center yes">✓</td><td class="center no">— (→ S01)</td><td class="center no">— (A05 / → S01)</td><td class="center no">→ A01</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.3</span> <span class="chip ac">001 AC-20.10</span></td></tr>
+          <tr><td>Sửa / lưu trữ mục được sao từ Bộ nội dung mẫu HSK</td><td class="center yes">✓ (chỉ trong W)</td><td class="center no">—</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-15.3</span> <span class="chip ac">AC-3.8</span></td></tr>
+          <tr><td>Thấy nội dung "Nháp" của W</td><td class="center yes">✓ (T24–T27)</td><td class="center no">—</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-3.2</span></td></tr>
+          <tr><td>Dùng nội dung "Đã xuất bản" của W ở khu Tự học (S13–S20)</td><td class="center no">— (A05; chỉ xem trước trong T24–T27)</td><td class="center yes">✓ (đã kích hoạt, không khóa)</td><td class="center no">— (A05)</td><td class="center no">→ A01</td><td><span class="chip ac">AC-1.7</span> <span class="chip ac">AC-1.8</span> <span class="chip ac">001 AC-20.3</span> <span class="chip ac">001 AC-20.4</span></td></tr>
+          <tr><td>Xem dữ liệu tự học của một HV cụ thể</td><td class="center no">— (chỉ số đếm tổng hợp, ẩn khi &lt; 5 HV)</td><td class="center">chỉ của chính mình</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-1.6</span> <span class="chip ac">AC-13.4</span> <span class="chip ac">001 AC-20.5</span></td></tr>
+          <tr><td>Xem / sửa / xóa lịch sử thay đổi của W</td><td class="center">Xem ✓ · Sửa/xóa —</td><td class="center no">—</td><td class="center no">— (A05)</td><td class="center no">—</td><td><span class="chip ac">AC-14.3</span> <span class="chip ac">AC-14.4</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-8</td><td><span class="pill p1">P1</span></td><td>Là GV, tôi muốn Kho tự học của workspace có sẵn Bộ nội dung mẫu HSK ngay khi tôi bắt đầu, để HV của tôi tự học được ngay mà tôi không phải soạn từ đầu, và tôi vẫn sửa được mọi thứ cho phù hợp lớp của mình.</td><td>GV mới đăng ký ở A02 → mở "Kho tự học" → T23 hiển thị "Đang chuẩn bị Bộ nội dung mẫu HSK…" rồi trong ≤ 5 phút hiển thị số mục "Đã xuất bản" theo 7 cấp đúng như bộ mẫu; HV vừa kích hoạt mở S13 → thấy từ HSK 1; GV sửa nghĩa của 你好 → HV của GV này thấy nghĩa mới trong ≤ 5 phút, HV của GV khác vẫn thấy nghĩa gốc.</td><td><span class="chip">REQ-15</span></td></tr>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là GV, tôi muốn thêm, sửa và nhập hàng nghìn mục từ vựng HSK từ tệp, kèm âm thanh bản xứ và câu ví dụ, rồi xuất bản, để HV của tôi có bộ từ vựng phù hợp cho học từ vựng và ôn tập lặp lại (012).</td><td>GV tải tệp mẫu, điền 5 000 dòng HSK 3 (có 12 dòng lỗi, 3 dòng trùng với kho) → báo cáo "4 985 hợp lệ · 12 lỗi · 3 trùng" kèm số dòng, cột, lý do trong ≤ 60 giây → "Nhập 4 985 từ hợp lệ" → 4 985 từ ở "Nháp"; tải tệp âm thanh hàng loạt → từ có âm thanh; chọn và "Xuất bản" → HV của workspace thấy từ ở S13 trong ≤ 5 phút.</td><td><span class="chip">REQ-2</span> <span class="chip">REQ-3</span> <span class="chip">REQ-4</span> <span class="chip">REQ-5</span> <span class="chip">REQ-6</span> <span class="chip">REQ-12</span></td></tr>
+          <tr><td class="id">US-2</td><td><span class="pill p1">P1</span></td><td>Là GV, tôi muốn quản lý dữ liệu chữ Hán (thứ tự nét, số nét, bộ thủ, cấu tạo) và biết chữ nào còn thiếu dữ liệu, để luyện viết (013) kiểm được từng nét theo nét mẫu cho mọi chữ HV của tôi học.</td><td>T27 báo "HSK 1 · 7 chữ chưa có dữ liệu" → "Tạo mục nháp cho các chữ này" → tải tệp dữ liệu chữ → chữ 你 "Đủ dữ liệu nét", 7 nét, bộ 亻 → "Xem thứ tự nét" phát đủ 7 nét đúng thứ tự → "Xuất bản".</td><td><span class="chip">REQ-7</span> <span class="chip">REQ-12</span></td></tr>
+          <tr><td class="id">US-3</td><td><span class="pill p1">P1</span></td><td>Là GV, tôi muốn soạn bài nghe, hội thoại có câu hỏi và kịch bản đóng vai có âm thanh từng lời thoại, để luyện nghe &amp; nói (014) có bài nghe chọn đáp án và đóng vai theo kịch bản phù hợp HV của tôi.</td><td>GV tạo kịch bản "Gọi món ở quán mì" (HSK 2, vai "Khách" và "Phục vụ", 8 lời thoại); "Xuất bản" khi một lời thiếu âm thanh → bị chặn với lý do "Lời thoại 5 chưa có âm thanh."; thêm âm thanh → xuất bản được.</td><td><span class="chip">REQ-6</span> <span class="chip">REQ-8</span> <span class="chip">REQ-9</span> <span class="chip">REQ-12</span></td></tr>
+          <tr><td class="id">US-4</td><td><span class="pill p1">P1</span></td><td>Là GV, tôi muốn soạn đề thi thử và đề kiểm tra cuối chương theo cấp, với phần thi, thời gian, đáp án, giải thích, và sửa đề đã có HV làm mà không làm sai kết quả cũ, để thi thử HSK (015) tự chấm và giải thích được.</td><td>đề "HSK 3 – Đề thi thử số 1" (từ bộ mẫu) đã có lượt làm → "Sửa" tạo "Phiên bản 2" ở Nháp; sửa đáp án câu 12 → "Xuất bản" → lượt làm mới dùng phiên bản 2; các kết quả cũ vẫn hiển thị câu hỏi, đáp án và điểm của phiên bản 1.</td><td><span class="chip">REQ-2</span> <span class="chip">REQ-6</span> <span class="chip">REQ-10</span> <span class="chip">REQ-11</span> <span class="chip">REQ-12</span></td></tr>
+          <tr><td class="id">US-5</td><td><span class="pill p1">P1</span></td><td>Là HV, tôi muốn bộ từ cá nhân, lịch ôn tập và kết quả thi thử của tôi vẫn mở được khi GV lưu trữ hoặc sửa nội dung, để không mất công học.</td><td>HV có từ 爱 trong bộ từ cá nhân và lịch ôn → GV "Lưu trữ" 爱 → HV vẫn mở được bộ từ và ôn 爱 với nội dung đã xuất bản cuối cùng; HV khác của workspace tìm 爱 ở S13 → không thấy.</td><td><span class="chip">REQ-3</span> <span class="chip">REQ-11</span></td></tr>
+          <tr><td class="id">US-6</td><td><span class="pill p1">P1</span></td><td>Là GV, tôi muốn kho của tôi tách biệt hoàn toàn khỏi workspace khác, mọi thay đổi có lịch sử lúc nào, làm gì, và mọi mục có nguồn / giấy phép, để kiểm soát nội dung HV của tôi học và chứng minh quyền sử dụng nội dung.</td><td>GV B mở đường dẫn mục từ vựng của GV A → A05 "Không tìm thấy nội dung bạn yêu cầu."; tab "Lịch sử thay đổi" của từ 你好 hiển thị "Sao từ Bộ nội dung mẫu HSK" và "22/10/2026 09:14 · Sửa · Nghĩa tiếng Việt: "xin chào" → "xin chào; chào bạn"" và không có cách sửa hay xóa dòng đó.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-14</span></td></tr>
+          <tr><td class="id">US-7</td><td><span class="pill p2">P2</span></td><td>Là GV, tôi muốn một trang tổng quan số lượng nội dung theo cấp và loại, cảnh báo chất lượng, thay đổi gần đây và số đếm sử dụng ẩn danh của HV, để biết kho còn thiếu gì và nội dung nào được dùng.</td><td>T23 hiển thị ô "Từ vựng × HSK 3: 980 đã xuất bản · 15 nháp · 2 lưu trữ"; bấm ô → T24 lọc sẵn HSK 3; "Từ thiếu âm thanh: 15" → T24 lọc "Thiếu âm thanh"; workspace có 3 HV → khối "Sử dụng 30 ngày qua" hiển thị "Chưa đủ dữ liệu để hiển thị" thay cho số đếm.</td><td><span class="chip">REQ-13</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>Bảy luồng: nạp Bộ nội dung mẫu HSK khi tạo workspace (F-0), nhập từ vựng từ tệp (F-1), xuất bản và lưu trữ (F-2), dữ liệu chữ Hán và nét (F-3), soạn kịch bản đóng vai / bài nghe (F-4), sửa đề đã có người làm (F-5), cô lập workspace và phân quyền (F-6). Ví dụ dùng GV <b>Nguyễn Văn B</b> (workspace W) và HV của W; "người học" trong các luồng là HV của workspace.</p>
+
+      <div class="flow" id="F-0">
+        <h3 data-toc="F-0 Nạp bộ mẫu">F-0: Nạp Bộ nội dung mẫu HSK khi tạo workspace</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Hệ thống (kích hoạt bởi GV đăng ký ở A02)</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Workspace mới được tạo (001 AC-1.1), hoặc ra mắt Kho tự học với workspace đã có (AC-15.7)</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đội nội dung SAT đã có phiên bản hiện hành của Bộ nội dung mẫu HSK</div>
+          <div class="fact"><span class="k">Kết quả</span>Kho của workspace có toàn bộ bộ mẫu; mục đủ điều kiện "Đã xuất bản" cho HV dùng ngay; từ đó mục thuộc GV</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor G as GV Nguyễn Văn B
+  participant A as A02 Đăng ký (001)
+  participant K as Kho tự học của W
+  participant B as Bộ nội dung mẫu HSK
+  actor H as HV của W
+  G->>A: Đăng ký tài khoản
+  A-->>G: Workspace W được tạo, vào T01 ngay
+  A->>K: Bắt đầu sao bộ mẫu
+  G->>K: Mở Kho tự học (T23)
+  K-->>G: Đang chuẩn bị Bộ nội dung mẫu HSK cho kho tự học của bạn…
+  K->>B: Lấy phiên bản hiện hành
+  B-->>K: Từ vựng, chữ Hán, bộ thủ, bài nghe, kịch bản, đề (7 cấp)
+  K->>K: Sao trọn gói, mục đủ điều kiện là Đã xuất bản, còn lại là Nháp
+  alt Lỗi giữa chừng
+    K->>K: Bỏ phần đã sao, tự sao lại
+  end
+  K-->>G: T23 hiển thị số lượng và dòng Kho được khởi tạo từ bộ mẫu
+  H->>K: Mở Tự học (S13) và dùng nội dung Đã xuất bản
+</pre>
+          <figcaption>Hình F-0 — Nạp bộ mẫu trọn gói, không làm chậm việc đăng ký (NFR-11)</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Đăng ký ở A02</td><td>Tạo workspace, vào T01 ngay; bắt đầu sao bộ mẫu (không chờ)</td><td><a class="chip screen" href="../screen-flow-design.html#A02">A02</a> <a class="chip screen" href="../screen-flow-design.html#T01">T01</a></td><td><span class="chip ac">001 AC-1.1</span> <span class="chip ac">AC-15.1</span> <span class="chip ac">NFR-11</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Mở "Kho tự học" khi đang sao</td><td>"Đang chuẩn bị Bộ nội dung mẫu HSK cho kho tự học của bạn…"; chưa thêm/nhập/sửa được; HV chưa thấy mục nào</td><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></td><td><span class="chip ac">AC-15.5</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Sao trọn gói; mục đủ điều kiện → "Đã xuất bản", còn lại → "Nháp"; lịch sử "Sao từ Bộ nội dung mẫu HSK"</td><td>—</td><td><span class="chip ac">AC-15.2</span> <span class="chip ac">AC-15.6</span> <span class="chip ac">AC-14.2</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>Mở T23 sau khi xong</td><td>Bảng số lượng; dòng "Kho được khởi tạo từ Bộ nội dung mẫu HSK ({phiên bản bộ mẫu}) ngày {dd/MM/yyyy}."</td><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></td><td><span class="chip ac">AC-13.1</span> <span class="chip ac">AC-15.8</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Sửa, thêm, lưu trữ mục bộ mẫu</td><td>Như mục GV tạo; chỉ ảnh hưởng workspace W</td><td>T24–T27</td><td><span class="chip ac">AC-15.3</span> <span class="chip ac">AC-3.8</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Bộ mẫu có phiên bản mới sau khi W đã nạp <span class="chip ac">AC-15.4</span></summary><div class="body"><ol><li>Kho của W không đổi; chỉ workspace tạo sau dùng phiên bản mới ("Nạp mục mẫu mới" ngoài phạm vi).</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Workspace đã có trước ngày ra mắt <span class="chip ac">AC-15.7</span></summary><div class="body"><ol><li>Hệ thống sao bộ mẫu cho mọi workspace đã có tại thời điểm ra mắt, xong trong ≤ 24 giờ (NFR-11).</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Nhập từ vựng">F-1: GV nhập từ vựng từ tệp (T24)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn "Nhập từ tệp" trên T24</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>GV đã đăng nhập; kho của workspace đã nạp xong bộ mẫu (AC-15.5); có tệp theo mẫu</div>
+          <div class="fact"><span class="k">Kết quả</span>Các dòng hợp lệ thành mục từ vựng "Nháp" trong một lần trọn gói; dòng lỗi/trùng có báo cáo tải về</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor B as GV
+  participant Q as T24 Nhập từ vựng
+  participant K as Kho nội dung
+  B->>Q: Tải tệp mẫu, điền, chọn tệp + Nguồn / giấy phép của lô
+  Q->>Q: Kiểm tra định dạng, 10 MB, 5 000 dòng, cột bắt buộc
+  alt Tệp không hợp lệ
+    Q-->>B: Tệp không hợp lệ kèm lý do, không thêm gì
+  else Tệp hợp lệ
+    Q->>K: Kiểm tra từng dòng và trùng với kho của workspace (chưa ghi)
+    K-->>Q: Hợp lệ / lỗi / trùng kèm số dòng, cột, lý do
+    Q-->>B: Báo cáo + Tải báo cáo lỗi
+    B->>Q: Nhập n từ hợp lệ
+    Q->>K: Ghi trọn gói n mục Nháp, gán nguồn của lô, ghi lịch sử
+    K-->>B: Đã nhập n từ ở trạng thái Nháp
+  end
+</pre>
+          <figcaption>Hình F-1 — Hai bước: kiểm tra rồi xác nhận nhập trọn gói</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>"Nhập từ tệp" → "Tải tệp mẫu"</td><td>Hộp thoại "Nhập từ vựng"; tệp mẫu .xlsx có trang "Hướng dẫn" và các cột chuẩn</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td><span class="chip ac">AC-5.1</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Chọn tệp, nhập "Nguồn / giấy phép của lô"</td><td>Kiểm tra cả tệp; sai thì từ chối cả tệp kèm lý do</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td><span class="chip ac">AC-5.2</span> <span class="chip ac">AC-14.1</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Kiểm tra từng dòng (REQ-4) và trùng (Chữ Hán + Pinyin) với kho của workspace (kể cả mục bộ mẫu) và trong tệp; tiến trình %; báo cáo hợp lệ / lỗi / trùng</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td><span class="chip ac">AC-5.3</span> <span class="chip ac">AC-5.4</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>"Tải báo cáo lỗi" (tùy chọn)</td><td>Tệp .xlsx các dòng lỗi/trùng + cột "Lý do"</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td><span class="chip ac">AC-5.5</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>"Nhập {n} từ hợp lệ"</td><td>Thêm trọn gói ở "Nháp", gán nguồn của lô, ghi lịch sử; "Đã nhập {n} từ ở trạng thái Nháp."</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td><span class="chip ac">AC-5.6</span> <span class="chip ac">AC-14.2</span></td></tr>
+            <tr><td class="id">6</td><td>GV</td><td>"Tải âm thanh hàng loạt" (≤ 500 tệp)</td><td>Ghép theo tên tệp = Chữ Hán (hoặc Chữ Hán_pinyin số thanh); báo cáo ghép trước khi lưu</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td><span class="chip ac">AC-6.4</span> <span class="chip ac">AC-6.5</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>E-1 · Trùng phát sinh giữa lúc kiểm tra và xác nhận <span class="chip ac">AC-5.7</span></summary><div class="body"><ol><li>Không nhập dòng nào; báo cáo cập nhật đánh dấu "Trùng với kho".</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Chữ phồn thể, pinyin sai <span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.4</span></summary><div class="body"><ol><li>Dòng lỗi "Hãy dùng chữ giản thể: 學 → 学" hoặc "Pinyin không khớp với chữ Hán: cần {n} âm tiết, đang có {m}."</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-2">
+        <h3 data-toc="F-2 Xuất bản / lưu trữ">F-2: Xuất bản, sửa, lưu trữ, khôi phục</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>"Xuất bản" / "Lưu trữ" / "Khôi phục" trên một mục hoặc nhiều mục (≤ 500)</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Mục đạt điều kiện xuất bản của loại mục</div>
+          <div class="fact"><span class="k">Kết quả</span>HV của workspace thấy/không thấy mục trong ≤ 5 phút; dữ liệu học cũ luôn mở được</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["GV chọn Xuất bản"]) --> B{"Đạt điều kiện xuất bản?"}
+  B -- Không --> E1["Đã xuất bản x mục. y mục chưa đủ điều kiện + lý do"]
+  B -- Có --> C["Đã xuất bản: người học thấy trong 5 phút"]
+  C --> D{"GV sửa và lưu"}
+  D -- "Vẫn đủ điều kiện" --> C
+  D -- "Không còn đủ" --> E2["Không lưu được + lý do"]
+  C --> F(["Lưu trữ + xác nhận"])
+  F --> G["Ẩn khỏi tìm kiếm và học mới, dữ liệu học cũ vẫn mở"]
+  G --> H{"Khôi phục"}
+  H -- "Đủ điều kiện" --> C
+  H -- "Không đủ" --> I["Về Nháp + lý do"]
+</pre>
+          <figcaption>Hình F-2 — Vòng đời một mục kho</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Chọn mục (hoặc "Chọn tất cả {n} kết quả", ≤ 500) → "Xuất bản"</td><td>Xuất bản mục đạt; liệt kê mục chưa đạt và lý do</td><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a> <a class="chip screen" href="../screen-flow-design.html#T25">T25</a> <a class="chip screen" href="../screen-flow-design.html#T26">T26</a> <a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td><span class="chip ac">AC-3.3</span> <span class="chip ac">AC-3.4</span> <span class="chip ac">AC-12.5</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Sửa mục đã xuất bản, "Lưu"</td><td>Lưu nếu vẫn đủ điều kiện, có hiệu lực ≤ 5 phút; nếu không thì từ chối kèm lý do</td><td>T24–T27</td><td><span class="chip ac">AC-3.9</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>"Lưu trữ" + xác nhận</td><td>Gỡ khỏi duyệt, tìm kiếm, thêm mới, bắt đầu mới; dữ liệu học cũ vẫn đọc nội dung cuối cùng</td><td>T24–T27</td><td><span class="chip ac">AC-3.5</span> <span class="chip ac">AC-3.6</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>"Khôi phục"</td><td>Về "Đã xuất bản" nếu đủ điều kiện, nếu không về "Nháp" kèm lý do</td><td>T24–T27</td><td><span class="chip ac">AC-3.7</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>"Xóa" một mục chưa từng xuất bản</td><td>Xác nhận "Xóa vĩnh viễn …? Thao tác này không thể hoàn tác."; mục đã từng xuất bản (kể cả mục bộ mẫu được sao ở "Đã xuất bản") không có "Xóa" — dùng "Lưu trữ"</td><td>T24–T27</td><td><span class="chip ac">AC-3.8</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="flow" id="F-3">
+        <h3 data-toc="F-3 Dữ liệu chữ Hán">F-3: Bổ sung dữ liệu chữ Hán và nét (T27)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>T27 báo "Chữ chưa có dữ liệu" ở một cấp</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Có từ vựng "Đã xuất bản" chứa chữ đó</div>
+          <div class="fact"><span class="k">Kết quả</span>Chữ "Đã xuất bản" với "Đủ dữ liệu nét" — 013 luyện viết được</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["T27: HSK 1 có 7 chữ chưa có dữ liệu"]) --> B["Tạo mục nháp cho các chữ này"]
+  B --> C["Nhập dữ liệu nét từ tệp mẫu"]
+  C --> D{"Số nét dữ liệu = Số nét?"}
+  D -- "Chưa có dữ liệu" --> X1["Thiếu dữ liệu nét, không xuất bản"]
+  D -- "Khác" --> X2["Lệch số nét, không xuất bản"]
+  D -- "Bằng" --> E["Đủ dữ liệu nét"]
+  E --> F["Bổ sung pinyin, Hán Việt, nghĩa, bộ thủ, cấu tạo"]
+  F --> G["Xem thứ tự nét để kiểm tra"]
+  G --> H(["Xuất bản"])
+</pre>
+          <figcaption>Hình F-3 — Từ cảnh báo thiếu dữ liệu đến chữ xuất bản</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Mở T27</td><td>Danh sách chữ, trạng thái dữ liệu nét; đầu trang "Chữ chưa có dữ liệu" theo cấp</td><td><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.2</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>"Nhập dữ liệu nét" (≤ 3 000 chữ)</td><td>Ghi thứ tự, hình dạng, hướng từng nét; tạo nháp cho chữ chưa có; báo cáo nhận/lỗi</td><td><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td><span class="chip ac">AC-7.4</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Mở chữ, điền các trường</td><td>Biểu mẫu chữ: pinyin, Hán Việt, nghĩa, cấp, số nét, bộ thủ (214 bộ), cấu tạo + thành phần, mẹo nhớ</td><td><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td><span class="chip ac">AC-7.3</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>"Xem thứ tự nét"</td><td>Minh họa từng nét có số thứ tự; "Phát lại", "Từng nét"</td><td><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td><span class="chip ac">AC-7.5</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>"Xuất bản"</td><td>Chặn khi thiếu hoặc lệch dữ liệu nét</td><td><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td><span class="chip ac">AC-7.6</span> <span class="chip ac">AC-3.3</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="flow" id="F-4">
+        <h3 data-toc="F-4 Bài nghe / đóng vai">F-4: Soạn bài nghe và kịch bản đóng vai (T25)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>"Thêm bài nghe" (tab "Bài nghe") hoặc "Thêm kịch bản" (tab "Đóng vai")</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Có âm thanh bản xứ</div>
+          <div class="fact"><span class="k">Kết quả</span>Bài nghe / kịch bản "Đã xuất bản" cho 014</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Thêm kịch bản: Gọi món ở quán mì"]) --> B["Tình huống, cấp, bối cảnh, 2 đến 4 vai"]
+  B --> C["Lời thoại 4 đến 40 dòng: vai, chữ Hán, pinyin, nghĩa, âm thanh, gợi ý"]
+  C --> D["Sắp xếp: Lên, Xuống, kéo thả"]
+  D --> E["Xem thử: phát lần lượt từng lời"]
+  E --> F{"Mỗi dòng có âm thanh, mỗi vai từ 2 dòng?"}
+  F -- Không --> X["Lý do: Lời thoại 5 chưa có âm thanh"]
+  X --> C
+  F -- Có --> G(["Xuất bản"])
+</pre>
+          <figcaption>Hình F-4 — Kịch bản đóng vai (bài nghe theo cùng mẫu: âm thanh, lời thoại, câu hỏi có giải thích)</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>"Thêm bài nghe"</td><td>Biểu mẫu: tiêu đề, loại, cấp, chủ đề, âm thanh dài, người nói, lời thoại, câu hỏi (2–4 lựa chọn, 1 đáp án, giải thích)</td><td><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></td><td><span class="chip ac">AC-8.1</span> <span class="chip ac">AC-8.2</span> <span class="chip ac">AC-6.1</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>"Nghe thử"</td><td>Phát âm thanh kèm lời thoại, câu hỏi, đáp án đúng</td><td><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></td><td><span class="chip ac">AC-8.4</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>"Thêm kịch bản", soạn lời thoại</td><td>Biểu mẫu kịch bản; thứ tự cập nhật ngay khi thêm/xóa/di chuyển</td><td><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.2</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>"Xem thử"</td><td>Phát lần lượt từng lời, hiển thị vai, chữ Hán, pinyin, nghĩa, gợi ý</td><td><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></td><td><span class="chip ac">AC-9.4</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>"Xuất bản"</td><td>Kiểm điều kiện xuất bản, nêu từng lý do</td><td><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-9.3</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="flow" id="F-5">
+        <h3 data-toc="F-5 Phiên bản đề">F-5: Soạn đề và sửa đề đã có người làm (T26)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>"Tạo đề" hoặc "Sửa" trên T26</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Với kiểm tra cuối chương: cấp đã có chương</div>
+          <div class="fact"><span class="k">Kết quả</span>Đề "Đã xuất bản"; sửa đề đã có lượt làm luôn qua phiên bản mới</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor B as GV
+  participant Q as T26 Trình soạn đề
+  participant L as HV của workspace (015)
+  B->>Q: Sửa đề HSK 3 – Đề thi thử số 1
+  alt Chưa có lượt làm
+    Q-->>B: Sửa trực tiếp, lưu nếu vẫn đủ điều kiện
+  else Đã có lượt làm
+    Q-->>B: Tạo Phiên bản 2 ở Nháp, phiên bản 1 vẫn được dùng
+    B->>Q: Sửa đáp án câu 12, Xuất bản
+    Q->>L: Lượt bắt đầu sau đó dùng phiên bản 2
+    Q->>L: Lượt đang làm dở hoàn tất trên phiên bản 1
+    Q-->>B: Phiên bản 1 sang Lưu trữ, kết quả cũ giữ nguyên
+  end
+</pre>
+          <figcaption>Hình F-5 — Phiên bản đề</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>"Tạo đề"</td><td>Loại đề, tên, cấp, chương (kiểm tra cuối chương), thời gian 5–180 phút, điểm đạt, nguồn → trình soạn "Nháp"</td><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td><span class="chip ac">AC-10.1</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Thêm phần và câu hỏi</td><td>1–10 phần; 6 dạng câu tự chấm; điểm, giải thích, thẻ kiến thức; câu nghe có âm thanh và số lần nghe; đếm câu và điểm liên tục; tối đa 200 câu</td><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td><span class="chip ac">AC-10.2</span> <span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-10.5</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>"Xem trước"</td><td>Trả lời thử, "Hiện đáp án", không lưu lượt làm</td><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td><span class="chip ac">AC-10.7</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>"Xuất bản"</td><td>Kiểm điều kiện, nêu lý do theo phần và số câu</td><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td><span class="chip ac">AC-10.6</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>"Sửa" đề đã có lượt làm</td><td>Tạo / mở "Phiên bản {n+1}" Nháp; thông báo phiên bản cũ vẫn được dùng</td><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.3</span></td></tr>
+            <tr><td class="id">6</td><td>GV</td><td>Xuất bản phiên bản mới</td><td>Lượt mới dùng phiên bản mới; lượt dở và kết quả cũ giữ phiên bản cũ; "Lịch sử phiên bản"</td><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td><span class="chip ac">AC-11.4</span> <span class="chip ac">AC-11.5</span> <span class="chip ac">AC-11.6</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout note"><strong>Q-2 đã đóng (2026-10-22)</strong> Không chấm lại kết quả cũ khi đáp án đổi; đáp án đã sửa chỉ áp dụng cho lượt bắt đầu sau khi phiên bản mới được xuất bản (<a href="#AC-11.5">AC-11.5</a>). Xem <a href="#open-questions">§14</a>.</div>
+      </div>
+
+      <div class="flow" id="F-6">
+        <h3 data-toc="F-6 Cô lập &amp; phân quyền">F-6: Cô lập workspace và phân quyền</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>GV, HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Mở "Kho tự học" / "Tự học" hoặc đường dẫn trực tiếp</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đã đăng nhập (quy tắc định tuyến của 001 REQ-20)</div>
+          <div class="fact"><span class="k">Kết quả</span>GV chỉ quản lý kho của mình; HV chỉ học nội dung kho của workspace mình; không ai thấy dữ liệu của workspace khác</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Đã đăng nhập"]) --> B{"Vai trò"}
+  B -- GV --> T23(["T23 Kho tự học của workspace mình"])
+  B -- HV --> S13(["S13 Tự học: nội dung kho của workspace mình"])
+  T23 --> C{"Mở mục kho của workspace khác?"}
+  C -- Có --> A05(["A05 Không tìm thấy nội dung"])
+  T23 --> D{"GV mở S13 đến S20?"}
+  D -- Có --> A05
+  S13 --> E{"HV mở mục kho của workspace khác?"}
+  E -- Có --> A05
+  S13 --> F{"HV mở T23 đến T27?"}
+  F -- Có --> S01(["S01"])
+</pre>
+          <figcaption>Hình F-6 — Định tuyến và cô lập (001 AC-20.2, AC-20.4, AC-20.10; AC-1.3, AC-1.8)</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Chọn "Kho tự học" trên thanh bên</td><td>T23 trong khung GV, thanh điều hướng T23–T27; chỉ dữ liệu của workspace mình</td><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></td><td><span class="chip ac">001 AC-20.2</span> <span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Mở đường dẫn mục kho của GV khác, hoặc mục không tồn tại</td><td>A05 "Không tìm thấy nội dung bạn yêu cầu." — giống hệt nhau</td><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td><span class="chip ac">AC-1.3</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Mở đường dẫn S13</td><td>A05; GV xem trước bằng "Nghe thử", "Xem thử", "Xem trước", "Xem thứ tự nét"</td><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td><span class="chip ac">001 AC-20.4</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Dùng Tự học</td><td>Chỉ nội dung "Đã xuất bản" của kho thuộc workspace của HV; mục của workspace khác → A05</td><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a></td><td><span class="chip ac">AC-1.7</span> <span class="chip ac">AC-1.8</span> <span class="chip ac">001 AC-20.3</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Mở đường dẫn T24</td><td>Về S01</td><td><a class="chip screen" href="../screen-flow-design.html#S01">S01</a></td><td><span class="chip ac">001 AC-20.10</span></td></tr>
+            <tr><td class="id">6</td><td>GV</td><td>Sửa cùng một mục ở hai tab</td><td>Lần lưu sau nhận cảnh báo xung đột, không ghi đè</td><td>T24–T27</td><td><span class="chip ac">AC-1.5</span></td></tr>
+            <tr><td class="id">7</td><td>GV</td><td>Xem số liệu sử dụng</td><td>Chỉ số đếm tổng hợp ẩn danh của workspace, ẩn khi &lt; 5 HV; không có dữ liệu của HV cụ thể</td><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></td><td><span class="chip ac">AC-1.6</span> <span class="chip ac">AC-13.4</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>. AC-1.4 đã bị bỏ (V15, mã không dùng lại — §13).</p>
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: Self-study library area, workspace isolation and privacy — Khu Kho tự học, cô lập workspace và quyền riêng tư</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T23">T23</a><a class="chip screen" href="../screen-flow-design.html#T27">T27</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S20">S20</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN GV mở bất kỳ màn hình nào của Kho tự học THE SYSTEM SHALL hiển thị màn hình trong khung giao diện GV với mục "Kho tự học" trên thanh bên được đánh dấu đang chọn, kèm thanh điều hướng của kho gồm "Tổng quan" (T23), "Từ vựng tự học" (T24), "Nghe &amp; hội thoại" (T25), "Đề thi thử HSK" (T26) và "Chữ Hán &amp; bộ thủ" (T27).</td></tr>
+            <tr id="AC-1.2"><td class="id">AC-1.2</td><td class="ears">THE SYSTEM SHALL chỉ cho mỗi GV xem và thao tác trên Kho tự học của workspace của chính GV đó, và mọi danh sách, kết quả tìm kiếm, bộ đếm, lô nhập, lịch sử thay đổi và tổng quan trên T23–T27 chỉ chứa dữ liệu của workspace đó.</td></tr>
+            <tr id="AC-1.3"><td class="id">AC-1.3</td><td class="ears">IF GV mở một mục kho không tồn tại, đã bị xóa vĩnh viễn hoặc thuộc workspace khác, kể cả bằng đường dẫn trực tiếp THEN THE SYSTEM SHALL không hiển thị dữ liệu nào, không thực hiện thao tác và hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." giống hệt nhau cho mọi trường hợp đó.</td></tr>
+            <tr id="AC-1.5"><td class="id">AC-1.5</td><td class="ears">IF GV lưu một mục mà chính GV đó đã lưu thay đổi khác cho mục này từ một tab hoặc thiết bị khác sau khi mở mục ở màn hình hiện tại THEN THE SYSTEM SHALL không ghi đè, giữ nguyên các giá trị đang nhập trên màn hình và hiển thị "Nội dung này vừa được cập nhật lúc {HH:mm} ở một cửa sổ khác. Tải lại để xem bản mới nhất trước khi lưu." kèm nút "Tải lại".</td></tr>
+            <tr id="AC-1.6"><td class="id">AC-1.6</td><td class="ears">THE SYSTEM SHALL không hiển thị trên T23–T27 bất kỳ dữ liệu tự học nào gắn với một HV cụ thể (tên, email, bộ từ cá nhân, trạng thái ôn tập, lịch sử luyện, thu âm, lượt thi hay kết quả thi thử), và chỉ hiển thị số liệu sử dụng dưới dạng số đếm tổng hợp ẩn danh theo AC-11.6 và AC-13.4.</td></tr>
+            <tr id="AC-1.7"><td class="id">AC-1.7</td><td class="ears">WHILE HV dùng khu Tự học (S13–S20) THE SYSTEM SHALL chỉ cung cấp cho HV nội dung của Kho tự học thuộc workspace của HV đó, và không bao giờ cung cấp nội dung của Kho tự học thuộc workspace khác.</td></tr>
+            <tr id="AC-1.8"><td class="id">AC-1.8</td><td class="ears">IF một HV yêu cầu một mục kho thuộc workspace khác, hoặc một mục mà HV không được dùng theo AC-3.2, AC-3.5 và AC-3.6, kể cả bằng đường dẫn trực tiếp THEN THE SYSTEM SHALL không hiển thị nội dung của mục đó và hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-2">
+        <header>
+          <h3>REQ-2: HSK levels, chapters and topics — Cấp HSK, chương và chủ đề</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T24">T24</a><a class="chip screen" href="../screen-flow-design.html#T25">T25</a><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-2.1"><td class="id">AC-2.1</td><td class="ears">THE SYSTEM SHALL gắn mỗi mục kho với đúng một cấp HSK chọn từ danh sách cố định gồm 7 cấp "HSK 1", "HSK 2", "HSK 3", "HSK 4", "HSK 5", "HSK 6", "HSK 7–9", trong đó "HSK 7–9" là một cấp duy nhất theo chuẩn HSK chính thức, không tách thành HSK 7, HSK 8, HSK 9.</td></tr>
+            <tr id="AC-2.2"><td class="id">AC-2.2</td><td class="ears">WHEN GV mở tab "Chương &amp; chủ đề" của T24 và chọn một cấp THE SYSTEM SHALL liệt kê các chương của cấp đó trong kho của workspace theo thứ tự (số thứ tự, tên chương, số mục từ vựng, số đề kiểm tra cuối chương) và cho GV "Thêm chương" (tên 1–60 ký tự, không trùng trong cùng cấp), đổi tên và sắp xếp lại bằng kéo thả hoặc nút "Lên" / "Xuống", tối đa 40 chương mỗi cấp.</td></tr>
+            <tr id="AC-2.3"><td class="id">AC-2.3</td><td class="ears">IF GV chọn "Xóa" một chương còn mục từ vựng hoặc đề kiểm tra cuối chương gắn với nó THEN THE SYSTEM SHALL không xóa và hiển thị "Chương còn {n} từ vựng và {m} đề kiểm tra. Hãy chuyển chúng sang chương khác trước khi xóa."</td></tr>
+            <tr id="AC-2.4"><td class="id">AC-2.4</td><td class="ears">THE SYSTEM SHALL cho GV quản lý ở tab "Chương &amp; chủ đề" một danh mục "Chủ đề" của kho dùng chung cho mọi cấp (tên 1–40 ký tự, không trùng khi so không phân biệt hoa thường, tối đa 200 chủ đề) và cho gắn 0–5 chủ đề vào mỗi mục từ vựng, bài nghe và kịch bản đóng vai.</td></tr>
+            <tr id="AC-2.5"><td class="id">AC-2.5</td><td class="ears">WHEN GV xóa một chủ đề đang được gắn vào ít nhất một mục và xác nhận "Gỡ chủ đề "{tên}" khỏi {n} mục và xóa chủ đề?" THE SYSTEM SHALL gỡ chủ đề khỏi mọi mục đó, xóa chủ đề và không đổi trạng thái của các mục.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-3">
+        <header>
+          <h3>REQ-3: Content lifecycle — Vòng đời nội dung: Nháp, Đã xuất bản, Lưu trữ</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T24">T24</a><a class="chip screen" href="../screen-flow-design.html#T25">T25</a><a class="chip screen" href="../screen-flow-design.html#T26">T26</a><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-3.1"><td class="id">AC-3.1</td><td class="ears">THE SYSTEM SHALL gán cho mọi mục kho (mục từ vựng, chữ Hán, bài nghe, kịch bản đóng vai, đề) đúng một trong ba trạng thái "Nháp", "Đã xuất bản", "Lưu trữ", và mọi mục do GV mới tạo, mới nhập hoặc mới tạo phiên bản đều ở "Nháp" (trạng thái ban đầu của mục được sao từ Bộ nội dung mẫu HSK theo AC-15.2).</td></tr>
+            <tr id="AC-3.2"><td class="id">AC-3.2</td><td class="ears">WHILE một mục ở trạng thái "Nháp" THE SYSTEM SHALL không cho bất kỳ HV nào thấy hoặc dùng mục đó ở khu Tự học (012–015).</td></tr>
+            <tr id="AC-3.3"><td class="id">AC-3.3</td><td class="ears">WHEN GV chọn "Xuất bản" cho một mục, hoặc cho tối đa 500 mục đã chọn, đạt điều kiện xuất bản của loại mục đó (AC-4.9, AC-7.6, AC-8.3, AC-9.3, AC-10.6) THE SYSTEM SHALL chuyển các mục đó sang "Đã xuất bản" và cung cấp chúng cho mọi HV đã kích hoạt, không bị khóa của workspace ở khu Tự học trong thời hạn của NFR-3.</td></tr>
+            <tr id="AC-3.4"><td class="id">AC-3.4</td><td class="ears">IF trong các mục được chọn để xuất bản có mục chưa đạt điều kiện xuất bản THEN THE SYSTEM SHALL chỉ xuất bản các mục đạt và hiển thị "Đã xuất bản {x} mục. {y} mục chưa đủ điều kiện:" kèm danh sách các mục chưa đạt và mọi lý do của từng mục.</td></tr>
+            <tr id="AC-3.5"><td class="id">AC-3.5</td><td class="ears">WHEN GV chọn "Lưu trữ" cho một hoặc nhiều mục "Đã xuất bản" (tối đa 500) và xác nhận "Lưu trữ {n} mục? Người học sẽ không thấy các mục này khi tìm kiếm hoặc bắt đầu học mới; dữ liệu học đã có được giữ nguyên." THE SYSTEM SHALL chuyển các mục sang "Lưu trữ" và gỡ chúng khỏi danh sách duyệt, tìm kiếm, việc thêm vào bộ từ và việc bắt đầu bài luyện hay lượt thi mới ở khu Tự học trong thời hạn của NFR-3.</td></tr>
+            <tr id="AC-3.6"><td class="id">AC-3.6</td><td class="ears">WHILE một mục ở trạng thái "Lưu trữ" THE SYSTEM SHALL tiếp tục cung cấp nội dung đã xuất bản cuối cùng của mục đó cho mọi dữ liệu học của HV đã tham chiếu tới nó trước khi lưu trữ (bộ từ cá nhân, trạng thái ôn tập lặp lại, từ đã đánh dấu khó, lịch sử luyện viết, luyện nghe, đóng vai, kết quả thi thử) để các dữ liệu đó vẫn mở và hiển thị đầy đủ.</td></tr>
+            <tr id="AC-3.7"><td class="id">AC-3.7</td><td class="ears">WHEN GV chọn "Khôi phục" một mục "Lưu trữ" THE SYSTEM SHALL đưa mục về "Đã xuất bản" nếu mục vẫn đạt điều kiện xuất bản, nếu không thì đưa về "Nháp" và hiển thị "Đã chuyển về Nháp vì chưa đủ điều kiện xuất bản:" kèm danh sách lý do.</td></tr>
+            <tr id="AC-3.8"><td class="id">AC-3.8</td><td class="ears">THE SYSTEM SHALL chỉ cung cấp thao tác "Xóa" (sau hộp thoại "Xóa vĩnh viễn "{tên mục}"? Thao tác này không thể hoàn tác.") cho mục chưa từng được xuất bản, và không cung cấp bất kỳ cách xóa nào cho mục đã từng ở trạng thái "Đã xuất bản", kể cả mục được sao từ Bộ nội dung mẫu HSK ở trạng thái "Đã xuất bản" (GV ẩn các mục này bằng "Lưu trữ").</td></tr>
+            <tr id="AC-3.9"><td class="id">AC-3.9</td><td class="ears">IF GV lưu thay đổi một mục "Đã xuất bản" làm mục không còn đạt điều kiện xuất bản THEN THE SYSTEM SHALL không lưu và hiển thị "Không lưu được vì mục đang xuất bản sẽ không còn đủ điều kiện:" kèm danh sách lý do, còn khi mục vẫn đạt điều kiện thì lưu và áp dụng thay đổi cho HV của workspace trong thời hạn của NFR-3 (đề đã có lượt làm theo REQ-11).</td></tr>
+            <tr id="AC-3.10"><td class="id">AC-3.10</td><td class="ears">THE SYSTEM SHALL gán cho mỗi mục kho một mã nhận diện ổn định không bao giờ đổi khi mục được sửa, xuất bản, lưu trữ hay khôi phục, và không bao giờ dùng lại mã của mục khác (mỗi mục được sao từ Bộ nội dung mẫu HSK vào một workspace có mã riêng của workspace đó; mỗi phiên bản đề có mã riêng gắn với mã của đề), để dữ liệu học của 012–015 luôn trỏ đúng mục.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-4">
+        <header>
+          <h3>REQ-4: Vocabulary entries — Mục từ vựng (T24)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-4.1"><td class="id">AC-4.1</td><td class="ears">WHEN GV chọn "Thêm từ" hoặc mở một mục từ vựng trên T24 THE SYSTEM SHALL mở biểu mẫu mục từ gồm "Chữ Hán", "Pinyin", "Từ loại", "Nghĩa tiếng Việt", "Cách dùng", "Cấp HSK", "Chương", "Thứ tự", "Chủ đề", "Âm thanh phát âm", "Câu ví dụ", "Nguồn / giấy phép", nhãn trạng thái và tab "Lịch sử thay đổi", trong đó "Chữ Hán", "Pinyin", "Từ loại", "Nghĩa tiếng Việt", "Cấp HSK" và "Nguồn / giấy phép" là bắt buộc để lưu.</td></tr>
+            <tr id="AC-4.2"><td class="id">AC-4.2</td><td class="ears">IF "Chữ Hán" dài hơn 12 ký tự, chứa ký tự không phải chữ Hán, hoặc chứa chữ phồn thể có dạng giản thể khác (ví dụ 學) THEN THE SYSTEM SHALL không lưu và hiển thị tương ứng "Chữ Hán chỉ gồm 1–12 chữ Hán." hoặc "Hãy dùng chữ giản thể: {chữ phồn thể} → {chữ giản thể}."</td></tr>
+            <tr id="AC-4.3"><td class="id">AC-4.3</td><td class="ears">WHEN GV nhập Pinyin dùng số thanh (ví dụ "ni3 hao3", "lv4", thanh nhẹ bằng 5 hoặc không số) THE SYSTEM SHALL chuyển thành pinyin có dấu thanh ("nǐ hǎo", "lǜ") khi GV rời ô và lưu dạng có dấu.</td></tr>
+            <tr id="AC-4.4"><td class="id">AC-4.4</td><td class="ears">IF Pinyin chứa âm tiết không có trong bảng âm tiết tiếng Phổ thông, hoặc số âm tiết khác số chữ Hán (chữ 儿 đứng cuối âm tiết được ghi bằng "r" và không tính thành âm tiết riêng) THEN THE SYSTEM SHALL không lưu và hiển thị "Pinyin không khớp với chữ Hán: cần {n} âm tiết, đang có {m}." hoặc "Âm tiết không hợp lệ: {âm tiết}."</td></tr>
+            <tr id="AC-4.5"><td class="id">AC-4.5</td><td class="ears">THE SYSTEM SHALL cho chọn "Từ loại" 1–3 giá trị từ danh mục cố định "Danh từ", "Động từ", "Tính từ", "Phó từ", "Đại từ", "Số từ", "Lượng từ", "Giới từ", "Liên từ", "Trợ từ", "Thán từ", "Từ tượng thanh", "Cụm từ cố định", nhận "Nghĩa tiếng Việt" là 1–5 nghĩa có thứ tự (mỗi nghĩa 1–150 ký tự, sắp xếp lại được bằng "Lên" / "Xuống", nghĩa đầu tiên là nghĩa chính) và "Cách dùng" tùy chọn 0–500 ký tự.</td></tr>
+            <tr id="AC-4.6"><td class="id">AC-4.6</td><td class="ears">WHEN GV thêm "Câu ví dụ" (0–5 câu mỗi từ, có thứ tự, sắp xếp lại được bằng "Lên" / "Xuống") THE SYSTEM SHALL yêu cầu mỗi câu có "Câu" bằng chữ Hán giản thể 2–80 ký tự có chứa đúng chuỗi "Chữ Hán" của mục, "Pinyin của câu" có dấu thanh (chuyển từ số thanh như AC-4.3), "Nghĩa của câu" 1–300 ký tự và cho thêm âm thanh ngắn tùy chọn, và nếu câu không chứa từ thì hiển thị "Câu ví dụ phải chứa từ "{Chữ Hán}"."</td></tr>
+            <tr id="AC-4.7"><td class="id">AC-4.7</td><td class="ears">IF cặp "Chữ Hán" + "Pinyin" (so khớp bỏ khoảng trắng, không phân biệt hoa thường, có phân biệt dấu thanh) trùng với một mục từ vựng khác trong kho của workspace ở bất kỳ trạng thái nào THEN THE SYSTEM SHALL không lưu và hiển thị "Từ "{Chữ Hán} {Pinyin}" đã có trong kho ({Cấp HSK} · {trạng thái})." kèm liên kết "Mở mục đã có".</td></tr>
+            <tr id="AC-4.8"><td class="id">AC-4.8</td><td class="ears">WHEN "Chữ Hán" của mục trùng với mục từ vựng khác trong kho của workspace nhưng "Pinyin" khác THE SYSTEM SHALL cho lưu và hiển thị cảnh báo "Kho đã có {n} từ cùng chữ Hán với cách đọc khác:" kèm danh sách các mục đó.</td></tr>
+            <tr id="AC-4.9"><td class="id">AC-4.9</td><td class="ears">THE SYSTEM SHALL coi một mục từ vựng đạt điều kiện xuất bản khi mọi trường bắt buộc của AC-4.1 hợp lệ theo AC-4.2 đến AC-4.7 (âm thanh và câu ví dụ không bắt buộc), và WHILE mục chưa có "Âm thanh phát âm" hiển thị nhãn "Thiếu âm thanh" trên dòng của mục ở T24.</td></tr>
+            <tr id="AC-4.10"><td class="id">AC-4.10</td><td class="ears">WHEN một mục từ vựng được thêm hoặc nhập THE SYSTEM SHALL gán "Thứ tự" của mục trong cấp HSK tiếp sau mục cuối cùng của cấp đó (một lô nhập giữ đúng thứ tự dòng trong tệp), và cho GV sửa "Thứ tự" (số nguyên 1–99 999) hoặc sắp xếp lại các từ của một chương bằng kéo thả hoặc "Lên" / "Xuống" ở tab "Chương &amp; chủ đề".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-5">
+        <header>
+          <h3>REQ-5: Vocabulary import — Nhập từ vựng từ tệp (T24)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-5.1"><td class="id">AC-5.1</td><td class="ears">WHEN GV chọn "Nhập từ tệp" trên T24 THE SYSTEM SHALL mở hộp thoại "Nhập từ vựng" gồm nút "Tải tệp mẫu" (tệp .xlsx có trang "Hướng dẫn" và các cột "Chữ Hán", "Pinyin", "Từ loại", "Nghĩa tiếng Việt" (các nghĩa theo thứ tự, ngăn bằng dấu ";"), "Cách dùng", "Cấp HSK", "Chương", "Chủ đề", "Câu ví dụ 1", "Pinyin câu 1", "Nghĩa câu 1" đến bộ cột của câu 3, "Nguồn / giấy phép"), ô chọn tệp và ô bắt buộc "Nguồn / giấy phép của lô" (3–200 ký tự).</td></tr>
+            <tr id="AC-5.2"><td class="id">AC-5.2</td><td class="ears">IF tệp không phải .xlsx hoặc .csv mã hóa UTF-8 (xác định theo nội dung), lớn hơn 10 MB, có nhiều hơn 5 000 dòng dữ liệu, không đọc được hoặc thiếu một cột bắt buộc THEN THE SYSTEM SHALL từ chối cả tệp, không thêm gì và hiển thị "Tệp không hợp lệ: {lý do}. Hãy dùng tệp mẫu (.xlsx hoặc .csv UTF-8, tối đa 5 000 dòng, 10 MB)."</td></tr>
+            <tr id="AC-5.3"><td class="id">AC-5.3</td><td class="ears">WHEN tệp hợp lệ được chọn THE SYSTEM SHALL kiểm tra từng dòng theo các quy tắc của REQ-4 mà chưa thêm gì vào kho, hiển thị tiến trình theo phần trăm, rồi hiển thị báo cáo gồm số dòng hợp lệ, số dòng lỗi, số dòng trùng và bảng các dòng lỗi hoặc trùng với số dòng trong tệp, tên cột và lý do.</td></tr>
+            <tr id="AC-5.4"><td class="id">AC-5.4</td><td class="ears">THE SYSTEM SHALL đánh dấu "Trùng với kho" cho dòng có cặp "Chữ Hán" + "Pinyin" đã có trong kho của workspace (so khớp như AC-4.7, kể cả mục được sao từ Bộ nội dung mẫu HSK) và "Trùng với dòng {k}" cho dòng trùng một dòng đứng trước trong cùng tệp, và không bao giờ nhập các dòng trùng.</td></tr>
+            <tr id="AC-5.5"><td class="id">AC-5.5</td><td class="ears">WHEN GV chọn "Tải báo cáo lỗi" THE SYSTEM SHALL tải về tệp .xlsx chứa nguyên văn các dòng lỗi và trùng theo đúng cột của tệp mẫu kèm cột "Lý do", để GV sửa và nhập lại.</td></tr>
+            <tr id="AC-5.6"><td class="id">AC-5.6</td><td class="ears">WHEN GV chọn "Nhập {n} từ hợp lệ" THE SYSTEM SHALL thêm toàn bộ {n} dòng hợp lệ ở trạng thái "Nháp" vào kho của workspace trong một lần trọn gói (thêm tất cả hoặc không thêm dòng nào), gán "Nguồn / giấy phép của lô" cho các dòng để trống cột "Nguồn / giấy phép", ghi lô nhập vào lịch sử thay đổi và hiển thị "Đã nhập {n} từ ở trạng thái Nháp."</td></tr>
+            <tr id="AC-5.7"><td class="id">AC-5.7</td><td class="ears">IF tại lúc GV xác nhận nhập, kho của workspace đã có thêm mục trùng với một dòng đã được báo hợp lệ (ví dụ do một lần nhập khác của chính GV ở tab khác vừa hoàn tất) THEN THE SYSTEM SHALL không nhập dòng nào và hiển thị lại báo cáo đã cập nhật với các dòng đó được đánh dấu "Trùng với kho".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-6">
+        <header>
+          <h3>REQ-6: Audio files — Âm thanh: tải lên, nghe thử, thay, gỡ và ghép hàng loạt</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-3</span><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T24">T24</a><a class="chip screen" href="../screen-flow-design.html#T25">T25</a><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-6.1"><td class="id">AC-6.1</td><td class="ears">THE SYSTEM SHALL chỉ nhận tệp âm thanh MP3, M4A hoặc WAV (xác định theo nội dung tệp), với giới hạn 2 MB và 30 giây cho âm thanh ngắn (phát âm từ, câu ví dụ, lời thoại đóng vai) và 20 MB và 5 phút cho âm thanh dài (bài nghe, hội thoại, đoạn nghe của đề).</td></tr>
+            <tr id="AC-6.2"><td class="id">AC-6.2</td><td class="ears">IF tệp âm thanh sai định dạng, vượt dung lượng, vượt thời lượng hoặc không đọc được THEN THE SYSTEM SHALL từ chối tệp, giữ âm thanh hiện có và hiển thị tương ứng "Chỉ hỗ trợ âm thanh MP3, M4A hoặc WAV.", "Tệp âm thanh vượt quá {2 MB | 20 MB}.", "Âm thanh dài quá {30 giây | 5 phút}." hoặc "Không đọc được tệp âm thanh này."</td></tr>
+            <tr id="AC-6.3"><td class="id">AC-6.3</td><td class="ears">WHEN một tệp âm thanh hợp lệ được tải lên cho một mục THE SYSTEM SHALL hiển thị trình phát gồm nút phát/tạm dừng và thời lượng, cùng các nút "Thay âm thanh" và "Gỡ âm thanh", và lưu âm thanh cùng mục khi GV lưu mục.</td></tr>
+            <tr id="AC-6.4"><td class="id">AC-6.4</td><td class="ears">WHEN GV chọn "Tải âm thanh hàng loạt" trên T24 và chọn tối đa 500 tệp THE SYSTEM SHALL ghép mỗi tệp với mục từ vựng trong kho của workspace có "Chữ Hán" trùng tên tệp (bỏ phần mở rộng), hoặc trùng "Chữ Hán" và pinyin số thanh khi tên tệp có dạng "{Chữ Hán}_{pinyin số thanh}" (ví dụ "行_xing2.mp3"), rồi hiển thị báo cáo "Ghép được", "Không tìm thấy từ", "Nhiều từ cùng chữ Hán — cần ghi kèm pinyin", "Từ đã có âm thanh" và "Tệp lỗi" (kèm lý do của AC-6.2) trước khi GV chọn "Lưu {x} âm thanh".</td></tr>
+            <tr id="AC-6.5"><td class="id">AC-6.5</td><td class="ears">WHERE GV đánh dấu "Thay âm thanh đã có" trong hộp thoại tải hàng loạt THE SYSTEM SHALL thay âm thanh của các từ đã có âm thanh bằng tệp ghép được, còn khi không đánh dấu thì giữ nguyên âm thanh cũ của các từ đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-7">
+        <header>
+          <h3>REQ-7: Hanzi character data — Dữ liệu chữ Hán và nét (T27)</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-7.1"><td class="id">AC-7.1</td><td class="ears">WHEN GV mở T27 THE SYSTEM SHALL liệt kê các mục chữ Hán của kho với chữ, pinyin, âm Hán Việt, số nét, bộ thủ, cấp HSK, trạng thái dữ liệu nét ("Đủ dữ liệu nét", "Thiếu dữ liệu nét" hoặc "Lệch số nét") và trạng thái xuất bản, lọc được theo cấp, bộ thủ, trạng thái dữ liệu nét và trạng thái.</td></tr>
+            <tr id="AC-7.2"><td class="id">AC-7.2</td><td class="ears">THE SYSTEM SHALL hiển thị ở đầu T27, cho từng cấp, số "Chữ chưa có dữ liệu" là các chữ Hán xuất hiện trong mục từ vựng "Đã xuất bản" của cấp đó trong kho mà chưa có mục chữ Hán "Đã xuất bản", kèm "Xem danh sách" và "Tạo mục nháp cho các chữ này" (tạo mục chữ Hán ở "Nháp" với chữ và cấp HSK thấp nhất của các từ chứa chữ đó).</td></tr>
+            <tr id="AC-7.3"><td class="id">AC-7.3</td><td class="ears">WHEN GV mở hoặc tạo một mục chữ Hán THE SYSTEM SHALL hiển thị biểu mẫu gồm "Chữ" (đúng 1 chữ Hán giản thể, không trùng mục chữ Hán khác trong kho của workspace), "Pinyin" (1–5 cách đọc có dấu thanh), "Âm Hán Việt" (tùy chọn), "Nghĩa" (1–200 ký tự), "Cấp HSK", "Số nét" (1–64), "Bộ thủ" (chọn từ danh mục 214 bộ thủ kèm tên Hán Việt, ví dụ "氵 Thủy"), "Cấu tạo" (một kiểu trong "Độc thể", "Trái – phải", "Trên – dưới", "Trái – giữa – phải", "Trên – giữa – dưới", "Bao quanh", "Bao ba phía", "Bao hai phía", "Khảm" và 0–6 thành phần, mỗi thành phần là một chữ Hán hoặc bộ thủ), "Mẹo nhớ" (tùy chọn, 0–300 ký tự), "Dữ liệu nét" và "Nguồn / giấy phép".</td></tr>
+            <tr id="AC-7.4"><td class="id">AC-7.4</td><td class="ears">WHEN GV chọn "Nhập dữ liệu nét" trên T27 và tải một tệp theo định dạng của "Tải tệp mẫu dữ liệu nét" (tối đa 3 000 chữ, 20 MB) THE SYSTEM SHALL ghi nhận cho mỗi chữ trong tệp thứ tự các nét cùng hình dạng và hướng viết của từng nét, tạo mục chữ Hán "Nháp" cho chữ chưa có mục, không đổi các trường khác của mục đã có, và hiển thị báo cáo số chữ đã nhận, số chữ lỗi kèm lý do.</td></tr>
+            <tr id="AC-7.5"><td class="id">AC-7.5</td><td class="ears">WHEN GV chọn "Xem thứ tự nét" của một chữ có dữ liệu nét THE SYSTEM SHALL phát minh họa viết lần lượt từng nét theo đúng thứ tự và hướng của dữ liệu, có số thứ tự trên mỗi nét, cùng các nút "Phát lại" và "Từng nét".</td></tr>
+            <tr id="AC-7.6"><td class="id">AC-7.6</td><td class="ears">IF GV xuất bản một chữ chưa có dữ liệu nét hoặc có số nét trong dữ liệu nét khác "Số nét" THEN THE SYSTEM SHALL không xuất bản và nêu lý do "Chưa có dữ liệu nét." hoặc "Dữ liệu nét có {a} nét nhưng Số nét là {b}." (trạng thái dữ liệu nét lần lượt là "Thiếu dữ liệu nét", "Lệch số nét").</td></tr>
+            <tr id="AC-7.7"><td class="id">AC-7.7</td><td class="ears">WHEN GV mở tab "Bộ thủ" của T27 THE SYSTEM SHALL liệt kê đủ 214 bộ thủ theo thứ tự chuẩn, mỗi bộ gồm số thứ tự, dạng chính và các dạng biến thể, tên Hán Việt, nghĩa tiếng Việt, số nét và số chữ "Đã xuất bản" thuộc bộ đó trong kho, cho GV sửa tên Hán Việt và nghĩa tiếng Việt (chỉ trong kho của workspace), và không cho thêm hay xóa bộ thủ.</td></tr>
+            <tr id="AC-7.8"><td class="id">AC-7.8</td><td class="ears">WHEN GV nhập từ khóa vào ô tìm kiếm của T27 THE SYSTEM SHALL trả về các chữ trùng với chữ Hán đã nhập, có một cách đọc khớp từ khóa khi bỏ qua dấu thanh (ví dụ "ni" tìm ra 你 và 泥), hoặc có "Nghĩa" hay "Âm Hán Việt" chứa từ khóa khi so không phân biệt hoa thường và dấu tiếng Việt.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-8">
+        <header>
+          <h3>REQ-8: Listening items — Bài nghe và hội thoại (T25, tab "Bài nghe")</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-8.1"><td class="id">AC-8.1</td><td class="ears">WHEN GV chọn "Thêm bài nghe" ở tab "Bài nghe" của T25 THE SYSTEM SHALL mở biểu mẫu gồm "Tiêu đề" (1–100 ký tự), "Loại" ("Nghe câu" hoặc "Hội thoại"), "Cấp HSK", "Chủ đề", "Âm thanh" (âm thanh dài), "Người nói" (với "Hội thoại": 2–6 tên, mỗi tên 1–30 ký tự), "Lời thoại" (1–60 dòng, mỗi dòng gồm người nói, chữ Hán 1–200 ký tự, pinyin có dấu thanh, nghĩa tiếng Việt 1–300 ký tự), "Câu hỏi" (0–10) và "Nguồn / giấy phép".</td></tr>
+            <tr id="AC-8.2"><td class="id">AC-8.2</td><td class="ears">WHEN GV thêm một câu hỏi cho bài nghe THE SYSTEM SHALL yêu cầu nội dung câu hỏi (1–300 ký tự, chữ Hán hoặc tiếng Việt), 2–4 lựa chọn khác nhau (mỗi lựa chọn 1–100 ký tự), đúng một đáp án đúng và "Giải thích" (1–500 ký tự).</td></tr>
+            <tr id="AC-8.3"><td class="id">AC-8.3</td><td class="ears">THE SYSTEM SHALL coi một bài nghe đạt điều kiện xuất bản khi có âm thanh, có ít nhất một dòng lời thoại, mọi dòng đủ chữ Hán, pinyin và nghĩa, bài "Hội thoại" có ít nhất 2 người nói, và mọi câu hỏi đủ theo AC-8.2, và nêu từng lý do còn thiếu (ví dụ "Chưa có âm thanh.", "Câu hỏi 2 chưa có giải thích.").</td></tr>
+            <tr id="AC-8.4"><td class="id">AC-8.4</td><td class="ears">WHEN GV chọn "Nghe thử" một bài nghe THE SYSTEM SHALL phát âm thanh cùng toàn bộ lời thoại (chữ Hán, pinyin, nghĩa) và các câu hỏi kèm đáp án đúng.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-9">
+        <header>
+          <h3>REQ-9: Role-play scenarios — Kịch bản đóng vai (T25, tab "Đóng vai")</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-9.1"><td class="id">AC-9.1</td><td class="ears">WHEN GV chọn "Thêm kịch bản" ở tab "Đóng vai" của T25 THE SYSTEM SHALL mở biểu mẫu gồm "Tiêu đề" (1–100 ký tự), "Tình huống" (một trong "Gọi món", "Mua sắm", "Phỏng vấn", "Giao tiếp công sở"), "Cấp HSK", "Chủ đề", "Bối cảnh" (tiếng Việt 1–500 ký tự), 2–4 "Vai" (mỗi vai có tên tiếng Việt 1–40 ký tự và tên tiếng Trung tùy chọn), "Lời thoại" (4–40 dòng theo thứ tự, mỗi dòng gồm vai, chữ Hán 1–200 ký tự, pinyin có dấu thanh, nghĩa tiếng Việt 1–300 ký tự, âm thanh ngắn và "Gợi ý cho người học" tùy chọn 0–200 ký tự) và "Nguồn / giấy phép".</td></tr>
+            <tr id="AC-9.2"><td class="id">AC-9.2</td><td class="ears">WHEN GV chọn "Thêm lời thoại", "Xóa", "Lên" hoặc "Xuống" trên một dòng, hoặc kéo thả một dòng THE SYSTEM SHALL cập nhật ngay thứ tự và số thứ tự hiển thị của các dòng lời thoại.</td></tr>
+            <tr id="AC-9.3"><td class="id">AC-9.3</td><td class="ears">THE SYSTEM SHALL coi một kịch bản đạt điều kiện xuất bản khi có 4–40 dòng lời thoại đủ trường bắt buộc, mỗi dòng có âm thanh và mỗi vai có ít nhất 2 dòng, và nêu từng lý do còn thiếu (ví dụ "Lời thoại 5 chưa có âm thanh.", "Vai "Phục vụ" cần ít nhất 2 lời thoại.").</td></tr>
+            <tr id="AC-9.4"><td class="id">AC-9.4</td><td class="ears">WHEN GV chọn "Xem thử" một kịch bản THE SYSTEM SHALL phát lần lượt âm thanh từng lời thoại theo thứ tự, hiển thị vai, chữ Hán, pinyin, nghĩa và gợi ý của dòng đang phát, kèm "Tạm dừng" và "Phát lại".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-10">
+        <header>
+          <h3>REQ-10: HSK mock tests and chapter tests — Đề thi thử và đề kiểm tra cuối chương (T26)</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-10.1"><td class="id">AC-10.1</td><td class="ears">WHEN GV chọn "Tạo đề" trên T26 THE SYSTEM SHALL yêu cầu "Loại đề" ("Đề thi thử" hoặc "Kiểm tra cuối chương"), "Tên đề" (1–100 ký tự), "Cấp HSK", "Chương" (chỉ và bắt buộc với "Kiểm tra cuối chương", chọn từ chương của cấp đó — REQ-2), "Thời gian làm bài" (5–180 phút), "Điểm đạt (%)" (0–100, mặc định 60) và "Nguồn / giấy phép", rồi mở trình soạn đề ở trạng thái "Nháp".</td></tr>
+            <tr id="AC-10.2"><td class="id">AC-10.2</td><td class="ears">THE SYSTEM SHALL cho đề có 1–10 phần theo thứ tự, mỗi phần có loại "Từ vựng", "Ngữ pháp", "Nghe", "Đọc hiểu" hoặc "Sắp xếp câu", "Hướng dẫn" (0–500 ký tự) và "Thời gian riêng" tùy chọn (phút), và IF tổng thời gian riêng của các phần vượt "Thời gian làm bài" THEN THE SYSTEM SHALL không lưu và hiển thị "Tổng thời gian các phần ({a} phút) vượt thời gian làm bài ({b} phút)."</td></tr>
+            <tr id="AC-10.3"><td class="id">AC-10.3</td><td class="ears">THE SYSTEM SHALL cho thêm vào mỗi phần các câu hỏi chấm tự động thuộc một trong các dạng "Trắc nghiệm" (2–4 lựa chọn, đúng một đáp án), "Đúng / Sai", "Điền chỗ trống" (1–3 đáp án được chấp nhận, so khớp sau khi bỏ khoảng trắng đầu/cuối), "Sắp xếp từ thành câu" (2–12 mảnh, 1–3 thứ tự đúng), "Nghe chọn đáp án" (đoạn âm thanh và trắc nghiệm) và "Đọc hiểu" (đoạn văn 1–1 500 ký tự và 1–5 câu trắc nghiệm con), mỗi câu (và mỗi câu con) có "Điểm" 1–10 (mặc định 1), "Giải thích" bắt buộc 1–1 000 ký tự và 0–5 "Thẻ kiến thức" (mỗi thẻ 1–40 ký tự).</td></tr>
+            <tr id="AC-10.4"><td class="id">AC-10.4</td><td class="ears">THE SYSTEM SHALL yêu cầu mỗi câu "Nghe chọn đáp án" có âm thanh và "Số lần được nghe" từ 1 đến 3 (mặc định 2).</td></tr>
+            <tr id="AC-10.5"><td class="id">AC-10.5</td><td class="ears">THE SYSTEM SHALL giới hạn mỗi đề tối đa 200 câu hỏi (câu con của "Đọc hiểu" tính riêng từng câu) và hiển thị liên tục trong trình soạn đề số câu và tổng điểm của từng phần và của cả đề, và IF GV thêm câu thứ 201 THEN THE SYSTEM SHALL không thêm và hiển thị "Mỗi đề tối đa 200 câu hỏi."</td></tr>
+            <tr id="AC-10.6"><td class="id">AC-10.6</td><td class="ears">THE SYSTEM SHALL coi một đề đạt điều kiện xuất bản khi có ít nhất một phần, mỗi phần có ít nhất một câu, mọi câu có đáp án đúng và giải thích, mọi câu nghe có âm thanh, và thời gian hợp lệ theo AC-10.1, AC-10.2, và nêu từng lý do còn thiếu kèm phần và số câu (ví dụ "Phần 2 · Câu 7: chưa có giải thích.").</td></tr>
+            <tr id="AC-10.7"><td class="id">AC-10.7</td><td class="ears">WHEN GV chọn "Xem trước" một đề THE SYSTEM SHALL hiển thị đề như HV sẽ thấy, cho trả lời thử và "Hiện đáp án" từng câu, không đếm giờ bắt buộc và không lưu bất kỳ kết quả, lượt làm hay số đếm sử dụng nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-11">
+        <header>
+          <h3>REQ-11: Mock test versioning — Phiên bản đề đã có người làm (T26)</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-11.1"><td class="id">AC-11.1</td><td class="ears">WHILE một đề "Đã xuất bản" chưa có lượt làm nào của HV (kể cả lượt đang làm dở) THE SYSTEM SHALL cho GV sửa trực tiếp đề đó theo AC-3.9.</td></tr>
+            <tr id="AC-11.2"><td class="id">AC-11.2</td><td class="ears">WHEN GV chọn "Sửa" một đề "Đã xuất bản" đã có ít nhất một lượt làm THE SYSTEM SHALL không sửa phiên bản đang dùng mà tạo "Phiên bản {n+1}" ở trạng thái "Nháp" sao chép toàn bộ nội dung phiên bản {n}, mở phiên bản mới trong trình soạn và hiển thị "Đề đã có người làm. Bạn đang sửa phiên bản {n+1}; phiên bản {n} vẫn được dùng cho tới khi bạn xuất bản phiên bản mới."</td></tr>
+            <tr id="AC-11.3"><td class="id">AC-11.3</td><td class="ears">IF đề đã có một phiên bản "Nháp" chưa xuất bản THEN THE SYSTEM SHALL mở phiên bản nháp đó khi GV chọn "Sửa" thay vì tạo thêm phiên bản.</td></tr>
+            <tr id="AC-11.4"><td class="id">AC-11.4</td><td class="ears">WHEN GV xuất bản "Phiên bản {n+1}" THE SYSTEM SHALL dùng phiên bản mới cho mọi lượt làm bắt đầu sau thời điểm đó, cho các lượt đang làm dở hoàn tất trên phiên bản {n}, và chuyển phiên bản {n} sang "Lưu trữ".</td></tr>
+            <tr id="AC-11.5"><td class="id">AC-11.5</td><td class="ears">THE SYSTEM SHALL giữ cho mỗi kết quả thi thử đã có đúng câu hỏi, đáp án đúng, giải thích, điểm và thời gian của phiên bản HV đã làm, và không chấm lại kết quả đó khi một phiên bản sau thay đổi đáp án; đáp án đã sửa chỉ áp dụng cho lượt làm bắt đầu sau khi phiên bản mới được xuất bản (AC-11.4).</td></tr>
+            <tr id="AC-11.6"><td class="id">AC-11.6</td><td class="ears">WHEN GV mở một đề trên T26 THE SYSTEM SHALL hiển thị phiên bản hiện hành, nhãn "Đã có người làm" khi đề có ít nhất một lượt làm (kèm tổng số lượt làm chỉ khi các lượt đó thuộc ít nhất 5 HV khác nhau, không bao giờ kèm tên hay danh tính người làm) và mục "Lịch sử phiên bản" liệt kê từng phiên bản với số phiên bản, trạng thái, thời điểm xuất bản và nguồn tạo ("Bộ nội dung mẫu HSK" hoặc "GV").</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-12">
+        <header>
+          <h3>REQ-12: Lists, search and filters — Danh sách, tìm kiếm và bộ lọc (T24–T27)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-2</span><span class="chip">US-3</span><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T24">T24</a><a class="chip screen" href="../screen-flow-design.html#T25">T25</a><a class="chip screen" href="../screen-flow-design.html#T26">T26</a><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-12.1"><td class="id">AC-12.1</td><td class="ears">WHEN GV mở T24, T25 (mỗi tab), T26 hoặc T27 THE SYSTEM SHALL hiển thị danh sách mục của kho theo trang 50 mục, mặc định sắp theo thời điểm cập nhật mới nhất, mỗi dòng có các trường nhận diện của loại mục (T24: Chữ Hán, Pinyin, Nghĩa rút gọn, Cấp, Chương, Từ loại, nhãn "Thiếu âm thanh"; T25: Tiêu đề, Loại hoặc Tình huống, Cấp, số câu hỏi hoặc số lời thoại; T26: Tên đề, Loại đề, Cấp, Chương, số câu, Thời gian làm bài, phiên bản; T27: như AC-7.1), trạng thái và thời điểm cập nhật.</td></tr>
+            <tr id="AC-12.2"><td class="id">AC-12.2</td><td class="ears">WHEN GV nhập từ khóa vào ô tìm kiếm của T24 THE SYSTEM SHALL trả về các mục có "Chữ Hán" chứa từ khóa, có "Pinyin" khớp từ khóa khi bỏ qua dấu thanh và khoảng trắng (ví dụ "nihao", "ni hao" và "nǐ hǎo" đều tìm ra 你好), hoặc có "Nghĩa tiếng Việt" chứa từ khóa khi so không phân biệt hoa thường và dấu tiếng Việt.</td></tr>
+            <tr id="AC-12.3"><td class="id">AC-12.3</td><td class="ears">THE SYSTEM SHALL cung cấp trên mọi danh sách bộ lọc "Cấp HSK", "Trạng thái", "Nguồn / giấy phép" và bộ lọc riêng theo loại (T24: "Chương", "Chủ đề", "Từ loại", "Thiếu âm thanh"; T25: "Loại", "Tình huống", "Chủ đề"; T26: "Loại đề", "Chương", "Đã có người làm"; T27: "Bộ thủ", "Trạng thái dữ liệu nét"), áp dụng đồng thời mọi bộ lọc và từ khóa, và hiển thị "{n} kết quả".</td></tr>
+            <tr id="AC-12.4"><td class="id">AC-12.4</td><td class="ears">IF không có mục nào khớp bộ lọc hoặc từ khóa THEN THE SYSTEM SHALL hiển thị "Không có nội dung phù hợp." kèm nút "Xóa bộ lọc".</td></tr>
+            <tr id="AC-12.5"><td class="id">AC-12.5</td><td class="ears">WHEN GV chọn nhiều mục trên một danh sách (từng dòng hoặc "Chọn tất cả {n} kết quả", tối đa 500) THE SYSTEM SHALL cung cấp các thao tác hàng loạt "Xuất bản" (AC-3.3, AC-3.4) và "Lưu trữ" (AC-3.5), và IF số mục được chọn vượt 500 THEN THE SYSTEM SHALL không thực hiện và hiển thị "Mỗi lần chỉ thao tác tối đa 500 mục."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-13">
+        <header>
+          <h3>REQ-13: Library overview — Tổng quan kho (T23)</h3>
+          <div class="req-meta"><span class="chip">US-7</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-13.1"><td class="id">AC-13.1</td><td class="ears">WHEN GV mở T23 THE SYSTEM SHALL hiển thị bảng số lượng của kho với mỗi hàng là một loại nội dung ("Từ vựng", "Chữ Hán", "Bài nghe", "Kịch bản đóng vai", "Đề thi thử", "Kiểm tra cuối chương") và mỗi cột là một trong 7 cấp HSK của AC-2.1 (từ "HSK 1" đến "HSK 7–9") cùng cột "Tổng", mỗi ô gồm số "Đã xuất bản" và số "Nháp", "Lưu trữ" (đề tính theo phiên bản hiện hành).</td></tr>
+            <tr id="AC-13.2"><td class="id">AC-13.2</td><td class="ears">WHEN GV chọn một ô của bảng số lượng THE SYSTEM SHALL mở danh sách tương ứng (T24, T25, T26 hoặc T27) với bộ lọc cấp HSK của ô đó đã được áp dụng.</td></tr>
+            <tr id="AC-13.3"><td class="id">AC-13.3</td><td class="ears">THE SYSTEM SHALL hiển thị trên T23 khối "Cần xử lý" gồm số "Từ thiếu âm thanh", "Chữ chưa có dữ liệu" (AC-7.2) và "Chữ lệch số nét", mỗi số mở danh sách đã lọc tương ứng, và khối "Thay đổi gần đây" gồm 20 mục lịch sử thay đổi mới nhất của kho (thời điểm dd/MM/yyyy HH:mm giờ Việt Nam, người thực hiện, thao tác, mục) với liên kết tới mục và "Xem tất cả" mở toàn bộ lịch sử thay đổi của kho lọc được theo thao tác và khoảng ngày.</td></tr>
+            <tr id="AC-13.4"><td class="id">AC-13.4</td><td class="ears">THE SYSTEM SHALL hiển thị trên T23 khối "Sử dụng 30 ngày qua" chỉ gồm số đếm tổng hợp của HV thuộc workspace — số HV đã dùng khu Tự học, số lượt ôn từ vựng, số lượt luyện viết, số lượt luyện nghe và đóng vai, số lượt thi thử theo từng cấp — không hiển thị tên, email, danh sách HV hay số liệu của bất kỳ HV riêng lẻ nào, và IF ít hơn 5 HV khác nhau của workspace đã dùng khu Tự học trong 30 ngày qua THEN THE SYSTEM SHALL thay các số đếm bằng "Chưa đủ dữ liệu để hiển thị (cần ít nhất 5 học viên dùng Tự học)."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-14">
+        <header>
+          <h3>REQ-14: Source/licence and change history — Nguồn / giấy phép và lịch sử thay đổi</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T23">T23</a><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-14.1"><td class="id">AC-14.1</td><td class="ears">THE SYSTEM SHALL yêu cầu mọi mục kho và mọi lô nhập có "Nguồn / giấy phép" (3–200 ký tự, ghi nguồn gốc nội dung và căn cứ được phép sử dụng), và IF trường này trống khi lưu một mục hoặc bắt đầu một lô nhập THEN THE SYSTEM SHALL không lưu, không nhập và hiển thị "Vui lòng nhập nguồn / giấy phép."</td></tr>
+            <tr id="AC-14.2"><td class="id">AC-14.2</td><td class="ears">WHEN một mục kho được sao từ Bộ nội dung mẫu HSK, tạo, sửa, nhập theo lô, xuất bản, lưu trữ, khôi phục, xóa hoặc tạo phiên bản mới THE SYSTEM SHALL ghi một mục lịch sử thay đổi gồm thời điểm, người thực hiện (GV, hoặc "Bộ nội dung mẫu HSK" với lần sao của REQ-15), mục, thao tác và với thao tác sửa là từng trường đã đổi kèm giá trị trước và sau (với âm thanh hoặc dữ liệu nét là tên tệp trước và sau).</td></tr>
+            <tr id="AC-14.3"><td class="id">AC-14.3</td><td class="ears">WHEN GV mở tab "Lịch sử thay đổi" của một mục THE SYSTEM SHALL liệt kê mọi mục lịch sử của mục đó, mới nhất trước, kể cả lần sao từ Bộ nội dung mẫu HSK hoặc lần nhập theo lô đã tạo ra mục.</td></tr>
+            <tr id="AC-14.4"><td class="id">AC-14.4</td><td class="ears">THE SYSTEM SHALL không cung cấp cho bất kỳ ai cách sửa hay xóa một mục lịch sử thay đổi, kể cả khi mục kho liên quan đã bị xóa vĩnh viễn.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-15">
+        <header>
+          <h3>REQ-15: Starter HSK content set — Nạp Bộ nội dung mẫu HSK vào kho của workspace</h3>
+          <div class="req-meta"><span class="chip">US-8</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T23">T23</a><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-15.1"><td class="id">AC-15.1</td><td class="ears">WHEN một workspace mới được tạo (001 AC-1.1) THE SYSTEM SHALL sao vào Kho tự học của workspace đó toàn bộ phiên bản hiện hành của Bộ nội dung mẫu HSK — mục từ vựng (kèm câu ví dụ và âm thanh), mục chữ Hán (kèm dữ liệu nét), tên Hán Việt và nghĩa của 214 bộ thủ, chương, chủ đề, bài nghe, kịch bản đóng vai và đề (mỗi đề thành "Phiên bản 1") cho 7 cấp của AC-2.1 — mỗi mục giữ "Nguồn / giấy phép" ghi trong bộ mẫu.</td></tr>
+            <tr id="AC-15.2"><td class="id">AC-15.2</td><td class="ears">THE SYSTEM SHALL đặt mỗi mục được sao ở trạng thái "Đã xuất bản" nếu mục đạt điều kiện xuất bản của loại mục (AC-4.9, AC-7.6, AC-8.3, AC-9.3, AC-10.6), nếu không thì ở "Nháp", và ghi cho mỗi mục một mục lịch sử thay đổi "Sao từ Bộ nội dung mẫu HSK ({phiên bản bộ mẫu})".</td></tr>
+            <tr id="AC-15.3"><td class="id">AC-15.3</td><td class="ears">WHEN lần sao Bộ nội dung mẫu HSK của một workspace hoàn tất THE SYSTEM SHALL coi mọi mục được sao là mục của workspace đó: GV sửa, thêm, xuất bản, lưu trữ và khôi phục theo REQ-2 đến REQ-14 như mục do GV tạo, và mọi thay đổi chỉ có hiệu lực trong workspace đó, không ảnh hưởng Bộ nội dung mẫu HSK hay kho của workspace khác.</td></tr>
+            <tr id="AC-15.4"><td class="id">AC-15.4</td><td class="ears">THE SYSTEM SHALL không tự áp dụng vào kho của một workspace đã được nạp bất kỳ thay đổi hay phiên bản mới nào của Bộ nội dung mẫu HSK xuất hiện sau lần sao của workspace đó; phiên bản mới chỉ được sao cho workspace tạo sau thời điểm phiên bản đó có hiệu lực.</td></tr>
+            <tr id="AC-15.5"><td class="id">AC-15.5</td><td class="ears">WHILE lần sao Bộ nội dung mẫu HSK của một workspace chưa hoàn tất THE SYSTEM SHALL hiển thị trên T23–T27 "Đang chuẩn bị Bộ nội dung mẫu HSK cho kho tự học của bạn…" thay cho nội dung kho, không cho GV thêm, nhập hay sửa mục nào, và không cung cấp cho HV của workspace bất kỳ mục nào của lần sao đó.</td></tr>
+            <tr id="AC-15.6"><td class="id">AC-15.6</td><td class="ears">IF lần sao Bộ nội dung mẫu HSK bị gián đoạn hoặc lỗi THEN THE SYSTEM SHALL không để lại trong kho một phần của lần sao đó (sao trọn gói), tự thực hiện lại cho tới khi hoàn tất trong thời hạn của NFR-11, và ghi nhật ký sự cố theo NFR-10.</td></tr>
+            <tr id="AC-15.7"><td class="id">AC-15.7</td><td class="ears">WHEN Kho tự học được ra mắt THE SYSTEM SHALL sao Bộ nội dung mẫu HSK theo AC-15.1 đến AC-15.6 cho mọi workspace đã tồn tại trước thời điểm đó.</td></tr>
+            <tr id="AC-15.8"><td class="id">AC-15.8</td><td class="ears">WHEN GV mở T23 sau khi lần sao hoàn tất THE SYSTEM SHALL hiển thị dòng "Kho được khởi tạo từ Bộ nội dung mẫu HSK ({phiên bản bộ mẫu}) ngày {dd/MM/yyyy}."</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td class="id">BR-1</td><td>Mỗi workspace có một Kho tự học; chỉ GV của workspace quản lý (T23–T27), chỉ HV đã kích hoạt, không bị khóa của workspace dùng (S13–S20). Mục kho của workspace khác → A05 như mục không tồn tại. GV không thấy dữ liệu tự học của HV cụ thể. Xung đột lưu giữa hai cửa sổ của GV không ghi đè.</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.3</span> <span class="chip ac">AC-1.5</span> <span class="chip ac">AC-1.6</span> <span class="chip ac">AC-1.7</span> <span class="chip ac">AC-1.8</span></td></tr>
+          <tr><td class="id">BR-2</td><td>Mỗi mục đúng 1 trong 7 cấp: HSK 1–6 và một cấp chung "HSK 7–9" (không tách 7, 8, 9). Chương: ≤ 40/cấp, tên 1–60, không xóa khi còn mục. Chủ đề: dùng chung, ≤ 200, tên 1–40, 0–5 mỗi mục.</td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span> <span class="chip ac">AC-2.3</span> <span class="chip ac">AC-2.4</span></td></tr>
+          <tr><td class="id">BR-3</td><td>Nháp không bao giờ tới người học. Xuất bản/lưu trữ/khôi phục/sửa có hiệu lực ≤ 5 phút. Lưu trữ giữ nội dung cuối cùng cho dữ liệu học cũ. Chỉ xóa vĩnh viễn được mục chưa từng xuất bản (mục bộ mẫu được sao ở "Đã xuất bản" chỉ lưu trữ được).</td><td><span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.5</span> <span class="chip ac">AC-3.6</span> <span class="chip ac">AC-3.8</span></td></tr>
+          <tr><td class="id">BR-4</td><td>Từ vựng: Chữ Hán giản thể 1–12 chữ; Pinyin có dấu (nhận số thanh), số âm tiết = số chữ (儿 → "r"); Từ loại 1–3 từ danh mục 13 giá trị; Nghĩa 1–5 nghĩa có thứ tự (mỗi nghĩa 1–150); Cách dùng tùy chọn ≤ 500; "Thứ tự" trong cấp (lô nhập giữ thứ tự dòng); Câu ví dụ 0–5 có thứ tự, chứa từ; âm thanh tùy chọn (nhãn "Thiếu âm thanh").</td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.3</span> <span class="chip ac">AC-4.4</span> <span class="chip ac">AC-4.5</span> <span class="chip ac">AC-4.6</span> <span class="chip ac">AC-4.9</span></td></tr>
+          <tr><td class="id">BR-5</td><td>Trùng từ vựng = Chữ Hán + Pinyin (bỏ khoảng trắng, không phân biệt hoa thường, có phân biệt dấu thanh) ở mọi trạng thái, không gồm cấp → chặn. Cùng Chữ Hán khác Pinyin → cảnh báo. Trùng chữ Hán = Chữ. Mọi so khớp trùng chỉ trong kho của workspace.</td><td><span class="chip ac">AC-4.7</span> <span class="chip ac">AC-4.8</span> <span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td class="id">BR-6</td><td>Nhập từ vựng: .xlsx hoặc .csv UTF-8, ≤ 10 MB, ≤ 5 000 dòng; kiểm tra trước; dòng trùng bỏ qua; nhập trọn gói ở Nháp; nguồn của lô gán cho dòng không có nguồn riêng.</td><td><span class="chip ac">AC-5.2</span> <span class="chip ac">AC-5.4</span> <span class="chip ac">AC-5.6</span></td></tr>
+          <tr><td class="id">BR-7</td><td>Âm thanh: MP3/M4A/WAV theo nội dung; ngắn ≤ 2 MB, ≤ 30 giây; dài ≤ 20 MB, ≤ 5 phút. Hàng loạt ≤ 500 tệp, tên tệp = Chữ Hán hoặc Chữ Hán_pinyin số thanh.</td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.4</span></td></tr>
+          <tr><td class="id">BR-8</td><td>Chữ Hán xuất bản được khi có dữ liệu nét và số nét dữ liệu = "Số nét". Danh mục 214 bộ thủ cố định, chỉ sửa tên Hán Việt và nghĩa.</td><td><span class="chip ac">AC-7.6</span> <span class="chip ac">AC-7.7</span></td></tr>
+          <tr><td class="id">BR-9</td><td>Bài nghe xuất bản được khi có âm thanh, ≥ 1 dòng lời thoại đủ trường, "Hội thoại" ≥ 2 người nói, câu hỏi đủ (2–4 lựa chọn, 1 đáp án, giải thích). Kịch bản: 2–4 vai, 4–40 dòng có âm thanh, mỗi vai ≥ 2 dòng; tình huống thuộc 4 giá trị cố định.</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.3</span></td></tr>
+          <tr><td class="id">BR-10</td><td>Đề: 1–10 phần, thời gian 5–180 phút, tổng thời gian riêng ≤ thời gian làm bài, ≤ 200 câu, điểm mỗi câu 1–10, giải thích bắt buộc, câu nghe có âm thanh + số lần nghe 1–3, điểm đạt mặc định 60%.</td><td><span class="chip ac">AC-10.1</span> <span class="chip ac">AC-10.2</span> <span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-10.5</span> <span class="chip ac">AC-10.6</span></td></tr>
+          <tr><td class="id">BR-11</td><td>Đề đã có ≥ 1 lượt làm không sửa trực tiếp: tạo phiên bản mới (tối đa 1 bản nháp); kết quả trỏ đúng phiên bản đã làm; không chấm lại.</td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.3</span> <span class="chip ac">AC-11.5</span></td></tr>
+          <tr><td class="id">BR-12</td><td>Nguồn / giấy phép 3–200 ký tự bắt buộc cho mọi mục và lô; lịch sử thay đổi ghi mọi thao tác, không sửa/xóa được, lưu ≥ 3 năm.</td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.4</span></td></tr>
+          <tr><td class="id">BR-14</td><td>Mỗi mục kho có mã ổn định không đổi khi sửa, xuất bản, lưu trữ, khôi phục; mỗi phiên bản đề có mã riêng.</td><td><span class="chip ac">AC-3.10</span></td></tr>
+          <tr><td class="id">BR-13</td><td>Số liệu sử dụng chỉ là số đếm tổng hợp ẩn danh của HV trong workspace (30 ngày) và tổng lượt làm mỗi đề; ẩn số khi ít hơn 5 HV khác nhau; không tên, không danh sách HV hay lớp.</td><td><span class="chip ac">AC-13.4</span> <span class="chip ac">AC-11.6</span></td></tr>
+          <tr><td class="id">BR-15</td><td>Bộ nội dung mẫu HSK được sao trọn gói vào kho khi tạo workspace (và khi ra mắt cho workspace đã có); mục đủ điều kiện → "Đã xuất bản", còn lại → "Nháp"; sau khi sao, mục thuộc GV (sửa, thêm, lưu trữ tùy ý, chỉ ảnh hưởng workspace đó); phiên bản bộ mẫu mới không tự áp vào kho đã nạp.</td><td><span class="chip ac">AC-15.1</span> <span class="chip ac">AC-15.2</span> <span class="chip ac">AC-15.3</span> <span class="chip ac">AC-15.4</span> <span class="chip ac">AC-15.6</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Nhap: Tạo, nhập tệp, tạo phiên bản, sao bộ mẫu chưa đủ điều kiện
+  [*] --> DaXuatBan: Sao từ Bộ nội dung mẫu HSK, đủ điều kiện
+  Nhap --> DaXuatBan: Xuất bản, đủ điều kiện
+  Nhap --> [*]: Xóa, chưa từng xuất bản
+  DaXuatBan --> DaXuatBan: Sửa và lưu, vẫn đủ điều kiện
+  DaXuatBan --> LuuTru: Lưu trữ, hoặc phiên bản đề mới được xuất bản
+  LuuTru --> DaXuatBan: Khôi phục, đủ điều kiện
+  LuuTru --> Nhap: Khôi phục, chưa đủ điều kiện
+</pre>
+        <figcaption>Vòng đời một mục kho — tên hiển thị: Nháp / Đã xuất bản / Lưu trữ</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>HV của workspace</th><th>GV được phép</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Nháp</td><td>Mới tạo, mới nhập, phiên bản đề mới, mục bộ mẫu chưa đủ điều kiện, hoặc khôi phục chưa đủ điều kiện</td><td>HV không thấy</td><td>Sửa, Xuất bản, Xóa (nếu chưa từng xuất bản)</td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.8</span></td></tr>
+          <tr><td>Đã xuất bản</td><td>Đang phục vụ khu Tự học của workspace (kể cả mục bộ mẫu đủ điều kiện ngay khi sao)</td><td>HV của workspace thấy, tìm, học, bắt đầu mới</td><td>Sửa (đề có lượt làm: qua phiên bản), Lưu trữ</td><td><span class="chip ac">AC-3.3</span> <span class="chip ac">AC-3.9</span> <span class="chip ac">AC-11.2</span></td></tr>
+          <tr><td>Lưu trữ</td><td>Ngừng phục vụ học mới</td><td>Không tìm thấy, không bắt đầu mới; dữ liệu học cũ vẫn mở</td><td>Khôi phục</td><td><span class="chip ac">AC-3.5</span> <span class="chip ac">AC-3.6</span> <span class="chip ac">AC-3.7</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái dữ liệu nét (chữ Hán)</th><th>Ý nghĩa</th><th>Xuất bản</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Thiếu dữ liệu nét</td><td>Chưa có dữ liệu nét</td><td>Không ("Chưa có dữ liệu nét.")</td><td><span class="chip ac">AC-7.6</span></td></tr>
+          <tr><td>Lệch số nét</td><td>Số nét dữ liệu ≠ "Số nét"</td><td>Không ("Dữ liệu nét có {a} nét nhưng Số nét là {b}.")</td><td><span class="chip ac">AC-7.6</span></td></tr>
+          <tr><td>Đủ dữ liệu nét</td><td>Có dữ liệu, số nét khớp</td><td>Có</td><td><span class="chip ac">AC-7.1</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></td><td>Tổng quan kho tự học <em>(owner 016)</em></td><td><span class="pill gv">GV</span></td><td>Đích của mục "Kho tự học" trên thanh bên GV. Khi đang nạp bộ mẫu: "Đang chuẩn bị Bộ nội dung mẫu HSK cho kho tự học của bạn…". Sau đó: dòng "Kho được khởi tạo từ Bộ nội dung mẫu HSK (…) ngày …"; bảng số lượng (6 loại × 7 cấp + "Tổng", mỗi ô Đã xuất bản / Nháp / Lưu trữ, bấm → danh sách lọc); "Cần xử lý" (Từ thiếu âm thanh, Chữ chưa có dữ liệu, Chữ lệch số nét); "Thay đổi gần đây" (20 mục) + "Xem tất cả"; "Sử dụng 30 ngày qua" (số đếm ẩn danh của workspace, ẩn khi &lt; 5 HV).</td><td>F-0, F-6 · REQ-1, REQ-13, REQ-14, REQ-15</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T24">T24</a></td><td>Từ vựng tự học <em>(owner 016)</em></td><td><span class="pill gv">GV</span></td><td>Danh sách từ (50/trang), tìm chữ Hán / pinyin có hoặc không dấu / nghĩa, bộ lọc, chọn hàng loạt "Xuất bản" / "Lưu trữ". "Thêm từ", "Nhập từ tệp" (hộp thoại "Nhập từ vựng"), "Tải âm thanh hàng loạt". Biểu mẫu mục từ: trường, âm thanh, câu ví dụ, tab "Lịch sử thay đổi". Tab "Chương &amp; chủ đề".</td><td>F-1, F-2 · REQ-2–REQ-6, REQ-12</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T25">T25</a></td><td>Nghe &amp; hội thoại <em>(owner 016)</em></td><td><span class="pill gv">GV</span></td><td>Hai tab: "Bài nghe" (Nghe câu / Hội thoại: âm thanh, người nói, lời thoại, câu hỏi, "Nghe thử") và "Đóng vai" (Gọi món / Mua sắm / Phỏng vấn / Giao tiếp công sở, 2–4 vai, lời thoại có âm thanh, "Xem thử"). Danh sách, tìm kiếm, bộ lọc, hàng loạt.</td><td>F-4 · REQ-6, REQ-8, REQ-9, REQ-12</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T26">T26</a></td><td>Đề thi thử HSK <em>(owner 016)</em></td><td><span class="pill gv">GV</span></td><td>Danh sách đề (loại, cấp, chương, số câu, thời gian, phiên bản, "Đã có người làm"). "Tạo đề"; trình soạn: phần, 6 dạng câu, điểm, giải thích, thẻ kiến thức, âm thanh + số lần nghe, đếm câu/điểm; "Xem trước" (không lưu lượt làm); "Lịch sử phiên bản" (nguồn tạo Bộ nội dung mẫu HSK / GV).</td><td>F-5 · REQ-10, REQ-11, REQ-12</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td>Chữ Hán &amp; bộ thủ <em>(owner 016)</em></td><td><span class="pill gv">GV</span></td><td>Đầu trang "Chữ chưa có dữ liệu" theo cấp + "Tạo mục nháp cho các chữ này". Danh sách chữ (trạng thái dữ liệu nét). "Nhập dữ liệu nét", "Tải tệp mẫu dữ liệu nét". Biểu mẫu chữ và "Xem thứ tự nét". Tab "Bộ thủ" (214 bộ, sửa tên Hán Việt và nghĩa trong kho). Tìm theo chữ, pinyin không dấu, nghĩa / Hán Việt không dấu.</td><td>F-3 · REQ-7, REQ-12</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A02">A02</a></td><td>Đăng ký GV <em>(001)</em></td><td><span class="pill gv">GV</span></td><td>Tạo workspace → bắt đầu nạp Bộ nội dung mẫu HSK (001 AC-1.1, AC-15.1).</td><td>F-0</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td>Không tìm thấy nội dung <em>(001)</em></td><td><span class="pill gv">GV</span> <span class="pill hv">HV</span></td><td>Mục kho không tồn tại hoặc của workspace khác (AC-1.3, AC-1.8); GV mở S13–S20 (001 AC-20.4).</td><td>F-6 · REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a></td><td>Tự học <em>(012)</em></td><td><span class="pill hv">HV</span></td><td>Nơi HV dùng nội dung "Đã xuất bản" của kho thuộc workspace mình (cùng S14–S20 của 012–015).</td><td>F-0, F-2, F-6</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S01">S01</a></td><td>Trang chủ HV <em>(003)</em></td><td><span class="pill hv">HV</span></td><td>Đích khi HV mở T23–T27 (001 AC-20.10).</td><td>F-6</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Màn hình đề xuất bổ sung:</em> — không có — (hộp thoại nhập, tải âm thanh hàng loạt, biểu mẫu mục, lịch sử thay đổi đầy đủ, lịch sử phiên bản là hộp thoại/ngăn của T23–T27). Q01–Q05 của V14 đã bị bỏ.</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Performance</td><td>với tệp từ vựng 5 000 dòng (≤ 10 MB), báo cáo kiểm tra theo dòng (AC-5.3) hiển thị p95 ≤ 60 giây và việc nhập (AC-5.6) hoàn tất p95 ≤ 60 giây; tiến trình được cập nhật ít nhất mỗi 2 giây; tải âm thanh hàng loạt 500 tệp (≤ 2 MB mỗi tệp) có báo cáo ghép p95 ≤ 120 giây trên kết nối ≥ 10 Mbps.</td></tr>
+          <tr><td class="id">NFR-2</td><td>Performance</td><td>danh sách, tìm kiếm và lọc của T24–T27 hiển thị kết quả p95 ≤ 1 giây với kho của một workspace có 15 000 mục từ vựng, 5 000 chữ Hán, 3 000 bài nghe và kịch bản đóng vai, 1 000 đề (tính cả phiên bản), khi hệ thống có 2 000 workspace; T23 hiển thị đầy đủ p95 ≤ 2 giây với cùng quy mô.</td></tr>
+          <tr><td class="id">NFR-3</td><td>Freshness</td><td>mọi lần xuất bản, lưu trữ, khôi phục hoặc lưu thay đổi một mục "Đã xuất bản" có hiệu lực với HV của workspace ở khu Tự học trong ≤ 5 phút (p99) kể từ khi GV xác nhận.</td></tr>
+          <tr><td class="id">NFR-4</td><td>Performance</td><td>một tệp âm thanh 20 MB tải lên xong và nghe thử được trên T25/T26 p95 ≤ 30 giây trên kết nối ≥ 10 Mbps; âm thanh ngắn bắt đầu phát p95 ≤ 1 giây sau khi bấm phát trên T24; 100% tệp âm thanh tuân theo định dạng và giới hạn của AC-6.1.</td></tr>
+          <tr><td class="id">NFR-5</td><td>Security</td><td>trong bộ kiểm thử phân quyền, 100% yêu cầu của GV tới mục kho, lô nhập, lịch sử thay đổi hay số liệu của workspace khác bị từ chối với cùng phản hồi như mục không tồn tại, 100% yêu cầu của HV tới nội dung kho của workspace khác hoặc tới chức năng của T23–T27 bị từ chối, 100% yêu cầu của người chưa đăng nhập bị từ chối, và 0 phản hồi cho GV chứa dữ liệu tự học của một HV cụ thể; 100% tệp tải lên được kiểm tra theo nội dung, 0 công thức hoặc macro trong tệp được thực thi, và 100% ô bắt đầu bằng "=", "+", "-" hoặc "@" trong tệp báo cáo tải về được vô hiệu hóa để không chạy như công thức.</td></tr>
+          <tr><td class="id">NFR-6</td><td>Auditability</td><td>100% thao tác thay đổi kho của AC-14.2 có mục lịch sử thay đổi, lưu ít nhất 3 năm, không ai sửa hay xóa được; mỗi mục kho truy được về đúng lần sao Bộ nội dung mẫu HSK hoặc lô nhập và "Nguồn / giấy phép" đã tạo ra nó.</td></tr>
+          <tr><td class="id">NFR-7</td><td>Integrity</td><td>0 bộ từ cá nhân, trạng thái ôn tập, lịch sử luyện hoặc kết quả thi thử mất khả năng mở hay hiển thị sau khi mục liên quan bị lưu trữ hoặc có phiên bản mới, kiểm chứng bằng kiểm thử tự động cho cả 5 loại mục; 0 lần nhập hay lần sao Bộ nội dung mẫu HSK dở dang khi lỗi xảy ra giữa chừng (100% lô nhập và lần sao trọn gói theo AC-5.6, AC-15.6) trong kiểm thử gây lỗi.</td></tr>
+          <tr><td class="id">NFR-8</td><td>Accessibility</td><td>T23–T27 đạt WCAG 2.1 AA (tương phản chữ ≥ 4,5:1, 100% trường nhập có nhãn đọc được bằng trình đọc màn hình, 100% thao tác — kể cả sắp xếp kéo thả, có thay thế "Lên" / "Xuống" — thực hiện được bằng bàn phím); dùng đầy đủ ở chiều rộng ≥ 1280 px và dùng được ở ≥ 1024 px; chữ Hán trong biểu mẫu và danh sách hiển thị cỡ ≥ 20 px.</td></tr>
+          <tr><td class="id">NFR-9</td><td>Correctness</td><td>100% văn bản tiếng Trung được lưu ở cùng một dạng chuẩn hóa Unicode; chuyển pinyin số thanh sang pinyin có dấu (AC-4.3) đúng 100% trên bộ kiểm thử 1 000 âm tiết gồm ü/v, thanh nhẹ và vị trí dấu theo quy tắc chuẩn.</td></tr>
+          <tr><td class="id">NFR-10</td><td>Observability</td><td>100% lần sao Bộ nội dung mẫu HSK (bắt đầu, hoàn tất, lỗi, thử lại), lần nhập tệp, tải âm thanh, xuất bản, lưu trữ, khôi phục, xóa, tạo phiên bản và mọi yêu cầu bị từ chối theo NFR-5 được ghi nhật ký có cấu trúc gồm thời điểm, mã workspace, mã tài khoản, mã mục hoặc lô, thao tác, kết quả và thời lượng xử lý, không chứa mật khẩu, email hay nội dung tệp; lưu ít nhất 90 ngày.</td></tr>
+          <tr><td class="id">NFR-11</td><td>Performance</td><td>lần sao Bộ nội dung mẫu HSK (khoảng 11 000 mục từ vựng kèm âm thanh, 3 000 chữ Hán kèm dữ liệu nét, bài nghe, kịch bản và đề) cho một workspace mới hoàn tất p95 ≤ 5 phút và p99 ≤ 15 phút kể từ khi workspace được tạo, với tối đa 20 workspace được tạo trong cùng một phút, và không làm tăng thời gian từ A02 tới T01 của GV quá 1 giây; khi ra mắt (AC-15.7), mọi workspace đã tồn tại được sao xong trong ≤ 24 giờ.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thực thể</th><th>Ý nghĩa</th><th>Thuộc tính nghiệp vụ chính</th><th>Quan hệ</th></tr></thead>
+        <tbody>
+          <tr><td><b>Kho tự học</b></td><td>Toàn bộ nội dung tự học của một workspace</td><td>Workspace, phiên bản Bộ nội dung mẫu HSK đã nạp, thời điểm nạp, trạng thái nạp (Đang chuẩn bị / Sẵn sàng)</td><td>Thuộc đúng 1 Workspace (001); chứa mọi thực thể bên dưới; chỉ GV của workspace quản lý; chỉ HV của workspace dùng</td></tr>
+          <tr><td><b>Bộ nội dung mẫu HSK</b></td><td>Bộ nội dung chuẩn do đội nội dung SAT chuẩn bị ngoài sản phẩm</td><td>Phiên bản, ngày hiệu lực, nội dung theo 7 cấp, Nguồn / giấy phép của từng mục</td><td>Được sao vào 1..n Kho tự học (REQ-15); không ai sửa trong SAT; phiên bản mới không áp vào kho đã nạp</td></tr>
+          <tr><td><b>Cấp HSK</b></td><td>Nhóm trình độ của nội dung</td><td>Một trong 7 cấp: HSK 1–6 và một cấp chung "HSK 7–9" (AC-2.1)</td><td>Mỗi mục kho thuộc đúng 1 cấp</td></tr>
+          <tr><td><b>Chương</b></td><td>Nhóm có thứ tự trong một cấp, dùng để tổ chức từ vựng và đề kiểm tra cuối chương</td><td>Cấp, số thứ tự, tên</td><td>Thuộc 1 Kho tự học; 0..n Mục từ vựng; 0..n Đề kiểm tra cuối chương</td></tr>
+          <tr><td><b>Chủ đề</b></td><td>Nhãn dùng chung mọi cấp của một kho (ví dụ "Ẩm thực", "Công sở")</td><td>Tên</td><td>Thuộc 1 Kho tự học; gắn 0..5 cho Mục từ vựng, Bài nghe, Kịch bản đóng vai</td></tr>
+          <tr><td><b>Mục từ vựng</b></td><td>Một từ HSK cho 012 (và âm thanh cho 014)</td><td>Mã ổn định (AC-3.10), Chữ Hán giản thể, Pinyin có dấu, Từ loại (1–3), Nghĩa tiếng Việt (1–5 nghĩa có thứ tự), Cách dùng (tùy chọn), Cấp, Chương, Thứ tự, Chủ đề, Âm thanh phát âm (tùy chọn), Nguồn / giấy phép, trạng thái</td><td>Thuộc 1 Kho tự học; có 0..5 Câu ví dụ có thứ tự; duy nhất theo Chữ Hán + Pinyin trong kho; các chữ của nó tham chiếu Mục chữ Hán</td></tr>
+          <tr><td><b>Câu ví dụ</b></td><td>Câu minh họa cách dùng từ</td><td>Thứ tự, Câu chữ Hán (chứa từ), Pinyin, Nghĩa, Âm thanh (tùy chọn)</td><td>Thuộc 1 Mục từ vựng</td></tr>
+          <tr><td><b>Mục chữ Hán</b></td><td>Dữ liệu một chữ cho 013</td><td>Mã ổn định, Chữ, Pinyin (1–5), Âm Hán Việt, Nghĩa, Cấp, Số nét, Bộ thủ, Kiểu cấu tạo + thành phần, Mẹo nhớ (tùy chọn), Dữ liệu nét, trạng thái dữ liệu nét, Nguồn / giấy phép, trạng thái</td><td>Thuộc 1 Kho tự học; duy nhất theo Chữ trong kho; thuộc đúng 1 Bộ thủ</td></tr>
+          <tr><td><b>Bộ thủ</b></td><td>Danh mục 214 bộ thủ cố định (AC-7.7)</td><td>Số thứ tự, dạng chính + biến thể, tên Hán Việt, nghĩa tiếng Việt (sửa được trong kho), số nét</td><td>0..n Mục chữ Hán; không thêm/xóa được</td></tr>
+          <tr><td><b>Dữ liệu nét</b></td><td>Thứ tự, hình dạng, hướng viết của từng nét</td><td>Danh sách nét có thứ tự</td><td>Thuộc 1 Mục chữ Hán; số nét phải bằng Số nét</td></tr>
+          <tr><td><b>Bài nghe</b></td><td>Nội dung nghe cho 014</td><td>Tiêu đề, Loại (Nghe câu / Hội thoại), Cấp, Chủ đề, Âm thanh dài, Người nói, Lời thoại, Câu hỏi (0–10), Nguồn / giấy phép, trạng thái</td><td>Thuộc 1 Kho tự học; Câu hỏi: nội dung, 2–4 lựa chọn, 1 đáp án, Giải thích</td></tr>
+          <tr><td><b>Kịch bản đóng vai</b></td><td>Hội thoại theo kịch bản cho 014</td><td>Tiêu đề, Tình huống (4 giá trị cố định), Cấp, Chủ đề, Bối cảnh, 2–4 Vai, Lời thoại 4–40 (vai, chữ Hán, pinyin, nghĩa, âm thanh, gợi ý), Nguồn / giấy phép, trạng thái</td><td>Thuộc 1 Kho tự học</td></tr>
+          <tr><td><b>Đề</b></td><td>Đề thi thử hoặc kiểm tra cuối chương cho 015</td><td>Loại đề, Tên, Cấp, Chương, Thời gian làm bài, Điểm đạt (%), Nguồn / giấy phép</td><td>Thuộc 1 Kho tự học; có 1..n Phiên bản đề; đúng 1 phiên bản hiện hành khi đã xuất bản</td></tr>
+          <tr><td><b>Phiên bản đề</b></td><td>Một bản nội dung bất biến của đề sau khi có người làm</td><td>Số phiên bản, trạng thái, thời điểm xuất bản, nguồn tạo (Bộ nội dung mẫu HSK / GV), Phần (1–10: loại, hướng dẫn, thời gian riêng), Câu hỏi (≤ 200: dạng, nội dung, đáp án, Điểm, Giải thích, Thẻ kiến thức, âm thanh + Số lần được nghe)</td><td>Kết quả thi thử (015) tham chiếu đúng 1 phiên bản</td></tr>
+          <tr><td><b>Lần sao bộ mẫu</b></td><td>Một lần nạp Bộ nội dung mẫu HSK vào một kho</td><td>Phiên bản bộ mẫu, thời điểm bắt đầu / hoàn tất, kết quả, số lần thử</td><td>Thuộc 1 Kho tự học; tạo các mục ban đầu của kho (REQ-15)</td></tr>
+          <tr><td><b>Lô nhập</b></td><td>Một lần GV nhập tệp từ vựng hoặc dữ liệu nét</td><td>Tệp, Nguồn / giấy phép của lô, báo cáo (hợp lệ / lỗi / trùng + lý do), kết quả, thời điểm</td><td>Thuộc 1 Kho tự học; tạo 0..5 000 Mục từ vựng hoặc 0..3 000 Mục chữ Hán</td></tr>
+          <tr><td><b>Mục lịch sử thay đổi</b></td><td>Một thao tác thay đổi kho</td><td>Thời điểm, người thực hiện (GV / Bộ nội dung mẫu HSK), mục, thao tác, trường đổi + giá trị trước/sau</td><td>Thuộc 1 Kho tự học; không sửa/xóa được; lưu ≥ 3 năm</td></tr>
+          <tr><td><b>Tham chiếu dữ liệu học</b></td><td>Dữ liệu riêng của HV trỏ tới mục kho của workspace (thuộc 012–015)</td><td>—</td><td>Giữ mục "Lưu trữ" vẫn đọc được (AC-3.6)</td></tr>
+          <tr><td><em>Tham chiếu</em></td><td colspan="3">Không thuộc module này: tài khoản, vai trò, workspace (001); bộ từ cá nhân, lịch ôn, từ khó (012); lịch sử luyện viết (013); lịch sử nghe, thu âm, đóng vai (014); lượt thi và kết quả, thống kê lỗi sai (015).</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Hành vi mong đợi</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>GV vừa đăng ký mở "Kho tự học" khi bộ mẫu đang được sao</td><td>T23–T27 hiển thị "Đang chuẩn bị Bộ nội dung mẫu HSK cho kho tự học của bạn…", chưa thêm/nhập/sửa được; HV chưa thấy mục nào</td><td><span class="chip ac">AC-15.5</span></td></tr>
+          <tr><td>Lần sao bộ mẫu lỗi giữa chừng</td><td>Không còn mục nào của lần sao dở; hệ thống tự sao lại; nhật ký có sự cố</td><td><span class="chip ac">AC-15.6</span> <span class="chip ac">NFR-10</span></td></tr>
+          <tr><td>GV sửa nghĩa của 你好 (từ bộ mẫu)</td><td>Chỉ HV của workspace đó thấy nghĩa mới trong ≤ 5 phút; kho của GV khác và bộ mẫu không đổi; lịch sử có dòng "Sửa" sau dòng "Sao từ Bộ nội dung mẫu HSK"</td><td><span class="chip ac">AC-15.3</span> <span class="chip ac">AC-3.9</span> <span class="chip ac">AC-14.3</span></td></tr>
+          <tr><td>GV muốn xóa một từ của bộ mẫu</td><td>Không có "Xóa" (mục đã xuất bản); GV "Lưu trữ" để ẩn khỏi HV</td><td><span class="chip ac">AC-3.8</span> <span class="chip ac">AC-3.5</span></td></tr>
+          <tr><td>Bộ mẫu có mục chưa đủ điều kiện xuất bản (ví dụ chữ thiếu dữ liệu nét)</td><td>Mục được sao ở "Nháp"; T23 tính vào "Cần xử lý"</td><td><span class="chip ac">AC-15.2</span> <span class="chip ac">AC-13.3</span></td></tr>
+          <tr><td>Đội nội dung SAT phát hành phiên bản bộ mẫu mới</td><td>Kho đã nạp không đổi; chỉ workspace tạo sau dùng phiên bản mới</td><td><span class="chip ac">AC-15.4</span></td></tr>
+          <tr><td>GV thêm từ đã có trong bộ mẫu của kho mình</td><td>Bị chặn như mọi từ trùng, kèm "Mở mục đã có"</td><td><span class="chip ac">AC-4.7</span></td></tr>
+          <tr><td>GV B mở đường dẫn mục kho, lô nhập hoặc lịch sử của GV A</td><td>A05 "Không tìm thấy nội dung bạn yêu cầu." như mục không tồn tại</td><td><span class="chip ac">AC-1.3</span> <span class="chip ac">NFR-5</span></td></tr>
+          <tr><td>HV của GV A mở đường dẫn tới một mục kho của GV B</td><td>A05; HV chỉ dùng nội dung kho của workspace mình</td><td><span class="chip ac">AC-1.7</span> <span class="chip ac">AC-1.8</span></td></tr>
+          <tr><td>HV mở đường dẫn T24</td><td>Về S01 (001)</td><td><span class="chip ac">001 AC-20.10</span></td></tr>
+          <tr><td>GV mở đường dẫn S13</td><td>A05 (001); GV xem trước nội dung bằng "Nghe thử", "Xem thử", "Xem trước", "Xem thứ tự nét"</td><td><span class="chip ac">001 AC-20.4</span> <span class="chip ac">AC-8.4</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-10.7</span> <span class="chip ac">AC-7.5</span></td></tr>
+          <tr><td>HV chưa thuộc lớp nào</td><td>Vẫn dùng nội dung "Đã xuất bản" của kho workspace mình (001)</td><td><span class="chip ac">001 AC-20.3</span></td></tr>
+          <tr><td>Workspace có ít hơn 5 HV dùng Tự học trong 30 ngày</td><td>Khối "Sử dụng 30 ngày qua" hiển thị "Chưa đủ dữ liệu để hiển thị (cần ít nhất 5 học viên dùng Tự học)."</td><td><span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td>Đề có lượt làm của chỉ 1–4 HV</td><td>Nhãn "Đã có người làm" (cần cho việc tạo phiên bản), không kèm số lượt</td><td><span class="chip ac">AC-11.6</span></td></tr>
+          <tr><td>HV bị xóa</td><td>Dữ liệu tự học của HV bị xóa trong vòng 24 giờ (001); số đếm 30 ngày chỉ tính dữ liệu còn tồn tại</td><td><span class="chip ac">001 AC-20.6</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td>Từ có 儿 hóa (一点儿 → yìdiǎnr)</td><td>儿 cuối âm tiết ghi bằng "r", không tính thành âm tiết riêng; 3 chữ, pinyin 2 âm tiết hợp lệ</td><td><span class="chip ac">AC-4.4</span></td></tr>
+          <tr><td>Biến điệu 一, 不 (yí gè, bú shì)</td><td>Kho lưu thanh gốc hoặc thanh biến điệu như GV nhập; cả hai đều là âm tiết hợp lệ; cách hiển thị biến điệu do 012 quyết định</td><td><span class="chip ac">AC-4.3</span> <span class="chip ac">AC-4.4</span></td></tr>
+          <tr><td>Chữ đa âm (行 xíng / háng)</td><td>Hai mục từ vựng riêng (cặp Chữ Hán + Pinyin khác nhau) có cảnh báo; mục chữ Hán 行 có 2 cách đọc</td><td><span class="chip ac">AC-4.7</span> <span class="chip ac">AC-4.8</span> <span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td>Nhập "lv4", "nü3"</td><td>Chuyển thành "lǜ", "nǚ"</td><td><span class="chip ac">AC-4.3</span> <span class="chip ac">NFR-9</span></td></tr>
+          <tr><td>Chữ phồn thể trong tệp nhập (學習)</td><td>Dòng lỗi "Hãy dùng chữ giản thể: 學 → 学"</td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-5.3</span></td></tr>
+          <tr><td>Tệp .csv không phải UTF-8 (chữ Hán thành ký tự lạ)</td><td>Từ chối cả tệp với lý do mã hóa</td><td><span class="chip ac">AC-5.2</span></td></tr>
+          <tr><td>Tệp có cột thừa hoặc thứ tự cột khác mẫu</td><td>Cột nhận theo tên tiêu đề (không phân biệt hoa thường, bỏ khoảng trắng đầu/cuối); cột thừa bị bỏ qua</td><td><span class="chip ac">AC-5.1</span> <span class="chip ac">AC-5.3</span></td></tr>
+          <tr><td>Ô dùng công thức hoặc tệp có macro</td><td>Đọc giá trị hiển thị; không thực thi gì; ô báo cáo tải về bắt đầu bằng "=" được vô hiệu hóa</td><td><span class="chip ac">AC-5.3</span> <span class="chip ac">NFR-5</span></td></tr>
+          <tr><td>Cùng từ ở hai cấp trong tệp hoặc trong kho</td><td>Coi là trùng (khóa không gồm cấp); GV sửa cấp của mục có sẵn nếu cần</td><td><span class="chip ac">AC-4.7</span> <span class="chip ac">AC-5.4</span></td></tr>
+          <tr><td>GV nhập hai tệp chồng nhau ở hai tab gần như cùng lúc</td><td>Lần xác nhận sau không nhập gì, báo cáo cập nhật đánh dấu "Trùng với kho"</td><td><span class="chip ac">AC-5.7</span></td></tr>
+          <tr><td>GV sửa cùng một mục ở hai tab</td><td>Lần lưu sau nhận cảnh báo "…vừa được cập nhật lúc {HH:mm} ở một cửa sổ khác…", không ghi đè</td><td><span class="chip ac">AC-1.5</span></td></tr>
+          <tr><td>Mất kết nối khi đang nhập</td><td>Lô trọn gói: hoặc đã nhập đủ (thấy trong lịch sử) hoặc không có dòng nào; nhập lại sẽ báo "Trùng với kho" nếu đã nhập</td><td><span class="chip ac">AC-5.6</span> <span class="chip ac">NFR-7</span></td></tr>
+          <tr><td>Âm thanh im lặng hoặc sai từ</td><td>Không tự phát hiện; GV nghe thử trước khi xuất bản; HV báo lỗi ngoài phạm vi</td><td><span class="chip ac">AC-6.3</span></td></tr>
+          <tr><td>Tên tệp âm thanh "行.mp3" khi kho có 行 xíng và 行 háng</td><td>Báo "Nhiều từ cùng chữ Hán — cần ghi kèm pinyin", không ghép</td><td><span class="chip ac">AC-6.4</span></td></tr>
+          <tr><td>Lưu trữ một từ đang nằm trong bộ từ cá nhân của 200 HV</td><td>Từ biến mất khỏi tìm kiếm và thêm mới; 200 bộ từ và lịch ôn vẫn hiển thị nội dung cuối cùng</td><td><span class="chip ac">AC-3.5</span> <span class="chip ac">AC-3.6</span></td></tr>
+          <tr><td>GV sửa đề trong lúc HV đang làm</td><td>Phiên bản mới chỉ dùng cho lượt bắt đầu sau khi xuất bản; lượt đang làm hoàn tất trên phiên bản cũ</td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.4</span></td></tr>
+          <tr><td>Đề có đáp án sai đã có lượt làm</td><td>Tạo phiên bản mới sửa đáp án; kết quả cũ giữ nguyên, không chấm lại</td><td><span class="chip ac">AC-11.5</span></td></tr>
+          <tr><td>Lưu trữ một đề đã có lượt làm</td><td>Không bắt đầu được lượt mới; mọi kết quả cũ vẫn mở với đúng phiên bản</td><td><span class="chip ac">AC-3.5</span> <span class="chip ac">AC-3.6</span> <span class="chip ac">AC-11.5</span></td></tr>
+          <tr><td>Chữ trong từ vựng đã xuất bản nhưng chữ Hán chưa có dữ liệu</td><td>Được tính vào "Chữ chưa có dữ liệu"; 013 quyết định cách hiển thị chữ đó</td><td><span class="chip ac">AC-7.2</span></td></tr>
+          <tr><td>Mục chữ Hán đã xuất bản nhưng không có từ vựng nào chứa</td><td>Vẫn hợp lệ; cấp HSK lấy theo cấp GV gán</td><td><span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td>Xóa chương còn từ</td><td>Bị chặn với số từ và số đề còn gắn</td><td><span class="chip ac">AC-2.3</span></td></tr>
+          <tr><td>Thời điểm trong lịch sử thay đổi</td><td>Giờ Việt Nam (UTC+7), dd/MM/yyyy HH:mm</td><td><span class="chip ac">AC-13.3</span> <span class="chip ac">AC-14.3</span></td></tr>
+          <tr><td>GV lưu trữ hết nội dung một cấp</td><td>Ô của bảng tổng quan hiển thị 0 "Đã xuất bản"; HV không còn nội dung cấp đó để bắt đầu học mới</td><td><span class="chip ac">AC-13.1</span> <span class="chip ac">AC-3.5</span></td></tr>
+          <tr><td>Kho trống ở một cấp</td><td>Ô của bảng tổng quan hiển thị 0; danh sách lọc theo cấp đó hiển thị "Không có nội dung phù hợp."</td><td><span class="chip ac">AC-12.4</span> <span class="chip ac">AC-13.1</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <p>Quyết định được dùng: V14 (khu Tự học, 2026-10-22), <b>V15</b> (chỉ GV và HV; quản lý nội dung tự học gom vào GV; mỗi GV một kho nạp sẵn Bộ nội dung mẫu HSK, 2026-10-22), D1 (workspace cô lập), D4 (không tự đăng ký HV), V13-4 (không chấm lại bài thi — cơ sở của Q-2). Giả định riêng ở <a href="#clarifications">§15</a>.</p>
+      <div class="callout note"><strong>Điều kiện tiên quyết trước khi ra mắt (không phải điều kiện của spec)</strong> Đội nội dung SAT phải chuẩn bị Bộ nội dung mẫu HSK cho HSK 1–6 và "HSK 7–9" (khoảng 11 000 từ vựng, dữ liệu nét khoảng 3 000 chữ, âm thanh bản xứ, bài nghe, kịch bản, đề thi thử) với "Nguồn / giấy phép" cho phép <b>sao vào kho của mọi workspace và cho HV của mọi GV dùng</b>. Hệ thống chỉ bắt buộc "Nguồn / giấy phép" cho mọi mục và mọi lô nhập (<a href="#AC-14.1">AC-14.1</a>). Kết quả thi thử cũ không được chấm lại; 015 hiển thị dòng "Đề này đã được cập nhật sau lượt làm của bạn. Kết quả được giữ theo phiên bản bạn đã làm." (015 AC-13.4).</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hướng</th><th>Module</th><th>Sự kiện / dữ liệu nghiệp vụ</th></tr></thead>
+        <tbody>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../001-accounts-auth/spec.html">001</a></td><td>"Workspace mới được tạo" (AC-1.1) → sao bộ mẫu (AC-15.1); mục "Kho tự học" → T23 (AC-20.2); quyền Tự học chỉ cho HV đã kích hoạt, không khóa, với kho của workspace mình (AC-20.3); GV mở S13–S20 → A05 (AC-20.4); riêng tư (AC-20.5); xóa dữ liệu tự học khi xóa HV (AC-20.6); HV mở T23–T27 → S01 (AC-20.10); cô lập workspace, A05 (REQ-16).</td></tr>
+          <tr><td>Cần bổ sung</td><td><a class="chip mod" href="../009-teacher-dashboard/spec.html">009</a></td><td>Thanh bên GV có mục "Kho tự học" → T23 (không có "Tự học").</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../012-vocabulary-srs/spec.html">012</a></td><td>Mục từ vựng của kho thuộc workspace của HV: Chữ Hán, Pinyin có dấu, Từ loại, Nghĩa tiếng Việt, Cấp, Chương (thứ tự), Chủ đề, Âm thanh phát âm (có thể thiếu), Câu ví dụ. Chỉ mục "Đã xuất bản" cho duyệt/thêm mới; mục "Lưu trữ" vẫn đọc được qua bộ từ và lịch ôn (AC-3.6).</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../013-hanzi-writing/spec.html">013</a></td><td>Mục chữ Hán của kho thuộc workspace của HV: Chữ, Pinyin, Âm Hán Việt, Nghĩa, Cấp, Số nét, Bộ thủ (+ tên Hán Việt), Cấu tạo + thành phần, Mẹo nhớ, Dữ liệu nét. Chỉ chữ "Đã xuất bản" (luôn "Đủ dữ liệu nét").</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../014-listening-speaking/spec.html">014</a></td><td>Bài nghe, Kịch bản đóng vai, âm thanh phát âm từ và câu ví dụ — của kho thuộc workspace của HV.</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../015-hsk-mock-tests/spec.html">015</a></td><td>Đề + Phiên bản đề của kho thuộc workspace của HV; kết quả trỏ đúng một phiên bản, không chấm lại.</td></tr>
+          <tr><td>Nhận từ</td><td>012–015</td><td>Số đếm tổng hợp ẩn danh 30 ngày của HV trong workspace, kèm số HV khác nhau (AC-13.4); số lượt làm, số HV khác nhau mỗi đề và sự kiện "đề đã có lượt làm" (AC-11.2, AC-11.6) từ 015.</td></tr>
+          <tr><td>Không phụ thuộc</td><td>002–008, 010, 011</td><td>Kho không chạm Giáo trình, Lớp, bài tập; không ảnh hưởng xếp hạng (008), dashboard (009), hồ sơ (011).</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul>
+        <li><b>Giai đoạn 2 (V14):</b> nhận diện chữ viết tay tự do, chấm phát âm và thanh điệu bằng nhận diện giọng nói, hội thoại đóng vai với AI; mọi dữ liệu huấn luyện hay mẫu chấm cho các tính năng đó; tạo nội dung kho bằng AI; tạo âm thanh bằng giọng máy.</li>
+        <li>Kho nội dung dùng chung toàn hệ thống; chia sẻ, sao chép hay đồng bộ nội dung kho giữa các GV; mọi vai trò quản trị ngoài GV (V15).</li>
+        <li>Giao diện quản lý Bộ nội dung mẫu HSK trong SAT (đội nội dung SAT chuẩn bị ngoài sản phẩm); tự động đưa phiên bản bộ mẫu mới vào kho đã nạp; chức năng "Nạp mục mẫu mới" cho GV chọn nạp các mục mới của bộ mẫu (ý tưởng cho sau MVP); "Khôi phục về bản mẫu" cho một mục đã sửa; GV tự xóa toàn bộ kho hay nạp lại bộ mẫu.</li>
+        <li>GV dùng khu Tự học với tư cách người học (001 AC-20.4); GV xem dữ liệu tự học của từng HV; số liệu sử dụng theo từng HV hay theo lớp; mọi phân tích ngoài các số đếm của AC-11.6, AC-13.4.</li>
+        <li>Phân quyền theo cấp/loại nội dung; quy trình duyệt hai người; hẹn giờ xuất bản; nhiều người cùng quản lý một kho.</li>
+        <li>GV dùng nội dung kho trong Giáo trình, Bài, bài tập hay bài thi của workspace (002–006, 010); HV đóng góp, báo lỗi hoặc bình luận nội dung kho; giao nội dung tự học theo lớp hoặc ẩn theo lớp (Tự học không phụ thuộc lớp).</li>
+        <li>Truy cập công khai không đăng nhập; HV tự đăng ký (vẫn không có — V14, V15).</li>
+        <li>Chữ phồn thể, nghĩa bằng ngôn ngữ khác tiếng Việt, giao diện bằng ngôn ngữ khác tiếng Việt.</li>
+        <li>Mốc thời gian theo từng dòng lời thoại trong âm thanh bài nghe; video; hình ảnh minh họa cho từ vựng.</li>
+        <li>Xuất toàn bộ kho ra tệp; nhập bài nghe, kịch bản, đề từ tệp (chỉ soạn trên T25, T26); nhập âm thanh câu ví dụ hàng loạt.</li>
+        <li>Chấm lại kết quả thi thử cũ khi đáp án đổi (đã chốt: không chấm lại — AC-11.5); thống kê lỗi sai của HV (015 sở hữu; 016 chỉ cung cấp "Thẻ kiến thức").</li>
+        <li>Nội dung cho Bài thi của GV (006) và chấm tự luận (007).</li>
+      </ul>
+      <h4>Removed (2026-10-22, V15)</h4>
+      <p><em>Mã bị bỏ không dùng lại:</em></p>
+      <ul>
+        <li>Mã AC-1.4 — "mọi tài khoản QTND đang hoạt động cùng một quyền trên toàn bộ kho, không phân quyền theo cấp HSK hay loại nội dung" (không còn nhiều người quản trị một kho; quyền của GV trên mục được sao nêu ở AC-15.3).</li>
+        <li>Vai trò "Quản trị nội dung" (QTND), "Đơn vị vận hành", màn hình Q01–Q05 và menu tài khoản riêng của khu quản trị (AC-1.1 cũ); thay bằng GV trên T23–T27.</li>
+        <li>Kho nội dung hệ thống dùng chung cho mọi workspace; HV và GV mọi workspace cùng dùng một kho (AC-3.3 cũ); GV là người học tự học (US-5 cũ "HV hoặc GV").</li>
+        <li>Chỉ hiển thị cho QTND nội dung kho, không hiển thị Giáo trình, Lớp, tài khoản… (AC-1.2 cũ) — thay bằng cô lập workspace (AC-1.2, AC-1.3 mới) và quyền riêng tư (AC-1.6).</li>
+        <li>Xung đột lưu giữa hai QTND với "{Họ tên}" (AC-1.5 cũ) — nay giữa hai cửa sổ của cùng GV.</li>
+        <li>Số đếm sử dụng toàn hệ thống (AC-13.4 cũ), Họ tên QTND trong "Thay đổi gần đây", bộ lọc lịch sử theo QTND (AC-13.3 cũ), Họ tên QTND trong lịch sử thay đổi và lịch sử phiên bản (AC-14.2, AC-11.6 cũ).</li>
+        <li>US-6 cũ "Là đơn vị vận hành…" — viết lại cho GV (cô lập workspace, lịch sử, nguồn / giấy phép).</li>
+      </ul>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <p><em>Không còn câu hỏi mở. Các câu đã đóng ngày 2026-10-22 (chi tiết ở §12 Session 2026-10-22 (chốt câu hỏi mở)):</em></p>
+      <ul>
+        <li>Q-1 (AC-2.1, AC-13.1) — đã đóng: một cấp chung "HSK 7–9" theo chuẩn chính thức; kho có đúng 7 cấp.</li>
+        <li>Q-2 (AC-11.5) — đã đóng: không chấm lại kết quả cũ; mỗi lượt giữ phiên bản đã làm, đáp án đã sửa chỉ áp dụng qua phiên bản mới.</li>
+        <li>Q-3 (§10) — đã đóng, cập nhật theo V15: spec không phụ thuộc nguồn nội dung; Bộ nội dung mẫu HSK hợp pháp (cấp phép cho mọi workspace hoặc tự biên soạn) là điều kiện tiên quyết trước khi ra mắt, ghi ở §10.</li>
+      </ul>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session 2026-10-22 (tự học toàn hệ thống)</h4>
+      <p><em>Module mới theo quyết định V14 của stakeholder ngày 2026-10-22.</em></p>
+      <ul>
+        <li>Q: Yêu cầu của stakeholder? → A: Nguyên văn: "với dự án hiện tại thì các feature đang là theo học viên trong 1 lớp để GV dễ tracking và quản lí theo giáo trình và bài học, giờ sẽ thêm các module feature global cho tất cả user để có thể dùng được và không phân biệt lớp: 3. Học từ vựng thông minh (flashcard hai mặt chữ Hán – Pinyin – nghĩa; nghe phát âm; ví dụ câu; SRS; đánh dấu từ khó, bộ từ cá nhân) · 4. Luyện viết chữ Hán (thứ tự nét; khung luyện viết; nhận diện chữ viết và gợi ý sửa lỗi; bộ thủ, cấu tạo chữ) · 5. Luyện nghe và nói (nghe bản xứ; thu âm; nhận xét phát âm và thanh điệu bằng nhận diện giọng nói; nghe hội thoại chọn đáp án; đóng vai: gọi món, mua sắm, phỏng vấn, giao tiếp công sở) · 6. Mô phỏng thi thử HSK (trắc nghiệm từ vựng, ngữ pháp; nghe và đọc hiểu; sắp xếp từ thành câu; kiểm tra cuối chương và đề thi thử; chấm tự động, giải thích đáp án, thống kê lỗi sai)." <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15 — chỉ HV dùng Tự học, với kho của workspace mình; GV chỉ quản lý] Q: Ai dùng khu Tự học? → A: Mọi tài khoản HV và GV hiện có, không cần lớp, không phân biệt workspace; vẫn không có tự đăng ký công khai (001 REQ-20). <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15 — mỗi GV có Kho tự học riêng trong workspace, nạp sẵn Bộ nội dung mẫu HSK] Q: Nội dung dùng chung lấy từ đâu? → A: Từ một kho toàn hệ thống do vai trò mới "Quản trị nội dung" duy trì — module 016. <em>(source: stakeholder)</em></li>
+        <li>Q: Phạm vi MVP? → A: "MVP một phần, AI sau": MVP = từ vựng + SRS (012), thứ tự nét + khung viết kiểm từng nét theo nét mẫu (013), nghe + chọn đáp án + thu âm và nghe lại + đóng vai theo kịch bản (014), đề thi thử tự chấm (015). Giai đoạn 2 = nhận diện chữ viết tay tự do, chấm phát âm / thanh điệu, đóng vai hội thoại với AI (§9). <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15 — một phần: GV (không còn QTND) chỉ thấy số đếm tổng hợp ẩn danh của workspace, có ngưỡng 5 HV (AC-1.6, AC-13.4)] Q: Dữ liệu tự học có ai thấy? → A: Riêng tư với từng người dùng, không bao giờ hiển thị cho GV, không ảnh hưởng xếp hạng lớp (008) hay dashboard (009); QTND chỉ thấy số đếm tổng hợp ẩn danh (AC-1.2, AC-13.4). <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15 — không còn vai trò QTND] Q: Tài khoản QTND được tạo thế nào? → A: Đơn vị vận hành tạo và vô hiệu hóa bằng quy trình vận hành; không có màn hình tạo QTND, không đăng ký (001 AC-19.1). <em>(source: assumption — brief yêu cầu không có giao diện tạo quản trị; ít bề mặt tấn công nhất cho một vai trò hiếm)</em></li>
+        <li>[thay thế 2026-10-22 V15 — không còn vai trò QTND; GV quản lý kho của mình, AC-1.4 bị bỏ] Q: QTND có phân quyền theo cấp hay loại nội dung, có quy trình duyệt hai người? → A: Không; mọi QTND quyền như nhau, xuất bản trực tiếp; lịch sử thay đổi bù cho việc không có người duyệt (AC-1.4, REQ-14). <em>(source: assumption — số QTND nhỏ; đơn giản nhất thỏa yêu cầu, có thể thêm sau)</em></li>
+        <li>[thay thế 2026-10-22] Q: Cấp HSK của kho? → A: HSK 1–6 và nhóm "HSK 7–9" (AC-2.1, Q-1). <em>(source: assumption — chuẩn HSK mới gộp từ vựng, chữ và bài thi cấp 7–9; tạm áp dụng tới khi stakeholder trả lời Q-1)</em> — Thay bằng Session 2026-10-22 (chốt câu hỏi mở), Q-1.</li>
+        <li>[thay thế 2026-10-22 V15 — một phần: chương và chủ đề thuộc kho của từng workspace, do GV quản lý] Q: Tổ chức từ vựng và đề kiểm tra cuối chương thế nào? → A: Mỗi cấp có danh sách "Chương" có thứ tự (≤ 40) do QTND quản lý; từ vựng gắn tùy chọn một chương; "Kiểm tra cuối chương" gắn đúng một chương; "Chủ đề" là nhãn dùng chung mọi cấp (REQ-2). <em>(source: assumption — yêu cầu có "kiểm tra cuối chương" nhưng khu Tự học không có Giáo trình; chương trong kho là cấu trúc tối thiểu để 012 và 015 khớp nhau)</em></li>
+        <li>Q: Vòng đời nội dung? → A: Nháp → Đã xuất bản → Lưu trữ (khôi phục được); chỉ xóa vĩnh viễn được mục chưa từng xuất bản; mục lưu trữ vẫn đọc được qua dữ liệu học đã có (REQ-3). <em>(source: assumption — nguyên tắc "never lose learning data" của product.md)</em></li>
+        <li>Q: Sửa mục đã xuất bản thì sao? → A: Lưu là có hiệu lực với người học ≤ 5 phút nếu mục vẫn đủ điều kiện; riêng đề đã có lượt làm thì tạo phiên bản mới, phiên bản cũ phục vụ lượt đang làm và kết quả cũ (AC-3.9, REQ-11). <em>(source: assumption — sửa lỗi từ vựng phải đến người học ngay; kết quả thi phải khớp đúng đề đã làm)</em></li>
+        <li>Q: Âm thanh có bắt buộc không, định dạng nào? → A: Bắt buộc với bài nghe, lời thoại đóng vai, câu nghe của đề; không bắt buộc với từ vựng (nhãn "Thiếu âm thanh"); MP3/M4A/WAV, ngắn ≤ 2 MB và 30 giây, dài ≤ 20 MB và 5 phút (AC-6.1, AC-4.9). <em>(source: assumption — cho phép xuất bản danh sách từ trước khi thu âm xong; định dạng phổ biến của thiết bị thu)</em></li>
+        <li>Q: Nhập từ vựng thế nào? → A: Tệp .xlsx hoặc .csv UTF-8 theo mẫu, ≤ 5 000 dòng, ≤ 10 MB; kiểm tra trước, báo cáo theo dòng, tải báo cáo lỗi; nhập trọn gói các dòng hợp lệ ở Nháp; dòng trùng bị bỏ qua (REQ-5). <em>(source: assumption — cùng mô hình hai bước của import HV ở 001; 5 000 dòng đủ cho cấp lớn nhất của một lần nhập)</em></li>
+        <li>Q: Âm thanh cho hàng nghìn từ được gắn thế nào? → A: Tải hàng loạt ≤ 500 tệp, ghép theo tên tệp = Chữ Hán (hoặc Chữ Hán_pinyin số thanh cho chữ đa âm) (AC-6.4). <em>(source: assumption — không thể gắn tay hàng nghìn tệp; quy ước tên tệp đơn giản, kiểm được)</em></li>
+        <li>Q: Phát hiện trùng? → A: Từ vựng trùng khi cùng Chữ Hán + Pinyin (chặn); cùng Chữ Hán khác Pinyin chỉ cảnh báo; chữ Hán trùng theo Chữ (AC-4.7, AC-4.8, AC-7.3). <em>(source: assumption — chữ đa âm là từ khác nhau hợp lệ)</em></li>
+        <li>Q: Nguồn / giấy phép? → A: Bắt buộc cho mọi mục và mọi lô nhập (3–200 ký tự); lọc được theo nguồn để xử lý khi một giấy phép hết hiệu lực (AC-14.1, AC-12.3). <em>(source: stakeholder — yêu cầu của brief; độ dài là assumption)</em></li>
+        <li>[thay thế 2026-10-22 V15 — GV thấy số đếm tổng hợp của workspace, chỉ khi có ≥ 5 HV (AC-13.4, AC-11.6)] Q: QTND thấy số liệu sử dụng nào? → A: Chỉ số đếm tổng hợp toàn hệ thống trong 30 ngày (tài khoản dùng Tự học, lượt ôn, lượt luyện, lượt thi theo cấp) và tổng số lượt làm mỗi đề (AC-13.4, AC-11.6). <em>(source: assumption — brief "only aggregated, anonymous usage counts if anything"; đủ để biết nội dung nào được dùng)</em></li>
+        <li>Q: Đề thi thử gồm gì? → A: Loại đề (Đề thi thử / Kiểm tra cuối chương), 1–10 phần (Từ vựng, Ngữ pháp, Nghe, Đọc hiểu, Sắp xếp câu), thời gian làm bài 5–180 phút và thời gian riêng tùy chọn mỗi phần, 6 dạng câu chấm tự động, điểm mỗi câu 1–10, giải thích bắt buộc, thẻ kiến thức cho thống kê lỗi sai, số lần được nghe 1–3, điểm đạt mặc định 60%, tối đa 200 câu (REQ-10). <em>(source: assumption — bao phủ các dạng trong yêu cầu "trắc nghiệm từ vựng, ngữ pháp; nghe và đọc hiểu; sắp xếp từ thành câu"; giải thích bắt buộc vì 015 phải "giải thích đáp án")</em></li>
+        <li>Q: 012–015 cần gì từ kho mà bản đầu chưa có? → A: Mã ổn định cho mọi mục (AC-3.10); nghĩa từ vựng là danh sách 1–5 nghĩa có thứ tự, câu ví dụ có thứ tự, trường "Cách dùng" tùy chọn và "Thứ tự" của từ trong cấp (AC-4.5, AC-4.6, AC-4.10); "Mẹo nhớ" cho chữ Hán, danh mục 214 bộ thủ, tìm chữ theo pinyin không dấu và nghĩa không dấu (AC-7.3, AC-7.7, AC-7.8); kịch bản đóng vai 2–4 vai; âm thanh dài tối đa 5 phút (AC-9.1, AC-6.1). <em>(source: assumption — nhu cầu do điều phối viên tổng hợp từ spec 012–015 cùng ngày; bổ sung để các module tiêu thụ không phải tự suy đoán dữ liệu)</em></li>
+        <li>Q: Từ đã từng xuất bản bị gỡ khỏi kho thì người học thấy gì? → A: Kho giữ nội dung lần xuất bản cuối và không bao giờ xóa (AC-3.6, AC-3.8); 012 hiển thị nhãn "Không còn trong kho" (012 REQ-19). <em>(source: assumption — khớp 012)</em></li>
+      </ul>
+      <h4>Session 2026-10-22 (chốt câu hỏi mở)</h4>
+      <ul>
+        <li>Q: Q-1 — Cấp cao của HSK mới là một nhóm chung "HSK 7–9" hay ba cấp riêng HSK 7, HSK 8, HSK 9? → A: Một cấp chung "HSK 7–9" theo chuẩn chính thức; kho có đúng 7 cấp, mọi bộ lọc, cột tổng quan và bộ chọn cấp của 012–015 dùng cùng danh sách này (AC-2.1, AC-13.1) <em>(source: stakeholder — 'làm theo recommend tốt nhất của bạn', phương án đề xuất của điều phối)</em></li>
+        <li>Q: Q-2 — Khi QTND sửa đáp án sai của một đề đã có người làm, có chấm lại kết quả cũ không? → A: Không; mỗi lượt giữ phiên bản đã làm, đáp án đã sửa tạo phiên bản mới và chỉ áp dụng cho lượt bắt đầu sau khi phiên bản đó được xuất bản; 015 hiển thị trên kết quả cũ dòng "Đề này đã được cập nhật sau lượt làm của bạn. Kết quả được giữ theo phiên bản bạn đã làm." (015 AC-13.4) (AC-11.4, AC-11.5) <em>(source: stakeholder — 'làm theo recommend tốt nhất của bạn', phương án đề xuất của điều phối)</em> — Từ V15 người sửa đề là GV; quy tắc không đổi.</li>
+        <li>[thay thế 2026-10-22 V15 — một phần: nội dung ban đầu là Bộ nội dung mẫu HSK do đội nội dung SAT chuẩn bị, giấy phép phải cho phép sao vào mọi workspace (§10)] Q: Q-3 — Nội dung ban đầu và giấy phép lấy từ đâu? → A: Spec không phụ thuộc nguồn; mọi mục và mọi lô nhập bắt buộc "Nguồn / giấy phép" (AC-14.1, không đổi); có được nội dung HSK đã cấp phép hoặc tự biên soạn là điều kiện tiên quyết kinh doanh trước khi ra mắt, không chặn spec (§10) <em>(source: stakeholder — 'làm theo recommend tốt nhất của bạn', phương án đề xuất của điều phối)</em></li>
+      </ul>
+      <h4>Session 2026-10-22 (V15 — gom quản lý vào GV)</h4>
+      <p><em>Áp dụng quyết định V15 của stakeholder ngày 2026-10-22: viết lại module tại chỗ từ "Kho nội dung hệ thống" (vai trò QTND, Q01–Q05) thành "Kho nội dung tự học" của từng workspace do GV quản lý trên T23–T27. Giữ số REQ/AC nơi hành vi còn; viết lại tại chỗ AC-1.1, AC-1.2, AC-1.3, AC-1.5 và mọi AC nêu QTND hoặc Q01–Q05 (thay bằng GV, T23–T27, "kho của workspace", "HV của workspace"), cùng AC-3.1, AC-3.3, AC-3.8, AC-3.10, AC-4.7, AC-4.8, AC-5.4, AC-5.7, AC-10.7, AC-11.6, AC-13.3, AC-13.4, AC-14.2, AC-14.3; bỏ AC-1.4 (mã không dùng lại); thêm AC-1.6, AC-1.7, AC-1.8, REQ-15 (AC-15.1–AC-15.8), NFR-11; viết lại NFR-2, NFR-3, NFR-4, NFR-5, NFR-6, NFR-7, NFR-8, NFR-10; viết lại §1–§4 (US-1 đến US-7 cho GV/HV, thêm US-8), §7–§11. Các mục cũ mâu thuẫn được gắn "[thay thế 2026-10-22 V15]".</em></p>
+      <ul>
+        <li>Q: Yêu cầu của stakeholder? → A: Nguyên văn: "Hệ thống hiện tại chỉ có 2 role là GV và học viên, và phần quản lí các nội dung tự học sẽ làm chung phần quản lí của GV luôn, và GV chỉ quản lí thôi, chức năng tự học chỉ dành cho user học viên. Gom quản lí hệ thống vào cho GV." <em>(source: stakeholder)</em></li>
+        <li>Q: Kho dùng chung một kho toàn hệ thống hay mỗi GV một kho? → A: Mỗi GV có Kho tự học riêng trong workspace, được nạp sẵn "Bộ nội dung mẫu HSK" mà GV sửa, thêm, ẩn tùy ý (REQ-15, AC-1.2, AC-1.7). <em>(source: stakeholder)</em></li>
+        <li>Q: Ai quản lý và ai dùng? → A: Chỉ GV quản lý kho của workspace mình trên T23–T27 (mục "Kho tự học", 001 AC-20.2); chỉ HV đã kích hoạt, không bị khóa của workspace dùng nội dung "Đã xuất bản" qua S13–S20, không cần lớp (001 AC-20.3); GV không dùng S13–S20 (001 AC-20.4) và xem trước bằng các chức năng xem thử của T24–T27. <em>(source: stakeholder)</em></li>
+        <li>Q: Bộ nội dung mẫu HSK do ai chuẩn bị, gồm gì? → A: Đội nội dung SAT chuẩn bị ngoài sản phẩm cho HSK 1–6 và "HSK 7–9": từ vựng + âm thanh, chữ Hán + dữ liệu nét + bộ thủ, bài nghe, kịch bản đóng vai, đề thi thử và kiểm tra cuối chương, kèm nguồn / giấy phép (AC-15.1, §3, §10). <em>(source: stakeholder — mô hình chung của điều phối)</em></li>
+        <li>Q: Khi nào kho được nạp? → A: Khi workspace được tạo (001 AC-1.1) và, với workspace đã có, tại thời điểm ra mắt Kho tự học (AC-15.1, AC-15.7). <em>(source: stakeholder — mô hình chung của điều phối)</em></li>
+        <li>Q: Mục được sao ở trạng thái nào? → A: "Đã xuất bản" nếu đạt điều kiện xuất bản của loại mục, nếu không thì "Nháp"; có lịch sử "Sao từ Bộ nội dung mẫu HSK" (AC-15.2). <em>(source: assumption — HV phải học được ngay mà GV không phải xuất bản hàng nghìn mục; vẫn giữ quy tắc người học không bao giờ thấy mục chưa đủ điều kiện)</em></li>
+        <li>Q: Bộ mẫu cập nhật sau đó có tự vào kho đã nạp không? → A: Không; phiên bản mới chỉ dùng cho workspace tạo sau; "Nạp mục mẫu mới" là ý tưởng ngoài phạm vi (AC-15.4, §9). <em>(source: assumption — tránh ghi đè chỉnh sửa của GV và tránh trùng với từ GV đã thêm; đơn giản nhất)</em></li>
+        <li>Q: GV có xóa được mục của bộ mẫu không? → A: Mục được sao ở "Đã xuất bản" chỉ lưu trữ được, không xóa (AC-3.8); mục được sao ở "Nháp" xóa được như mọi nháp. <em>(source: assumption — áp dụng nguyên quy tắc vòng đời; "ẩn tùy ý" của stakeholder được đáp ứng bằng "Lưu trữ")</em></li>
+        <li>Q: Trong lúc đang sao thì sao? → A: T23–T27 hiển thị "Đang chuẩn bị Bộ nội dung mẫu HSK cho kho tự học của bạn…", GV chưa thêm/nhập/sửa được, HV chưa thấy mục nào; sao trọn gói, lỗi thì tự sao lại; hoàn tất p95 ≤ 5 phút (AC-15.5, AC-15.6, NFR-11). <em>(source: assumption — tránh xung đột trùng giữa mục GV thêm và mục bộ mẫu; tránh kho nửa vời)</em></li>
+        <li>Q: Cô lập workspace với mục kho? → A: GV mở mục kho của workspace khác → A05 giống mục không tồn tại (AC-1.3); HV chỉ nhận nội dung kho của workspace mình, mục của workspace khác → A05 (AC-1.7, AC-1.8). <em>(source: stakeholder cho cô lập workspace (D1, mô hình chung)</em> ; câu chữ A05 theo product.md)</li>
+        <li>Q: GV thấy số liệu sử dụng nào? → A: Chỉ số đếm tổng hợp ẩn danh của HV trong workspace trong 30 ngày; khi ít hơn 5 HV khác nhau dùng Tự học thì không hiển thị số; số lượt làm mỗi đề chỉ hiển thị khi có ít nhất 5 HV khác nhau (AC-13.4, AC-11.6, AC-1.6). <em>(source: stakeholder cho "chỉ số đếm tổng hợp ẩn danh"; ngưỡng 5 HV là assumption — trong workspace nhỏ, số tổng hợp của 1–2 HV thực chất là dữ liệu cá nhân)</em></li>
+        <li>Q: Hai người cùng sửa một mục? → A: Mỗi kho chỉ có một GV; xung đột lưu chỉ còn giữa hai tab/thiết bị của cùng GV, vẫn không ghi đè (AC-1.5). <em>(source: assumption — giữ bảo vệ dữ liệu khi GV mở nhiều cửa sổ)</em></li>
+        <li>Q: Lịch sử thay đổi còn ghi Họ tên người thực hiện? → A: Ghi "người thực hiện" là GV hoặc "Bộ nội dung mẫu HSK"; bỏ lọc theo người (AC-13.3, AC-14.2, AC-11.6). <em>(source: assumption — một kho chỉ có một người quản lý)</em></li>
+        <li>Q: Thời hạn xuất bản tới HV? → A: Giữ ≤ 5 phút (p99) tới HV của workspace (NFR-3). <em>(source: assumption — không đổi so với V14)</em></li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

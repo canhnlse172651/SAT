@@ -1,0 +1,760 @@
+<!doctype html>
+<!--
+  specs/006-exams/spec.html — bản trình bày (luồng, quy tắc, màn hình, trạng thái) của spec.md.
+  spec.md là hợp đồng được máy kiểm tra; mọi REQ-n / AC-n.m ở đây giống hệt spec.md.
+  Mọi BR, bước luồng có phản hồi hệ thống và quy tắc kiểm tra dữ liệu đều trích dẫn AC.
+  Viết lại từ đầu 2026-10-22 (stakeholder — bài thi độc lập, một lịch cho mỗi bài thi, giao cho lớp).
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>006 Bài thi — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module 006</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module 006 · Exams</div>
+    <h1>Bài thi</h1>
+    <p class="lede">Giáo viên soạn tay một bài thi độc lập, giao cho một hoặc nhiều lớp và đặt giờ mở, thời lượng, giờ đóng; mọi học viên của lớp được giao làm bài một lần có đồng hồ đếm ngược, thấy điểm ngay và xem đáp án sau giờ đóng; điểm bài thi chiếm 70 % điểm xếp hạng (008).</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Feature 006</span>
+      <span class="pill">Cập nhật 2026-10-22</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <div class="callout">
+      <strong>Cập nhật 2026-10-22 — bài thi độc lập.</strong> Module 006 trở lại MVP với mô hình mới: bài thi <b>không còn là section thứ ba của mỗi Bài</b> và không gắn với Giáo trình; đây là mục riêng "Bài thi" trong workspace của GV. Mỗi bài thi có <b>một lịch</b> (giờ mở, thời lượng, giờ đóng) cho mọi lớp được giao; mỗi HV làm <b>một lần</b>, được đủ thời lượng nhưng không quá giờ đóng. Mô hình cũ (lịch theo lớp, nhiều lượt, chính sách công bố, phiên bản mới, ẩn theo lớp, ngoại lệ) bị bỏ — xem §13 và §15.
+    </div>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <p>GV dạy tiếng Trung cần tổ chức bài kiểm tra có giờ cho các lớp — "tạo bài thi, chọn lớp, đến giờ thì học viên vào thi" — và dùng kết quả để xếp hạng lớp; hiện GV thi trên giấy hoặc biểu mẫu rời, tự canh giờ, tự chấm, tự tổng hợp. Module này cho GV soạn tay một <b>Bài thi</b> độc lập (tên, hướng dẫn, câu hỏi tự chấm theo 005), giao cho một hoặc nhiều lớp và đặt một lịch chung gồm <b>giờ mở, thời lượng, giờ đóng</b>. HV của các lớp được giao thấy bài thi trong mục "Bài thi" với giờ mở và đếm ngược, vào thi trong khoảng mở, làm bài trên điện thoại với đồng hồ đếm ngược, tự lưu, không mất bài khi mất mạng, được nộp tự động khi hết giờ; mỗi HV làm đúng <b>một lần</b>. Bài nộp được chấm ngay: HV thấy điểm 0–100 ngay, đáp án và giải thích chỉ sau giờ đóng. GV theo dõi từng lớp (Đã nộp / Đang làm / Chưa làm), mở bài nộp chỉ đọc; điểm bài thi (hoặc 0 khi đã qua giờ đóng mà không nộp) được cung cấp cho 008 để tính 70 % điểm xếp hạng.</p>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mục tiêu</th><th>Chỉ số</th><th>Ngưỡng</th></tr></thead>
+        <tbody>
+          <tr><td>GV tổ chức bài thi mà không cần công cụ ngoài</td><td>Thời gian trung vị soạn bài thi 20 câu Trắc nghiệm, giao 2 lớp và lên lịch (5 GV)</td><td>≤ 20 phút</td></tr>
+          <tr><td>Thời gian thi công bằng</td><td>Tỷ lệ lượt làm được nộp tự động ≤ 60 giây sau thời điểm kết thúc (NFR-2)</td><td>100 %</td></tr>
+          <tr><td>Không mất bài làm</td><td>Câu trả lời đã "Đã lưu" nhưng thiếu trong bài nộp (NFR-3)</td><td>0</td></tr>
+          <tr><td>Mỗi HV chỉ thi một lần</td><td>Tổ hợp HV × bài thi có hơn một lượt làm hoặc bài nộp (30 ngày đầu)</td><td>0</td></tr>
+          <tr><td>HV biết điểm ngay</td><td>Thời gian từ xác nhận nộp tới khi thấy điểm (NFR-6)</td><td>p95 ≤ 2 giây</td></tr>
+          <tr><td>Đề thi không bị lộ</td><td>Câu hỏi tới thiết bị HV ngoài lượt đang làm, hoặc đáp án / giải thích trước mốc công bố (NFR-7)</td><td>0</td></tr>
+          <tr><td>Xếp hạng có dữ liệu bài thi đúng hạn</td><td>HV được tính có kết quả cung cấp cho 008 trong ≤ 60 giây sau giờ đóng</td><td>100 %</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi:</strong> danh sách bài thi (T10), soạn bài thi + lớp được giao + lịch (T22), lên lịch / hủy lịch, khóa đề từ lượt làm đầu tiên, xóa / lưu trữ / khôi phục / nhân bản, danh sách bài thi và sảnh của HV (S07), làm bài có giờ + tự lưu + nộp tự động + kết quả (S08), kết quả theo lớp (T16) và bài nộp chỉ đọc (T14), dữ liệu cho 008 / 009. &nbsp; <strong>Ngoài phạm vi:</strong> chấm tay (007), AI tạo bài thi, lịch theo lớp / theo HV, nhiều lượt, xáo trộn, nhắc lịch thi bằng email, chống gian lận, sửa đáp án sau khi khóa (Q-5) (chi tiết §13).</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>Chủ duy nhất của workspace, dùng máy tính ≥ 1280 px.</td><td>Soạn bài thi, chọn lớp được giao, đặt lịch, lên lịch; điều chỉnh trong giới hạn khóa đề; theo dõi kết quả theo lớp; xem bài nộp chỉ đọc; xóa / lưu trữ / nhân bản.</td></tr>
+          <tr><td><span class="pill hv">Học viên</span></td><td>Tài khoản do GV tạo và kích hoạt qua email (001), dùng điện thoại 360–430 px; có thể thuộc nhiều lớp.</td><td>Thấy bài thi của lớp mình kèm giờ mở; vào thi đúng giờ; làm bài một lần có đồng hồ; xem điểm ngay và đáp án sau giờ đóng.</td></tr>
+          <tr><td>Đồng hồ hệ thống</td><td>Tác nhân thời gian, giờ Việt Nam (UTC+7).</td><td>Mở / đóng bài thi, nộp tự động, ghi nhận "Không làm bài", công bố đáp án sau khi đóng.</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">GV (chủ workspace)</th><th class="center">HV dự thi</th><th class="center">Người khác</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Xem danh sách, soạn, lên lịch, sửa, xóa, lưu trữ, nhân bản bài thi</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-3.4</span> <span class="chip ac">AC-16.1</span></td></tr>
+          <tr><td>Xem kết quả theo lớp, mở bài nộp chỉ đọc</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-15.1</span> <span class="chip ac">AC-15.5</span></td></tr>
+          <tr><td>Thấy bài thi trên S07</td><td class="center no">—</td><td class="center yes">✓ (theo AC-7.1)</td><td class="center no">A05</td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-16.2</span></td></tr>
+          <tr><td>Bắt đầu làm bài</td><td class="center no">—</td><td class="center yes">✓ khi Đang mở, chưa có lượt, có lớp Đang học</td><td class="center no">—</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.4</span></td></tr>
+          <tr><td>Xem câu hỏi</td><td class="center yes">✓</td><td class="center yes">Chỉ trong lượt đang làm, hoặc sau mốc AC-14.3</td><td class="center no">—</td><td><span class="chip ac">AC-16.3</span></td></tr>
+          <tr><td>Xem đáp án, giải thích</td><td class="center yes">✓ (T14)</td><td class="center yes">Chỉ sau khi đóng và mọi lượt đã nộp</td><td class="center no">—</td><td><span class="chip ac">AC-14.3</span> <span class="chip ac">AC-16.4</span></td></tr>
+          <tr><td>Xem bài nộp / kết quả của HV khác</td><td class="center yes">✓</td><td class="center no">A05</td><td class="center no">A05</td><td><span class="chip ac">AC-16.2</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn soạn tay bài thi, giao cho một hoặc nhiều lớp và đặt giờ mở, thời lượng, giờ đóng rồi lên lịch, để mọi HV các lớp đó thi cùng một đề trong cùng khoảng thời gian.</td><td>T10 "Tạo bài thi" → T22: tên, 3 câu, lớp A + B, mở 20:00, 45 phút, đóng 22:00 → "Lên lịch" → "Đã lên lịch"; lên lịch khi chưa chọn lớp → bị chặn kèm danh sách điều kiện.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-2</span> <span class="chip">REQ-3</span></td></tr>
+          <tr><td class="id">US-2</td><td><span class="pill p1">P1</span></td><td>Là <b>học viên</b>, tôi muốn thấy bài thi của lớp với giờ mở và đếm ngược, vào thi khi tới giờ, xem sảnh và xác nhận bắt đầu.</td><td>19:59 S07 "Mở lúc 20:00" + đếm ngược; 20:00 chuyển "Đang mở" + "Vào thi" ≤ 5 giây; sảnh không có câu hỏi; "Bắt đầu làm bài" → S08 câu 1, đồng hồ 45:00.</td><td><span class="chip">REQ-7</span> <span class="chip">REQ-8</span></td></tr>
+          <tr><td class="id">US-3</td><td><span class="pill p1">P1</span></td><td>Là <b>học viên</b>, tôi muốn làm bài với đồng hồ, tự lưu, tiếp tục sau khi mất mạng / đổi thiết bị, nộp hoặc được nộp tự động khi hết giờ.</td><td>Bắt đầu 21:40 (đóng 22:00) → cảnh báo 20 phút; trả lời 2 câu, đổi thiết bị → cùng lượt; hết giờ → "Nộp tự động" lúc 22:00.</td><td><span class="chip">REQ-9</span> <span class="chip">REQ-10</span> <span class="chip">REQ-11</span> <span class="chip">REQ-12</span></td></tr>
+          <tr><td class="id">US-4</td><td><span class="pill p1">P1</span></td><td>Là <b>học viên</b>, tôi muốn thấy điểm 0–100 ngay và đáp án, giải thích sau giờ đóng.</td><td>Nộp 20:30 → "80/100" + "Đáp án và giải thích sẽ hiển thị sau khi bài thi đóng lúc 22:00 …"; sau 22:00 → mục "Từng câu · đáp án và giải thích".</td><td><span class="chip">REQ-13</span> <span class="chip">REQ-14</span></td></tr>
+          <tr><td class="id">US-5</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn xem kết quả theo từng lớp được giao và mở bài nộp chỉ đọc.</td><td>Lớp 4 HV → T16 đúng trạng thái + số liệu; "Xem bài nộp" → T14; sau giờ đóng HV chưa làm "Không làm bài · 0/100".</td><td><span class="chip">REQ-15</span></td></tr>
+          <tr><td class="id">US-6</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn sửa bài thi trong giới hạn an toàn, xóa bài thi chưa ai làm, lưu trữ bài thi đã đóng.</td><td>Có lượt làm → khóa đề; giờ đóng sớm hơn bị chặn; lùi giờ đóng → đồng hồ HV cập nhật ≤ 10 giây; "Xóa" bị chặn; sau đóng "Lưu trữ".</td><td><span class="chip">REQ-4</span> <span class="chip">REQ-5</span> <span class="chip">REQ-6</span></td></tr>
+          <tr><td class="id">US-7</td><td><span class="pill">P2</span></td><td>Là <b>giáo viên</b>, tôi muốn nhân bản bài thi thành bản Nháp để dùng lại đề cho lớp khác, lúc khác.</td><td>Nhân bản → "(bản sao)" Nháp, đủ câu hỏi, đáp án, thời lượng; không lớp, không lịch, không bài nộp.</td><td><span class="chip">REQ-6</span></td></tr>
+          <tr><td class="id">US-8</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn điểm bài thi (hoặc 0 khi không nộp sau giờ đóng) được ghi nhận cho từng lớp được giao để 008 tính phần 70 %.</td><td>HV thuộc lớp A và B nộp 85 → 008 nhận 85 ở cả hai lớp; HV không làm → "Không làm bài · 0" ≤ 60 giây sau đóng; HV vào lớp sau đóng → không có kết quả.</td><td><span class="chip">REQ-13</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>Bốn luồng chính: GV soạn và lên lịch (F-1), HV vào thi và làm bài (F-2), hết giờ và đóng bài thi (F-3), GV theo dõi và điều chỉnh khi bài thi đang diễn ra (F-4).</p>
+
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Soạn và lên lịch">F-1: GV soạn bài thi, giao lớp và lên lịch</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Bấm "Tạo bài thi" trên T10</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>GV đã đăng nhập; có ít nhất một lớp Sắp bắt đầu hoặc Đang học</div>
+          <div class="fact"><span class="k">Kết quả</span>Bài thi "Đã lên lịch" (hoặc "Đang mở"), hiển thị cho HV dự thi</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart LR
+  A(["GV bấm Tạo bài thi trên T10"]) --> B["T22 · nhập tên, hướng dẫn, câu hỏi"]
+  B --> C["Chọn lớp được giao, giờ mở, thời lượng, giờ đóng"]
+  C --> D{"Lưu nháp hay Lên lịch?"}
+  D -- "Lưu nháp" --> E(["Bài thi Nháp, HV không thấy"])
+  D -- "Lên lịch" --> F{"Đạt mọi điều kiện AC-3.4?"}
+  F -- Không --> G["Danh sách điều kiện chưa đạt"] --> B
+  F -- Có --> H(["Đã lên lịch, HV dự thi thấy trên S07"])
+</pre>
+          <figcaption>Hình F-1 — Soạn và lên lịch bài thi</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Chọn mục "Bài thi"</td><td>Danh sách bài thi theo nhóm trạng thái, nút "Tạo bài thi"</td><td><a class="chip screen" href="../screen-flow-design.html#T10">T10</a></td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Bấm "Tạo bài thi"</td><td>T22 với bài thi mới chưa lưu, mọi trường trống</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td><span class="chip ac">AC-2.1</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Soạn câu hỏi bằng các dạng của 005</td><td>Đánh số câu, kiểm tra tại chỗ, số câu và tổng điểm thường trực</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td><span class="chip ac">AC-2.4</span> <span class="chip ac">AC-2.5</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>Chọn lớp được giao, giờ mở, thời lượng, giờ đóng</td><td>Chỉ liệt kê lớp Sắp bắt đầu / Đang học; kiểm tra giờ đóng ≥ giờ mở + thời lượng</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.3</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Bấm "Lên lịch"</td><td>"Đã lên lịch · mở lúc …"; cảnh báo nếu lớp bắt đầu sau giờ mở</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td><span class="chip ac">AC-3.4</span> <span class="chip ac">AC-3.7</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: lưu nháp, làm tiếp sau <span class="chip ac">AC-2.2</span></summary><div class="body"><ol><li>GV bấm "Lưu nháp" — câu chưa hoàn chỉnh và lịch trống vẫn được lưu; HV không thấy bài thi.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Luồng thay thế: hủy lịch khi chưa ai làm <span class="chip ac">AC-3.8</span></summary><div class="body"><ol><li>GV bấm "Hủy lịch" và xác nhận → bài thi về Nháp, giữ nội dung, lớp, lịch; HV không còn thấy.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: chưa đạt điều kiện lên lịch <span class="chip ac">AC-3.5</span></summary><div class="body"><ol><li>Bài thi giữ Nháp; danh sách điều kiện chưa đạt, mỗi mục dẫn tới trường hoặc câu cần sửa.</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Ngoại lệ: lưu xung đột từ cửa sổ khác <span class="chip ac">AC-2.7</span></summary><div class="body"><ol><li>Không ghi đè; nội dung đang soạn giữ nguyên; thông báo tải lại.</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-2">
+        <h3 data-toc="F-2 Vào thi và làm bài">F-2: HV vào thi, làm bài và nộp</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Học viên, Hệ thống</div>
+          <div class="fact"><span class="k">Kích hoạt</span>HV chọn mục "Bài thi"</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>HV dự thi (AC-7.1), bài thi Đang mở, HV chưa có lượt làm, có lớp được giao Đang học</div>
+          <div class="fact"><span class="k">Kết quả</span>Một bài nộp, điểm 0–100 hiện ngay</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor HV as Học viên
+  participant SYS as Hệ thống
+  HV->>SYS: Mở S07 Bài thi
+  SYS-->>HV: Mở lúc HH:mm và đếm ngược Mở sau
+  Note over SYS: Tới giờ mở
+  SYS-->>HV: Dòng chuyển Đang mở và nút Vào thi trong 5 giây
+  HV->>SYS: Vào thi
+  SYS-->>HV: Sảnh gồm số câu, thời lượng, giờ đóng, không có câu hỏi
+  HV->>SYS: Bắt đầu làm bài
+  SYS-->>HV: S08 câu 1, kết thúc lượt = min(bắt đầu + thời lượng, giờ đóng)
+  loop Mỗi thay đổi câu trả lời
+    HV->>SYS: Câu trả lời
+    SYS-->>HV: Đã lưu lúc HH:mm:ss trong 3 giây
+  end
+  HV->>SYS: Nộp bài và xác nhận
+  SYS-->>HV: Điểm trên 100, đáp án hiển thị sau giờ đóng
+</pre>
+          <figcaption>Hình F-2 — Vào thi, làm bài, nộp bài</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chọn mục "Bài thi"</td><td>Danh sách bài thi HV thấy được, mỗi bài một dòng với trạng thái và nút</td><td><a class="chip screen" href="../screen-flow-design.html#S07">S07</a></td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.2</span> <span class="chip ac">AC-7.3</span></td></tr>
+            <tr><td class="id">2</td><td>Hệ thống</td><td>Tới giờ mở</td><td>Đếm ngược "Mở sau" rồi dòng chuyển sang "Đang mở" + "Vào thi" ≤ 5 giây</td><td><a class="chip screen" href="../screen-flow-design.html#S07">S07</a></td><td><span class="chip ac">AC-7.5</span> <span class="chip ac">AC-7.6</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>"Vào thi"</td><td>Sảnh: tên, hướng dẫn, số câu, thời lượng, giờ đóng, "chỉ một lần", cảnh báo nếu còn ít thời gian</td><td><a class="chip screen" href="../screen-flow-design.html#S07">S07</a></td><td><span class="chip ac">AC-8.1</span> <span class="chip ac">AC-8.2</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>"Bắt đầu làm bài"</td><td>Tạo lượt duy nhất, tính là đã dùng, mở câu 1 với đồng hồ</td><td><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.5</span> <span class="chip ac">AC-8.6</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Trả lời, chuyển câu</td><td>Đồng hồ, bảng số câu, tự lưu ≤ 3 giây, cảnh báo 5 và 1 phút; không có đáp án</td><td><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.2</span> <span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.4</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>"Nộp bài" → xác nhận</td><td>Hộp xác nhận nêu câu chưa hoàn thành; ghi nhận bài nộp, chấm ngay, hiển thị điểm</td><td><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.2</span> <span class="chip ac">AC-13.1</span> <span class="chip ac">AC-14.1</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Mất kết nối, tải lại, đổi thiết bị <span class="chip ac">AC-10.1</span> <span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span></summary><div class="body"><ol><li>Mất mạng: cảnh báo, đồng hồ vẫn chạy, vẫn nhập được; kết nối lại ≤ kết thúc + 10 giây → tự gửi.</li><li>Tải lại / thiết bị khác trước khi hết giờ → tiếp tục đúng lượt, thời gian còn lại theo hệ thống.</li><li>Mở ở nơi thứ hai → nơi mở sau cùng giữ quyền làm bài.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Không còn được bắt đầu <span class="chip ac">AC-8.4</span></summary><div class="body"><ol><li>Chưa mở, đã đóng, đã có lượt, không còn lớp Đang học, hoặc bài thi không còn hiển thị → không tạo lượt; hiển thị trạng thái hiện tại hoặc A05.</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Nộp lỗi do mất kết nối <span class="chip ac">AC-11.4</span></summary><div class="body"><ol><li>Giữ bài làm, "Thử lại"; nếu lượt đã được nộp tự động → hiển thị bài nộp tự động.</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-3">
+        <h3 data-toc="F-3 Hết giờ và đóng">F-3: Hết giờ, nộp tự động và đóng bài thi</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Đồng hồ hệ thống</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Thời điểm kết thúc của một lượt, hoặc giờ đóng</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài thi đã lên lịch</div>
+          <div class="fact"><span class="k">Kết quả</span>Mọi lượt đã nộp; HV không nộp có "Không làm bài · 0"; đáp án hiện cho HV có bài nộp; 008 nhận kết quả</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  participant CLK as Đồng hồ hệ thống
+  participant SYS as Hệ thống
+  actor HV as Học viên
+  participant RK as 008 Xếp hạng
+  CLK->>SYS: Tới thời điểm kết thúc của lượt
+  SYS->>SYS: Nhận câu trả lời tới chậm nhất 10 giây sau
+  SYS-->>HV: Nộp tự động trong 60 giây, nhãn Nộp tự động
+  SYS->>RK: Kết quả Đã nộp và điểm 0-100
+  CLK->>SYS: Tới giờ đóng
+  SYS->>RK: Không làm bài, điểm 0, cho HV thuộc lớp tại giờ đóng
+  Note over SYS: Mọi lượt đã nộp
+  SYS-->>HV: S08 hiển thị Từng câu, đáp án và giải thích
+</pre>
+          <figcaption>Hình F-3 — Hết giờ, đóng bài thi, công bố đáp án</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Sự kiện</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>Đồng hồ</td><td>Tới kết thúc của lượt chưa nộp</td><td>Nộp tự động ≤ 60 giây, kể cả khi HV ngoại tuyến / bị khóa / bị gỡ; nhãn "Nộp tự động"</td><td><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.2</span> <span class="chip ac">AC-12.3</span></td></tr>
+            <tr><td class="id">2</td><td>Đồng hồ</td><td>Tới giờ đóng</td><td>Trạng thái "Đã đóng"; "Không làm bài · 0" cho HV thuộc lớp tại giờ đóng mà không nộp</td><td><a class="chip screen" href="../screen-flow-design.html#T16">T16</a> <a class="chip screen" href="../screen-flow-design.html#S07">S07</a></td><td><span class="chip ac">AC-3.6</span> <span class="chip ac">AC-13.3</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>Có điểm hoặc "Không làm bài"</td><td>Cung cấp kết quả theo HV × lớp cho 008 / 009 ≤ 60 giây</td><td>—</td><td><span class="chip ac">AC-13.4</span> <span class="chip ac">AC-13.5</span> <span class="chip ac">AC-13.6</span></td></tr>
+            <tr><td class="id">4</td><td>Hệ thống</td><td>Đã đóng và mọi lượt đã nộp</td><td>S08 hiện "Từng câu · đáp án và giải thích" cho HV có bài nộp</td><td><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.3</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="flow" id="F-4">
+        <h3 data-toc="F-4 Theo dõi và điều chỉnh">F-4: GV theo dõi và điều chỉnh khi bài thi đang diễn ra</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>"Xem kết quả" trên T10 / T22, hoặc sửa bài thi trên T22</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài thi không ở Nháp</div>
+          <div class="fact"><span class="k">Kết quả</span>GV thấy trạng thái từng HV; điều chỉnh không làm ai thiệt</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["GV mở T22 của bài thi"]) --> B{"Đã có lượt làm?"}
+  B -- Chưa --> C["Sửa mọi thứ, vẫn phải hợp lệ"]
+  B -- Có --> D{"Đã đóng?"}
+  D -- Chưa --> E["Khóa đề, giờ mở, thời lượng"]
+  E --> F["Được: tên, hướng dẫn, thêm lớp, bỏ lớp chưa ai làm, lùi giờ đóng"]
+  D -- Rồi --> G["Chỉ tên, hướng dẫn. Lưu trữ hoặc Nhân bản"]
+  A2(["GV bấm Xem kết quả"]) --> H["T16 chọn lớp"]
+  H --> I["Đã nộp, Đang làm, Chưa làm, Không làm bài"]
+  I --> J["Xem bài nộp trên T14"]
+</pre>
+          <figcaption>Hình F-4 — Giới hạn chỉnh sửa và theo dõi kết quả</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Sửa đề khi đã có lượt làm</td><td>Bị khóa, biểu ngữ giải thích; lưu trùng lúc khóa → không lưu phần bị khóa</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.3</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Lùi giờ đóng</td><td>Kết thúc của lượt đang làm tính lại, đồng hồ HV cập nhật ≤ 10 giây; kéo sớm hơn bị chặn</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a> <a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-5.1</span> <span class="chip ac">AC-5.2</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Thêm / bỏ lớp</td><td>Thêm khi chưa đóng; bỏ bị chặn nếu HV của lớp đã làm</td><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td><span class="chip ac">AC-5.3</span> <span class="chip ac">AC-5.4</span> <span class="chip ac">AC-5.5</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>"Xem kết quả", chọn lớp</td><td>Danh sách HV với trạng thái, số liệu, cập nhật ≤ 60 giây</td><td><a class="chip screen" href="../screen-flow-design.html#T16">T16</a></td><td><span class="chip ac">AC-15.1</span> <span class="chip ac">AC-15.2</span> <span class="chip ac">AC-15.3</span> <span class="chip ac">AC-15.7</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>"Xem bài nộp"</td><td>T14 chỉ đọc với phần đầu của bài thi</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-15.5</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>.</p>
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: Teacher exam list — Danh sách bài thi (T10)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-5</span><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T10">T10</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN GV chọn mục "Bài thi" trên thanh điều hướng của GV THE SYSTEM SHALL mở T10 "Danh sách bài thi" liệt kê mọi bài thi không ở trạng thái "Lưu trữ" của workspace, mỗi dòng gồm tên, tên các lớp được giao, giờ mở, thời lượng (phút), giờ đóng, trạng thái và số HV đã nộp trên tổng số HV dự thi dạng "&lt;đã nộp&gt;/&lt;tổng&gt;", cùng nút "Tạo bài thi".</td></tr>
+            <tr id="AC-1.2"><td class="id">AC-1.2</td><td class="ears">THE SYSTEM SHALL sắp xếp T10 theo nhóm trạng thái "Đang mở" → "Đã lên lịch" → "Nháp" → "Đã đóng", trong đó nhóm "Đang mở" và "Đã lên lịch" theo giờ mở sớm nhất trước, nhóm "Nháp" theo thời điểm lưu gần nhất trước và nhóm "Đã đóng" theo giờ đóng gần nhất trước.</td></tr>
+            <tr id="AC-1.3"><td class="id">AC-1.3</td><td class="ears">WHEN GV chọn bộ lọc trạng thái ("Tất cả", "Nháp", "Đã lên lịch", "Đang mở", "Đã đóng") hoặc nhập từ khóa trên T10 THE SYSTEM SHALL chỉ hiển thị các bài thi khớp cả hai điều kiện (tên chứa từ khóa, không phân biệt chữ hoa/thường và dấu tiếng Việt) và hiển thị "Không có bài thi phù hợp" khi không có bài thi nào khớp.</td></tr>
+            <tr id="AC-1.4"><td class="id">AC-1.4</td><td class="ears">WHILE workspace chưa có bài thi nào không ở trạng thái "Lưu trữ" THE SYSTEM SHALL hiển thị trên T10 "Chưa có bài thi nào" kèm nút "Tạo bài thi".</td></tr>
+            <tr id="AC-1.5"><td class="id">AC-1.5</td><td class="ears">WHILE workspace có ít nhất một bài thi "Lưu trữ" THE SYSTEM SHALL hiển thị trên T10 công tắc "Hiện bài thi lưu trữ (&lt;n&gt;)" và, khi GV bật công tắc, hiển thị thêm các bài thi đó với nhãn "Lưu trữ" sau nhóm "Đã đóng".</td></tr>
+            <tr id="AC-1.6"><td class="id">AC-1.6</td><td class="ears">WHEN GV chọn tên một bài thi trên T10 THE SYSTEM SHALL mở T22 "Soạn bài thi" của bài thi đó, và hiển thị trên mỗi dòng không ở trạng thái "Nháp" nút "Xem kết quả" mở T16 (AC-15.1).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-2">
+        <header>
+          <h3>REQ-2: Exam editor — Soạn bài thi (T22)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-2.1"><td class="id">AC-2.1</td><td class="ears">WHEN GV chọn "Tạo bài thi" trên T10 THE SYSTEM SHALL mở T22 với một bài thi mới chưa lưu gồm Tên trống, Hướng dẫn trống, chưa có câu hỏi, chưa có lớp được giao, Giờ mở, Thời lượng và Giờ đóng trống, và chỉ tạo bài thi ở trạng thái "Nháp" khi GV lưu lần đầu.</td></tr>
+            <tr id="AC-2.2"><td class="id">AC-2.2</td><td class="ears">WHEN GV chọn "Lưu nháp" cho một bài thi "Nháp" THE SYSTEM SHALL lưu Tên (bắt buộc, 1–150 ký tự), Hướng dẫn (tùy chọn, tối đa 2.000 ký tự), danh sách câu hỏi (kể cả câu chưa hoàn chỉnh theo 005 AC-2.7), lớp được giao, Giờ mở, Thời lượng và Giờ đóng (được để trống) và hiển thị "Đã lưu lúc HH:mm".</td></tr>
+            <tr id="AC-2.3"><td class="id">AC-2.3</td><td class="ears">IF khi GV lưu, Tên trống hoặc dài hơn 150 ký tự, Hướng dẫn dài hơn 2.000 ký tự, Thời lượng đã nhập không phải số nguyên từ 1 đến 300, hoặc một trường câu hỏi là "trường chưa hợp lệ" theo 005 AC-2.6 THEN THE SYSTEM SHALL không lưu bài thi và hiển thị thông báo lỗi cụ thể ngay dưới từng trường vi phạm.</td></tr>
+            <tr id="AC-2.4"><td class="id">AC-2.4</td><td class="ears">WHEN GV thêm, sửa, xóa hoặc di chuyển câu hỏi trên T22 THE SYSTEM SHALL chỉ cho dùng các dạng câu hỏi tự chấm của 005 (Trắc nghiệm, Trắc nghiệm từ vựng – Chọn nghĩa, Chọn chữ Hán, Chọn pinyin, Điền chỗ trống, Nối cặp, Sắp xếp từ thành câu, Viết chữ Hán theo pinyin, Đọc hiểu) với cách soạn, đáp án, giải thích, điểm, kiểm tra tại chỗ và điều kiện hoàn chỉnh như định nghĩa trong 005 (REQ-2 … REQ-11), và đánh số câu liên tục từ 1 theo thứ tự hiển thị.</td></tr>
+            <tr id="AC-2.5"><td class="id">AC-2.5</td><td class="ears">THE SYSTEM SHALL hiển thị thường trực trên T22 số câu hỏi và tổng điểm tối đa của bài thi, cập nhật ngay khi câu hỏi hoặc điểm thay đổi.</td></tr>
+            <tr id="AC-2.6"><td class="id">AC-2.6</td><td class="ears">IF GV thêm câu hỏi khi bài thi đã có 100 câu hỏi THEN THE SYSTEM SHALL không thêm và hiển thị "Bài thi có tối đa 100 câu hỏi".</td></tr>
+            <tr id="AC-2.7"><td class="id">AC-2.7</td><td class="ears">IF GV lưu bài thi trong khi bài thi đó đã được lưu thay đổi mới hơn từ một cửa sổ hoặc thiết bị khác sau khi T22 tải nó THEN THE SYSTEM SHALL không ghi đè, giữ nguyên nội dung GV đang soạn trên màn hình và hiển thị "Bài thi đã được thay đổi ở cửa sổ khác. Hãy tải lại để xem bản mới nhất."</td></tr>
+            <tr id="AC-2.8"><td class="id">AC-2.8</td><td class="ears">IF GV rời T22 (chọn mục khác, đóng hoặc tải lại tab) khi còn thay đổi chưa lưu THEN THE SYSTEM SHALL hiển thị xác nhận "Bạn có thay đổi chưa lưu. Rời trang và bỏ thay đổi?" (khi đóng hoặc tải lại tab: cảnh báo rời trang của trình duyệt) và chỉ rời trang khi GV xác nhận.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-3">
+        <header>
+          <h3>REQ-3: Assigned classes, schedule and scheduling — Lớp được giao, lịch thi và "Lên lịch"</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T22">T22</a><a class="chip screen" href="../screen-flow-design.html#T10">T10</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-3.1"><td class="id">AC-3.1</td><td class="ears">WHEN GV mở ô "Lớp được giao" trên T22 THE SYSTEM SHALL liệt kê các lớp của workspace đang ở trạng thái Sắp bắt đầu hoặc Đang học (tên lớp, trạng thái, sĩ số), cho chọn nhiều lớp và không liệt kê lớp Đã kết thúc.</td></tr>
+            <tr id="AC-3.2"><td class="id">AC-3.2</td><td class="ears">THE SYSTEM SHALL nhận Giờ mở và Giờ đóng là ngày giờ theo giờ Việt Nam (UTC+7) chính xác tới phút, nhận Thời lượng là số nguyên phút từ 1 đến 300, và hiển thị mọi thời điểm của bài thi, lượt làm và bài nộp dạng dd/MM/yyyy HH:mm theo giờ Việt Nam, không phụ thuộc múi giờ của thiết bị.</td></tr>
+            <tr id="AC-3.3"><td class="id">AC-3.3</td><td class="ears">IF khi GV lên lịch hoặc lưu một bài thi không ở trạng thái "Nháp", Giờ đóng sớm hơn Giờ mở cộng Thời lượng, hoặc Giờ đóng không ở tương lai THEN THE SYSTEM SHALL không lưu và hiển thị dưới trường Giờ đóng tương ứng "Giờ đóng phải sau giờ mở ít nhất bằng thời lượng làm bài (&lt;n&gt; phút)." hoặc "Giờ đóng phải ở tương lai."</td></tr>
+            <tr id="AC-3.4"><td class="id">AC-3.4</td><td class="ears">WHEN GV chọn "Lên lịch" cho một bài thi "Nháp" có Tên hợp lệ, từ 1 đến 100 câu hỏi và mọi câu hoàn chỉnh theo điều kiện của 005 (AC-12.3), ít nhất một lớp được giao, Giờ mở không sớm hơn phút hiện tại, Thời lượng và Giờ đóng hợp lệ theo AC-3.3 THE SYSTEM SHALL lưu bài thi, chuyển bài thi sang trạng thái theo AC-3.6, hiển thị "Đã lên lịch · mở lúc HH:mm dd/MM/yyyy" và hiển thị bài thi cho HV dự thi theo AC-7.1.</td></tr>
+            <tr id="AC-3.5"><td class="id">AC-3.5</td><td class="ears">IF GV chọn "Lên lịch" khi bài thi chưa đạt một hoặc nhiều điều kiện ở AC-3.4 THEN THE SYSTEM SHALL giữ trạng thái "Nháp" và liệt kê từng điều kiện chưa đạt, mỗi mục dẫn tới trường hoặc câu hỏi cần sửa.</td></tr>
+            <tr id="AC-3.6"><td class="id">AC-3.6</td><td class="ears">THE SYSTEM SHALL xác định trạng thái của một bài thi đã lên lịch và không ở "Lưu trữ" theo đồng hồ hệ thống mà không cần thao tác của GV: "Đã lên lịch" khi thời điểm hiện tại trước Giờ mở, "Đang mở" từ Giờ mở tới trước Giờ đóng, "Đã đóng" từ Giờ đóng.</td></tr>
+            <tr id="AC-3.7"><td class="id">AC-3.7</td><td class="ears">WHEN GV lên lịch hoặc lưu lịch khi một lớp được giao ở trạng thái Sắp bắt đầu có ngày bắt đầu sau ngày của Giờ mở THE SYSTEM SHALL vẫn lưu và hiển thị cảnh báo "Lớp &lt;tên lớp&gt; bắt đầu ngày dd/MM/yyyy — học viên lớp này chỉ vào thi được từ ngày đó.", hoặc "Lớp &lt;tên lớp&gt; bắt đầu sau giờ đóng — học viên lớp này sẽ không làm được bài thi." khi ngày bắt đầu sau Giờ đóng.</td></tr>
+            <tr id="AC-3.8"><td class="id">AC-3.8</td><td class="ears">WHEN GV chọn "Hủy lịch" cho một bài thi "Đã lên lịch" hoặc "Đang mở" chưa có lượt làm nào và xác nhận "Hủy lịch bài thi «&lt;tên&gt;»? Học viên sẽ không còn thấy bài thi này." THE SYSTEM SHALL chuyển bài thi về "Nháp", giữ nguyên nội dung, lớp được giao và lịch đã nhập, và không còn hiển thị bài thi cho HV.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-4">
+        <header>
+          <h3>REQ-4: Locking the exam after the first attempt — Sửa bài thi trước và sau lượt làm đầu tiên</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-4.1"><td class="id">AC-4.1</td><td class="ears">WHILE bài thi "Đã lên lịch" hoặc "Đang mở" chưa có lượt làm nào THE SYSTEM SHALL cho GV sửa mọi nội dung, lớp được giao và lịch trên T22 và lưu bằng "Lưu thay đổi" chỉ khi bài thi vẫn đạt mọi điều kiện của AC-3.4 (điều kiện Giờ mở không sớm hơn phút hiện tại chỉ xét khi Giờ mở bị đổi), nếu không thì không lưu và liệt kê điều kiện chưa đạt như AC-3.5.</td></tr>
+            <tr id="AC-4.2"><td class="id">AC-4.2</td><td class="ears">WHILE bài thi đã có ít nhất một lượt làm THE SYSTEM SHALL không cho thêm, xóa, di chuyển hoặc sửa câu hỏi, đáp án, giải thích hay điểm, không cho đổi Giờ mở hay Thời lượng, và hiển thị trên T22 "Đề thi đã khóa vì đã có học viên bắt đầu làm bài. Chỉ sửa được tên, hướng dẫn, lớp được giao và lùi giờ đóng."</td></tr>
+            <tr id="AC-4.3"><td class="id">AC-4.3</td><td class="ears">IF GV lưu thay đổi câu hỏi, Giờ mở hoặc Thời lượng khi bài thi đã có lượt làm đầu tiên sau lúc T22 tải bài thi THEN THE SYSTEM SHALL không lưu các thay đổi đó, giữ nguyên nội dung GV đang soạn trên màn hình và hiển thị "Đề thi vừa bị khóa vì học viên đã bắt đầu làm bài. Thay đổi câu hỏi và lịch không được lưu."</td></tr>
+            <tr id="AC-4.4"><td class="id">AC-4.4</td><td class="ears">WHILE bài thi ở trạng thái "Đã đóng" THE SYSTEM SHALL chỉ cho sửa Tên và Hướng dẫn, không cho đổi câu hỏi, lớp được giao, Giờ mở, Thời lượng hay Giờ đóng, và hiển thị trên T22 "Bài thi đã đóng — không thể đổi đề, lớp được giao hoặc lịch."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-5">
+        <header>
+          <h3>REQ-5: Changing classes and close time of a running exam — Đổi lớp được giao và giờ đóng khi đã có lượt làm</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T22">T22</a><a class="chip screen" href="../screen-flow-design.html#S07">S07</a><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-5.1"><td class="id">AC-5.1</td><td class="ears">IF GV đổi Giờ đóng của một bài thi đã có lượt làm sang thời điểm sớm hơn Giờ đóng hiện tại THEN THE SYSTEM SHALL không lưu và hiển thị "Khi đã có học viên làm bài, chỉ có thể lùi giờ đóng muộn hơn."</td></tr>
+            <tr id="AC-5.2"><td class="id">AC-5.2</td><td class="ears">WHEN GV lưu Giờ đóng muộn hơn cho một bài thi "Đang mở" THE SYSTEM SHALL tính lại thời điểm kết thúc của mỗi lượt đang làm bằng thời điểm sớm hơn giữa (thời điểm bắt đầu của lượt + Thời lượng) và Giờ đóng mới, và hiển thị thời gian còn lại mới trên đồng hồ của HV đang làm trong vòng 10 giây.</td></tr>
+            <tr id="AC-5.3"><td class="id">AC-5.3</td><td class="ears">WHEN GV thêm một lớp vào bài thi chưa ở trạng thái "Đã đóng" THE SYSTEM SHALL hiển thị bài thi cho HV dự thi của lớp đó theo AC-7.1 và cho họ vào thi trong khoảng mở như mọi HV dự thi khác.</td></tr>
+            <tr id="AC-5.4"><td class="id">AC-5.4</td><td class="ears">IF GV bỏ một lớp khỏi bài thi khi có ít nhất một HV hiện thuộc lớp đó đã có lượt làm của bài thi THEN THE SYSTEM SHALL không bỏ lớp và hiển thị "Không thể bỏ lớp &lt;tên lớp&gt; vì đã có học viên của lớp làm bài thi này."</td></tr>
+            <tr id="AC-5.5"><td class="id">AC-5.5</td><td class="ears">WHEN GV bỏ một lớp không có HV nào đã có lượt làm khỏi bài thi THE SYSTEM SHALL không còn hiển thị bài thi cho HV của lớp đó, trừ HV còn thuộc một lớp được giao khác.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-6">
+        <header>
+          <h3>REQ-6: Delete, archive, restore and duplicate — Xóa, lưu trữ, khôi phục, nhân bản bài thi</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="chip">US-7</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T10">T10</a><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-6.1"><td class="id">AC-6.1</td><td class="ears">WHEN GV chọn "Xóa" cho một bài thi chưa có lượt làm nào và xác nhận "Xóa bài thi «&lt;tên&gt;»? Thao tác không hoàn tác được." THE SYSTEM SHALL xóa bài thi, không còn hiển thị bài thi cho HV nào, đưa GV về T10 và hiển thị "Đã xóa bài thi".</td></tr>
+            <tr id="AC-6.2"><td class="id">AC-6.2</td><td class="ears">IF GV chọn "Xóa" (hoặc xác nhận xóa) khi bài thi đã có ít nhất một lượt làm, kể cả lượt bắt đầu sau lúc mở hộp xác nhận THEN THE SYSTEM SHALL không xóa và hiển thị "Bài thi đã có học viên làm bài nên không xóa được — hãy Lưu trữ sau khi bài thi đóng."</td></tr>
+            <tr id="AC-6.3"><td class="id">AC-6.3</td><td class="ears">WHEN GV chọn "Lưu trữ" cho một bài thi "Đã đóng" THE SYSTEM SHALL ngay lập tức chuyển bài thi sang "Lưu trữ", ẩn bài thi khỏi T10 (trừ khi bật công tắc của AC-1.5), không hiển thị bài thi và kết quả của nó cho HV trên S07, S08, và giữ nguyên mọi lượt làm, bài nộp, điểm bài thi và kết quả đã cung cấp cho 008, 009.</td></tr>
+            <tr id="AC-6.4"><td class="id">AC-6.4</td><td class="ears">THE SYSTEM SHALL chỉ cung cấp thao tác "Lưu trữ" cho bài thi ở trạng thái "Đã đóng".</td></tr>
+            <tr id="AC-6.5"><td class="id">AC-6.5</td><td class="ears">WHEN GV chọn "Khôi phục" cho một bài thi "Lưu trữ" THE SYSTEM SHALL ngay lập tức chuyển bài thi về "Đã đóng" và hiển thị lại bài thi cùng kết quả cho HV dự thi như trước khi lưu trữ.</td></tr>
+            <tr id="AC-6.6"><td class="id">AC-6.6</td><td class="ears">WHEN GV chọn "Nhân bản" cho một bài thi THE SYSTEM SHALL tạo một bài thi mới ở trạng thái "Nháp" tên "&lt;tên gốc&gt; (bản sao)" (cắt còn 150 ký tự), sao chép Hướng dẫn, mọi câu hỏi, đáp án, giải thích, điểm và Thời lượng, không sao chép lớp được giao, Giờ mở, Giờ đóng, lượt làm hay bài nộp, và mở T22 của bản sao.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-7">
+        <header>
+          <h3>REQ-7: Student exam list — Danh sách bài thi của học viên (S07)</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S07">S07</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-7.1"><td class="id">AC-7.1</td><td class="ears">THE SYSTEM SHALL cho một HV thấy một bài thi khi và chỉ khi bài thi ở trạng thái "Đã lên lịch", "Đang mở" hoặc "Đã đóng" và HV là thành viên hiện tại của ít nhất một lớp được giao của bài thi mà lớp đó không ở trạng thái Sắp bắt đầu.</td></tr>
+            <tr id="AC-7.2"><td class="id">AC-7.2</td><td class="ears">WHEN HV chọn mục "Bài thi" trên thanh điều hướng của HV THE SYSTEM SHALL mở S07 liệt kê mọi bài thi HV thấy được theo AC-7.1, mỗi bài thi đúng một dòng kể cả khi HV thuộc nhiều lớp được giao, gồm tên, tên các lớp được giao mà HV thuộc, số câu hỏi, Thời lượng, dòng trạng thái và nút theo AC-7.3.</td></tr>
+            <tr id="AC-7.3"><td class="id">AC-7.3</td><td class="ears">THE SYSTEM SHALL hiển thị cho mỗi bài thi trên S07 đúng một trạng thái của HV, xét theo thứ tự ưu tiên: "Đã nộp · &lt;điểm&gt;/100" kèm nút "Xem kết quả" khi HV có bài nộp; "Đang làm · còn &lt;thời gian còn lại&gt;" kèm nút "Tiếp tục làm bài" khi HV có lượt đang làm; "Đã đóng · Không làm bài" kèm nút "Xem kết quả" khi HV có kết quả "Không làm bài" (AC-13.3); "Đã đóng" khi đã qua Giờ đóng; "Mở lúc HH:mm dd/MM/yyyy" khi chưa tới Giờ mở; "Lớp đã kết thúc — không thể vào thi." khi không lớp được giao nào mà HV thuộc đang ở trạng thái Đang học; còn lại "Đang mở · đóng lúc HH:mm dd/MM/yyyy" kèm nút "Vào thi".</td></tr>
+            <tr id="AC-7.4"><td class="id">AC-7.4</td><td class="ears">THE SYSTEM SHALL sắp xếp S07 theo nhóm: bài thi HV đang làm, bài thi đang mở mà HV chưa làm (Giờ đóng sớm nhất trước), bài thi chưa mở (Giờ mở sớm nhất trước), rồi các bài thi còn lại (Giờ đóng gần nhất trước).</td></tr>
+            <tr id="AC-7.5"><td class="id">AC-7.5</td><td class="ears">WHILE còn dưới 24 giờ tới Giờ mở của một bài thi "Đã lên lịch" THE SYSTEM SHALL hiển thị trên dòng của bài thi đó trên S07 đồng hồ đếm ngược "Mở sau hh:mm:ss" theo đồng hồ hệ thống.</td></tr>
+            <tr id="AC-7.6"><td class="id">AC-7.6</td><td class="ears">WHEN tới Giờ mở hoặc Giờ đóng của một bài thi trong khi HV đang mở S07 THE SYSTEM SHALL cập nhật dòng của bài thi đó sang trạng thái mới theo AC-7.3 (kèm hoặc bỏ nút "Vào thi") trong vòng 5 giây mà HV không cần tải lại trang.</td></tr>
+            <tr id="AC-7.7"><td class="id">AC-7.7</td><td class="ears">WHILE HV không thấy bài thi nào theo AC-7.1 THE SYSTEM SHALL hiển thị trên S07 "Chưa có bài thi nào."</td></tr>
+            <tr id="AC-7.8"><td class="id">AC-7.8</td><td class="ears">WHEN HV được thêm vào một lớp được giao (003) khi bài thi đang ở trạng thái "Đã lên lịch" hoặc "Đang mở" THE SYSTEM SHALL hiển thị bài thi trên S07 của HV từ lần mở tiếp theo và cho HV vào thi trong khoảng mở như mọi HV dự thi khác.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-8">
+        <header>
+          <h3>REQ-8: Lobby and start — Sảnh và bắt đầu làm bài (S07)</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S07">S07</a><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-8.1"><td class="id">AC-8.1</td><td class="ears">WHEN HV chọn "Vào thi" THE SYSTEM SHALL hiển thị sảnh của bài thi trên S07 gồm tên, hướng dẫn, số câu hỏi, Thời lượng, Giờ đóng, các dòng "Bạn chỉ được làm bài thi này một lần." và "Đồng hồ chạy liên tục kể cả khi bạn thoát ra hoặc mất kết nối.", nút "Bắt đầu làm bài" và "Quay lại", và không hiển thị nội dung câu hỏi nào.</td></tr>
+            <tr id="AC-8.2"><td class="id">AC-8.2</td><td class="ears">IF thời gian từ lúc sảnh được hiển thị tới Giờ đóng ngắn hơn Thời lượng THEN THE SYSTEM SHALL hiển thị thêm trên sảnh cảnh báo "Bài thi đóng lúc HH:mm — bạn chỉ còn &lt;N&gt; phút để làm bài." với N là số phút còn lại làm tròn xuống.</td></tr>
+            <tr id="AC-8.3"><td class="id">AC-8.3</td><td class="ears">WHEN HV chọn "Bắt đầu làm bài" khi được phép bắt đầu THE SYSTEM SHALL tạo lượt làm duy nhất của HV cho bài thi, ghi thời điểm bắt đầu theo đồng hồ hệ thống, đặt thời điểm kết thúc của lượt bằng thời điểm sớm hơn giữa (thời điểm bắt đầu + Thời lượng) và Giờ đóng, và mở S08 tại câu 1 với đồng hồ đếm ngược.</td></tr>
+            <tr id="AC-8.4"><td class="id">AC-8.4</td><td class="ears">IF HV chọn "Vào thi" hoặc "Bắt đầu làm bài" khi không còn được bắt đầu — chưa tới Giờ mở, đã qua Giờ đóng, HV đã có lượt làm hoặc bài nộp, không lớp được giao nào mà HV thuộc đang ở trạng thái Đang học, hoặc bài thi không còn hiển thị với HV theo AC-7.1 THEN THE SYSTEM SHALL không tạo lượt làm mới và hiển thị tình trạng hiện tại: mở lượt đang làm nếu có, S07 với trạng thái mới, hoặc A05 "Không tìm thấy nội dung" khi bài thi không còn hiển thị với HV.</td></tr>
+            <tr id="AC-8.5"><td class="id">AC-8.5</td><td class="ears">IF HV chọn "Bắt đầu làm bài" nhiều lần hoặc gần như đồng thời từ hai thẻ hay thiết bị THEN THE SYSTEM SHALL tạo đúng một lượt làm và mở cùng lượt đó ở các nơi (quyền làm bài theo AC-10.4).</td></tr>
+            <tr id="AC-8.6"><td class="id">AC-8.6</td><td class="ears">THE SYSTEM SHALL tính lượt làm là đã dùng ngay khi được tạo, kể cả khi HV chưa trả lời câu nào hay rời bài thi ngay sau đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-9">
+        <header>
+          <h3>REQ-9: Taking a timed exam — Làm bài có giới hạn thời gian (S08)</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-9.1"><td class="id">AC-9.1</td><td class="ears">WHILE HV đang làm bài THE SYSTEM SHALL hiển thị thường trực đồng hồ đếm ngược thời gian còn lại tới thời điểm kết thúc của lượt, dạng mm:ss khi còn dưới 60 phút và h:mm:ss khi còn từ 60 phút trở lên, tính theo đồng hồ hệ thống chứ không theo đồng hồ của thiết bị.</td></tr>
+            <tr id="AC-9.2"><td class="id">AC-9.2</td><td class="ears">WHILE HV đang làm bài THE SYSTEM SHALL hiển thị từng câu một kèm "Câu &lt;n&gt;/&lt;tổng&gt;", nút "Câu trước" / "Câu sau" và bảng số câu chuyển được tới câu bất kỳ (phân biệt câu đã hoàn thành, trả lời một phần và chưa trả lời theo 005 AC-14.3), cho trả lời mọi dạng câu như trên S05 của 005, và không hiển thị đáp án đúng, giải thích hay kết quả của câu nào.</td></tr>
+            <tr id="AC-9.3"><td class="id">AC-9.3</td><td class="ears">WHEN HV thay đổi một câu trả lời THE SYSTEM SHALL tự động lưu câu trả lời trong vòng 3 giây sau thay đổi cuối cùng, hiển thị "Đang lưu…" trong khi lưu và "Đã lưu lúc HH:mm:ss" khi hệ thống đã ghi nhận.</td></tr>
+            <tr id="AC-9.4"><td class="id">AC-9.4</td><td class="ears">WHEN thời gian còn lại của lượt làm chạm mốc 5 phút hoặc mốc 1 phút THE SYSTEM SHALL hiển thị cảnh báo không chặn thao tác "Còn 5 phút" hoặc "Còn 1 phút", mỗi mốc một lần, và bỏ qua mốc đã qua tại lúc lượt làm bắt đầu.</td></tr>
+            <tr id="AC-9.5"><td class="id">AC-9.5</td><td class="ears">THE SYSTEM SHALL trình bày các câu hỏi cho mọi HV theo cùng thứ tự GV đã soạn, và tạo thứ tự hiển thị các mục của câu Nối cặp và các mảnh của câu Sắp xếp từ thành câu theo quy tắc của 005 một lần cho mỗi lượt làm, giữ nguyên thứ tự đó khi HV tiếp tục lượt.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-10">
+        <header>
+          <h3>REQ-10: Connection loss, reload and device switch — Mất kết nối, tải lại và đổi thiết bị (S08)</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-10.1"><td class="id">AC-10.1</td><td class="ears">WHILE thiết bị của HV mất kết nối trong lúc làm bài THE SYSTEM SHALL hiển thị cảnh báo "Mất kết nối — đồng hồ vẫn chạy. Câu trả lời chưa lưu sẽ không được tính nếu không kết nối lại trước khi hết giờ." kèm số câu chưa lưu, và vẫn cho HV xem các câu đã tải và nhập câu trả lời.</td></tr>
+            <tr id="AC-10.2"><td class="id">AC-10.2</td><td class="ears">WHEN thiết bị kết nối lại chậm nhất 10 giây sau thời điểm kết thúc của lượt làm THE SYSTEM SHALL tự động gửi các câu trả lời chưa lưu, hiển thị "Đã lưu lúc HH:mm:ss" và ẩn cảnh báo mất kết nối.</td></tr>
+            <tr id="AC-10.3"><td class="id">AC-10.3</td><td class="ears">WHEN HV mở lại bài thi (tải lại trang, mở lại trình duyệt, đăng nhập trên thiết bị khác hoặc đăng nhập lại sau khi hết phiên) trước thời điểm kết thúc của lượt đang làm THE SYSTEM SHALL tiếp tục chính lượt đó với mọi câu trả lời đã lưu và thứ tự đã tạo cho lượt, mở tại câu HV xem gần nhất, với thời gian còn lại bằng thời điểm kết thúc trừ thời điểm hiện tại.</td></tr>
+            <tr id="AC-10.4"><td class="id">AC-10.4</td><td class="ears">WHEN cùng một lượt làm được mở ở thiết bị hoặc thẻ trình duyệt thứ hai THE SYSTEM SHALL chuyển quyền làm bài sang nơi mở sau cùng, còn nơi mở trước hiển thị "Bài thi đang được làm ở thiết bị hoặc cửa sổ khác" và không ghi nhận thêm câu trả lời từ đó.</td></tr>
+            <tr id="AC-10.5"><td class="id">AC-10.5</td><td class="ears">IF HV rời hoặc đóng trang khi còn câu trả lời chưa được lưu THEN THE SYSTEM SHALL cảnh báo "Một số câu trả lời chưa được lưu. Rời trang có thể làm mất chúng." trước khi rời trang.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-11">
+        <header>
+          <h3>REQ-11: Submitting — Nộp bài</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-11.1"><td class="id">AC-11.1</td><td class="ears">WHEN HV chọn "Nộp bài" THE SYSTEM SHALL hiển thị hộp xác nhận nêu số câu chưa hoàn thành kèm số thứ tự của chúng (hoặc "Bạn đã hoàn thành tất cả câu hỏi"), dòng "Sau khi nộp bạn không thể làm lại." và hai nút "Nộp bài" và "Làm tiếp".</td></tr>
+            <tr id="AC-11.2"><td class="id">AC-11.2</td><td class="ears">WHEN HV xác nhận nộp THE SYSTEM SHALL ghi nhận bài nộp gồm các câu trả lời đã lưu, thời điểm nộp và thời gian làm bài (thời điểm nộp trừ thời điểm bắt đầu), khóa mọi câu trả lời của lượt và hiển thị kết quả trên S08 (AC-14.1), kể cả khi HV chưa trả lời câu nào.</td></tr>
+            <tr id="AC-11.3"><td class="id">AC-11.3</td><td class="ears">IF HV nộp thủ công cùng lúc với lúc hệ thống nộp tự động, gửi nộp nhiều lần, hoặc nộp từ hai thiết bị gần như đồng thời THEN THE SYSTEM SHALL ghi nhận đúng một bài nộp cho lượt làm và đưa HV tới kết quả của bài nộp đó.</td></tr>
+            <tr id="AC-11.4"><td class="id">AC-11.4</td><td class="ears">IF việc nộp không hoàn tất do mất kết nối THEN THE SYSTEM SHALL giữ nguyên bài làm trên màn hình, hiển thị "Chưa nộp được bài do mất kết nối. Bài làm của bạn vẫn được giữ lại." kèm nút "Thử lại", và khi lượt đã được nộp tự động trước lúc thử lại thì hiển thị bài nộp tự động đó theo AC-12.3.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-12">
+        <header>
+          <h3>REQ-12: Auto-submit and class changes during an attempt — Nộp tự động và thay đổi lớp khi đang làm</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-12.1"><td class="id">AC-12.1</td><td class="ears">WHEN tới thời điểm kết thúc của một lượt làm chưa nộp THE SYSTEM SHALL tự động nộp lượt đó với các câu trả lời hệ thống đã ghi nhận trong vòng 60 giây, kể cả khi HV đã đóng trình duyệt, mất kết nối, bị khóa tài khoản hoặc bị gỡ khỏi lớp, và gắn nhãn "Nộp tự động" cho bài nộp.</td></tr>
+            <tr id="AC-12.2"><td class="id">AC-12.2</td><td class="ears">THE SYSTEM SHALL ghi nhận vào bài nộp mọi câu trả lời tới hệ thống chậm nhất 10 giây sau thời điểm kết thúc của lượt làm và không ghi nhận câu trả lời tới sau mốc đó.</td></tr>
+            <tr id="AC-12.3"><td class="id">AC-12.3</td><td class="ears">WHEN lượt làm được nộp tự động trong khi HV đang mở bài, hoặc HV mở lại bài thi sau khi lượt đã được nộp tự động THE SYSTEM SHALL khóa mọi ô trả lời và hiển thị "Hết giờ — bài thi đã được nộp tự động lúc HH:mm" kèm nút "Xem kết quả".</td></tr>
+            <tr id="AC-12.4"><td class="id">AC-12.4</td><td class="ears">WHEN một lớp được giao chuyển sang Đã kết thúc (003) trong khi HV của lớp có lượt làm chưa nộp THE SYSTEM SHALL cho lượt đó tiếp tục và ghi nhận câu trả lời tới khi HV nộp hoặc tới khi lượt được nộp tự động theo AC-12.1.</td></tr>
+            <tr id="AC-12.5"><td class="id">AC-12.5</td><td class="ears">IF HV bị gỡ khỏi mọi lớp được giao mà HV thuộc trong khi có lượt làm chưa nộp THEN THE SYSTEM SHALL không ghi nhận thêm câu trả lời, hiển thị "Bạn không còn thuộc lớp được giao bài thi này. Câu trả lời đã lưu sẽ được nộp tự động khi hết giờ." và nộp tự động lượt đó theo AC-12.1.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-13">
+        <header>
+          <h3>REQ-13: Auto-grading, exam score and results for ranking — Chấm tự động, điểm bài thi, kết quả cho 008 và 009</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="chip">US-8</span><span class="pill p1">P1</span></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-13.1"><td class="id">AC-13.1</td><td class="ears">WHEN một bài nộp được ghi nhận (thủ công hoặc tự động) THE SYSTEM SHALL chấm ngay mọi câu theo quy tắc chấm của dạng câu trong 005 (kể cả điểm một phần), cho 0 điểm mọi câu, câu hỏi con, chỗ trống hoặc cặp chưa trả lời, mà không cần GV chấm.</td></tr>
+            <tr id="AC-13.2"><td class="id">AC-13.2</td><td class="ears">THE SYSTEM SHALL tính điểm bài thi của một bài nộp bằng (điểm đạt ÷ tổng điểm tối đa của bài thi) × 100, làm tròn đến số nguyên gần nhất (phần lẻ từ 0,5 làm tròn lên), trong khoảng 0–100.</td></tr>
+            <tr id="AC-13.3"><td class="id">AC-13.3</td><td class="ears">WHEN bài thi chuyển sang "Đã đóng" THE SYSTEM SHALL ghi nhận kết quả "Không làm bài" với điểm bài thi 0 cho mỗi HV không có bài nộp mà tại Giờ đóng là thành viên của một lớp được giao và có tài khoản đã kích hoạt (kể cả "Đã khóa"), riêng cho từng lớp được giao HV thuộc, và không ghi nhận kết quả nào cho HV vào lớp sau Giờ đóng.</td></tr>
+            <tr id="AC-13.4"><td class="id">AC-13.4</td><td class="ears">THE SYSTEM SHALL dùng bài nộp duy nhất của HV cho bài thi làm kết quả của HV ở mọi lớp được giao mà HV là thành viên, cùng điểm bài thi ở mọi lớp đó.</td></tr>
+            <tr id="AC-13.5"><td class="id">AC-13.5</td><td class="ears">WHEN một bài nộp có điểm, kết quả "Không làm bài" được ghi nhận, HV được thêm vào hoặc gỡ khỏi một lớp được giao, hoặc bài thi được lưu trữ hay khôi phục THE SYSTEM SHALL cung cấp cho 008 và 009 trong vòng 60 giây kết quả bài thi của HV theo từng lớp được giao: bài thi, lớp, HV, loại kết quả ("Đã nộp" hoặc "Không làm bài"), điểm bài thi 0–100, thời điểm nộp và nhãn "Nộp tự động" (nếu có), Giờ đóng và việc bài thi có đang "Lưu trữ" hay không.</td></tr>
+            <tr id="AC-13.6"><td class="id">AC-13.6</td><td class="ears">THE SYSTEM SHALL không cung cấp cho 008 kết quả nào của HV cho một bài thi khi HV chưa có bài nộp và bài thi chưa "Đã đóng" (đang làm dở hoặc chưa làm).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-14">
+        <header>
+          <h3>REQ-14: Student result — Kết quả bài thi của học viên (S08)</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-14.1"><td class="id">AC-14.1</td><td class="ears">WHEN bài nộp của HV được ghi nhận, hoặc HV chọn "Xem kết quả" của bài thi đã nộp THE SYSTEM SHALL hiển thị trên S08 tên bài thi, "Đã nộp lúc HH:mm dd/MM/yyyy", nhãn "Nộp tự động" nếu có, điểm bài thi dạng "&lt;điểm&gt;/100", dòng "&lt;đạt&gt; / &lt;tổng&gt; điểm", thời gian làm bài và dòng "Bạn chỉ làm bài thi này một lần."</td></tr>
+            <tr id="AC-14.2"><td class="id">AC-14.2</td><td class="ears">WHILE bài thi chưa "Đã đóng" hoặc còn lượt làm của bài thi chưa được nộp THE SYSTEM SHALL không hiển thị cho HV đáp án đúng, giải thích hay kết quả từng câu và hiển thị trên S08 "Đáp án và giải thích sẽ hiển thị sau khi bài thi đóng lúc HH:mm dd/MM/yyyy."</td></tr>
+            <tr id="AC-14.3"><td class="id">AC-14.3</td><td class="ears">WHILE bài thi đã "Đã đóng" và mọi lượt làm của bài thi đã được nộp THE SYSTEM SHALL hiển thị thêm trên S08 của HV có bài nộp mục "Từng câu · đáp án và giải thích" với mọi câu theo thứ tự: số thứ tự, tên dạng câu, kết quả (Đúng / Đúng một phần / Sai / Chưa trả lời theo 005 AC-16.3), điểm đạt trên điểm tối đa, "Bạn trả lời:", "Đáp án đúng:" và "Giải thích:" (khi câu có giải thích) như S06 của 005 (AC-16.2, AC-16.4).</td></tr>
+            <tr id="AC-14.4"><td class="id">AC-14.4</td><td class="ears">WHEN HV có kết quả "Không làm bài" chọn "Xem kết quả" THE SYSTEM SHALL hiển thị trên S08 "Bạn đã không làm bài thi này." kèm điểm "0/100", và không hiển thị câu hỏi, đáp án hay giải thích nào.</td></tr>
+            <tr id="AC-14.5"><td class="id">AC-14.5</td><td class="ears">WHEN HV không có lượt làm và không có kết quả của một bài thi "Đã đóng" (ví dụ vào lớp sau Giờ đóng) mở bài thi đó THE SYSTEM SHALL hiển thị "Bài thi đã đóng." mà không hiển thị điểm, câu hỏi, đáp án hay giải thích nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-15">
+        <header>
+          <h3>REQ-15: Teacher results per class — Kết quả bài thi theo lớp (T16, T14)</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T16">T16</a><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-15.1"><td class="id">AC-15.1</td><td class="ears">WHEN GV chọn "Xem kết quả" của một bài thi không ở trạng thái "Nháp" (trên T10 hoặc T22) THE SYSTEM SHALL mở T16 với đầu trang gồm tên, Giờ mở, Thời lượng, Giờ đóng, trạng thái của bài thi và bộ chọn lớp gồm các lớp được giao (mặc định lớp đầu tiên theo tên A→Z).</td></tr>
+            <tr id="AC-15.2"><td class="id">AC-15.2</td><td class="ears">THE SYSTEM SHALL liệt kê trên T16 mọi HV hiện thuộc lớp đang chọn có tài khoản đã kích hoạt (kể cả "Đã khóa"), mỗi HV đúng một trạng thái: "Đã nộp" kèm điểm "&lt;điểm&gt;/100", thời điểm nộp, thời gian làm bài và nhãn "Nộp tự động" nếu có; "Đang làm" kèm thời điểm bắt đầu và thời gian còn lại; "Không làm bài · 0/100" khi HV có kết quả "Không làm bài" (AC-13.3); "Vào lớp sau khi bài thi đóng" khi bài thi đã đóng mà HV không có kết quả; còn lại "Chưa làm".</td></tr>
+            <tr id="AC-15.3"><td class="id">AC-15.3</td><td class="ears">THE SYSTEM SHALL hiển thị trên T16 số HV ở từng trạng thái của lớp đang chọn và điểm trung bình (làm tròn một chữ số thập phân) của các HV "Đã nộp", hoặc "—" khi lớp chưa có HV nào "Đã nộp".</td></tr>
+            <tr id="AC-15.4"><td class="id">AC-15.4</td><td class="ears">WHEN GV lọc theo trạng thái, tìm theo họ tên HV hoặc sắp xếp theo họ tên, điểm hoặc thời điểm nộp trên T16 THE SYSTEM SHALL cập nhật danh sách tương ứng mà không thay đổi số liệu của lớp.</td></tr>
+            <tr id="AC-15.5"><td class="id">AC-15.5</td><td class="ears">WHEN GV chọn "Xem bài nộp" của một HV "Đã nộp" trên T16 THE SYSTEM SHALL mở bài nộp trên T14 ở chế độ chỉ đọc của 005 (AC-20.2, AC-20.3) với họ tên HV, lớp, tên bài thi, thời điểm bắt đầu, thời điểm nộp, thời gian làm bài, nhãn "Nộp tự động" nếu có, điểm "&lt;điểm&gt;/100" và "&lt;đạt&gt; / &lt;tổng&gt; điểm", kể cả khi bài thi chưa đóng.</td></tr>
+            <tr id="AC-15.6"><td class="id">AC-15.6</td><td class="ears">WHILE lớp đang chọn trên T16 không có HV nào có tài khoản đã kích hoạt THE SYSTEM SHALL hiển thị "Lớp chưa có học viên" thay cho danh sách và số liệu.</td></tr>
+            <tr id="AC-15.7"><td class="id">AC-15.7</td><td class="ears">WHILE GV đang mở T16 của một bài thi "Đang mở" THE SYSTEM SHALL cập nhật trạng thái, điểm và số liệu trong vòng 60 giây sau khi một HV của lớp đang chọn bắt đầu làm hoặc nộp bài, mà GV không cần tải lại trang.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-16">
+        <header>
+          <h3>REQ-16: Access control and exam secrecy — Phân quyền và bảo mật đề thi</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-2</span><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T10">T10</a><a class="chip screen" href="../screen-flow-design.html#T22">T22</a><a class="chip screen" href="../screen-flow-design.html#T16">T16</a><a class="chip screen" href="../screen-flow-design.html#T14">T14</a><a class="chip screen" href="../screen-flow-design.html#S07">S07</a><a class="chip screen" href="../screen-flow-design.html#S08">S08</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-16.1"><td class="id">AC-16.1</td><td class="ears">IF một GV mở bài thi, kết quả hoặc bài nộp thuộc workspace của GV khác, hoặc không tồn tại, kể cả bằng đường dẫn trực tiếp THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung" như với nội dung không tồn tại.</td></tr>
+            <tr id="AC-16.2"><td class="id">AC-16.2</td><td class="ears">IF HV mở, kể cả bằng đường dẫn trực tiếp, một bài thi không thấy được theo AC-7.1, hoặc lượt làm, bài nộp hay kết quả của HV khác THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung" mà không tiết lộ nội dung hay sự tồn tại của bài thi.</td></tr>
+            <tr id="AC-16.3"><td class="id">AC-16.3</td><td class="ears">IF HV yêu cầu nội dung câu hỏi của bài thi khi HV không có lượt đang làm của bài thi đó và chưa tới mốc của AC-14.3 với bài nộp của chính HV THEN THE SYSTEM SHALL từ chối và chỉ hiển thị S07 (danh sách hoặc sảnh) hoặc kết quả trên S08 không kèm câu hỏi.</td></tr>
+            <tr id="AC-16.4"><td class="id">AC-16.4</td><td class="ears">THE SYSTEM SHALL không gửi đáp án đúng hay giải thích của bất kỳ câu nào của bài thi tới thiết bị của HV trước mốc của AC-14.3, kể cả trong lúc HV làm bài và ngay sau khi nộp.</td></tr>
+            <tr id="AC-16.5"><td class="id">AC-16.5</td><td class="ears">THE SYSTEM SHALL không áp dụng thiết lập ẩn/hiện section theo lớp (003) cho bài thi: việc HV thấy bài thi chỉ phụ thuộc AC-7.1.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td class="id">BR-1</td><td>Bài thi độc lập trong workspace, không thuộc Giáo trình / Bài; ẩn/hiện section theo lớp không áp dụng.</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-16.5</span></td></tr>
+          <tr><td class="id">BR-2</td><td>Một lịch cho mỗi bài thi (giờ mở, thời lượng, giờ đóng) áp dụng cho mọi lớp được giao; giờ đóng ≥ giờ mở + thời lượng.</td><td><span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.3</span></td></tr>
+          <tr><td class="id">BR-3</td><td>Trạng thái theo đồng hồ: Đã lên lịch (trước giờ mở) → Đang mở → Đã đóng (từ giờ đóng).</td><td><span class="chip ac">AC-3.6</span></td></tr>
+          <tr><td class="id">BR-4</td><td>Mỗi HV một lượt làm cho mỗi bài thi, tính là đã dùng ngay khi tạo; dùng chung cho mọi lớp được giao HV thuộc.</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.6</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td class="id">BR-5</td><td>Kết thúc của lượt = min(bắt đầu + thời lượng, giờ đóng); tính lại khi giờ đóng được lùi.</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-5.2</span></td></tr>
+          <tr><td class="id">BR-6</td><td>Câu trả lời tới chậm nhất 10 giây sau kết thúc của lượt được tính; nộp tự động ≤ 60 giây.</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.2</span></td></tr>
+          <tr><td class="id">BR-7</td><td>Đề khóa từ lượt làm đầu tiên: không đổi câu hỏi, đáp án, điểm, giờ mở, thời lượng; giờ đóng chỉ được lùi.</td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-5.1</span></td></tr>
+          <tr><td class="id">BR-8</td><td>Bài thi có lượt làm không xóa được; chỉ lưu trữ sau khi đóng; lưu trữ giữ mọi bài nộp và điểm.</td><td><span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.3</span> <span class="chip ac">AC-6.4</span></td></tr>
+          <tr><td class="id">BR-9</td><td>Điểm bài thi = làm tròn(điểm đạt ÷ tổng điểm × 100), 0,5 làm tròn lên, 0–100.</td><td><span class="chip ac">AC-13.2</span></td></tr>
+          <tr><td class="id">BR-10</td><td>Bài thi được tính cho HV khi đã nộp, hoặc khi đã đóng mà HV (thuộc lớp tại giờ đóng, tài khoản đã kích hoạt) không nộp → 0; HV vào lớp sau giờ đóng không có kết quả.</td><td><span class="chip ac">AC-13.3</span> <span class="chip ac">AC-13.6</span></td></tr>
+          <tr><td class="id">BR-11</td><td>Điểm hiện cho HV ngay sau khi nộp; kết quả từng câu, đáp án và giải thích chỉ sau khi đóng và mọi lượt đã nộp; HV không làm bài không thấy đề.</td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.3</span> <span class="chip ac">AC-14.4</span></td></tr>
+          <tr><td class="id">BR-12</td><td>HV thấy bài thi khi bài thi đã lên lịch (không Nháp, không Lưu trữ) và HV là thành viên hiện tại của một lớp được giao không Sắp bắt đầu; bắt đầu được khi có lớp được giao Đang học.</td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-8.4</span></td></tr>
+        </tbody>
+      </table></div>
+      <h4>Kiểm tra dữ liệu nhập</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trường</th><th class="center">Bắt buộc</th><th>Quy tắc</th><th>Thông báo khi sai</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Tên</td><td class="center yes">✓</td><td>1–150 ký tự</td><td>Lỗi dưới trường</td><td><span class="chip ac">AC-2.2</span> <span class="chip ac">AC-2.3</span></td></tr>
+          <tr><td>Hướng dẫn</td><td class="center no">—</td><td>Tối đa 2.000 ký tự</td><td>Lỗi dưới trường</td><td><span class="chip ac">AC-2.3</span></td></tr>
+          <tr><td>Câu hỏi</td><td class="center yes">✓ khi lên lịch</td><td>1–100 câu, dạng của 005, hoàn chỉnh theo 005 AC-12.3</td><td>“Bài thi có tối đa 100 câu hỏi” · danh sách điều kiện chưa đạt</td><td><span class="chip ac">AC-2.4</span> <span class="chip ac">AC-2.6</span> <span class="chip ac">AC-3.5</span></td></tr>
+          <tr><td>Lớp được giao</td><td class="center yes">✓ khi lên lịch</td><td>≥ 1 lớp Sắp bắt đầu / Đang học của workspace</td><td>Danh sách điều kiện chưa đạt</td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-3.4</span></td></tr>
+          <tr><td>Giờ mở</td><td class="center yes">✓ khi lên lịch</td><td>Ngày giờ VN, tới phút, không sớm hơn phút hiện tại</td><td>Danh sách điều kiện chưa đạt</td><td><span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.4</span></td></tr>
+          <tr><td>Thời lượng</td><td class="center yes">✓ khi lên lịch</td><td>Số nguyên 1–300 phút</td><td>Lỗi dưới trường</td><td><span class="chip ac">AC-2.3</span> <span class="chip ac">AC-3.2</span></td></tr>
+          <tr><td>Giờ đóng</td><td class="center yes">✓ khi lên lịch</td><td>≥ giờ mở + thời lượng, ở tương lai; khi đã có lượt làm chỉ được lùi</td><td>“Giờ đóng phải sau giờ mở ít nhất bằng thời lượng làm bài (&lt;n&gt; phút).” · “Giờ đóng phải ở tương lai.” · “Khi đã có học viên làm bài, chỉ có thể lùi giờ đóng muộn hơn.”</td><td><span class="chip ac">AC-3.3</span> <span class="chip ac">AC-5.1</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Nhap: Lưu nháp lần đầu
+  Nhap --> DaLenLich: Lên lịch
+  DaLenLich --> DangMo: Tới giờ mở
+  DaLenLich --> Nhap: Hủy lịch
+  DangMo --> Nhap: Hủy lịch khi chưa có lượt làm
+  DangMo --> DaDong: Tới giờ đóng
+  DaDong --> LuuTru: Lưu trữ
+  LuuTru --> DaDong: Khôi phục
+  Nhap --> [*]: Xóa
+  DaLenLich --> [*]: Xóa
+  DangMo --> [*]: Xóa khi chưa có lượt làm
+</pre>
+        <figcaption>Vòng đời bài thi — tên hiển thị: Nháp / Đã lên lịch / Đang mở / Đã đóng / Lưu trữ</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Được phép</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Nháp</td><td>Đang soạn, HV không thấy</td><td>Sửa mọi thứ, lên lịch, xóa, nhân bản</td><td><span class="chip ac">AC-2.2</span> <span class="chip ac">AC-3.4</span></td></tr>
+          <tr><td>Đã lên lịch</td><td>Trước giờ mở; HV thấy "Mở lúc …"</td><td>Sửa (vẫn hợp lệ), hủy lịch, xóa, nhân bản</td><td><span class="chip ac">AC-3.6</span> <span class="chip ac">AC-4.1</span> <span class="chip ac">AC-3.8</span></td></tr>
+          <tr><td>Đang mở</td><td>Giờ mở ≤ hiện tại &lt; giờ đóng; HV vào thi</td><td>Chưa có lượt: như Đã lên lịch. Có lượt: khóa đề, thêm lớp, bỏ lớp chưa ai làm, lùi giờ đóng, nhân bản</td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-5.1</span> <span class="chip ac">AC-5.3</span></td></tr>
+          <tr><td>Đã đóng</td><td>Từ giờ đóng; không lượt mới; "Không làm bài" được ghi nhận</td><td>Sửa tên, hướng dẫn; lưu trữ; nhân bản; xóa nếu không có lượt làm</td><td><span class="chip ac">AC-4.4</span> <span class="chip ac">AC-6.3</span> <span class="chip ac">AC-13.3</span></td></tr>
+          <tr><td>Lưu trữ</td><td>Ẩn khỏi T10 mặc định và khỏi HV; giữ mọi dữ liệu</td><td>Khôi phục, nhân bản, xem kết quả</td><td><span class="chip ac">AC-6.3</span> <span class="chip ac">AC-6.5</span></td></tr>
+        </tbody>
+      </table></div>
+      <h4>Trạng thái của HV với một bài thi</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>S07 (HV)</th><th>T16 (GV)</th><th>Khi nào</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Mở lúc HH:mm dd/MM/yyyy (+ "Mở sau hh:mm:ss" khi &lt; 24 giờ)</td><td>Chưa làm</td><td>Trước giờ mở</td><td><span class="chip ac">AC-7.3</span> <span class="chip ac">AC-7.5</span></td></tr>
+          <tr><td>Đang mở · đóng lúc … + "Vào thi"</td><td>Chưa làm</td><td>Đang mở, chưa có lượt, có lớp Đang học</td><td><span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td>Đang làm · còn … + "Tiếp tục làm bài"</td><td>Đang làm</td><td>Có lượt chưa nộp</td><td><span class="chip ac">AC-7.3</span> <span class="chip ac">AC-15.2</span></td></tr>
+          <tr><td>Đã nộp · &lt;điểm&gt;/100 + "Xem kết quả"</td><td>Đã nộp</td><td>Có bài nộp</td><td><span class="chip ac">AC-7.3</span> <span class="chip ac">AC-15.2</span></td></tr>
+          <tr><td>Đã đóng · Không làm bài + "Xem kết quả"</td><td>Không làm bài · 0/100</td><td>Đã đóng, thuộc lớp tại giờ đóng, không nộp</td><td><span class="chip ac">AC-13.3</span> <span class="chip ac">AC-15.2</span></td></tr>
+          <tr><td>Đã đóng</td><td>Vào lớp sau khi bài thi đóng</td><td>Vào lớp sau giờ đóng</td><td><span class="chip ac">AC-14.5</span> <span class="chip ac">AC-15.2</span></td></tr>
+          <tr><td>Lớp đã kết thúc — không thể vào thi.</td><td>Chưa làm</td><td>Đang mở nhưng không có lớp được giao Đang học</td><td><span class="chip ac">AC-7.3</span> <span class="chip ac">AC-8.4</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T10">T10</a></td><td>Danh sách bài thi</td><td><span class="pill gv">GV</span></td><td>Mục "Bài thi" trên thanh điều hướng GV; bảng tên, lớp được giao, giờ mở, thời lượng, giờ đóng, trạng thái, "đã nộp/tổng"; lọc trạng thái, tìm tên; "Tạo bài thi"; "Xem kết quả"; công tắc "Hiện bài thi lưu trữ (n)".</td><td>F-1 · REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T22">T22</a></td><td>Soạn bài thi <em>(mã mới)</em></td><td><span class="pill gv">GV</span></td><td>Tên, hướng dẫn, câu hỏi (trình soạn của 005), số câu + tổng điểm thường trực, "Lớp được giao", giờ mở, thời lượng, giờ đóng; "Lưu nháp" / "Lưu thay đổi", "Lên lịch", "Hủy lịch", "Xóa", "Lưu trữ", "Khôi phục", "Nhân bản", "Xem kết quả"; biểu ngữ khóa đề.</td><td>F-1, F-4 · REQ-2 … REQ-6</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T16">T16</a></td><td>Kết quả bài thi</td><td><span class="pill gv">GV</span></td><td>Đầu trang (tên, lịch, trạng thái), bộ chọn lớp được giao, số HV theo trạng thái + điểm trung bình, danh sách HV (Đã nộp / Đang làm / Chưa làm / Không làm bài), lọc, tìm, sắp xếp, "Xem bài nộp".</td><td>F-4 · REQ-15</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td>Xem bài nộp (chỉ đọc) — của 005</td><td><span class="pill gv">GV</span></td><td>Mở bài nộp bài thi với phần đầu riêng (bài thi, lớp, bắt đầu, nộp, thời gian làm, "Nộp tự động", điểm /100) và từng câu như 005 AC-20.2.</td><td>F-4 · REQ-15</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S07">S07</a></td><td>Bài thi (danh sách + sảnh)</td><td><span class="pill hv">HV</span></td><td>Mục "Bài thi" trên thanh điều hướng HV; mỗi bài thi một dòng với trạng thái, đếm ngược "Mở sau", "Vào thi" / "Tiếp tục làm bài" / "Xem kết quả"; sảnh: số câu, thời lượng, giờ đóng, "chỉ một lần", "Bắt đầu làm bài".</td><td>F-2 · REQ-7, REQ-8</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td>Làm bài thi + kết quả</td><td><span class="pill hv">HV</span></td><td>Đồng hồ đếm ngược thường trực, "Câu n/tổng", bảng số câu, tự lưu, cảnh báo 5 / 1 phút, cảnh báo mất kết nối, "Nộp bài"; kết quả: điểm /100, "đạt / tổng điểm", thời gian làm, sau khi đóng: "Từng câu · đáp án và giải thích".</td><td>F-2, F-3 · REQ-9 … REQ-14</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td>Không tìm thấy nội dung</td><td>Chung</td><td>Mọi truy cập không có quyền hoặc không tồn tại.</td><td>REQ-16</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Màn hình mới:</em> T22 "Soạn bài thi" (mã T kế tiếp còn trống, khai báo trong <code>specs/modules.json</code>). T10, T16, S07, S08 dùng lại mã đã hoãn trước đây với nội dung mới. Prototype chưa có các màn hình này cho mô hình mới.</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Timing</td><td>đồng hồ đếm ngược trên thiết bị HV (S08) và đếm ngược "Mở sau" (S07) lệch ≤ 2 giây so với thời gian theo đồng hồ hệ thống, kể cả khi đồng hồ thiết bị sai tới 24 giờ hoặc đặt múi giờ khác UTC+7, và trở lại độ lệch ≤ 2 giây trong ≤ 5 giây sau khi thiết bị thoát chế độ ngủ.</td></tr>
+          <tr><td class="id">NFR-2</td><td>Reliability</td><td>100 % lượt làm chưa nộp được nộp tự động trong ≤ 60 giây sau thời điểm kết thúc của lượt, kiểm chứng với 200 lượt kết thúc cùng lúc tại Giờ đóng và không thiết bị nào đang mở; kết quả "Không làm bài" (AC-13.3) được ghi nhận cho 100 % HV được tính trong ≤ 60 giây sau Giờ đóng.</td></tr>
+          <tr><td class="id">NFR-3</td><td>Reliability</td><td>0 câu trả lời đã hiển thị "Đã lưu" bị thiếu trong bài nộp, 0 lượt làm thứ hai và 0 bài nộp thứ hai cho cùng HV × bài thi, kiểm chứng bằng 1.000 lượt làm mô phỏng có ngắt kết nối, tải lại trang, đổi thiết bị, bấm "Bắt đầu làm bài" và "Nộp bài" đồng thời trên 2 thiết bị.</td></tr>
+          <tr><td class="id">NFR-4</td><td>Performance</td><td>p95 thời gian từ thay đổi câu trả lời cuối cùng tới khi hiển thị "Đã lưu" ≤ 3 giây trên mạng di động mô phỏng 4G (10 Mbps, độ trễ 100 ms) khi 300 HV đang làm bài đồng thời trong toàn hệ thống; sau khi kết nối lại, các câu trả lời chưa lưu được ghi nhận và hiển thị "Đã lưu" trong ≤ 5 giây (p95).</td></tr>
+          <tr><td class="id">NFR-5</td><td>Performance</td><td>p95 thời gian từ khi HV chọn "Bắt đầu làm bài" hoặc "Tiếp tục làm bài" tới khi hiển thị câu hỏi đầu tiên ≤ 3 giây với bài thi 100 câu (không tính tải hình ảnh) khi 200 HV cùng bắt đầu một bài thi trong cùng 60 giây; chuyển giữa các câu ≤ 300 ms (p95).</td></tr>
+          <tr><td class="id">NFR-6</td><td>Performance</td><td>p95 thời gian từ khi HV xác nhận nộp tới khi S08 hiển thị điểm ≤ 2 giây với bài thi 100 câu khi 200 HV nộp trong cùng 60 giây; T16 hiển thị đầy đủ danh sách và số liệu của một lớp 100 HV trong ≤ 2 giây (p95) trên máy tính.</td></tr>
+          <tr><td class="id">NFR-7</td><td>Security</td><td>0 trường hợp nội dung câu hỏi tới thiết bị HV ngoài lượt đang làm của chính HV hoặc trước mốc AC-14.3, và 0 trường hợp đáp án đúng hay giải thích tới thiết bị HV trước mốc AC-14.3, kiểm chứng bằng kiểm thử bảo mật trên cả 9 dạng câu của 005; 100 % ca truy cập chéo (GV workspace khác, HV ngoài lớp được giao, HV của lớp Sắp bắt đầu, HV khác, người chưa đăng nhập) bị từ chối bằng A05 mà không lộ nội dung.</td></tr>
+          <tr><td class="id">NFR-8</td><td>Usability</td><td>S07 và S08 dùng được ở chiều rộng 360–430 px không cuộn ngang; đồng hồ đếm ngược luôn nhìn thấy khi cuộn câu hỏi; vùng chạm của nút, số câu trên bảng điều hướng, mục Nối cặp và mảnh Sắp xếp ≥ 44×44 px; chữ Hán ≥ 18 px và pinyin có dấu thanh hiển thị đúng trên 2 phiên bản mới nhất của Chrome Android và Safari iOS.</td></tr>
+          <tr><td class="id">NFR-9</td><td>Correctness</td><td>trạng thái bài thi (T10, S07), thời điểm kết thúc của lượt, trạng thái HV trên T16 và kết quả "Không làm bài" đúng 100 % trên bộ ≥ 50 ca kiểm thử biên (bắt đầu sát Giờ đóng, Giờ mở bằng phút hiện tại, lùi Giờ đóng khi có lượt bị giới hạn bởi Giờ đóng cũ, thiết bị ở múi giờ khác UTC+7, HV vào lớp trước và sau Giờ đóng, HV thuộc 2 lớp được giao, lớp kết thúc khi HV đang làm, HV bị gỡ khỏi lớp khi đang làm, tài khoản bị khóa khi đang làm).</td></tr>
+          <tr><td class="id">NFR-10</td><td>Observability</td><td>100 % thao tác tạo, lưu, lên lịch, hủy lịch, đổi lịch hoặc lớp được giao, xóa, lưu trữ, khôi phục, nhân bản bài thi, bắt đầu lượt, nộp bài, nộp tự động và ghi nhận "Không làm bài" được ghi nhật ký có cấu trúc (mã bài thi, mã lớp, mã lượt, mã người thực hiện, thời điểm, kết quả hoặc lý do bị chặn); 0 dòng nhật ký chứa nội dung câu hỏi, câu trả lời, đáp án, mật khẩu, email hoặc họ tên.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thực thể</th><th>Ý nghĩa</th><th>Thuộc tính nghiệp vụ chính</th><th>Quan hệ</th></tr></thead>
+        <tbody>
+          <tr><td>Bài thi</td><td>Bài kiểm tra có giờ trong workspace của GV</td><td>Tên, hướng dẫn, câu hỏi (005), tổng điểm, lịch (giờ mở, thời lượng, giờ đóng), trạng thái, đề đã khóa</td><td>Thuộc 1 GV · giao cho ≥ 1 lớp · có nhiều lượt làm</td></tr>
+          <tr><td>Lớp được giao</td><td>Bài thi × lớp</td><td>—</td><td>Lớp thuộc 003; thêm khi chưa đóng, bỏ khi chưa ai của lớp làm</td></tr>
+          <tr><td>HV dự thi</td><td>HV thấy được bài thi</td><td>Tài khoản đã kích hoạt (kể cả Đã khóa), thành viên hiện tại của lớp được giao không Sắp bắt đầu</td><td>Bắt đầu được khi có lớp được giao Đang học</td></tr>
+          <tr><td>Lượt làm</td><td>Lần làm duy nhất của HV cho bài thi</td><td>Bắt đầu, kết thúc = min(bắt đầu + thời lượng, giờ đóng), thứ tự Nối cặp / Sắp xếp, câu trả lời đã lưu, câu xem gần nhất, thiết bị giữ quyền, trạng thái</td><td>1 HV × 1 bài thi</td></tr>
+          <tr><td>Bài nộp</td><td>Lượt đã kết thúc</td><td>Thời điểm nộp, thời gian làm, "Nộp tự động", điểm từng câu, đạt / tổng, điểm 0–100</td><td>1–1 với lượt làm</td></tr>
+          <tr><td>Kết quả bài thi theo lớp</td><td>Dữ liệu cho 008 / 009</td><td>Đã nộp (điểm của bài nộp) hoặc Không làm bài (0)</td><td>HV × bài thi × lớp được giao</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Hành vi mong đợi</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>HV bắt đầu khi còn ít hơn thời lượng tới giờ đóng</td><td>Sảnh cảnh báo số phút thực có; lượt kết thúc đúng giờ đóng</td><td><span class="chip ac">AC-8.2</span> <span class="chip ac">AC-8.3</span></td></tr>
+          <tr><td>Lượt bắt đầu khi còn dưới 5 phút</td><td>Chỉ cảnh báo "Còn 1 phút" (nếu còn trên 1 phút)</td><td><span class="chip ac">AC-9.4</span></td></tr>
+          <tr><td>Đang ở hộp xác nhận nộp khi hết giờ</td><td>Nộp tự động, hộp được thay bằng thông báo hết giờ</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.3</span></td></tr>
+          <tr><td>Bấm "Bắt đầu làm bài" hai lần / hai thiết bị</td><td>Đúng một lượt</td><td><span class="chip ac">AC-8.5</span></td></tr>
+          <tr><td>Mở sảnh rồi để quá giờ đóng mới bấm bắt đầu</td><td>Không tạo lượt, S07 "Đã đóng"</td><td><span class="chip ac">AC-8.4</span></td></tr>
+          <tr><td>Nộp thủ công trùng nộp tự động</td><td>Một bài nộp</td><td><span class="chip ac">AC-11.3</span></td></tr>
+          <tr><td>Kết nối lại sau kết thúc + 10 giây</td><td>Câu chưa lưu không được tính; HV đã được báo trước</td><td><span class="chip ac">AC-10.1</span> <span class="chip ac">AC-12.2</span></td></tr>
+          <tr><td>Đồng hồ thiết bị sai / múi giờ khác</td><td>Mọi mốc theo hệ thống, giờ Việt Nam</td><td><span class="chip ac">AC-3.2</span> <span class="chip ac">AC-9.1</span></td></tr>
+          <tr><td>Nộp khi chưa trả lời câu nào</td><td>Được nộp, điểm 0 (khác 005)</td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-13.1</span></td></tr>
+          <tr><td>HV thuộc hai lớp cùng được giao</td><td>Một dòng, một lượt, cùng điểm ở cả hai lớp</td><td><span class="chip ac">AC-7.2</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td>Lớp được giao còn Sắp bắt đầu khi bài thi mở</td><td>HV lớp đó chưa thấy; thấy và làm được từ ngày bắt đầu nếu trước giờ đóng; GV được cảnh báo</td><td><span class="chip ac">AC-3.7</span> <span class="chip ac">AC-7.1</span></td></tr>
+          <tr><td>HV chỉ thuộc lớp đã kết thúc</td><td>Thấy bài thi, không bắt đầu được; lượt đang làm thì làm tiếp tới khi nộp / hết giờ</td><td><span class="chip ac">AC-7.3</span> <span class="chip ac">AC-8.4</span> <span class="chip ac">AC-12.4</span></td></tr>
+          <tr><td>HV vào lớp khi bài thi đang mở / sau giờ đóng</td><td>Đang mở: làm được. Sau đóng: không có kết quả, không bị tính 0</td><td><span class="chip ac">AC-7.8</span> <span class="chip ac">AC-13.3</span> <span class="chip ac">AC-14.5</span></td></tr>
+          <tr><td>HV bị gỡ khỏi lớp khi đang làm</td><td>Không lưu thêm, nộp tự động khi hết giờ; bài nộp được giữ</td><td><span class="chip ac">AC-12.5</span></td></tr>
+          <tr><td>Tài khoản HV bị khóa khi đang làm</td><td>Không đăng nhập lại được; nộp tự động với câu đã lưu</td><td><span class="chip ac">AC-12.1</span></td></tr>
+          <tr><td>GV lùi giờ đóng khi có HV bị giới hạn bởi giờ đóng cũ</td><td>Kết thúc của lượt tính lại, tối đa bắt đầu + thời lượng</td><td><span class="chip ac">AC-5.2</span></td></tr>
+          <tr><td>GV sửa đề đúng lúc HV đầu tiên bắt đầu</td><td>Thay đổi câu hỏi không được lưu</td><td><span class="chip ac">AC-4.3</span></td></tr>
+          <tr><td>GV muốn mở lại bài thi đã đóng</td><td>Không được; nhân bản và lên lịch mới</td><td><span class="chip ac">AC-4.4</span> <span class="chip ac">AC-6.6</span></td></tr>
+          <tr><td>Xóa trùng lúc HV vừa bắt đầu</td><td>Có lượt trước → xóa bị chặn; xóa trước → HV thấy A05</td><td><span class="chip ac">AC-6.2</span> <span class="chip ac">AC-8.4</span></td></tr>
+          <tr><td>Còn HV đang làm lúc giờ đóng</td><td>Nộp tự động ≤ 60 giây; đáp án chỉ hiện khi lượt cuối đã nộp</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.3</span></td></tr>
+          <tr><td>Đáp án sai phát hiện sau khi khóa</td><td>Không sửa được, không chấm lại; nhân bản đề cho lần thi sau</td><td><span class="chip ac">AC-4.2</span></td></tr>
+          <tr><td>Bài thi đã lưu trữ</td><td>HV không thấy, đường dẫn trực tiếp → A05; điểm vẫn cung cấp cho 008 kèm cờ</td><td><span class="chip ac">AC-6.3</span> <span class="chip ac">AC-13.5</span> <span class="chip ac">AC-16.2</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hướng</th><th>Module</th><th>Sự kiện / dữ liệu nghiệp vụ</th></tr></thead>
+        <tbody>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../001-accounts-auth/spec.html">001</a></td><td>Tài khoản HV và trạng thái (Chưa kích hoạt / Đã kích hoạt / Đã khóa), đăng nhập, hết phiên, cô lập workspace, A05; mục "Bài thi" trên thanh điều hướng GV và HV.</td></tr>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../003-classes/spec.html">003</a></td><td>Lớp, thành viên hiện tại, trạng thái lớp, sự kiện thêm / gỡ HV, kết thúc / mở lại / xóa lớp. Cần 003 xác nhận: bài nộp bài thi tính là "bài nộp của lớp" khi chặn xóa lớp; xóa lớp bỏ lớp khỏi bài thi được giao; tùy chọn lối vào "Bài thi của lớp" trên S02.</td></tr>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../005-exercises/spec.html">005</a></td><td>Dạng câu hỏi, trình soạn, kiểm tra tại chỗ, điều kiện hoàn chỉnh, quy tắc chấm, trình bày S05 / S06; T14 phải mở được bài nộp bài thi.</td></tr>
+          <tr><td>Cung cấp cho</td><td><a class="chip mod" href="../008-scoring-leaderboard/spec.html">008</a></td><td>Kết quả bài thi theo HV × lớp: Đã nộp (điểm 0–100, thời điểm, "Nộp tự động") hoặc Không làm bài (0), giờ đóng, cờ Lưu trữ — đầu vào của phần 70 %.</td></tr>
+          <tr><td>Cung cấp cho</td><td><a class="chip mod" href="../009-teacher-dashboard/spec.html">009</a></td><td>Cùng dữ liệu kết quả (không bắt buộc hiển thị trong MVP).</td></tr>
+          <tr><td>Không phụ thuộc</td><td>002, 004, 007, 010, 011</td><td>Bài thi không thuộc Giáo trình / Bài; 007 hoãn; 011 lấy hạng từ 008.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul>
+        <li><b>Mô hình cũ (thay thế 2026-10-22):</b> bài thi là section của mỗi Bài, lịch theo lớp (X4), nhiều lượt, chính sách công bố, "Hiện đáp án và giải thích khi công bố", phiên bản mới / "Đã thay thế", ẩn/hiện section Bài thi theo lớp, ngoại lệ cho từng HV, trạng thái "Vắng", biểu đồ phân bố điểm.</li>
+        <li>Chấm tay, câu Nói / Nghe / Viết tự do, "Chờ chấm" — 007 hoãn; chấm bằng AI.</li>
+        <li>Tạo bài thi bằng AI; lấy câu từ bộ bài tập / ngân hàng câu hỏi; rút câu ngẫu nhiên.</li>
+        <li>Xáo trộn câu hỏi hoặc phương án; đánh dấu "xem lại"; chia phần có thời gian riêng.</li>
+        <li>Lịch khác nhau theo lớp / theo HV, gia hạn hay tạm dừng lượt đang làm, làm lại; đóng sớm hoặc mở lại bài thi đã đóng.</li>
+        <li>Sửa đáp án và chấm lại bài thi đã khóa (Q-5: không).</li>
+        <li>Email, thông báo đẩy, nhắc lịch thi — chỉ hiển thị trong ứng dụng.</li>
+        <li>Chống gian lận; GV xem trước như HV; xuất kết quả ra tệp; đạt / trượt, quy đổi HSK, chứng chỉ.</li>
+        <li>Công thức điểm xếp hạng (008); khu theo dõi bài thi trên dashboard (009).</li>
+        <li>Làm bài ngoại tuyến hoàn toàn hoặc trên ứng dụng native.</li>
+      </ul>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <p><strong>Q-5</strong> đã đóng 2026-10-22: không sửa đáp án hay chấm lại khi đề đã khóa — GV kiểm tra đề trước giờ mở (xem §15).</p>
+      <p>Đã đóng 2026-10-22 (không còn áp dụng với mô hình mới): Q-2 (xem đáp án sau khi công bố) và Q-4 (điểm của phiên bản bị thay thế). Q-1, Q-3 đã đóng 2026-10-19.</p>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session 2026-10-22 (bài thi độc lập)</h4>
+      <p>Yêu cầu stakeholder (nguyên văn): “thêm module bài thi — sẽ tạo bài thi chọn lớp add vào bài thi thì tất cả học viên trong lớp đó có thể tham gia bài thi khi GV set ngày giờ, đến thời gian thì có thể vào thi. quy tắc tính điểm xếp hạng: điểm làm những bài tập trên lớp cộng lại chia trung bình chiếm 30%, điểm của những bài thi cộng lại chia trung bình chiếm 70%, tổng 2 điểm này lại ra final xếp hạng.”</p>
+      <ul>
+        <li>Q: Đáp án sai phát hiện sau khi đề đã khóa — GV có được sửa và chấm lại không (Q-5)? → A: Không. Đề khóa hoàn toàn từ lượt làm đầu tiên (AC-4.2); GV chịu trách nhiệm soạn và kiểm tra đề đúng trước giờ mở; muốn đề khác thì nhân bản (AC-6.6) và giao lại. Q-5 đóng. (source: stakeholder 2026-10-22 "không vì sẽ đảm bảo đề thi soạn luôn đúng")</li>
+        <li>Q: Bài thi nằm ở đâu, ai được thi? → A: Mục độc lập "Bài thi"; giao cho một hoặc nhiều lớp; mọi HV của lớp được giao (đã kích hoạt, thành viên hiện tại) thi được, HV vào lớp sau vẫn thi nếu còn mở; mỗi HV một lần. <em>(source: stakeholder)</em></li>
+        <li>Q: Lịch thi? → A: Giờ mở, thời lượng (phút), giờ đóng; một lịch cho mọi lớp; mỗi HV đủ thời lượng từ lúc bắt đầu nhưng không quá giờ đóng — nộp tự động lúc min(bắt đầu + thời lượng, giờ đóng). <em>(source: stakeholder)</em></li>
+        <li>Q: Nội dung và kết quả? → A: Soạn tay bằng các dạng tự chấm của 005, không AI; điểm 0–100 hiện ngay sau khi nộp; đáp án và giải thích chỉ sau giờ đóng. <em>(source: stakeholder)</em></li>
+        <li>Q: Điểm xếp hạng? → A: Trung bình bài tập × 30 % + trung bình bài thi × 70 % (008 sở hữu); bài thi được tính khi HV đã nộp, hoặc đã qua giờ đóng mà không nộp (= 0). <em>(source: stakeholder)</em></li>
+        <li>Giả định (chi tiết và lý do trong <a href="spec.md">spec.md</a> §12): trạng thái Nháp / Đã lên lịch / Đang mở / Đã đóng / Lưu trữ theo đồng hồ; giờ đóng ≥ giờ mở + thời lượng; khóa đề từ lượt làm đầu tiên, sau đó chỉ thêm lớp, bỏ lớp chưa ai làm, lùi giờ đóng; xóa chỉ khi chưa có lượt, lưu trữ sau khi đóng; một lượt dùng chung cho mọi lớp được giao; "Không làm bài" chỉ cho HV thuộc lớp tại giờ đóng; đáp án hiện khi đã đóng và mọi lượt đã nộp; HV không làm bài không xem đề; dung sai 10 giây; điểm làm tròn như 008; 1–100 câu, 1–300 phút; được nộp trống; không xáo trộn / đánh dấu / ngoại lệ; "Nhân bản" (P2); T14 dùng lại; không email nhắc thi; mã màn hình T10, T16, S07, S08 dùng lại, T22 mới. <em>(source: assumption)</em></li>
+      </ul>
+      <h4>Session 2026-10-18 và 2026-10-19</h4>
+      <p>Giữ nguyên trong <a href="spec.md">spec.md</a> §12; các mục không còn áp dụng với mô hình mới được đánh dấu “[thay thế 2026-10-22]”. Mã AC trong hai phiên này là mã của bản cũ.</p>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

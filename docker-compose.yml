@@ -1,0 +1,30 @@
+# Local development.
+#   docker compose up -d mongo            → MongoDB for `npm run dev`
+#   docker compose --profile full up      → the production image + MongoDB, like staging
+services:
+  mongo:
+    image: mongo:8
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    profiles: [full]
+    build: .
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/sat
+      LOG_LEVEL: info
+    ports:
+      - '8080:8080'
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo-data:

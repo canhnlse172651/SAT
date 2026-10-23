@@ -1,0 +1,9 @@
+# Humans own the rules agents work under. Replace @your-org/tech-leads with a real team/user,
+# then enable "Require review from Code Owners" in branch protection for `main`.
+#
+# /CLAUDE.md               @your-org/tech-leads
+# /.claude/                @your-org/tech-leads
+# /.sdd/                   @your-org/tech-leads
+# /.mcp.json               @your-org/tech-leads
+# /docs/constitution.md    @your-org/tech-leads
+# /.github/                @your-org/tech-leads

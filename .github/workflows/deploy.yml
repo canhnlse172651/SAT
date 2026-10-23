@@ -1,0 +1,135 @@
+# Continuous delivery. Agents never run this; it is deterministic and human-gated for production.
+#   push to main        → build image → staging (automatic) → smoke test
+#   GitHub Release      → build image → production (requires approval in the `production` environment)
+#   workflow_dispatch   → redeploy / rollback a given ref to a chosen environment
+# Deploy commands come from the toolchain contract (.sdd/config.json → deploy:staging / deploy:production / smoke).
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        type: choice
+        options: [staging, production]
+        default: staging
+      ref:
+        description: Git ref (tag/sha) to deploy — use an older tag to roll back
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.event_name == 'release' && 'production' || inputs.environment || 'staging' }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  image:
+    name: Build & push image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    outputs:
+      present: ${{ steps.detect.outputs.present }}
+      digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+      - id: detect
+        run: echo "present=$([ -f Dockerfile ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - if: steps.detect.outputs.present == 'true'
+        uses: docker/setup-buildx-action@v3
+      - if: steps.detect.outputs.present == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.detect.outputs.present == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=sha,format=long
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+      - if: steps.detect.outputs.present == 'true'
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+  staging:
+    name: Deploy → staging
+    needs: image
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'staging')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    env:
+      IMAGE_DIGEST: ${{ needs.image.outputs.digest }}
+      DEPLOY_URL: ${{ vars.STAGING_URL }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+      # >>> sdd:toolchain-setup — Node 24 runs the sdd CLI, deploy commands and the smoke test (ADR-0002)
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+      # <<< sdd:toolchain-setup
+      - name: Deploy
+        run: node .sdd/scripts/sdd.mjs run deploy:staging
+      - name: Smoke test
+        run: node .sdd/scripts/sdd.mjs run smoke -- "$DEPLOY_URL"
+
+  production:
+    name: Deploy → production
+    needs: image
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.environment == 'production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Configure required reviewers for this environment in GitHub → Settings → Environments.
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+    env:
+      IMAGE_DIGEST: ${{ needs.image.outputs.digest }}
+      DEPLOY_URL: ${{ vars.PRODUCTION_URL }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+      # >>> sdd:toolchain-setup — Node 24 runs the sdd CLI, deploy commands and the smoke test (ADR-0002)
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+      # <<< sdd:toolchain-setup
+      - name: Deploy
+        # --required: a production deploy must never "succeed" by silently skipping an unconfigured step.
+        run: node .sdd/scripts/sdd.mjs run deploy:production --required
+      - name: Smoke test
+        run: node .sdd/scripts/sdd.mjs run smoke --required -- "$DEPLOY_URL"

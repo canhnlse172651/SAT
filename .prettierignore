@@ -1,0 +1,13 @@
+# Markdown artifacts are machine-parsed by the sdd CLI — never reformat them.
+**/*.md
+.sdd/
+.claude/
+specs/
+docs/
+.github/
+package-lock.json
+**/dist/
+**/coverage/
+playwright-report/
+test-results/
+.mongodb-binaries/

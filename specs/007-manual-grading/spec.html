@@ -1,0 +1,929 @@
+<!doctype html>
+<!--
+  specs/007-manual-grading/spec.html — bản trình bày (flows, rules, screens, states) của spec.md.
+  spec.md là hợp đồng được máy kiểm tra; trang này sao chép nguyên văn REQ/AC và không thêm yêu cầu mới.
+  Mọi BR, bước luồng có phản hồi hệ thống và quy tắc kiểm tra dữ liệu đều trích AC.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>007 Chấm bài tự luận — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module 007</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module 007 · Manual Grading</div>
+    <h1>Chấm bài tự luận</h1>
+    <p class="lede">Hàng chờ và màn hình chấm để Giáo viên đọc bài Viết, nghe bài Nói, cho điểm và nhận xét — rồi trả kết quả cho Học viên, cập nhật điểm xếp hạng và tiến độ.</p>
+    <div class="callout warn" style="margin-top:14px"><strong>HOÃN — ngoài MVP (stakeholder, 2026-10-19)</strong>MVP chỉ có các dạng câu hỏi tự chấm. Nói, Nghe, Viết đoạn tự do và việc chấm tay để giai đoạn sau. Spec này được giữ nguyên để dùng lại khi đưa các dạng đó vào; không lên plan/implement trong MVP. Trong MVP, T14 là “Xem bài nộp (chỉ đọc)” do <a href="../005-exercises/spec.html">005</a> sở hữu; T13 và chế độ chấm của T14 thuộc giai đoạn sau.</div>
+    <div class="meta">
+      <span class="pill status">draft · hoãn</span>
+      <span class="pill">Feature 007</span>
+      <span class="pill">Cập nhật 2026-10-18</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <p>Câu hỏi Viết (bài viết gõ phím) và Nói (bản ghi âm) không thể chấm tự động; theo quyết định D3, Giáo viên (GV) chấm thủ công bằng điểm và nhận xét, không dùng AI. Nếu không có một nơi tập trung, GV không biết bài nào đang chờ, phải tự tìm câu trả lời của từng Học viên (HV), còn HV chờ kết quả lâu và dễ bị bỏ sót. Module này cung cấp <strong>Hàng chờ chấm</strong> (<a class="chip screen" href="../screen-flow-design.html#T13">T13</a>) gom mọi bài nộp Bài tập (<a class="chip mod" href="../005-exercises/spec.html">005</a>) và Bài thi (<a class="chip mod" href="../006-exams/spec.html">006</a>) có câu Viết/Nói chưa chấm, và màn hình <strong>Chấm bài nộp</strong> (<a class="chip screen" href="../screen-flow-design.html#T14">T14</a>) để đọc/nghe câu trả lời, cho điểm từng câu trong thang điểm của câu, nhận xét, lưu nháp, hoàn tất và chấm lại có lịch sử. Khi GV hoàn tất, bài nộp có điểm cuối cùng (điểm tự động + điểm chấm tay), HV thấy điểm và nhận xét, còn điểm xếp hạng (<a class="chip mod" href="../008-scoring-leaderboard/spec.html">008</a>) và tiến độ (<a class="chip mod" href="../009-teacher-dashboard/spec.html">009</a>) được cập nhật.</p>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mục tiêu</th><th>Chỉ số</th><th>Ngưỡng</th></tr></thead>
+        <tbody>
+          <tr><td>HV nhận phản hồi Viết/Nói nhanh</td><td>Trung vị thời gian chờ chấm (từ lúc HV nộp đến lúc GV hoàn tất lần đầu) của các bài nộp trong một workspace, tính theo tháng</td><td>≤ 48 giờ, từ tháng sử dụng thứ 2</td></tr>
+          <tr><td>Không bỏ sót bài</td><td>Tỷ lệ bài nộp Cần chấm đã chờ quá 7 ngày trên tổng số bài nộp Cần chấm, đo cuối mỗi tuần</td><td>≤ 5%</td></tr>
+          <tr><td>Chấm nhanh, không cần hướng dẫn</td><td>Tỷ lệ GV trong thử nghiệm khả dụng (ít nhất 5 GV) chấm xong một bài nộp mẫu gồm 1 câu Viết và 1 câu Nói (bản ghi 60 giây) không cần trợ giúp, trong ≤ 4 phút</td><td>≥ 90%</td></tr>
+          <tr><td>Kết quả chính xác và kín đáo</td><td>Số sự cố HV thấy điểm/nhận xét nháp, hoặc thấy kết quả khác với kết quả GV đã xác nhận</td><td>0</td></tr>
+          <tr><td>Chấm lại minh bạch</td><td>Tỷ lệ lần hoàn tất và chấm lại có mục tương ứng trong Lịch sử chấm</td><td>100%</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Thuật ngữ riêng của module</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thuật ngữ</th><th>Nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td>Câu chấm tay / Câu chấm tự động</td><td>Câu Viết hoặc Nói / câu Trắc nghiệm, Điền chỗ trống, Đọc hiểu.</td></tr>
+          <tr><td>Trạng thái chấm</td><td>"Chờ chấm" (chưa có gì được lưu) · "Đang chấm" (đã lưu nháp) · "Đã chấm" (đã hoàn tất) · "Đã thay thế" (lượt Bài tập bị thay bởi lượt mới hơn của cùng HV trước khi được chấm).</td></tr>
+          <tr><td>Cần chấm</td><td>"Chờ chấm" hoặc "Đang chấm" — là số trên huy hiệu "Chấm bài".</td></tr>
+          <tr><td>Câu trả lời trống</td><td>Câu Viết rỗng hoặc chỉ có khoảng trắng; câu Nói không có bản ghi âm.</td></tr>
+          <tr><td>Thời gian chờ chấm</td><td>Từ lúc HV nộp đến lúc GV hoàn tất lần đầu (bài Cần chấm: đến hiện tại).</td></tr>
+          <tr><td>Điểm cuối cùng</td><td>Tổng điểm câu chấm tự động + tổng điểm câu chấm tay của bài nộp đã hoàn tất.</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi:</strong> tiếp nhận bài nộp có câu Viết/Nói, hàng chờ T13 (cột, lọc, tìm, sắp xếp, huy hiệu, trạng thái rỗng), màn hình chấm T14 (đọc bài Viết, nghe bài Nói, điểm 0…tối đa bước 0,25, nhận xét từng câu và nhận xét chung), lưu nháp, hoàn tất, chấm lại có lịch sử, chuyển bài tiếp theo, phím tắt, quy tắc hiển thị kết quả cho HV, xử lý ngoại lệ và xung đột. &nbsp; <strong>Ngoài phạm vi:</strong> chấm bằng AI, sửa điểm câu chấm tự động, rubric, nhận xét bằng giọng nói, trả bài/cấp thêm lượt, chấm hàng loạt, thông báo email/push (chi tiết §13).</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>Chủ và quản trị viên duy nhất của workspace (D1). Chấm trên máy tính (≥ 1280 px, dùng được từ 1024 px — A4), thường theo đợt. Ngoài hệ thống hiện thường nhận bài qua ứng dụng nhắn tin và ghi điểm thủ công.</td><td>Biết bài nào cần chấm, chấm nhanh và chính xác, trả nhận xét cho từng HV, sửa được sai sót.</td></tr>
+          <tr><td><span class="pill hv">Học viên</span></td><td>Người nộp Bài tập/Bài thi có câu Viết/Nói, chủ yếu trên điện thoại (A4). Không thao tác trên T13/T14.</td><td>Nhận điểm và nhận xét càng sớm càng tốt, biết khi có kết quả mới hoặc điểm được cập nhật.</td></tr>
+          <tr><td><span class="pill">Hệ thống / module khác</span></td><td>005/006 tạo bài nộp và điểm tự động; 008, 009 dùng điểm cuối cùng và dữ kiện chờ chấm; 001/002/003 phát sự kiện tài khoản, nội dung, lớp.</td><td>Nhận đúng và đủ sự kiện "Bài nộp đã chấm xong", "Bài nộp có điểm cuối cùng".</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">GV (chủ workspace)</th><th class="center">HV trong lớp</th><th class="center">Người khác</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Xem Hàng chờ chấm (T13) và huy hiệu "Chấm bài"</td><td class="center yes">✓</td><td class="center no">— (chuyển về S01)</td><td class="center no">— (GV khác: chỉ thấy workspace mình; chưa đăng nhập: chuyển A01)</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.3</span> <span class="chip ac">AC-12.4</span></td></tr>
+          <tr><td>Mở bài nộp trên T14</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">— ("Không tìm thấy bài nộp.")</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.2</span></td></tr>
+          <tr><td>Nghe bản ghi âm câu Nói</td><td class="center yes">✓</td><td class="center yes">✓ chỉ bản ghi của chính mình</td><td class="center no">—</td><td><span class="chip ac">AC-12.5</span></td></tr>
+          <tr><td>Nhập điểm, nhận xét, Lưu nháp</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-7.1</span></td></tr>
+          <tr><td>Hoàn tất chấm</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-8.3</span></td></tr>
+          <tr><td>Chấm lại, xem Lịch sử chấm</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-10.4</span></td></tr>
+          <tr><td>Xem điểm/nhận xét nháp</td><td class="center yes">✓</td><td class="center no">— (thấy "Chờ chấm")</td><td class="center no">—</td><td><span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td>Xem kết quả đã hoàn tất</td><td class="center yes">✓</td><td class="center yes">✓ bài của mình, Bài thi theo chính sách công bố</td><td class="center no">—</td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.2</span></td></tr>
+          <tr><td>Sửa điểm câu chấm tự động</td><td class="center no">— (chỉ đọc)</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-4.5</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn xem một hàng chờ chung gồm mọi bài nộp có câu Viết/Nói chưa chấm của tất cả các lớp, lọc và sắp xếp được, để biết cần chấm gì và chấm bài cũ nhất trước.</td><td>Tạo sẵn bài nộp có câu Viết/Nói ở 2 lớp (cả Bài tập và Bài thi) rồi mở T13: thấy đúng các mục, đúng cột, thứ tự cũ nhất trước, bộ lọc và huy hiệu đúng số lượng; workspace không có bài thì thấy trạng thái rỗng.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-2</span> <span class="chip">REQ-3</span></td></tr>
+          <tr><td class="id">US-2</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn đọc câu trả lời Viết của HV cùng đề bài, nhập điểm trong thang điểm của câu, viết nhận xét và lưu nháp, để chấm chính xác và có thể làm tiếp sau.</td><td>Mở một bài nộp có 2 câu Viết, nhập điểm và nhận xét, lưu nháp, tải lại trang: dữ liệu còn nguyên, trạng thái "Đang chấm", HV vẫn thấy "Chờ chấm"; nhập điểm vượt điểm tối đa bị chặn.</td><td><span class="chip">REQ-4</span> <span class="chip">REQ-6</span> <span class="chip">REQ-7</span></td></tr>
+          <tr><td class="id">US-3</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn nghe bản ghi âm câu Nói với phát/tạm dừng, tua và đổi tốc độ, để đánh giá phát âm, nội dung rồi cho điểm.</td><td>Mở bài nộp có câu Nói, phát, tua tới giữa, đổi sang 1,25x, cho điểm; với bản ghi âm hỏng thấy thông báo lỗi và vẫn cho điểm được.</td><td><span class="chip">REQ-5</span> <span class="chip">REQ-6</span></td></tr>
+          <tr><td class="id">US-4</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn hoàn tất chấm một bài nộp sau khi xác nhận tổng điểm, để HV nhận điểm và nhận xét, và điểm cuối cùng được dùng cho xếp hạng và tiến độ.</td><td>Hoàn tất một bài nộp đủ điểm: trạng thái "Đã chấm", rời bộ lọc "Cần chấm", huy hiệu giảm 1, HV mở S06 thấy tổng điểm (tự động + chấm tay) và nhận xét; với Bài thi chưa công bố kết quả, HV chưa thấy gì.</td><td><span class="chip">REQ-8</span> <span class="chip">REQ-9</span></td></tr>
+          <tr><td class="id">US-5</td><td><span class="pill p2">P2</span></td><td>Là <b>giáo viên</b>, tôi muốn chuyển ngay sang bài kế tiếp trong hàng chờ (và dùng phím tắt nếu có), để chấm cả loạt bài mà không phải quay lại danh sách.</td><td>Với bộ lọc còn 3 bài, hoàn tất bài 1, bấm "Chấm bài tiếp theo" thì mở bài 2 đúng thứ tự; hết bài thì quay về T13 với thông báo.</td><td><span class="chip">REQ-11</span></td></tr>
+          <tr><td class="id">US-6</td><td><span class="pill p2">P2</span></td><td>Là <b>giáo viên</b>, tôi muốn chấm lại một bài đã hoàn tất và có lịch sử các lần chấm, để sửa sai sót mà vẫn minh bạch với HV.</td><td>Chấm lại bài đã chấm, đổi điểm 1 câu, hoàn tất: HV thấy điểm mới với nhãn "Điểm đã được giáo viên cập nhật lúc …", T14 có 2 mục Lịch sử chấm, thời gian chờ chấm không đổi.</td><td><span class="chip">REQ-10</span></td></tr>
+          <tr><td class="id">US-7</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn chỉ mình tôi xem và chấm được bài nộp trong workspace của mình, và việc chấm vẫn đúng khi có tình huống bất thường (hai cửa sổ, HV rời lớp, bài bị ẩn, HV nộp lượt mới), để điểm không bị lộ, mất hoặc ghi đè.</td><td>GV khác mở đường dẫn bài nộp → "Không tìm thấy bài nộp."; hai tab cùng lưu → tab sau bị từ chối với thông báo; bài nộp của HV đã rời lớp vẫn chấm được.</td><td><span class="chip">REQ-12</span> <span class="chip">REQ-13</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>Bảy luồng: GV làm việc với hàng chờ (F-1), chấm câu Viết (F-2), chấm câu Nói (F-3), hoàn tất và HV xem kết quả (F-4), chấm lại (F-5), hệ thống tiếp nhận bài nộp và xử lý nhiều lượt làm (F-6), xử lý ngoại lệ trong khi chờ chấm (F-7). Mỗi luồng có sự kiện kích hoạt, điều kiện trước/sau, sơ đồ, bảng bước và các luồng thay thế/ngoại lệ.</p>
+
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Làm việc với hàng chờ">F-1: GV làm việc với Hàng chờ chấm</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>GV bấm "Chấm bài" trên thanh bên (huy hiệu hiển thị số bài Cần chấm), hoặc liên kết số bài chờ chấm trên T01</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>GV đã đăng nhập; workspace có thể có hoặc không có bài nộp Cần chấm</div>
+          <div class="fact"><span class="k">Kết quả</span>GV mở được bài nộp cần chấm trên T14, hoặc biết rằng không còn bài nào cần chấm</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["GV bấm “Chấm bài” trên thanh bên (huy hiệu n)"]) --> B["T13: lọc “Cần chấm”, cũ nhất trước, 50 mục/trang"]
+  B --> C{"Có bài Cần chấm?"}
+  C -- Không --> D["Trạng thái rỗng “Không có bài nào cần chấm…”"]
+  C -- Có --> E["GV lọc Lớp / Bài / Loại bài / Loại câu / Trạng thái, tìm HV"]
+  E --> F{"Có mục phù hợp?"}
+  F -- Không --> G["“Không có bài nộp phù hợp với bộ lọc.” + Xóa bộ lọc"]
+  G --> B
+  F -- Có --> H["GV chọn mục, ưu tiên mục có nhãn “Chờ lâu”"]
+  H --> I(["Mở T14"])
+  I -.->|Quay lại| J["T13 giữ nguyên bộ lọc, từ khóa, thứ tự, trang"]
+</pre>
+          <figcaption>Hình F-1 — Từ thanh bên đến bài nộp cần chấm</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Nhìn thanh bên</td><td>Mục "Chấm bài" có huy hiệu bằng số bài nộp Cần chấm; "99+" khi vượt 99; ẩn khi bằng 0.</td><td>Mọi màn hình GV</td><td><span class="chip ac">AC-2.5</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Bấm "Chấm bài"</td><td>Hiển thị T13 với các cột Học viên, Lớp, Bài (tên + lượt), Loại, Câu cần chấm, Nộp lúc, Thời gian chờ, Trạng thái; 50 mục/trang kèm tổng số; lần đầu trong phiên: lọc "Cần chấm", cũ nhất trước.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Đọc cột thời gian</td><td>Nộp lúc theo UTC+7 dạng dd/MM/yyyy HH:mm; Thời gian chờ dạng phút/giờ/ngày; mục chờ quá 48 giờ có nhãn "Chờ lâu".</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-2.3</span> <span class="chip ac">AC-2.4</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>Chọn bộ lọc Lớp, Bài, Loại bài, Loại câu hỏi, Trạng thái</td><td>Danh sách chỉ còn mục khớp mọi bộ lọc; bộ lọc Bài chỉ liệt kê bài có bài nộp chấm tay của Lớp đã chọn; Loại câu "Nói" chỉ giữ bài nộp có ít nhất một câu Nói.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-3.2</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Gõ tên hoặc email HV vào "Tìm học viên"</td><td>Lọc theo họ tên/email chứa từ khóa, không phân biệt hoa/thường và dấu.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-3.3</span></td></tr>
+            <tr><td class="id">6</td><td>GV</td><td>Bấm tiêu đề cột "Nộp lúc"</td><td>Đảo thứ tự cũ nhất trước ↔ mới nhất trước.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-3.4</span></td></tr>
+            <tr><td class="id">7</td><td>GV</td><td>Chọn một mục</td><td>Mở T14 của bài nộp đó với phần đầu đầy đủ thông tin.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-4.1</span></td></tr>
+            <tr><td class="id">8</td><td>GV</td><td>Quay lại T13</td><td>Bộ lọc, từ khóa, thứ tự và trang đang xem được giữ nguyên.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-3.6</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: workspace không có bài cần chấm <span class="chip ac">AC-2.6</span></summary><div class="body"><ol><li>Bộ lọc đang ở mặc định và không có bài nộp Cần chấm.</li><li>T13 hiển thị "Không có bài nào cần chấm. Bài Viết/Nói học viên nộp sẽ xuất hiện tại đây."; huy hiệu bị ẩn (<span class="chip ac">AC-2.5</span>).</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Luồng thay thế: bộ lọc không khớp mục nào <span class="chip ac">AC-3.5</span></summary><div class="body"><ol><li>T13 hiển thị "Không có bài nộp phù hợp với bộ lọc." và nút "Xóa bộ lọc".</li><li>GV bấm "Xóa bộ lọc" → bộ lọc, từ khóa, thứ tự về mặc định ("Cần chấm", cũ nhất trước).</li></ol></div></details>
+        <details class="alt"><summary>A-3 · Luồng thay thế: mở T14 từ màn hình khác (T16, T15) <span class="chip ac">AC-4.1</span> <span class="chip ac">AC-11.2</span></summary><div class="body"><ol><li>GV bấm liên kết chấm bài ở T16 (kết quả bài thi, 006) hoặc T15 (hồ sơ HV, 009).</li><li>T14 mở bài nộp đó; "Chấm bài tiếp theo" dùng bộ lọc mặc định của T13.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: HV hoặc người chưa đăng nhập mở T13 <span class="chip ac">AC-12.3</span> <span class="chip ac">AC-12.4</span></summary><div class="body"><ol><li>HV đã đăng nhập: không hiển thị dữ liệu nào, chuyển về S01.</li><li>Chưa đăng nhập: chuyển tới A01; sau khi GV đăng nhập, mở lại đúng T13.</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-2">
+        <h3 data-toc="F-2 Chấm câu Viết">F-2: Chấm một câu trả lời Viết</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>GV mở một bài nộp có câu Viết trên T14</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài nộp ở trạng thái "Chờ chấm" hoặc "Đang chấm" và thuộc workspace của GV</div>
+          <div class="fact"><span class="k">Kết quả</span>Điểm và nhận xét được lưu nháp (trạng thái "Đang chấm") hoặc chuyển sang hoàn tất (F-4); HV chưa thấy gì</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart LR
+  A(["Mở bài nộp trên T14"]) --> B["Đọc đề (theo thời điểm nộp) + câu trả lời Viết, Số ký tự"]
+  B --> C{"Câu trả lời trống?"}
+  C -- Có --> D["“Học viên không trả lời câu này.” Điểm 0, khóa"]
+  C -- Không --> E["Nhập điểm 0…tối đa, bước 0,25"]
+  E --> F{"Điểm hợp lệ?"}
+  F -- Không --> G["Lỗi dưới ô điểm"]
+  G --> E
+  F -- Có --> H["Nhận xét câu / Nhận xét chung (không bắt buộc)"]
+  D --> H
+  H --> I["Bấm “Lưu nháp”"]
+  I --> J{"Lưu được?"}
+  J -- Không --> K["Giữ dữ liệu trên màn hình + thông báo lỗi"]
+  K --> I
+  J -- Có --> L(["“Đang chấm” · “Đã lưu nháp lúc HH:mm”"])
+</pre>
+          <figcaption>Hình F-2 — Chấm câu Viết và lưu nháp</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Mở bài nộp</td><td>Phần đầu: tên HV, Lớp, tên Bài, Loại bài, lượt thứ mấy, Nộp lúc, Thời gian chờ, Trạng thái chấm.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-4.1</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Xem danh sách câu</td><td>Các câu Viết/Nói theo đúng thứ tự trong bài, mỗi câu có số thứ tự, loại, đề (kèm hình/âm thanh), điểm tối đa — đúng như lúc HV nộp.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-4.2</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Đọc câu trả lời Viết</td><td>Nguyên văn (giữ xuống dòng, chữ Hán, pinyin), "Số ký tự: n" không tính khoảng trắng, yêu cầu độ dài của đề nếu có.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-4.3</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>Tham khảo câu chấm tự động</td><td>Hiển thị chỉ đọc: câu trả lời HV, đáp án đúng, điểm đạt/tối đa; không sửa được.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-4.5</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Nhập điểm</td><td>Nhận 0…tối đa, bội số 0,25 (hoặc đúng tối đa), dấu phẩy hoặc chấm; bảng tổng hợp (Điểm tự động, Điểm chấm tay, Tổng dự kiến) cập nhật ngay.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-4.6</span></td></tr>
+            <tr><td class="id">6</td><td>GV</td><td>Viết nhận xét câu và nhận xét chung</td><td>Ô không bắt buộc, có bộ đếm ký tự (2000 / 3000), nhận chữ Hán, pinyin, xuống dòng.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-6.4</span></td></tr>
+            <tr><td class="id">7</td><td>GV</td><td>Bấm "Lưu nháp"</td><td>Lưu mọi điểm và nhận xét đã nhập (kể cả khi còn câu chưa có điểm), trạng thái "Đang chấm", hiển thị "Đã lưu nháp lúc HH:mm".</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-7.1</span></td></tr>
+            <tr><td class="id">8</td><td>HV</td><td>Mở kết quả trong lúc GV đang chấm</td><td>Không thấy điểm/nhận xét nháp; các câu Viết/Nói hiển thị "Chờ chấm".</td><td><a class="chip screen" href="../screen-flow-design.html#S06">S06</a> <a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-7.3</span></td></tr>
+            <tr><td class="id">9</td><td>GV</td><td>Quay lại bài nộp sau đó</td><td>Điểm và nhận xét của lần lưu nháp gần nhất được điền sẵn.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-7.2</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: HV bỏ trống câu Viết <span class="chip ac">AC-4.4</span></summary><div class="body"><ol><li>Câu hiển thị "Học viên không trả lời câu này.".</li><li>Ô điểm đặt sẵn 0 và không sửa được; GV vẫn nhập nhận xét được.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Luồng thay thế: GV rời trang khi chưa lưu <span class="chip ac">AC-7.4</span></summary><div class="body"><ol><li>GV bấm "Về hàng chờ", "Bài tiếp theo" hoặc mục khác trên thanh bên.</li><li>Hộp thoại "Bạn có thay đổi chưa lưu. Rời trang mà không lưu?" với "Ở lại" (mặc định) và "Rời trang". Khi đóng tab, trình duyệt hiển thị cảnh báo chuẩn.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: điểm ngoài khoảng hoặc sai bước <span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.3</span></summary><div class="body"><ol><li>Điểm &lt; 0 hoặc &gt; tối đa → "Điểm phải từ 0 đến {điểm tối đa}.".</li><li>Không phải số hoặc không là bội số 0,25 (và khác tối đa) → "Điểm phải là bội số của 0,25 (ví dụ: 1; 1,25; 1,5).".</li><li>Không cho lưu nháp hay hoàn tất cho tới khi sửa.</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Ngoại lệ: nhận xét quá dài <span class="chip ac">AC-6.5</span></summary><div class="body"><ol><li>"Nhận xét tối đa 2000 ký tự." hoặc "Nhận xét chung tối đa 3000 ký tự."; chặn lưu nháp/hoàn tất.</li></ol></div></details>
+        <details class="alt"><summary>E-3 · Ngoại lệ: mất kết nối hoặc hết phiên khi lưu <span class="chip ac">AC-7.5</span></summary><div class="body"><ol><li>Dữ liệu trên màn hình được giữ nguyên.</li><li>"Chưa lưu được. Kiểm tra kết nối và thử lại." hoặc "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại để lưu.".</li></ol></div></details>
+        <details class="alt"><summary>E-4 · Ngoại lệ: bài nộp đã được lưu ở cửa sổ khác <span class="chip ac">AC-13.5</span></summary><div class="body"><ol><li>Lần lưu bị từ chối, dữ liệu đang nhập được giữ.</li><li>"Bài nộp này vừa được cập nhật ở cửa sổ khác. Tải lại để xem bản mới nhất."</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-3">
+        <h3 data-toc="F-3 Chấm câu Nói">F-3: Chấm một câu trả lời Nói</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>GV đến một câu Nói trên T14</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài nộp Cần chấm thuộc workspace của GV; câu Nói có hoặc không có bản ghi âm</div>
+          <div class="fact"><span class="k">Kết quả</span>Câu Nói có điểm và (tùy chọn) nhận xét, sẵn sàng lưu nháp hoặc hoàn tất</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart LR
+  A(["Câu Nói trên T14"]) --> B{"Có bản ghi âm?"}
+  B -- Không --> C["“Học viên không trả lời câu này.” Điểm 0, khóa"]
+  B -- Có --> D["Trình phát: Phát/Tạm dừng, thanh tua, mm:ss, tốc độ"]
+  D --> E{"Phát được?"}
+  E -- Không --> F["“Không phát được bản ghi âm của học viên.” + Thử lại"]
+  F -->|Thử lại| D
+  F -->|Vẫn chấm| G["Nhập điểm + nhận xét"]
+  E -- Có --> G
+  C --> H["Nhận xét (không bắt buộc)"]
+  G --> I(["Lưu nháp (F-2) hoặc Hoàn tất (F-4)"])
+  H --> I
+</pre>
+          <figcaption>Hình F-3 — Nghe và chấm câu Nói</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Đến câu Nói</td><td>Đề (kèm âm thanh/hình của đề nếu có), điểm tối đa theo thời điểm nộp, trình phát bản ghi âm với Phát/Tạm dừng, thanh tua, thời điểm đang phát/tổng thời lượng mm:ss.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-5.1</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Bấm Phát, kéo thanh tua</td><td>Phát tiếp từ vị trí đã chọn.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-5.2</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Chọn tốc độ 0,75x / 1x / 1,25x / 1,5x</td><td>Phát theo tốc độ đã chọn; tốc độ được giữ cho các bản ghi âm mở tiếp trong phiên.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-5.3</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>Phát âm thanh đề hoặc bản ghi âm câu khác</td><td>Âm thanh đang phát tự tạm dừng — luôn chỉ một nguồn phát.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-5.4</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Nhập điểm, nhận xét</td><td>Kiểm tra như câu Viết; bảng tổng hợp cập nhật ngay.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.4</span> <span class="chip ac">AC-4.6</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: HV không ghi âm <span class="chip ac">AC-4.4</span></summary><div class="body"><ol><li>Không có trình phát; hiển thị "Học viên không trả lời câu này.", điểm 0 khóa, vẫn nhận xét được.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Luồng thay thế: dùng phím tắt <span class="chip ac">AC-11.5</span></summary><div class="body"><ol><li>Khi con trỏ không ở ô nhập, phím Space phát/tạm dừng bản ghi âm đang chọn; Ctrl+S lưu nháp.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: bản ghi âm thiếu hoặc hỏng <span class="chip ac">AC-5.5</span></summary><div class="body"><ol><li>"Không phát được bản ghi âm của học viên." kèm nút "Thử lại".</li><li>GV vẫn nhập điểm và nhận xét được (ví dụ ghi rõ lý do trong nhận xét).</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Ngoại lệ: người không có quyền mở bản ghi âm <span class="chip ac">AC-12.5</span></summary><div class="body"><ol><li>Bất kỳ ai không phải HV đã ghi âm hoặc GV sở hữu workspace (kể cả khi có liên kết sao chép) đều bị từ chối, không phát nội dung.</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-4">
+        <h3 data-toc="F-4 Hoàn tất và HV xem kết quả">F-4: Hoàn tất chấm và HV xem kết quả</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên, Học viên, module 005/006/008/009</div>
+          <div class="fact"><span class="k">Kích hoạt</span>GV bấm "Hoàn tất chấm" trên T14</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài nộp "Chờ chấm" hoặc "Đang chấm"; GV đã nhập điểm (có thể chưa đủ)</div>
+          <div class="fact"><span class="k">Kết quả</span>Bài nộp "Đã chấm" có điểm cuối cùng; HV thấy kết quả (Bài thi: khi được công bố); 008/009 cập nhật</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor GV as Giáo viên
+  participant SYS as Hệ thống
+  participant MOD as 005/006 · 008 · 009
+  actor HV as Học viên
+  GV->>SYS: Bấm “Hoàn tất chấm”
+  alt Còn câu chưa có điểm
+    SYS-->>GV: “Còn n câu chưa nhập điểm.” + cuộn tới câu thiếu
+  else Đủ điểm hợp lệ
+    SYS-->>GV: Hộp xác nhận “Tổng điểm: x/y”
+    GV->>SYS: Xác nhận
+    SYS->>SYS: Điểm cuối cùng = tự động + chấm tay, trạng thái Đã chấm, ghi thời gian chờ chấm
+    SYS->>MOD: “Bài nộp đã chấm xong”, “Bài nộp có điểm cuối cùng”
+    SYS-->>GV: “Đã hoàn tất chấm bài của …” + Chấm bài tiếp theo
+    opt Bài thi chưa công bố kết quả
+      Note over SYS,HV: Giữ kín tới khi 006 công bố
+    end
+    SYS-->>HV: Nhãn “Có kết quả mới” trên S02
+    HV->>SYS: Mở S06 hoặc S08
+    SYS-->>HV: Tổng điểm, điểm và nhận xét từng câu, nhận xét chung
+  end
+</pre>
+          <figcaption>Hình F-4 — Từ “Hoàn tất chấm” đến khi HV đọc nhận xét</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Bấm "Hoàn tất chấm" (hoặc Ctrl+Enter)</td><td>Nếu đủ điểm hợp lệ: hộp xác nhận "Tổng điểm: {tổng}/{tối đa}" và "Sau khi hoàn tất, học viên sẽ thấy điểm và nhận xét." (Bài thi chưa công bố: "Học viên sẽ thấy điểm và nhận xét khi kết quả bài thi được công bố."), nút "Xác nhận" / "Hủy".</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-8.1</span> <span class="chip ac">AC-11.5</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Bấm "Xác nhận"</td><td>Điểm cuối cùng = tổng điểm tự động + tổng điểm chấm tay; trạng thái "Đã chấm"; bài nộp rời "Cần chấm", huy hiệu giảm.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-8.3</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Lần hoàn tất đầu: ghi thời điểm hoàn tất và thời gian chờ chấm, hiển thị ở cột Thời gian chờ trên T13 và cung cấp cho 009.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a> <a class="chip screen" href="../screen-flow-design.html#T01">T01</a></td><td><span class="chip ac">AC-8.4</span></td></tr>
+            <tr><td class="id">4</td><td>Hệ thống</td><td>—</td><td>Phát sinh "Bài nộp đã chấm xong" (005/006) và "Bài nộp có điểm cuối cùng" (005/006, 008, 009) kèm điểm cuối cùng; lưu mục đầu tiên của Lịch sử chấm.</td><td>—</td><td><span class="chip ac">AC-8.5</span> <span class="chip ac">AC-10.4</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Xem thông báo</td><td>"Đã hoàn tất chấm bài của {tên HV}." với "Chấm bài tiếp theo" và "Về hàng chờ"; "Chấm bài tiếp theo" mở bài Cần chấm kế tiếp theo bộ lọc/thứ tự hiện tại.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.2</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Mở trang lớp</td><td>Bài tập/Bài thi đó có nhãn "Có kết quả mới" cho tới khi HV mở kết quả.</td><td><a class="chip screen" href="../screen-flow-design.html#S02">S02</a></td><td><span class="chip ac">AC-9.3</span></td></tr>
+            <tr><td class="id">7</td><td>HV</td><td>Mở kết quả</td><td>Tổng điểm cuối cùng, điểm và nhận xét từng câu Viết/Nói, nhận xét chung.</td><td><a class="chip screen" href="../screen-flow-design.html#S06">S06</a> <a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-9.1</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: Bài thi chưa công bố kết quả <span class="chip ac">AC-9.2</span> <span class="chip ac">AC-8.1</span></summary><div class="body"><ol><li>Hộp xác nhận báo "Học viên sẽ thấy điểm và nhận xét khi kết quả bài thi được công bố.".</li><li>Sau khi hoàn tất, HV chưa thấy điểm/nhận xét; khi 006 công bố, HV thấy kết quả và nhãn "Có kết quả mới".</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Luồng thay thế: GV bấm "Hủy" trong hộp xác nhận <span class="chip ac">AC-8.1</span></summary><div class="body"><ol><li>Hộp xác nhận đóng, GV ở lại T14, dữ liệu nhập giữ nguyên, trạng thái không đổi.</li></ol></div></details>
+        <details class="alt"><summary>A-3 · Luồng thay thế: không còn bài kế tiếp <span class="chip ac">AC-11.3</span></summary><div class="body"><ol><li>"Bạn đã chấm hết các bài trong danh sách." và GV được đưa về T13.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: còn câu chưa có điểm <span class="chip ac">AC-8.2</span></summary><div class="body"><ol><li>Không mở hộp xác nhận; hiển thị "Còn {n} câu chưa nhập điểm." và "Vui lòng nhập điểm cho câu này." tại từng câu thiếu; cuộn tới câu thiếu đầu tiên.</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Ngoại lệ: hoàn tất thất bại <span class="chip ac">AC-8.6</span></summary><div class="body"><ol><li>Bài nộp giữ trạng thái trước đó; HV không thấy gì; dữ liệu GV nhập được giữ.</li><li>"Chưa hoàn tất được. Kiểm tra kết nối và thử lại."</li></ol></div></details>
+        <details class="alt"><summary>E-3 · Ngoại lệ: cửa sổ khác đã hoàn tất trước <span class="chip ac">AC-13.5</span></summary><div class="body"><ol><li>Lần hoàn tất của cửa sổ hiện tại bị từ chối với thông báo "Bài nộp này vừa được cập nhật ở cửa sổ khác. Tải lại để xem bản mới nhất."</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-5">
+        <h3 data-toc="F-5 Chấm lại">F-5: Chấm lại bài đã chấm</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>GV phát hiện sai sót, mở bài nộp "Đã chấm" (lọc Trạng thái "Đã chấm" trên T13 hoặc liên kết từ T15/T16)</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài nộp đã hoàn tất ít nhất một lần</div>
+          <div class="fact"><span class="k">Kết quả</span>Kết quả mới thay kết quả cũ, Lịch sử chấm thêm một mục, điểm cuối cùng mới được gửi đi; thời gian chờ chấm không đổi</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["GV lọc “Đã chấm”, mở bài nộp"]) --> B["T14 chỉ đọc + nút “Chấm lại” + Lịch sử chấm"]
+  B --> C["Bấm “Chấm lại”: sửa điểm, nhận xét, Lý do chấm lại (không có Lưu nháp)"]
+  C --> D{"GV chọn"}
+  D -->|Hủy chấm lại| B
+  D -->|Hoàn tất chấm lại| E{"Hợp lệ và đã xác nhận?"}
+  E -- Không --> C
+  E -- Có --> F["Kết quả mới thay kết quả cũ, thêm mục Lịch sử chấm"]
+  F --> G["HV thấy nhãn “Điểm đã được giáo viên cập nhật lúc …”"]
+  F --> H(["Sự kiện “Bài nộp có điểm cuối cùng” với điểm mới"])
+</pre>
+          <figcaption>Hình F-5 — Chấm lại có lịch sử</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>Lọc Trạng thái "Đã chấm" trên T13, chọn bài nộp</td><td>Danh sách bài đã chấm; cột Thời gian chờ là thời gian chờ chấm đã ghi nhận.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-8.4</span></td></tr>
+            <tr><td class="id">2</td><td>GV</td><td>Mở bài nộp</td><td>Điểm, nhận xét đã hoàn tất ở chế độ chỉ đọc, nút "Chấm lại", mục "Lịch sử chấm".</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-10.1</span></td></tr>
+            <tr><td class="id">3</td><td>GV</td><td>Bấm "Chấm lại"</td><td>Cho sửa điểm, nhận xét từng câu, nhận xét chung, ô "Lý do chấm lại" (không bắt buộc, ≤ 500 ký tự); không có "Lưu nháp"; HV vẫn thấy kết quả cũ.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-10.2</span></td></tr>
+            <tr><td class="id">4</td><td>GV</td><td>Sửa điểm</td><td>Kiểm tra như lần chấm đầu (khoảng, bước 0,25, độ dài nhận xét).</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.3</span> <span class="chip ac">AC-6.5</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Bấm "Hoàn tất chấm lại" và xác nhận</td><td>Kết quả HV thấy được thay bằng kết quả mới, điểm cuối cùng cập nhật; nếu HV đã từng thấy kết quả, hiển thị nhãn "Điểm đã được giáo viên cập nhật lúc {dd/MM/yyyy HH:mm}".</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a> <a class="chip screen" href="../screen-flow-design.html#S06">S06</a> <a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td><span class="chip ac">AC-10.3</span></td></tr>
+            <tr><td class="id">6</td><td>Hệ thống</td><td>—</td><td>Thêm mục Lịch sử chấm (lần thứ, thời điểm, tổng điểm, điểm + nhận xét từng câu, nhận xét chung, lý do); phát lại "Bài nộp có điểm cuối cùng" với điểm mới; thời gian chờ chấm giữ nguyên.</td><td>—</td><td><span class="chip ac">AC-10.4</span> <span class="chip ac">AC-10.6</span></td></tr>
+            <tr><td class="id">7</td><td>HV</td><td>Mở trang lớp</td><td>Nhãn "Có kết quả mới" xuất hiện lại cho tới khi HV mở kết quả.</td><td><a class="chip screen" href="../screen-flow-design.html#S02">S02</a></td><td><span class="chip ac">AC-9.3</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: GV hủy chấm lại <span class="chip ac">AC-10.5</span></summary><div class="body"><ol><li>Mọi thay đổi chưa hoàn tất bị bỏ; kết quả hiện hành giữ nguyên; không có mục Lịch sử chấm mới.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Luồng thay thế: chấm lại Bài thi chưa công bố kết quả <span class="chip ac">AC-9.2</span> <span class="chip ac">AC-10.3</span></summary><div class="body"><ol><li>HV vẫn không thấy gì; khi công bố, HV thấy kết quả mới nhất; không có nhãn "cập nhật" vì HV chưa từng thấy kết quả trước đó.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: chấm lại thất bại hoặc bị cửa sổ khác cập nhật trước <span class="chip ac">AC-8.6</span> <span class="chip ac">AC-13.5</span></summary><div class="body"><ol><li>Kết quả cũ giữ nguyên với HV; dữ liệu GV nhập được giữ trên màn hình; thông báo lỗi tương ứng.</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-6">
+        <h3 data-toc="F-6 Tiếp nhận bài nộp và nhiều lượt">F-6: Tiếp nhận bài nộp và xử lý nhiều lượt làm</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Học viên (gián tiếp), Hệ thống</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Sự kiện "Bài nộp có câu Viết/Nói chờ chấm" từ 005/006 khi HV nộp một lượt</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>HV thuộc Lớp của GV; bài nộp đã được 005/006 ghi nhận và chấm phần tự động</div>
+          <div class="fact"><span class="k">Kết quả</span>Bài nộp có đúng một mục trong hàng chờ, hoặc được tự chấm 0, hoặc không vào hàng chờ; lượt Bài tập cũ chưa chấm có thể bị thay thế</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["HV nộp một lượt"]) --> B{"Có câu Viết/Nói?"}
+  B -- Không --> X["Không vào hàng chờ (chỉ chấm tự động, 005/006)"]
+  B -- Có --> C{"Mọi câu Viết/Nói đều trống?"}
+  C -- Có --> Y["Tự chấm 0, “Đã chấm”, không vào hàng chờ"]
+  C -- Không --> D{"Bài tập hay Bài thi?"}
+  D -->|Bài thi| E["Mục mới “Chờ chấm”, không thay thế lượt thi nào"]
+  D -->|Bài tập| F{"Lượt trước cùng Lớp đang ở trạng thái?"}
+  F -->|Chờ chấm| G["Lượt trước → “Đã thay thế”, rời hàng chờ"]
+  F -->|Đang chấm| H["Giữ lượt trước + nhãn “Có lượt mới hơn”"]
+  F -->|Không có hoặc Đã chấm| I["Không đổi lượt trước"]
+  G --> J(["Mục mới “Chờ chấm” cho lượt vừa nộp"])
+  H --> J
+  I --> J
+</pre>
+          <figcaption>Hình F-6 — Quy tắc tiếp nhận bài nộp</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Nộp lượt Bài tập/Bài thi có ít nhất một câu Viết/Nói không trống</td><td>Tạo đúng một mục "Chờ chấm" trong hàng chờ của GV sở hữu workspace; huy hiệu tăng (≤ 60 giây).</td><td><a class="chip screen" href="../screen-flow-design.html#S05">S05</a> <a class="chip screen" href="../screen-flow-design.html#S07">S07</a> → <a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-2.5</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Nộp lượt không có câu Viết/Nói</td><td>Không vào hàng chờ.</td><td>—</td><td><span class="chip ac">AC-1.2</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Nộp lượt mà mọi câu Viết/Nói đều trống</td><td>Các câu đó được 0 điểm, bài nộp "Đã chấm" ngay, không vào hàng chờ, không có thời gian chờ chấm. <span class="nc">[NEEDS CLARIFICATION: Q-2]</span></td><td>—</td><td><span class="chip ac">AC-1.3</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Nộp lượt mới của cùng Bài tập trong cùng Lớp khi lượt trước "Chờ chấm"</td><td>Lượt trước → "Đã thay thế", rời hàng chờ, không có điểm cuối cùng; HV thấy ở lượt đó "Không chấm — đã có lượt làm mới hơn". <span class="nc">[NEEDS CLARIFICATION: Q-1]</span></td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a> <a class="chip screen" href="../screen-flow-design.html#S06">S06</a></td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-9.4</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Nộp lượt mới khi lượt trước "Đang chấm"</td><td>Lượt trước giữ trong hàng chờ với nhãn "Có lượt mới hơn"; lượt mới thành mục riêng.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-1.5</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Nộp thêm lượt Bài thi</td><td>Mọi lượt thi trước giữ nguyên trạng thái chấm; lượt mới là mục riêng.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-1.6</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>E-1 · Ngoại lệ: GV đang mở lượt bị thay thế <span class="chip ac">AC-13.6</span></summary><div class="body"><ol><li>T14 chuyển sang chỉ đọc, hiển thị "Học viên đã nộp lượt làm mới hơn; lượt này không cần chấm." kèm liên kết "Mở lượt mới nhất".</li><li>Mọi thay đổi chưa lưu không được ghi.</li></ol></div></details>
+      </div>
+
+      <div class="flow" id="F-7">
+        <h3 data-toc="F-7 Ngoại lệ khi chờ chấm">F-7: Xử lý ngoại lệ trong khi bài nộp chờ chấm</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Hệ thống, Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Sự kiện từ module khác (ẩn bài, gỡ HV khỏi lớp, kết thúc lớp, khóa/xóa tài khoản) hoặc xung đột giữa hai cửa sổ / truy cập trái phép</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài nộp đang Cần chấm (hoặc đang được mở trên T14)</div>
+          <div class="fact"><span class="k">Kết quả</span>Không bài nộp nào bị mất âm thầm; điểm không bị ghi đè hay lộ</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Bài nộp đang Cần chấm"]) --> B{"Điều gì xảy ra?"}
+  B -->|Bài bị ẩn, 002| C["Giữ + nhãn “Bài đã ẩn”, chấm bình thường"]
+  B -->|HV rời lớp hoặc lớp kết thúc, 003| D["Giữ + nhãn “HV đã rời lớp” hoặc “Lớp đã kết thúc”"]
+  B -->|Tài khoản HV bị khóa, 001| E["Giữ + nhãn “Tài khoản bị khóa”, HV thấy kết quả khi đăng nhập lại"]
+  B -->|Tài khoản HV bị xóa, 001| F["Gỡ khỏi hàng chờ và huy hiệu"]
+  B -->|Cửa sổ khác đã lưu trước| G["Từ chối lần lưu, giữ dữ liệu, “Tải lại để xem bản mới nhất.”"]
+  B -->|GV khác mở đường dẫn| H["“Không tìm thấy bài nộp.”"]
+</pre>
+          <figcaption>Hình F-7 — Các ngoại lệ và cách hệ thống phản ứng</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động / sự kiện</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV (002)</td><td>Ẩn Bài tập/Bài thi đã có bài nộp chờ chấm</td><td>Bài nộp vẫn ở hàng chờ với nhãn "Bài đã ẩn", chấm bình thường.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a> <a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-13.1</span></td></tr>
+            <tr><td class="id">2</td><td>GV (003)</td><td>Gỡ HV khỏi lớp, hoặc lớp chuyển sang "Đã kết thúc"</td><td>Bài nộp vẫn ở hàng chờ với nhãn "HV đã rời lớp" hoặc "Lớp đã kết thúc", chấm bình thường.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a> <a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-13.2</span></td></tr>
+            <tr><td class="id">3</td><td>GV (001)</td><td>Khóa tài khoản HV</td><td>Vẫn chấm được, nhãn "Tài khoản bị khóa" trên T13/T14; HV thấy kết quả khi đăng nhập lại được.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a> <a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-13.3</span></td></tr>
+            <tr><td class="id">4</td><td>GV (001)</td><td>Xóa tài khoản HV (nếu 001 cho phép)</td><td>Mọi bài nộp Cần chấm của HV đó rời hàng chờ và huy hiệu.</td><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td><span class="chip ac">AC-13.4</span></td></tr>
+            <tr><td class="id">5</td><td>GV</td><td>Lưu ở cửa sổ B sau khi cửa sổ A đã lưu/hoàn tất cùng bài nộp</td><td>Cửa sổ B bị từ chối, dữ liệu đang nhập được giữ, thông báo "Bài nộp này vừa được cập nhật ở cửa sổ khác. Tải lại để xem bản mới nhất."</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-13.5</span></td></tr>
+            <tr><td class="id">6</td><td>GV khác</td><td>Mở đường dẫn T14 của bài nộp không thuộc workspace mình</td><td>"Không tìm thấy bài nộp." — giống hệt trường hợp bài nộp không tồn tại.</td><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td><span class="chip ac">AC-12.2</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>E-1 · Ngoại lệ: phiên đăng nhập hết hạn giữa chừng <span class="chip ac">AC-7.5</span> <span class="chip ac">AC-8.6</span></summary><div class="body"><ol><li>Dữ liệu trên màn hình được giữ; GV được yêu cầu đăng nhập lại để lưu; hoàn tất không có hiệu lực một phần.</li></ol></div></details>
+      </div>
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>.</p>
+
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: Tiếp nhận bài nộp vào hàng chờ</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T13">T13</a><a class="chip screen" href="../screen-flow-design.html#S06">S06</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN HV nộp một lượt Bài tập hoặc Bài thi có ít nhất một câu Viết hoặc Nói có câu trả lời không trống THE SYSTEM SHALL đưa bài nộp đó vào Hàng chờ chấm (T13) của GV sở hữu workspace thành đúng một mục với trạng thái "Chờ chấm".</td></tr>
+            <tr id="AC-1.2"><td class="id">AC-1.2</td><td class="ears">IF bài nộp không chứa câu Viết hoặc Nói nào THEN THE SYSTEM SHALL không đưa bài nộp đó vào Hàng chờ chấm.</td></tr>
+            <tr id="AC-1.3"><td class="id">AC-1.3</td><td class="ears">IF bài nộp có câu Viết/Nói nhưng mọi câu đó đều có câu trả lời trống THEN THE SYSTEM SHALL chấm 0 điểm cho các câu đó, chuyển bài nộp sang "Đã chấm" ngay khi nộp với điểm cuối cùng bằng tổng điểm câu chấm tự động, phát sinh "Bài nộp đã chấm xong" và "Bài nộp có điểm cuối cùng", không đưa vào Hàng chờ chấm và không ghi nhận thời gian chờ chấm cho bài nộp này <span class="nc">[NEEDS CLARIFICATION: Bài nộp mà mọi câu Viết/Nói đều bỏ trống có được tự động chấm 0 và bỏ qua hàng chờ như đề xuất, hay vẫn vào hàng chờ để GV nhận xét?]</span></td></tr>
+            <tr id="AC-1.4"><td class="id">AC-1.4</td><td class="ears">WHEN HV nộp một lượt mới của cùng Bài tập trong cùng Lớp trong khi lượt trước của HV đó đang ở trạng thái "Chờ chấm" THE SYSTEM SHALL chuyển lượt trước sang "Đã thay thế", gỡ nó khỏi Hàng chờ chấm và không ghi nhận điểm cuối cùng cho lượt đó <span class="nc">[NEEDS CLARIFICATION: Khi HV nộp lượt mới của cùng Bài tập, lượt cũ còn "Chờ chấm" có bị thay thế (không chấm, không tính điểm) như đề xuất, hay GV phải chấm mọi lượt để giữ đúng quy tắc lấy điểm lượt cao nhất (A10)?]</span></td></tr>
+            <tr id="AC-1.5"><td class="id">AC-1.5</td><td class="ears">WHEN HV nộp một lượt mới của cùng Bài tập trong cùng Lớp trong khi lượt trước của HV đó đang ở trạng thái "Đang chấm" THE SYSTEM SHALL giữ lượt trước trong Hàng chờ chấm kèm nhãn "Có lượt mới hơn" và đưa lượt mới vào hàng chờ thành một mục riêng.</td></tr>
+            <tr id="AC-1.6"><td class="id">AC-1.6</td><td class="ears">WHEN HV nộp thêm một lượt Bài thi THE SYSTEM SHALL giữ nguyên trạng thái chấm của mọi lượt thi trước đó của HV, tức là lượt Bài thi không bao giờ bị thay thế.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-2">
+        <header>
+          <h3>REQ-2: Danh sách Hàng chờ chấm (T13)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-2.1"><td class="id">AC-2.1</td><td class="ears">WHEN GV mở T13 THE SYSTEM SHALL hiển thị danh sách bài nộp của workspace với các cột Học viên, Lớp, Bài (tên và lượt thứ mấy), Loại (Bài tập/Bài thi), Câu cần chấm (số câu Viết và số câu Nói), Nộp lúc, Thời gian chờ và Trạng thái, tối đa 50 mục mỗi trang kèm tổng số mục phù hợp.</td></tr>
+            <tr id="AC-2.2"><td class="id">AC-2.2</td><td class="ears">WHEN GV mở T13 lần đầu trong phiên đăng nhập THE SYSTEM SHALL áp dụng bộ lọc Trạng thái "Cần chấm" và sắp xếp theo Nộp lúc từ cũ nhất đến mới nhất.</td></tr>
+            <tr id="AC-2.3"><td class="id">AC-2.3</td><td class="ears">THE SYSTEM SHALL hiển thị Nộp lúc theo giờ Việt Nam (UTC+7) dạng dd/MM/yyyy HH:mm và Thời gian chờ dạng "{n} phút" khi dưới 1 giờ, "{n} giờ" khi dưới 24 giờ và "{n} ngày" khi từ 24 giờ trở lên, làm tròn xuống.</td></tr>
+            <tr id="AC-2.4"><td class="id">AC-2.4</td><td class="ears">WHILE một bài nộp Cần chấm đã chờ quá 48 giờ THE SYSTEM SHALL đánh dấu mục đó trên T13 bằng nhãn "Chờ lâu" <span class="nc">[NEEDS CLARIFICATION: Ngưỡng "Chờ lâu" là 48 giờ (đề xuất, khớp mục tiêu trung vị ≤ 48 giờ) hay giá trị khác, và GV có cần tự chỉnh ngưỡng này không?]</span></td></tr>
+            <tr id="AC-2.5"><td class="id">AC-2.5</td><td class="ears">THE SYSTEM SHALL hiển thị trên mục "Chấm bài" của thanh điều hướng bên trái một huy hiệu bằng số bài nộp Cần chấm của workspace, hiển thị "99+" khi vượt quá 99 và ẩn huy hiệu khi bằng 0.</td></tr>
+            <tr id="AC-2.6"><td class="id">AC-2.6</td><td class="ears">IF workspace không có bài nộp Cần chấm nào và bộ lọc đang ở mặc định THEN THE SYSTEM SHALL hiển thị trạng thái rỗng "Không có bài nào cần chấm. Bài Viết/Nói học viên nộp sẽ xuất hiện tại đây."</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-3">
+        <header>
+          <h3>REQ-3: Lọc, tìm kiếm và sắp xếp hàng chờ</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-3.1"><td class="id">AC-3.1</td><td class="ears">THE SYSTEM SHALL cung cấp trên T13 các bộ lọc kết hợp được: Lớp, Bài, Loại bài (Bài tập/Bài thi), Loại câu hỏi (Viết/Nói) và Trạng thái (Cần chấm, Chờ chấm, Đang chấm, Đã chấm), trong đó bộ lọc Bài chỉ liệt kê Bài tập/Bài thi có bài nộp chấm tay, thuộc Lớp đã chọn nếu có.</td></tr>
+            <tr id="AC-3.2"><td class="id">AC-3.2</td><td class="ears">WHEN GV chọn Loại câu hỏi "Viết" hoặc "Nói" THE SYSTEM SHALL chỉ hiển thị bài nộp có ít nhất một câu thuộc loại đã chọn.</td></tr>
+            <tr id="AC-3.3"><td class="id">AC-3.3</td><td class="ears">WHEN GV nhập từ khóa vào ô "Tìm học viên" THE SYSTEM SHALL chỉ hiển thị bài nộp của HV có họ tên hoặc email chứa từ khóa, không phân biệt chữ hoa/thường và dấu tiếng Việt.</td></tr>
+            <tr id="AC-3.4"><td class="id">AC-3.4</td><td class="ears">WHEN GV bấm tiêu đề cột "Nộp lúc" THE SYSTEM SHALL đảo thứ tự sắp xếp giữa cũ nhất trước và mới nhất trước.</td></tr>
+            <tr id="AC-3.5"><td class="id">AC-3.5</td><td class="ears">IF không có bài nộp nào phù hợp với bộ lọc hoặc từ khóa THEN THE SYSTEM SHALL hiển thị "Không có bài nộp phù hợp với bộ lọc." kèm nút "Xóa bộ lọc" đưa bộ lọc, từ khóa và thứ tự sắp xếp về mặc định.</td></tr>
+            <tr id="AC-3.6"><td class="id">AC-3.6</td><td class="ears">WHEN GV quay lại T13 từ T14 trong cùng phiên đăng nhập THE SYSTEM SHALL giữ nguyên bộ lọc, từ khóa, thứ tự sắp xếp và trang đang xem.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-4">
+        <header>
+          <h3>REQ-4: Xem bài nộp trên màn hình chấm (T14)</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-4.1"><td class="id">AC-4.1</td><td class="ears">WHEN GV mở một bài nộp từ T13 hoặc từ liên kết chấm bài ở màn hình khác THE SYSTEM SHALL hiển thị T14 với phần đầu gồm tên HV, Lớp, tên Bài, Loại bài, lượt làm thứ mấy, Nộp lúc, Thời gian chờ và Trạng thái chấm.</td></tr>
+            <tr id="AC-4.2"><td class="id">AC-4.2</td><td class="ears">THE SYSTEM SHALL liệt kê các câu Viết/Nói của bài nộp theo đúng thứ tự trong bài, mỗi câu gồm số thứ tự, loại câu, đề bài (kèm hình ảnh/âm thanh của đề nếu có) và điểm tối đa đúng như tại thời điểm HV nộp, kể cả khi đề đã được sửa sau đó.</td></tr>
+            <tr id="AC-4.3"><td class="id">AC-4.3</td><td class="ears">WHEN câu là Viết THE SYSTEM SHALL hiển thị nguyên văn câu trả lời của HV (giữ xuống dòng, chữ Hán và pinyin), kèm "Số ký tự: {n}" không tính khoảng trắng và yêu cầu độ dài của đề nếu đề có quy định.</td></tr>
+            <tr id="AC-4.4"><td class="id">AC-4.4</td><td class="ears">IF một câu Viết/Nói có câu trả lời trống THEN THE SYSTEM SHALL hiển thị "Học viên không trả lời câu này.", đặt sẵn điểm 0 không sửa được cho câu đó và vẫn cho nhập nhận xét.</td></tr>
+            <tr id="AC-4.5"><td class="id">AC-4.5</td><td class="ears">THE SYSTEM SHALL hiển thị các câu chấm tự động của cùng bài nộp ở chế độ chỉ đọc, mỗi câu gồm câu trả lời của HV, đáp án đúng và điểm đạt được/điểm tối đa, và không cho GV sửa điểm các câu này.</td></tr>
+            <tr id="AC-4.6"><td class="id">AC-4.6</td><td class="ears">WHEN GV thay đổi điểm của bất kỳ câu Viết/Nói nào THE SYSTEM SHALL cập nhật ngay trên T14 bảng tổng hợp gồm Điểm tự động (đạt/tối đa), Điểm chấm tay (đã nhập/tối đa) và Tổng dự kiến (tổng hai phần/tổng điểm tối đa của bài).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-5">
+        <header>
+          <h3>REQ-5: Nghe câu trả lời Nói</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-5.1"><td class="id">AC-5.1</td><td class="ears">WHEN câu là Nói THE SYSTEM SHALL hiển thị trình phát bản ghi âm của HV gồm nút Phát/Tạm dừng, thanh tua, thời điểm đang phát và tổng thời lượng dạng mm:ss.</td></tr>
+            <tr id="AC-5.2"><td class="id">AC-5.2</td><td class="ears">WHEN GV kéo hoặc bấm vào một vị trí trên thanh tua THE SYSTEM SHALL phát tiếp từ vị trí đó.</td></tr>
+            <tr id="AC-5.3"><td class="id">AC-5.3</td><td class="ears">WHEN GV chọn tốc độ phát 0,75x, 1x, 1,25x hoặc 1,5x THE SYSTEM SHALL phát bản ghi âm ở tốc độ đã chọn và giữ tốc độ đó cho các bản ghi âm GV mở tiếp theo trong cùng phiên đăng nhập.</td></tr>
+            <tr id="AC-5.4"><td class="id">AC-5.4</td><td class="ears">WHEN GV bắt đầu phát một bản ghi âm hoặc âm thanh đề khác trên T14 THE SYSTEM SHALL tạm dừng âm thanh đang phát.</td></tr>
+            <tr id="AC-5.5"><td class="id">AC-5.5</td><td class="ears">IF bản ghi âm bị thiếu hoặc không phát được THEN THE SYSTEM SHALL hiển thị "Không phát được bản ghi âm của học viên." kèm nút "Thử lại" và vẫn cho GV nhập điểm và nhận xét cho câu đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-6">
+        <header>
+          <h3>REQ-6: Nhập điểm và nhận xét</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-6.1"><td class="id">AC-6.1</td><td class="ears">THE SYSTEM SHALL cung cấp cho mỗi câu Viết/Nói một ô "Điểm" nhận giá trị từ 0 đến điểm tối đa của câu, là bội số của 0,25 hoặc bằng đúng điểm tối đa, chấp nhận dấu phẩy hoặc dấu chấm thập phân.</td></tr>
+            <tr id="AC-6.2"><td class="id">AC-6.2</td><td class="ears">IF điểm nhập nhỏ hơn 0 hoặc lớn hơn điểm tối đa của câu THEN THE SYSTEM SHALL hiển thị "Điểm phải từ 0 đến {điểm tối đa}." dưới ô điểm và không cho lưu nháp hay hoàn tất cho tới khi sửa.</td></tr>
+            <tr id="AC-6.3"><td class="id">AC-6.3</td><td class="ears">IF điểm nhập không phải là số hoặc không phải bội số của 0,25 và khác điểm tối đa THEN THE SYSTEM SHALL hiển thị "Điểm phải là bội số của 0,25 (ví dụ: 1; 1,25; 1,5)." dưới ô điểm và không cho lưu nháp hay hoàn tất cho tới khi sửa.</td></tr>
+            <tr id="AC-6.4"><td class="id">AC-6.4</td><td class="ears">THE SYSTEM SHALL cung cấp ô "Nhận xét" không bắt buộc tối đa 2000 ký tự cho mỗi câu Viết/Nói và ô "Nhận xét chung" không bắt buộc tối đa 3000 ký tự cho cả bài nộp, mỗi ô có bộ đếm ký tự và chấp nhận chữ Hán, pinyin và xuống dòng.</td></tr>
+            <tr id="AC-6.5"><td class="id">AC-6.5</td><td class="ears">IF nhận xét, nhận xét chung hoặc lý do chấm lại vượt giới hạn ký tự THEN THE SYSTEM SHALL hiển thị "Nhận xét tối đa 2000 ký tự.", "Nhận xét chung tối đa 3000 ký tự." hoặc "Lý do chấm lại tối đa 500 ký tự." tương ứng và không cho lưu nháp hay hoàn tất cho tới khi sửa.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-7">
+        <header>
+          <h3>REQ-7: Lưu nháp</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a><a class="chip screen" href="../screen-flow-design.html#S06">S06</a><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-7.1"><td class="id">AC-7.1</td><td class="ears">WHEN GV bấm "Lưu nháp" THE SYSTEM SHALL lưu mọi điểm và nhận xét đã nhập kể cả khi còn câu chưa có điểm, chuyển bài nộp sang "Đang chấm" và hiển thị "Đã lưu nháp lúc {HH:mm}".</td></tr>
+            <tr id="AC-7.2"><td class="id">AC-7.2</td><td class="ears">WHEN GV mở lại một bài nộp "Đang chấm" THE SYSTEM SHALL điền sẵn điểm và nhận xét của lần lưu nháp gần nhất.</td></tr>
+            <tr id="AC-7.3"><td class="id">AC-7.3</td><td class="ears">WHILE bài nộp ở trạng thái "Chờ chấm" hoặc "Đang chấm" THE SYSTEM SHALL không hiển thị cho HV bất kỳ điểm hay nhận xét nào của câu Viết/Nói và nhận xét chung, và hiển thị các câu đó cho HV là "Chờ chấm".</td></tr>
+            <tr id="AC-7.4"><td class="id">AC-7.4</td><td class="ears">WHEN GV rời T14 trong khi còn thay đổi chưa lưu THE SYSTEM SHALL hỏi "Bạn có thay đổi chưa lưu. Rời trang mà không lưu?" với lựa chọn "Ở lại" (mặc định) và "Rời trang".</td></tr>
+            <tr id="AC-7.5"><td class="id">AC-7.5</td><td class="ears">IF lưu nháp thất bại do mất kết nối hoặc phiên đăng nhập đã hết hạn THEN THE SYSTEM SHALL giữ nguyên mọi dữ liệu GV đã nhập trên màn hình và hiển thị "Chưa lưu được. Kiểm tra kết nối và thử lại." hoặc "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại để lưu." tương ứng.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-8">
+        <header>
+          <h3>REQ-8: Hoàn tất chấm và điểm cuối cùng</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-8.1"><td class="id">AC-8.1</td><td class="ears">WHEN GV bấm "Hoàn tất chấm" và mọi câu Viết/Nói đã có điểm hợp lệ THE SYSTEM SHALL hiển thị hộp xác nhận nêu "Tổng điểm: {tổng}/{tối đa}" và "Sau khi hoàn tất, học viên sẽ thấy điểm và nhận xét." (với Bài thi chưa công bố kết quả: "Học viên sẽ thấy điểm và nhận xét khi kết quả bài thi được công bố.") cùng nút "Xác nhận" và "Hủy".</td></tr>
+            <tr id="AC-8.2"><td class="id">AC-8.2</td><td class="ears">IF GV bấm "Hoàn tất chấm" khi còn câu Viết/Nói chưa có điểm THEN THE SYSTEM SHALL không mở hộp xác nhận, hiển thị "Còn {n} câu chưa nhập điểm.", hiển thị "Vui lòng nhập điểm cho câu này." tại từng câu thiếu và cuộn tới câu thiếu đầu tiên.</td></tr>
+            <tr id="AC-8.3"><td class="id">AC-8.3</td><td class="ears">WHEN GV bấm "Xác nhận" trong hộp xác nhận hoàn tất THE SYSTEM SHALL ghi nhận điểm cuối cùng của bài nộp bằng tổng điểm các câu chấm tự động cộng tổng điểm các câu Viết/Nói, chuyển bài nộp sang "Đã chấm" và không còn tính bài nộp đó trong "Cần chấm" và huy hiệu "Chấm bài".</td></tr>
+            <tr id="AC-8.4"><td class="id">AC-8.4</td><td class="ears">WHEN một bài nộp được hoàn tất lần đầu THE SYSTEM SHALL ghi nhận thời điểm hoàn tất và thời gian chờ chấm (thời điểm hoàn tất lần đầu trừ thời điểm nộp), hiển thị giá trị này ở cột Thời gian chờ của bài nộp trên T13 và cung cấp nó cho Dashboard (009).</td></tr>
+            <tr id="AC-8.5"><td class="id">AC-8.5</td><td class="ears">WHEN một bài nộp được hoàn tất THE SYSTEM SHALL phát sinh các sự kiện nghiệp vụ "Bài nộp đã chấm xong" (cho 005/006) và "Bài nộp có điểm cuối cùng" (cho 005/006, 008 và 009) kèm điểm cuối cùng của bài nộp.</td></tr>
+            <tr id="AC-8.6"><td class="id">AC-8.6</td><td class="ears">IF việc hoàn tất không thành công vì bất kỳ lý do nào THEN THE SYSTEM SHALL giữ bài nộp ở trạng thái trước đó, không công bố điểm hay nhận xét nào cho HV, giữ nguyên dữ liệu GV đã nhập trên màn hình và hiển thị "Chưa hoàn tất được. Kiểm tra kết nối và thử lại."</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-9">
+        <header>
+          <h3>REQ-9: HV xem kết quả sau khi chấm</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S06">S06</a><a class="chip screen" href="../screen-flow-design.html#S08">S08</a><a class="chip screen" href="../screen-flow-design.html#S02">S02</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-9.1"><td class="id">AC-9.1</td><td class="ears">WHEN một bài nộp được hoàn tất THE SYSTEM SHALL hiển thị cho HV đã nộp, trên S06 (Bài tập) hoặc S08 (Bài thi), tổng điểm cuối cùng, điểm và nhận xét của từng câu Viết/Nói, và nhận xét chung của GV.</td></tr>
+            <tr id="AC-9.2"><td class="id">AC-9.2</td><td class="ears">IF bài nộp thuộc Bài thi mà kết quả chưa được công bố theo cài đặt của Bài thi (006) THEN THE SYSTEM SHALL không hiển thị điểm và nhận xét cho HV cho tới khi kết quả được công bố.</td></tr>
+            <tr id="AC-9.3"><td class="id">AC-9.3</td><td class="ears">WHILE HV chưa mở một kết quả vừa hiển thị cho mình (lần đầu hoặc sau khi chấm lại) THE SYSTEM SHALL gắn nhãn "Có kết quả mới" cho Bài tập/Bài thi đó trên S02.</td></tr>
+            <tr id="AC-9.4"><td class="id">AC-9.4</td><td class="ears">WHEN một lượt Bài tập chuyển sang "Đã thay thế" THE SYSTEM SHALL hiển thị cho HV ở lượt đó "Không chấm — đã có lượt làm mới hơn" thay cho điểm và nhận xét câu Viết/Nói.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-10">
+        <header>
+          <h3>REQ-10: Chấm lại bài đã chấm</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a><a class="chip screen" href="../screen-flow-design.html#S06">S06</a><a class="chip screen" href="../screen-flow-design.html#S08">S08</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-10.1"><td class="id">AC-10.1</td><td class="ears">WHEN GV mở một bài nộp "Đã chấm" THE SYSTEM SHALL hiển thị điểm và nhận xét đã hoàn tất ở chế độ chỉ đọc kèm nút "Chấm lại" và mục "Lịch sử chấm".</td></tr>
+            <tr id="AC-10.2"><td class="id">AC-10.2</td><td class="ears">WHEN GV bấm "Chấm lại" THE SYSTEM SHALL cho sửa điểm và nhận xét từng câu Viết/Nói, nhận xét chung và ô "Lý do chấm lại" không bắt buộc tối đa 500 ký tự, không cung cấp "Lưu nháp", và HV vẫn thấy kết quả đã hoàn tất trước đó cho tới khi GV hoàn tất chấm lại.</td></tr>
+            <tr id="AC-10.3"><td class="id">AC-10.3</td><td class="ears">WHEN GV bấm "Hoàn tất chấm lại" và xác nhận THE SYSTEM SHALL thay kết quả HV thấy bằng kết quả mới, cập nhật điểm cuối cùng và, nếu HV đã từng thấy kết quả trước đó, hiển thị cho HV nhãn "Điểm đã được giáo viên cập nhật lúc {dd/MM/yyyy HH:mm}".</td></tr>
+            <tr id="AC-10.4"><td class="id">AC-10.4</td><td class="ears">THE SYSTEM SHALL lưu mỗi lần hoàn tất (lần đầu và mỗi lần chấm lại) thành một mục trong "Lịch sử chấm" gồm lần thứ, thời điểm, tổng điểm, điểm và nhận xét từng câu, nhận xét chung và lý do chấm lại; chỉ GV xem được Lịch sử chấm, còn HV chỉ thấy kết quả mới nhất.</td></tr>
+            <tr id="AC-10.5"><td class="id">AC-10.5</td><td class="ears">WHEN GV bấm "Hủy chấm lại" THE SYSTEM SHALL bỏ mọi thay đổi chưa hoàn tất và giữ nguyên kết quả hiện hành.</td></tr>
+            <tr id="AC-10.6"><td class="id">AC-10.6</td><td class="ears">WHEN một lần chấm lại được hoàn tất THE SYSTEM SHALL phát sinh lại sự kiện "Bài nộp có điểm cuối cùng" với điểm mới và giữ nguyên thời gian chờ chấm đã ghi nhận ở lần hoàn tất đầu tiên.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-11">
+        <header>
+          <h3>REQ-11: Chấm liên tục và phím tắt</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p2">P2</span><span class="pill p3">AC-11.5: P3</span><a class="chip screen" href="../screen-flow-design.html#T14">T14</a><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-11.1"><td class="id">AC-11.1</td><td class="ears">WHEN GV hoàn tất chấm thành công THE SYSTEM SHALL hiển thị "Đã hoàn tất chấm bài của {tên HV}." kèm nút "Chấm bài tiếp theo" và "Về hàng chờ".</td></tr>
+            <tr id="AC-11.2"><td class="id">AC-11.2</td><td class="ears">WHEN GV bấm "Chấm bài tiếp theo" THE SYSTEM SHALL mở bài nộp Cần chấm kế tiếp theo bộ lọc và thứ tự sắp xếp hiện tại của T13, hoặc theo bộ lọc mặc định nếu GV không mở T14 từ T13.</td></tr>
+            <tr id="AC-11.3"><td class="id">AC-11.3</td><td class="ears">IF GV bấm "Chấm bài tiếp theo" khi không còn bài nộp Cần chấm nào theo bộ lọc hiện tại THEN THE SYSTEM SHALL hiển thị "Bạn đã chấm hết các bài trong danh sách." và đưa GV về T13.</td></tr>
+            <tr id="AC-11.4"><td class="id">AC-11.4</td><td class="ears">THE SYSTEM SHALL hiển thị trên T14 vị trí của bài nộp trong danh sách hiện tại dạng "Bài {i}/{n}" cùng nút "Bài trước" và "Bài tiếp theo" để chuyển giữa các bài nộp của danh sách đó.</td></tr>
+            <tr id="AC-11.5"><td class="id">AC-11.5</td><td class="ears">WHERE phím tắt được cung cấp THE SYSTEM SHALL hỗ trợ Ctrl+S (⌘+S trên macOS) để lưu nháp, Ctrl+Enter để hoàn tất chấm, Alt+→ và Alt+← để sang bài tiếp theo/bài trước, phím Space để phát/tạm dừng bản ghi âm đang chọn khi con trỏ không ở ô nhập, và liệt kê các phím này trong mục "Phím tắt" trên T14.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-12">
+        <header>
+          <h3>REQ-12: Phân quyền và bảo vệ dữ liệu chấm</h3>
+          <div class="req-meta"><span class="chip">US-7</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T13">T13</a><a class="chip screen" href="../screen-flow-design.html#T14">T14</a><a class="chip screen" href="../screen-flow-design.html#A01">A01</a><a class="chip screen" href="../screen-flow-design.html#S01">S01</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-12.1"><td class="id">AC-12.1</td><td class="ears">THE SYSTEM SHALL chỉ cho GV sở hữu workspace xem T13, mở T14, chấm, chấm lại và xem Lịch sử chấm của các bài nộp thuộc HV trong workspace đó.</td></tr>
+            <tr id="AC-12.2"><td class="id">AC-12.2</td><td class="ears">IF GV mở một bài nộp không thuộc workspace của mình hoặc không tồn tại THEN THE SYSTEM SHALL hiển thị cùng một thông báo "Không tìm thấy bài nộp." cho cả hai trường hợp và không tiết lộ thông tin nào về bài nộp.</td></tr>
+            <tr id="AC-12.3"><td class="id">AC-12.3</td><td class="ears">IF một HV đã đăng nhập truy cập T13 hoặc T14 THEN THE SYSTEM SHALL không hiển thị dữ liệu nào và chuyển HV về S01.</td></tr>
+            <tr id="AC-12.4"><td class="id">AC-12.4</td><td class="ears">IF người chưa đăng nhập truy cập T13 hoặc T14 THEN THE SYSTEM SHALL chuyển tới A01 và sau khi GV đăng nhập thành công thì mở lại đúng trang đã yêu cầu.</td></tr>
+            <tr id="AC-12.5"><td class="id">AC-12.5</td><td class="ears">IF người dùng không phải HV đã ghi âm và không phải GV sở hữu workspace yêu cầu nghe một bản ghi âm câu Nói THEN THE SYSTEM SHALL từ chối và không phát nội dung bản ghi âm.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="req" id="REQ-13">
+        <header>
+          <h3>REQ-13: Tình huống đặc biệt và xung đột khi chấm</h3>
+          <div class="req-meta"><span class="chip">US-7</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T13">T13</a><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-13.1"><td class="id">AC-13.1</td><td class="ears">IF Bài tập hoặc Bài thi của một bài nộp Cần chấm đã bị ẩn THEN THE SYSTEM SHALL giữ bài nộp trong Hàng chờ chấm với nhãn "Bài đã ẩn" và cho chấm như bình thường.</td></tr>
+            <tr id="AC-13.2"><td class="id">AC-13.2</td><td class="ears">IF HV của một bài nộp Cần chấm đã bị gỡ khỏi lớp hoặc lớp đã kết thúc THEN THE SYSTEM SHALL giữ bài nộp trong Hàng chờ chấm với nhãn "HV đã rời lớp" hoặc "Lớp đã kết thúc" tương ứng và cho chấm như bình thường.</td></tr>
+            <tr id="AC-13.3"><td class="id">AC-13.3</td><td class="ears">IF tài khoản của HV bị khóa THEN THE SYSTEM SHALL vẫn cho chấm bài nộp của HV đó, gắn nhãn "Tài khoản bị khóa" trên T13 và T14, và hiển thị kết quả cho HV khi HV đăng nhập lại được.</td></tr>
+            <tr id="AC-13.4"><td class="id">AC-13.4</td><td class="ears">IF tài khoản của HV bị xóa theo quy định của module 001 THEN THE SYSTEM SHALL gỡ mọi bài nộp Cần chấm của HV đó khỏi Hàng chờ chấm và khỏi huy hiệu "Chấm bài".</td></tr>
+            <tr id="AC-13.5"><td class="id">AC-13.5</td><td class="ears">IF bài nộp đã được lưu nháp, hoàn tất hoặc chấm lại ở một cửa sổ hay phiên khác sau khi GV mở nó THEN THE SYSTEM SHALL từ chối lần lưu của cửa sổ hiện tại, giữ nguyên dữ liệu GV đang nhập trên màn hình và hiển thị "Bài nộp này vừa được cập nhật ở cửa sổ khác. Tải lại để xem bản mới nhất."</td></tr>
+            <tr id="AC-13.6"><td class="id">AC-13.6</td><td class="ears">IF bài nộp GV đang mở hoặc định lưu đã ở trạng thái "Đã thay thế" THEN THE SYSTEM SHALL hiển thị bài nộp ở chế độ chỉ đọc với thông báo "Học viên đã nộp lượt làm mới hơn; lượt này không cần chấm." kèm liên kết "Mở lượt mới nhất" và không lưu bất kỳ thay đổi nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td class="id">BR-1</td><td>Mỗi bài nộp (một lượt làm) có ít nhất một câu Viết/Nói không trống là <b>đúng một mục</b> trong hàng chờ của GV sở hữu workspace, bất kể có bao nhiêu câu chấm tay. Bài nộp không có câu Viết/Nói không bao giờ vào hàng chờ.</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span></td></tr>
+          <tr><td class="id">BR-2</td><td>Bài nộp mà mọi câu Viết/Nói đều trống được tự chấm 0 cho các câu đó, "Đã chấm" ngay, điểm cuối cùng = điểm tự động, vẫn phát sinh sự kiện, không vào hàng chờ và không có thời gian chờ chấm (không tính vào trung vị của 009). <span class="nc">[NEEDS CLARIFICATION: Q-2]</span></td><td><span class="chip ac">AC-1.3</span></td></tr>
+          <tr><td class="id">BR-3</td><td>Thay thế lượt chỉ áp dụng cho <b>Bài tập</b>, trong phạm vi cùng HV + cùng Bài tập + cùng Lớp, và chỉ khi lượt trước còn "Chờ chấm". Lượt "Đã thay thế" không có điểm cuối cùng nên không tham gia điểm lượt cao nhất (A10); HV thấy "Không chấm — đã có lượt làm mới hơn"; GV chỉ xem được ở chế độ chỉ đọc. <span class="nc">[NEEDS CLARIFICATION: Q-1]</span></td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-13.6</span></td></tr>
+          <tr><td class="id">BR-4</td><td>Lượt Bài tập đã "Đang chấm" không bị thay thế (giữ công GV đã bỏ ra); được gắn nhãn "Có lượt mới hơn".</td><td><span class="chip ac">AC-1.5</span></td></tr>
+          <tr><td class="id">BR-5</td><td>Lượt Bài thi không bao giờ bị thay thế; mỗi lượt thi là một mục riêng.</td><td><span class="chip ac">AC-1.6</span></td></tr>
+          <tr><td class="id">BR-6</td><td>"Cần chấm" = "Chờ chấm" + "Đang chấm". Huy hiệu "Chấm bài" đếm mọi bài nộp Cần chấm của workspace (kể cả bài đã ẩn, HV đã rời lớp, lớp đã kết thúc, tài khoản bị khóa); không đếm bài "Đã chấm", "Đã thay thế" hoặc của HV đã bị xóa tài khoản.</td><td><span class="chip ac">AC-2.5</span> <span class="chip ac">AC-8.3</span> <span class="chip ac">AC-13.1</span> <span class="chip ac">AC-13.2</span> <span class="chip ac">AC-13.3</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td class="id">BR-7</td><td>Mặc định T13: Trạng thái "Cần chấm", Nộp lúc cũ nhất trước, 50 mục/trang; bộ lọc, từ khóa, thứ tự, trang được giữ khi quay lại từ T14 trong cùng phiên.</td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span> <span class="chip ac">AC-3.6</span></td></tr>
+          <tr><td class="id">BR-8</td><td>Mục Cần chấm chờ quá 48 giờ được gắn nhãn "Chờ lâu". <span class="nc">[NEEDS CLARIFICATION: Q-3]</span></td><td><span class="chip ac">AC-2.4</span></td></tr>
+          <tr><td class="id">BR-9</td><td>Mọi thời điểm hiển thị theo UTC+7 (dd/MM/yyyy HH:mm); Thời gian chờ làm tròn xuống: dưới 1 giờ → phút, dưới 24 giờ → giờ, từ 24 giờ → ngày.</td><td><span class="chip ac">AC-2.3</span></td></tr>
+          <tr><td class="id">BR-10</td><td>Đề bài và điểm tối đa trên T14 là bản tại thời điểm HV nộp, không theo bản sửa sau đó.</td><td><span class="chip ac">AC-4.2</span></td></tr>
+          <tr><td class="id">BR-11</td><td>Câu chấm tự động chỉ đọc trên T14; GV không sửa điểm các câu này.</td><td><span class="chip ac">AC-4.5</span></td></tr>
+          <tr><td class="id">BR-12</td><td>Câu Viết/Nói có câu trả lời trống: điểm cố định 0, không sửa được; vẫn nhận xét được.</td><td><span class="chip ac">AC-4.4</span></td></tr>
+          <tr><td class="id">BR-13</td><td>Điểm câu chấm tay: 0 ≤ điểm ≤ điểm tối đa của câu; bội số của 0,25 hoặc đúng bằng điểm tối đa; nhập được bằng dấu phẩy hoặc dấu chấm thập phân.</td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.3</span></td></tr>
+          <tr><td class="id">BR-14</td><td>Nhận xét không bắt buộc: mỗi câu ≤ 2000 ký tự, nhận xét chung ≤ 3000 ký tự, lý do chấm lại ≤ 500 ký tự.</td><td><span class="chip ac">AC-6.4</span> <span class="chip ac">AC-6.5</span> <span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td class="id">BR-15</td><td>Điểm và nhận xét nháp (kể cả khi đang chấm lại) không bao giờ hiển thị cho HV.</td><td><span class="chip ac">AC-7.3</span> <span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td class="id">BR-16</td><td>Lưu nháp được khi còn câu chưa có điểm; hoàn tất chỉ được khi mọi câu Viết/Nói có điểm hợp lệ.</td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-8.1</span> <span class="chip ac">AC-8.2</span></td></tr>
+          <tr><td class="id">BR-17</td><td>Điểm cuối cùng = tổng điểm câu chấm tự động + tổng điểm câu chấm tay; hiển thị dạng "{tổng}/{tối đa}", tối đa 2 chữ số thập phân, dấu phẩy thập phân, bỏ số 0 thừa.</td><td><span class="chip ac">AC-4.6</span> <span class="chip ac">AC-8.1</span> <span class="chip ac">AC-8.3</span></td></tr>
+          <tr><td class="id">BR-18</td><td>Hoàn tất và chấm lại là trọn vẹn: hoặc mọi thay đổi (điểm, nhận xét, trạng thái, lịch sử, điểm cuối cùng) cùng có hiệu lực, hoặc không có gì thay đổi và HV không thấy gì mới.</td><td><span class="chip ac">AC-8.6</span></td></tr>
+          <tr><td class="id">BR-19</td><td>Thời gian chờ chấm = thời điểm hoàn tất lần đầu − thời điểm nộp; ghi một lần, chấm lại không làm thay đổi. Đây là dữ kiện 009 dùng để tính trung vị.</td><td><span class="chip ac">AC-8.4</span> <span class="chip ac">AC-10.6</span></td></tr>
+          <tr><td class="id">BR-20</td><td>Kết quả Bài tập hiển thị cho HV ngay khi hoàn tất; kết quả Bài thi theo chính sách công bố của 006.</td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.2</span></td></tr>
+          <tr><td class="id">BR-21</td><td>Nhãn "Có kết quả mới" hiển thị trên S02 từ lúc kết quả (lần đầu hoặc sau chấm lại) hiển thị cho HV đến khi HV mở kết quả đó.</td><td><span class="chip ac">AC-9.3</span></td></tr>
+          <tr><td class="id">BR-22</td><td>Chấm lại: không giới hạn số lần, không có lưu nháp, mỗi lần hoàn tất thêm một mục Lịch sử chấm (chỉ GV xem); HV chỉ thấy kết quả mới nhất, kèm nhãn "Điểm đã được giáo viên cập nhật lúc …" nếu HV đã từng thấy kết quả trước đó.</td><td><span class="chip ac">AC-10.2</span> <span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span></td></tr>
+          <tr><td class="id">BR-23</td><td>"Chấm bài tiếp theo", "Bài trước", "Bài tiếp theo" và chỉ số "Bài {i}/{n}" theo danh sách hiện tại của T13 (bộ lọc + thứ tự); nếu T14 được mở từ màn hình khác thì dùng bộ lọc mặc định.</td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.4</span></td></tr>
+          <tr><td class="id">BR-24</td><td>Bài đã ẩn, HV đã rời lớp, lớp đã kết thúc, tài khoản bị khóa: bài nộp vẫn ở hàng chờ có nhãn và chấm bình thường. Tài khoản bị xóa: bài nộp Cần chấm rời hàng chờ.</td><td><span class="chip ac">AC-13.1</span> <span class="chip ac">AC-13.2</span> <span class="chip ac">AC-13.3</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td class="id">BR-25</td><td>Lần lưu dựa trên dữ liệu cũ hơn (cửa sổ khác đã lưu/hoàn tất/chấm lại) bị từ chối; không bao giờ ghi đè âm thầm.</td><td><span class="chip ac">AC-13.5</span></td></tr>
+          <tr><td class="id">BR-26</td><td>Chỉ GV sở hữu workspace truy cập T13/T14 và Lịch sử chấm; bài nộp ngoài workspace được đối xử như không tồn tại; bản ghi âm chỉ phát cho HV đã ghi và GV sở hữu workspace.</td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.2</span> <span class="chip ac">AC-12.3</span> <span class="chip ac">AC-12.4</span> <span class="chip ac">AC-12.5</span></td></tr>
+        </tbody>
+      </table></div>
+      <h4>Kiểm tra dữ liệu nhập</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trường</th><th class="center">Bắt buộc</th><th>Quy tắc</th><th>Thông báo khi sai</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Điểm (mỗi câu Viết/Nói)</td><td class="center yes">✓ khi hoàn tất<br>(không bắt buộc khi lưu nháp)</td><td>Số từ 0 đến điểm tối đa của câu; bội số của 0,25 hoặc đúng bằng điểm tối đa; dấu phẩy hoặc dấu chấm thập phân</td><td>“Điểm phải từ 0 đến {điểm tối đa}.”<br>“Điểm phải là bội số của 0,25 (ví dụ: 1; 1,25; 1,5).”<br>Khi hoàn tất thiếu điểm: “Còn {n} câu chưa nhập điểm.” và “Vui lòng nhập điểm cho câu này.”</td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.3</span> <span class="chip ac">AC-8.2</span></td></tr>
+          <tr><td>Điểm câu có câu trả lời trống</td><td class="center no">—</td><td>Cố định 0, không sửa được</td><td>(không có — ô bị khóa, kèm “Học viên không trả lời câu này.”)</td><td><span class="chip ac">AC-4.4</span></td></tr>
+          <tr><td>Nhận xét (mỗi câu)</td><td class="center no">—</td><td>≤ 2000 ký tự; nhận chữ Hán, pinyin, xuống dòng; có bộ đếm</td><td>“Nhận xét tối đa 2000 ký tự.”</td><td><span class="chip ac">AC-6.4</span> <span class="chip ac">AC-6.5</span></td></tr>
+          <tr><td>Nhận xét chung</td><td class="center no">—</td><td>≤ 3000 ký tự; nhận chữ Hán, pinyin, xuống dòng; có bộ đếm</td><td>“Nhận xét chung tối đa 3000 ký tự.”</td><td><span class="chip ac">AC-6.4</span> <span class="chip ac">AC-6.5</span></td></tr>
+          <tr><td>Lý do chấm lại</td><td class="center no">—</td><td>≤ 500 ký tự; chỉ có khi đang chấm lại</td><td>“Lý do chấm lại tối đa 500 ký tự.”</td><td><span class="chip ac">AC-10.2</span> <span class="chip ac">AC-6.5</span></td></tr>
+          <tr><td>Ô “Tìm học viên”</td><td class="center no">—</td><td>So khớp một phần với họ tên hoặc email, không phân biệt hoa/thường và dấu</td><td>Không có lỗi; không khớp → “Không có bài nộp phù hợp với bộ lọc.”</td><td><span class="chip ac">AC-3.3</span> <span class="chip ac">AC-3.5</span></td></tr>
+        </tbody>
+      </table></div>
+      <h4>Thông báo hệ thống (nguyên văn)</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Thông báo</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Hàng chờ rỗng</td><td>“Không có bài nào cần chấm. Bài Viết/Nói học viên nộp sẽ xuất hiện tại đây.”</td><td><span class="chip ac">AC-2.6</span></td></tr>
+          <tr><td>Lưu nháp thành công</td><td>“Đã lưu nháp lúc {HH:mm}”</td><td><span class="chip ac">AC-7.1</span></td></tr>
+          <tr><td>Rời trang khi chưa lưu</td><td>“Bạn có thay đổi chưa lưu. Rời trang mà không lưu?” — “Ở lại” / “Rời trang”</td><td><span class="chip ac">AC-7.4</span></td></tr>
+          <tr><td>Lưu nháp thất bại</td><td>“Chưa lưu được. Kiểm tra kết nối và thử lại.” / “Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại để lưu.”</td><td><span class="chip ac">AC-7.5</span></td></tr>
+          <tr><td>Hoàn tất thất bại</td><td>“Chưa hoàn tất được. Kiểm tra kết nối và thử lại.”</td><td><span class="chip ac">AC-8.6</span></td></tr>
+          <tr><td>Hoàn tất thành công</td><td>“Đã hoàn tất chấm bài của {tên HV}.” — “Chấm bài tiếp theo” / “Về hàng chờ”</td><td><span class="chip ac">AC-11.1</span></td></tr>
+          <tr><td>Hết bài trong danh sách</td><td>“Bạn đã chấm hết các bài trong danh sách.”</td><td><span class="chip ac">AC-11.3</span></td></tr>
+          <tr><td>Bản ghi âm lỗi</td><td>“Không phát được bản ghi âm của học viên.” — “Thử lại”</td><td><span class="chip ac">AC-5.5</span></td></tr>
+          <tr><td>Xung đột hai cửa sổ</td><td>“Bài nộp này vừa được cập nhật ở cửa sổ khác. Tải lại để xem bản mới nhất.”</td><td><span class="chip ac">AC-13.5</span></td></tr>
+          <tr><td>Lượt đã bị thay thế</td><td>“Học viên đã nộp lượt làm mới hơn; lượt này không cần chấm.” — “Mở lượt mới nhất”</td><td><span class="chip ac">AC-13.6</span></td></tr>
+          <tr><td>Không có quyền / không tồn tại</td><td>“Không tìm thấy bài nộp.”</td><td><span class="chip ac">AC-12.2</span></td></tr>
+          <tr><td>HV xem lượt bị thay thế</td><td>“Không chấm — đã có lượt làm mới hơn”</td><td><span class="chip ac">AC-9.4</span></td></tr>
+          <tr><td>HV xem kết quả đã chấm lại</td><td>“Điểm đã được giáo viên cập nhật lúc {dd/MM/yyyy HH:mm}”</td><td><span class="chip ac">AC-10.3</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  state "Chờ chấm" as ChoCham
+  state "Đang chấm" as DangCham
+  state "Đã chấm" as DaCham
+  state "Đã thay thế" as DaThayThe
+  [*] --> ChoCham: HV nộp, có câu Viết/Nói không trống
+  [*] --> DaCham: Mọi câu Viết/Nói trống, tự chấm 0
+  ChoCham --> DangCham: GV lưu nháp
+  DangCham --> DangCham: GV lưu nháp tiếp
+  ChoCham --> DaCham: GV hoàn tất
+  DangCham --> DaCham: GV hoàn tất
+  ChoCham --> DaThayThe: HV nộp lượt mới, chỉ Bài tập
+  DaCham --> DaCham: GV hoàn tất chấm lại, lần chấm +1
+  DaThayThe --> [*]
+</pre>
+        <figcaption>Vòng đời trạng thái chấm của một bài nộp — tên hiển thị: Chờ chấm / Đang chấm / Đã chấm / Đã thay thế</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Được phép</th><th>HV thấy</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Chờ chấm</td><td>Bài nộp có câu chấm tay không trống, chưa có gì được lưu</td><td>GV: mở, nhập, lưu nháp, hoàn tất. Hệ thống: chuyển sang "Đã thay thế" khi HV nộp lượt Bài tập mới cùng Lớp</td><td>"Chờ chấm"</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.4</span> <span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td>Đang chấm</td><td>Đã lưu nháp ít nhất một lần, chưa hoàn tất</td><td>GV: sửa, lưu nháp tiếp, hoàn tất. Không bị thay thế (nhãn "Có lượt mới hơn" nếu có lượt mới)</td><td>"Chờ chấm" (không thấy nháp)</td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.2</span> <span class="chip ac">AC-1.5</span> <span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td>Đã chấm</td><td>Đã hoàn tất, có điểm cuối cùng và ít nhất một mục Lịch sử chấm</td><td>GV: xem chỉ đọc, chấm lại (không giới hạn), hủy chấm lại</td><td>Tổng điểm, điểm + nhận xét từng câu, nhận xét chung (Bài thi: khi được công bố)</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.2</span> <span class="chip ac">AC-10.1</span> <span class="chip ac">AC-10.3</span></td></tr>
+          <tr><td>Đã thay thế</td><td>Lượt Bài tập bị thay bởi lượt mới hơn khi còn "Chờ chấm"</td><td>Chỉ đọc; không chấm, không có điểm cuối cùng; trạng thái cuối</td><td>"Không chấm — đã có lượt làm mới hơn"</td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-13.6</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout note"><strong>Chế độ “Chấm lại”</strong> là chế độ thao tác trên T14, không phải trạng thái lưu trữ: trong khi chấm lại, bài nộp vẫn ở "Đã chấm" và HV vẫn thấy kết quả cũ (<span class="chip ac">AC-10.2</span>); chỉ khi "Hoàn tất chấm lại" thì kết quả mới có hiệu lực (<span class="chip ac">AC-10.3</span>).</div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T13">T13</a></td><td>Hàng chờ chấm bài <em>(module này)</em></td><td><span class="pill gv">GV</span></td><td>
+            <ul>
+              <li>Thanh bên: mục "Chấm bài" có huy hiệu số bài Cần chấm, "99+" khi vượt 99 (AC-2.5).</li>
+              <li>Thanh lọc: Lớp · Bài · Loại bài · Loại câu hỏi · Trạng thái (mặc định "Cần chấm"); ô "Tìm học viên"; nút "Xóa bộ lọc" (AC-3.1–AC-3.5).</li>
+              <li>Bảng: Học viên · Lớp · Bài ("Lượt n") · Loại · Câu cần chấm ("Viết 1 · Nói 2") · Nộp lúc (bấm để đảo thứ tự) · Thời gian chờ · Trạng thái (AC-2.1, AC-2.3, AC-3.4).</li>
+              <li>Nhãn trên dòng: "Chờ lâu", "Có lượt mới hơn", "Bài đã ẩn", "HV đã rời lớp", "Lớp đã kết thúc", "Tài khoản bị khóa" (AC-2.4, AC-1.5, AC-13.1–AC-13.3).</li>
+              <li>Phân trang 50 mục, tổng số mục; trạng thái rỗng; bấm một dòng → T14 (AC-2.1, AC-2.6, AC-4.1).</li>
+            </ul></td><td>F-1, F-5, F-6, F-7 · REQ-1, REQ-2, REQ-3, REQ-13</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T14">T14</a></td><td>Chấm bài nộp <em>(module này)</em></td><td><span class="pill gv">GV</span></td><td>
+            <ul>
+              <li>Phần đầu: HV, Lớp, Bài, Loại, Lượt, Nộp lúc, Thời gian chờ, Trạng thái, nhãn ngoại lệ; "Bài {i}/{n}", "Bài trước", "Bài tiếp theo", "Về hàng chờ" (AC-4.1, AC-11.4, AC-13.3).</li>
+              <li>Cột chính — từng câu Viết/Nói theo thứ tự: đề tại thời điểm nộp (kèm hình/âm thanh), điểm tối đa; câu trả lời Viết + "Số ký tự"; hoặc trình phát Nói (Phát/Tạm dừng, thanh tua, mm:ss, tốc độ 0,75x–1,5x); ô "Điểm" và ô "Nhận xét" có bộ đếm (AC-4.2–AC-4.4, AC-5.1–AC-5.5, AC-6.1–AC-6.5).</li>
+              <li>Khu "Câu chấm tự động" (thu gọn được), chỉ đọc: câu trả lời HV, đáp án đúng, điểm (AC-4.5).</li>
+              <li>Khung tổng hợp luôn hiển thị: Điểm tự động · Điểm chấm tay · Tổng dự kiến; "Nhận xét chung"; nút "Lưu nháp", "Hoàn tất chấm"; dòng "Đã lưu nháp lúc HH:mm" (AC-4.6, AC-6.4, AC-7.1, AC-8.1).</li>
+              <li>Bài "Đã chấm": chỉ đọc, nút "Chấm lại", mục "Lịch sử chấm"; khi chấm lại: ô "Lý do chấm lại", "Hoàn tất chấm lại", "Hủy chấm lại", không có "Lưu nháp" (AC-10.1–AC-10.5).</li>
+              <li>Hộp thoại/thông báo: xác nhận hoàn tất, rời trang chưa lưu, thiếu điểm, xung đột cửa sổ, lượt bị thay thế, hoàn tất thành công với "Chấm bài tiếp theo" (AC-8.1, AC-8.2, AC-7.4, AC-13.5, AC-13.6, AC-11.1).</li>
+              <li>Mục "Phím tắt": Ctrl/⌘+S, Ctrl+Enter, Alt+→/←, Space (AC-11.5).</li>
+            </ul></td><td>F-2, F-3, F-4, F-5, F-7 · REQ-4 … REQ-8, REQ-10 … REQ-13</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S06">S06</a> <a class="chip screen" href="../screen-flow-design.html#S08">S08</a></td><td>Kết quả bài tập / Kết quả bài thi <em>(005 / 006 sở hữu bố cục)</em></td><td><span class="pill hv">HV</span></td><td>Module này quy định nội dung: "Chờ chấm" khi chưa hoàn tất; sau hoàn tất: tổng điểm, điểm + nhận xét từng câu, nhận xét chung; Bài thi theo công bố; "Không chấm — đã có lượt làm mới hơn"; nhãn cập nhật điểm sau chấm lại (AC-7.3, AC-9.1, AC-9.2, AC-9.4, AC-10.3).</td><td>F-4, F-5, F-6 · REQ-7, REQ-9, REQ-10</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S02">S02</a></td><td>Trang lớp <em>(003)</em></td><td><span class="pill hv">HV</span></td><td>Nhãn "Có kết quả mới" trên Bài tập/Bài thi vừa có kết quả (AC-9.3).</td><td>F-4, F-5 · REQ-9</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T01">T01</a></td><td>Dashboard <em>(009)</em></td><td><span class="pill gv">GV</span></td><td>Hiển thị số bài Cần chấm và trung vị thời gian chờ chấm từ dữ kiện module này cung cấp; liên kết sang T13 (AC-2.5, AC-8.4).</td><td>F-1, F-4 · REQ-2, REQ-8</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T15">T15</a> <a class="chip screen" href="../screen-flow-design.html#T16">T16</a></td><td>Chi tiết học viên <em>(009)</em> / Kết quả bài thi <em>(006)</em></td><td><span class="pill gv">GV</span></td><td>Liên kết "Chấm bài" mở thẳng T14 của bài nộp; "Chấm bài tiếp theo" khi đó dùng bộ lọc mặc định (AC-4.1, AC-11.2).</td><td>F-1, F-5 · REQ-4, REQ-11</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S05">S05</a> <a class="chip screen" href="../screen-flow-design.html#S07">S07</a></td><td>Làm bài tập / Làm bài thi <em>(005 / 006)</em></td><td><span class="pill hv">HV</span></td><td>Điểm khởi phát: HV nộp lượt làm có câu Viết/Nói (AC-1.1).</td><td>F-6 · REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A01">A01</a> <a class="chip screen" href="../screen-flow-design.html#S01">S01</a></td><td>Đăng nhập <em>(001)</em> / Lớp của tôi <em>(003)</em></td><td><span class="pill gv">GV</span> <span class="pill hv">HV</span></td><td>Chuyển hướng khi chưa đăng nhập (A01, quay lại đúng trang) hoặc khi HV mở T13/T14 (S01) (AC-12.3, AC-12.4).</td><td>F-1 · REQ-12</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Màn hình đề xuất bổ sung (chưa có trong danh mục chung):</em> — không có — (hộp xác nhận, Lịch sử chấm và Phím tắt là thành phần của T14).</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Performance</td><td>T13 hiển thị trang đầu (50 mục) với bộ lọc bất kỳ trong ≤ 2 giây ở p95, với workspace có tới 5.000 bài nộp Cần chấm và 50.000 bài nộp Đã chấm.</td></tr>
+          <tr><td class="id">NFR-2</td><td>Performance</td><td>T14 hiển thị đầy đủ đề, câu trả lời Viết và câu chấm tự động của bài nộp tới 50 câu trong ≤ 2 giây ở p95; bản ghi âm dài tới 5 phút bắt đầu phát trong ≤ 3 giây ở p95 sau khi bấm Phát trên đường truyền 10 Mbps; Lưu nháp và Hoàn tất phản hồi trong ≤ 1 giây ở p95.</td></tr>
+          <tr><td class="id">NFR-3</td><td>Timeliness</td><td>bài nộp mới xuất hiện trong T13 và trong huy hiệu "Chấm bài" chậm nhất 60 giây sau khi HV nộp; kết quả đã hoàn tất hoặc chấm lại hiển thị cho HV ở lần mở S06/S08 kế tiếp, chậm nhất 60 giây sau khi GV xác nhận.</td></tr>
+          <tr><td class="id">NFR-4</td><td>Reliability</td><td>100% thao tác hoàn tất và chấm lại là trọn vẹn — điểm, nhận xét, trạng thái, Lịch sử chấm và điểm cuối cùng cùng được ghi nhận hoặc không có gì thay đổi — kiểm chứng bằng kiểm thử giả lập lỗi tại mỗi bước; 0 trường hợp mất dữ liệu của một lần lưu nháp đã báo thành công.</td></tr>
+          <tr><td class="id">NFR-5</td><td>Security</td><td>100% yêu cầu xem bài nộp, nghe bản ghi âm, chấm hoặc chấm lại bài nộp của workspace khác bị từ chối trong bộ kiểm thử phân quyền (GV khác, HV, người chưa đăng nhập); liên kết bản ghi âm bị sao chép ra ngoài ngừng phát được sau tối đa 15 phút và không bao giờ phát được với tài khoản khác.</td></tr>
+          <tr><td class="id">NFR-6</td><td>Accessibility</td><td>T13 và T14 đạt WCAG 2.1 mức AA; 100% thao tác chấm (lọc, mở bài, phát/tạm dừng/tua/đổi tốc độ, nhập điểm, nhận xét, lưu nháp, hoàn tất, chấm lại) thực hiện được chỉ bằng bàn phím và có nhãn cho trình đọc màn hình.</td></tr>
+          <tr><td class="id">NFR-7</td><td>Compatibility</td><td>T13 và T14 hoạt động đầy đủ trên 2 phiên bản mới nhất của Chrome, Edge, Firefox và Safari máy tính ở độ rộng 1024–1920 px; 100% mẫu kiểm thử chữ Hán giản thể và pinyin có dấu thanh hiển thị đúng (không có ô vuông hay ký tự lỗi).</td></tr>
+          <tr><td class="id">NFR-8</td><td>Observability</td><td>100% thao tác lưu nháp, hoàn tất, chấm lại và truy cập bị từ chối tạo đúng một bản ghi nhật ký có cấu trúc (người thực hiện, mã bài nộp, thao tác, thời điểm, kết quả) và 0 bản ghi chứa nội dung câu trả lời, nhận xét, email hay mật khẩu.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thực thể</th><th>Ý nghĩa</th><th>Thuộc tính nghiệp vụ chính</th><th>Quan hệ</th></tr></thead>
+        <tbody>
+          <tr><td>Bài nộp (Submission)</td><td>Một lượt làm đã nộp — do 005/006 tạo; module này bổ sung phần chấm tay</td><td>Lượt thứ, thời điểm nộp; <b>bổ sung:</b> Trạng thái chấm, điểm cuối cùng, nhận xét chung, thời điểm hoàn tất lần đầu, thời gian chờ chấm, thời điểm cập nhật kết quả gần nhất, HV đã mở kết quả mới hay chưa</td><td>Thuộc một HV, một Lớp, một Bài tập hoặc Bài thi; có nhiều Câu trả lời chấm tay; có một hoặc nhiều Lần chấm</td></tr>
+          <tr><td>Câu trả lời chấm tay</td><td>Câu trả lời của HV cho một câu Viết hoặc Nói</td><td>Loại (Viết/Nói), văn bản hoặc bản ghi âm (thời lượng), trống hay không, đề và điểm tối đa tại thời điểm nộp</td><td>Thuộc một Bài nộp; có một Kết quả chấm câu</td></tr>
+          <tr><td>Kết quả chấm câu</td><td>Điểm và nhận xét của GV cho một câu trả lời chấm tay</td><td>Điểm (0…tối đa, bước 0,25), nhận xét (≤ 2000 ký tự), nháp hay đã hoàn tất</td><td>Thuộc một Câu trả lời chấm tay</td></tr>
+          <tr><td>Lần chấm (mục Lịch sử chấm)</td><td>Ảnh chụp một lần hoàn tất</td><td>Lần thứ, thời điểm, tổng điểm, điểm + nhận xét từng câu, nhận xét chung, lý do chấm lại</td><td>Thuộc một Bài nộp; chỉ GV xem</td></tr>
+          <tr><td>Hàng chờ chấm</td><td>Cách nhìn trên Bài nộp: mọi bài nộp Cần chấm của một workspace</td><td>Bộ lọc, thứ tự, số lượng (huy hiệu)</td><td>Thuộc một workspace (một GV)</td></tr>
+          <tr><td>Dữ kiện cung cấp cho module khác</td><td>Sự thật nghiệp vụ module này phát ra</td><td>"Bài nộp đã chấm xong"; "Bài nộp có điểm cuối cùng" (kèm điểm); số bài Cần chấm theo workspace và lớp; thời gian chờ chấm từng bài</td><td>→ 005/006, 008, 009</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Hành vi mong đợi</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Bài nộp có nhiều câu (tới 50 câu)</td><td>T14 cuộn được; khung tổng hợp và nút Lưu nháp/Hoàn tất luôn trong tầm nhìn; hiển thị ≤ 2 giây p95 (NFR-2)</td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.6</span></td></tr>
+          <tr><td>Câu trả lời Viết rất dài (tới giới hạn của 005)</td><td>Hiển thị đầy đủ, cuộn trong khung; "Số ký tự" đếm đủ</td><td><span class="chip ac">AC-4.3</span></td></tr>
+          <tr><td>Bản ghi âm rất ngắn hoặc im lặng</td><td>Vẫn là câu trả lời không trống (hệ thống không phân tích âm thanh); GV tự đánh giá</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-5.1</span></td></tr>
+          <tr><td>Bản ghi âm thiếu hoặc hỏng</td><td>Thông báo lỗi + "Thử lại"; vẫn cho điểm và nhận xét</td><td><span class="chip ac">AC-5.5</span></td></tr>
+          <tr><td>HV bỏ trống một số câu Viết/Nói (kể cả Bài thi tự nộp khi hết giờ)</td><td>Câu trống: 0 điểm, khóa, vẫn nhận xét được</td><td><span class="chip ac">AC-4.4</span></td></tr>
+          <tr><td>HV bỏ trống mọi câu Viết/Nói</td><td>Tự chấm 0, không vào hàng chờ <span class="nc">[NEEDS CLARIFICATION: Q-2]</span></td><td><span class="chip ac">AC-1.3</span></td></tr>
+          <tr><td>Điểm tối đa của câu không phải bội số của 0,25 (ví dụ 0,1)</td><td>Chỉ nhận 0 hoặc đúng điểm tối đa; khuyến nghị 005/006 chỉ cho đặt điểm câu là bội số của 0,25</td><td><span class="chip ac">AC-6.1</span></td></tr>
+          <tr><td>Nhập điểm vượt điểm tối đa, âm, sai bước, không phải số</td><td>Thông báo dưới ô; chặn lưu nháp/hoàn tất</td><td><span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.3</span></td></tr>
+          <tr><td>Đề hoặc điểm tối đa bị sửa sau khi HV nộp (A8); lớp đổi giáo trình (003)</td><td>T14 dùng đề và điểm tối đa tại thời điểm nộp; bài nộp cũ vẫn chấm được (phụ thuộc 005/006 lưu bản đề tại thời điểm nộp)</td><td><span class="chip ac">AC-4.2</span></td></tr>
+          <tr><td>HV nộp lượt mới khi GV đang mở lượt cũ "Chờ chấm" chưa lưu</td><td>Lượt cũ bị thay thế; T14 chuyển chỉ đọc với liên kết "Mở lượt mới nhất"</td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-13.6</span></td></tr>
+          <tr><td>Hai cửa sổ cùng chấm một bài nộp</td><td>Lần lưu dựa trên dữ liệu cũ bị từ chối; dữ liệu đang nhập được giữ để GV sao chép</td><td><span class="chip ac">AC-13.5</span></td></tr>
+          <tr><td>Phiên đăng nhập hết hạn khi đang chấm (001)</td><td>Dữ liệu trên màn hình được giữ, yêu cầu đăng nhập lại; không có tự động lưu nháp trong MVP</td><td><span class="chip ac">AC-7.5</span> <span class="chip ac">AC-8.6</span></td></tr>
+          <tr><td>Đóng tab khi còn thay đổi chưa lưu</td><td>Trình duyệt hiển thị cảnh báo chuẩn (nội dung không tùy chỉnh); điều hướng trong ứng dụng dùng hộp thoại riêng</td><td><span class="chip ac">AC-7.4</span></td></tr>
+          <tr><td>Chấm lại Bài thi khi kết quả chưa công bố</td><td>HV không thấy gì cho tới khi công bố; không có nhãn cập nhật vì HV chưa từng thấy kết quả</td><td><span class="chip ac">AC-9.2</span> <span class="chip ac">AC-10.3</span></td></tr>
+          <tr><td>Chấm lại làm một lượt Bài tập thấp hơn lượt khác</td><td>Điểm lượt cao nhất (A10) do 005/008 tính lại từ sự kiện điểm cuối cùng mới</td><td><span class="chip ac">AC-10.6</span></td></tr>
+          <tr><td>HV bị gỡ khỏi lớp rồi được thêm lại</td><td>Bài nộp vẫn chấm được trong lúc vắng; kết quả hiển thị lại theo quyền xem lớp của 003</td><td><span class="chip ac">AC-13.2</span></td></tr>
+          <tr><td>HV nộp bài trong lúc GV đang ở T13</td><td>Danh sách không tự chèn dòng (tránh nhảy dòng khi GV đang bấm); mục mới xuất hiện khi tải lại/đổi bộ lọc; huy hiệu cập nhật ≤ 60 giây (NFR-3)</td><td><span class="chip ac">AC-2.5</span></td></tr>
+          <tr><td>Hơn 99 bài Cần chấm</td><td>Huy hiệu "99+"</td><td><span class="chip ac">AC-2.5</span></td></tr>
+          <tr><td>Múi giờ máy GV khác UTC+7</td><td>Mọi thời điểm vẫn hiển thị UTC+7 (A7); Thời gian chờ tính theo thời gian thực đã trôi qua</td><td><span class="chip ac">AC-2.3</span></td></tr>
+          <tr><td>Nhận xét chỉ gồm khoảng trắng; chứa chữ Hán, pinyin, xuống dòng</td><td>Khoảng trắng-only coi như không có nhận xét; khoảng trắng đầu/cuối bị bỏ; chữ Hán, pinyin, xuống dòng giữ nguyên</td><td><span class="chip ac">AC-6.4</span></td></tr>
+          <tr><td>GV đoán đường dẫn bài nộp của GV khác</td><td>"Không tìm thấy bài nộp." — giống hệt bài không tồn tại</td><td><span class="chip ac">AC-12.2</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hướng</th><th>Module</th><th>Sự kiện / dữ liệu nghiệp vụ</th></tr></thead>
+        <tbody>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../005-exercises/spec.html">005</a></td><td>"Bài nộp có câu Viết/Nói chờ chấm": lượt thứ, thời điểm nộp, đề + điểm tối đa tại thời điểm nộp, câu trả lời (văn bản/bản ghi âm), điểm câu chấm tự động. Yêu cầu: 005 lưu bản đề tại thời điểm nộp; điểm câu nên là bội số của 0,25.</td></tr>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../006-exams/spec.html">006</a></td><td>Như 005 cho Bài thi; chính sách công bố kết quả và thời điểm công bố (AC-9.2); T16 liên kết sang T14.</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../005-exercises/spec.html">005</a> <a class="chip mod" href="../006-exams/spec.html">006</a></td><td>"Bài nộp đã chấm xong" (điểm + nhận xét từng câu, nhận xét chung) để hiển thị trên S06/S08; trạng thái "Đã thay thế" (lượt này không có điểm cuối cùng — 005 bỏ qua khi lấy điểm lượt cao nhất); nhãn cập nhật điểm sau chấm lại. Đề xuất cho 005: S05 cảnh báo HV khi nộp lượt mới trong lúc lượt trước còn chờ chấm.</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../008-scoring-leaderboard/spec.html">008</a></td><td>"Bài nộp có điểm cuối cùng" ở lần hoàn tất đầu và mỗi lần chấm lại (kể cả bài tự chấm 0 theo AC-1.3).</td></tr>
+          <tr><td>Gửi tới</td><td><a class="chip mod" href="../009-teacher-dashboard/spec.html">009</a></td><td>Số bài nộp Cần chấm theo workspace và lớp (T01); thời gian chờ chấm của từng bài đã chấm (để tính trung vị); "Bài nộp có điểm cuối cùng" cho tiến độ. T15 có thể liên kết sang T14.</td></tr>
+          <tr><td>Nhận từ / Gửi tới</td><td><a class="chip mod" href="../003-classes/spec.html">003</a></td><td>Nhận: "HV được thêm vào / gỡ khỏi lớp", "Lớp kết thúc" (AC-13.2). Gửi: trạng thái "Có kết quả mới" để hiển thị nhãn trên S02 (AC-9.3).</td></tr>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../001-accounts-auth/spec.html">001</a></td><td>"Tài khoản HV bị khóa / xóa" (AC-13.3, AC-13.4); phiên đăng nhập, chuyển hướng qua A01 và quay lại trang yêu cầu (AC-12.4); quy tắc cô lập workspace (D1).</td></tr>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../002-curriculum/spec.html">002</a></td><td>Trạng thái ẩn của Bài tập/Bài thi (AC-13.1); nội dung có bài nộp chỉ ẩn, không xóa (A8).</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul>
+        <li>Chấm tự động hoặc bằng AI cho câu Viết/Nói, nhận dạng giọng nói, chấm phát âm tự động (D3).</li>
+        <li>Sửa hoặc ghi đè điểm câu chấm tự động; nhận xét riêng cho từng câu chấm tự động (GV dùng Nhận xét chung). Quy tắc chấm tự động thuộc 005/006.</li>
+        <li>Thang tiêu chí (rubric) nhiều thành phần, điểm âm, điểm thưởng vượt điểm tối đa.</li>
+        <li>Nhận xét bằng giọng nói, tệp đính kèm, chú thích hoặc sửa lỗi trực tiếp trên bài viết.</li>
+        <li>Trả bài cho HV làm lại, hoặc cấp thêm lượt thi (số lượt thi thuộc 006; HV tự làm lại Bài tập theo 005).</li>
+        <li>Bỏ qua hoặc loại một bài nộp khỏi hàng chờ mà không chấm.</li>
+        <li>Chấm hàng loạt (một câu cho nhiều HV cùng lúc), phân công người chấm khác hoặc trợ giảng.</li>
+        <li>Tải xuống hoặc xuất bản ghi âm, bài viết, danh sách hàng chờ.</li>
+        <li>HV phản hồi/khiếu nại điểm; HV xem Lịch sử chấm.</li>
+        <li>Thông báo email/push khi có bài mới hoặc khi có kết quả (A6).</li>
+        <li>Tự động lưu nháp.</li>
+        <li>Bố cục hiển thị kết quả trên S06/S08 (thuộc 005/006); module này chỉ quy định nội dung nào hiển thị và khi nào.</li>
+      </ul>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <div class="callout question"><strong>Q-1</strong> (<span class="chip ac">AC-1.4</span>) <span class="nc">[NEEDS CLARIFICATION: Khi HV nộp lượt mới của cùng Bài tập, lượt cũ còn "Chờ chấm" có bị thay thế (không chấm, không tính điểm) như đề xuất, hay GV phải chấm mọi lượt để giữ đúng quy tắc lấy điểm lượt cao nhất (A10)?]</span> — Ảnh hưởng: khối lượng chấm của GV, điểm lượt cao nhất của HV, hiển thị trên S06 (005). — Đề xuất: thay thế, vì HV làm lại không giới hạn có thể tạo nhiều lượt thừa; lượt đã lưu nháp được giữ.</div>
+      <div class="callout question"><strong>Q-2</strong> (<span class="chip ac">AC-1.3</span>) <span class="nc">[NEEDS CLARIFICATION: Bài nộp mà mọi câu Viết/Nói đều bỏ trống có được tự động chấm 0 và bỏ qua hàng chờ như đề xuất, hay vẫn vào hàng chờ để GV nhận xét?]</span> — Ảnh hưởng: số lượng hàng chờ, việc HV nhận kết quả ngay. — Đề xuất: tự động chấm 0; GV vẫn có thể "Chấm lại" để thêm nhận xét.</div>
+      <div class="callout question"><strong>Q-3</strong> (<span class="chip ac">AC-2.4</span>) <span class="nc">[NEEDS CLARIFICATION: Ngưỡng "Chờ lâu" là 48 giờ (đề xuất, khớp mục tiêu trung vị ≤ 48 giờ) hay giá trị khác, và GV có cần tự chỉnh ngưỡng này không?]</span> — Ảnh hưởng: giao diện T13 và mục tiêu §1. — Đề xuất: cố định 48 giờ trong MVP, không cho chỉnh.</div>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session 2026-10-18</h4>
+      <ul>
+        <li>Q: Câu Viết/Nói được chấm thế nào? → A: GV chấm thủ công bằng điểm và nhận xét; không chấm bằng AI trong MVP. <em>(source: stakeholder — D3)</em></li>
+        <li>Q: Ai được xem và chấm bài nộp? → A: Chỉ GV sở hữu workspace; không có tổ chức hay super-admin; GV không bao giờ thấy dữ liệu của GV khác. <em>(source: stakeholder — D1)</em></li>
+        <li>Q: Tài khoản HV do ai quản lý? → A: GV tạo và quản lý tài khoản HV; khóa/xóa tài khoản theo quy định của 001 — module này chỉ phản ứng với sự kiện khóa/xóa. <em>(source: stakeholder — D4)</em></li>
+        <li>Q: Một HV có thể học nhiều lớp của cùng GV? → A: Có (A3); hàng chờ gom bài nộp của mọi lớp, quy tắc thay thế lượt áp dụng trong từng Lớp. <em>(source: assumption — A3, owner 001/003)</em></li>
+        <li>Q: Thiết bị? → A: T13/T14 thiết kế cho máy tính ≥ 1280 px, dùng được từ 1024 px; HV xem kết quả trên điện thoại (S06/S08). <em>(source: assumption — A4)</em></li>
+        <li>Q: Ngôn ngữ và chữ Hán? → A: Giao diện tiếng Việt; chữ Hán giản thể và pinyin trong đề, câu trả lời và nhận xét phải hiển thị đúng. <em>(source: assumption — A5)</em></li>
+        <li>Q: HV biết có kết quả bằng cách nào? → A: Không có email/push; chỉ có nhãn trong ứng dụng "Có kết quả mới" và nhãn cập nhật điểm. <em>(source: assumption — A6)</em></li>
+        <li>Q: Múi giờ hiển thị? → A: UTC+7. <em>(source: assumption — A7)</em></li>
+        <li>Q: Bài nộp của Bài tập/Bài thi đã bị ẩn? → A: Nội dung đã có bài nộp chỉ bị ẩn, không bị xóa, nên bài nộp vẫn chấm được với nhãn "Bài đã ẩn". <em>(source: assumption — A8, owner 002)</em></li>
+        <li>Q: Số lượt làm? → A: Bài tập làm lại không giới hạn, lấy điểm lượt cao nhất; Bài thi giới hạn lượt — vì vậy chỉ lượt Bài tập có thể bị thay thế. <em>(source: assumption — A10, owner 005/006)</em></li>
+        <li>Q: Điểm xếp hạng? → A: Theo lớp, công thức thuộc 008; module này chỉ cung cấp điểm cuối cùng. <em>(source: assumption — A11)</em></li>
+        <li>Q: Mỗi lượt làm là một mục trong hàng chờ hay chỉ lượt mới nhất? → A: Mỗi bài nộp là một mục; riêng Bài tập, lượt còn "Chờ chấm" bị thay thế khi HV nộp lượt mới trong cùng Lớp, lượt "Đang chấm" được giữ kèm nhãn "Có lượt mới hơn"; lượt Bài thi không bao giờ bị thay thế. <em>(source: assumption — tránh chấm thừa khi HV làm lại không giới hạn; chờ xác nhận ở Q-1)</em></li>
+        <li>Q: Bước điểm? → A: Từ 0 đến điểm tối đa của câu, bước 0,25 (hoặc đúng điểm tối đa). <em>(source: assumption — đủ mịn cho câu 1–2 điểm, quen thuộc với cách chấm ở Việt Nam)</em></li>
+        <li>Q: Nhận xét có bắt buộc? → A: Không; tối đa 2000 ký tự mỗi câu, 3000 ký tự cho nhận xét chung. <em>(source: assumption — không làm chậm GV khi bài đạt điểm tối đa)</em></li>
+        <li>Q: Câu trả lời trống? → A: Hiển thị "Học viên không trả lời câu này.", điểm 0 bị khóa, vẫn nhận xét được. <em>(source: assumption — không có gì để chấm, tránh cho điểm nhầm)</em></li>
+        <li>Q: Có cho chấm lại sau khi hoàn tất? → A: Có, không giới hạn số lần; mỗi lần hoàn tất lưu vào Lịch sử chấm (chỉ GV xem); HV chỉ thấy kết quả mới nhất kèm nhãn cập nhật; chấm lại không có lưu nháp. <em>(source: assumption — cần sửa được sai sót, minh bạch, giữ trạng thái đơn giản)</em></li>
+        <li>Q: HV rời lớp, lớp kết thúc, tài khoản bị khóa hoặc bài bị ẩn khi bài nộp còn chờ chấm? → A: Bài nộp vẫn ở hàng chờ, có nhãn và chấm được bình thường; chỉ khi tài khoản bị xóa thì bài nộp rời hàng chờ. <em>(source: assumption — không làm mất công sức HV đã làm)</em></li>
+        <li>Q: Hai cửa sổ cùng chấm một bài nộp? → A: Lần lưu dựa trên dữ liệu cũ bị từ chối, dữ liệu đang nhập được giữ trên màn hình. <em>(source: assumption — tránh ghi đè âm thầm)</em></li>
+        <li>Q: GV có sửa được điểm câu chấm tự động? → A: Không trong MVP; các câu này chỉ đọc trên T14. <em>(source: assumption — D3 xác định các câu này chấm tự động; quy tắc chấm thuộc 005/006)</em></li>
+        <li>Q: Mặc định của hàng chờ? → A: Lọc "Cần chấm", cũ nhất trước, 50 mục mỗi trang. <em>(source: assumption — chấm theo thứ tự đến, công bằng cho HV)</em></li>
+        <li>Q: Tốc độ phát bản ghi âm? → A: 0,75x / 1x / 1,25x / 1,5x. <em>(source: assumption — đủ để nghe chậm phát âm hoặc nghe nhanh bài dài)</em></li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

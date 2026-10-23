@@ -1,0 +1,891 @@
+<!doctype html>
+<!--
+  specs/014-listening-speaking/spec.html — bản trình bày (flow-rich) của spec.md.
+  spec.md là hợp đồng được kiểm tra bằng máy; trang này phản chiếu nguyên văn REQ/AC/NFR của spec.md.
+  Mọi BR, bước luồng có phản hồi hệ thống và quy tắc kiểm tra dữ liệu đều dẫn chiếu AC.
+  Tạo mới 2026-10-22 theo quyết định V14 (Tự học không phụ thuộc lớp; MVP không AI).
+  Cập nhật 2026-10-22 theo V15: chỉ hai vai trò GV và HV; Tự học chỉ dành cho HV; nội dung từ Kho nội dung tự học của workspace (016, GV quản lý).
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>014 Luyện nghe &amp; nói — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module 014</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module 014 · Listening and speaking practice</div>
+    <h1>Luyện nghe &amp; nói</h1>
+    <p class="lede">Khu Tự học chỉ dành cho học viên, không phụ thuộc lớp, dùng Kho nội dung tự học do giáo viên quản lý: nghe người bản xứ đọc từ và câu, nghe hội thoại rồi chọn đáp án, thu giọng mình và nghe lại cạnh âm thanh mẫu, đóng vai theo kịch bản (gọi món, mua sắm, phỏng vấn, giao tiếp công sở). Giọng nói chỉ ở trên thiết bị; chấm phát âm bằng nhận diện giọng nói và đóng vai AI để giai đoạn 2.</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Feature 014</span>
+      <span class="pill">Cập nhật 2026-10-22</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <div class="callout warn"><strong>Cập nhật 2026-10-22 (V15) — theo stakeholder</strong>Chỉ còn hai vai trò GV và HV; vai trò "Quản trị nội dung" không còn. <b>Tự học chỉ dành cho HV</b>: mọi HV đã kích hoạt, không bị khóa của workspace, không phụ thuộc lớp. <b>GV không dùng</b> <a class="chip screen" href="../screen-flow-design.html#S17">S17</a> / <a class="chip screen" href="../screen-flow-design.html#S18">S18</a> (mở → <a class="chip screen" href="../screen-flow-design.html#A05">A05</a>), chỉ quản lý <b>"Kho nội dung tự học"</b> của workspace (<a class="chip mod" href="../016-content-library/spec.html">016</a>, <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–<a class="chip screen" href="../screen-flow-design.html#T27">T27</a>; nạp sẵn bộ nội dung HSK khởi tạo, GV sửa / thêm / ẩn tùy ý) và xem trước nội dung ở đó. Quy tắc giữ lịch sử khi nội dung kho thay đổi giữ nguyên, nay do GV kích hoạt. AC-1.1, AC-1.2, AC-1.5, AC-1.6, AC-2.1, AC-2.3, AC-16.1, AC-16.2, AC-16.5, AC-17.1 … AC-17.4 sửa; NFR-6, NFR-8 viết lại; không AC nào bị bỏ; §1, §2, US-1 … US-7, F-1 … F-5, §6, §8, §10, §11, §12, §13 "Removed (2026-10-22, V15)", §15 cập nhật.</div>
+      <p>Học viên (HV) muốn luyện nghe và nói tiếng Trung ngoài giờ lớp, nhưng nội dung lớp học chỉ có bài tập tự chấm và nhiều HV không có người bản xứ để nghe và nói theo. Stakeholder yêu cầu (2026-10-22, V14): "Luyện nghe và nói — Nghe người bản xứ đọc từ và câu. Thu âm giọng nói của học viên. Nhận xét phát âm và thanh điệu bằng công nghệ nhận diện giọng nói. Nghe hội thoại rồi chọn đáp án. Luyện đóng vai: gọi món, mua sắm, phỏng vấn, giao tiếp công sở." Module này thuộc khu <strong>Tự học</strong>, <strong>chỉ dành cho HV</strong> (V15): mọi HV đã kích hoạt, không bị khóa của workspace dùng được, không phụ thuộc lớp (V14-1); GV không dùng Tự học, GV chỉ quản lý nội dung. Nội dung lấy từ <strong>"Kho nội dung tự học" của workspace của HV</strong> (<a class="chip mod" href="../016-content-library/spec.html">016</a>; GV quản lý trên <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–<a class="chip screen" href="../screen-flow-design.html#T27">T27</a>; nạp sẵn bộ nội dung HSK khởi tạo rồi GV sửa / thêm / ẩn tùy ý — V15). Module định nghĩa hai màn hình: <strong>S17 "Luyện nghe"</strong> (nghe từ và câu bản xứ với tốc độ, lặp lại, ẩn/hiện pinyin và nghĩa; nghe hiểu hội thoại → chọn đáp án, tự chấm kèm giải thích và lời thoại; lịch sử và độ chính xác theo cấp HSK) và <strong>S18 "Luyện nói"</strong> (nói theo: nghe mẫu → thu âm → so sánh, tự đánh giá "Giống" / "Chưa giống"; đóng vai theo kịch bản: ứng dụng đóng vai kia, người học thu lượt thoại của mình, xem "Gợi ý", nghe lại cả hội thoại, làm lại). MVP <strong>không có AI</strong> (V14-3): chấm phát âm, thanh điệu bằng nhận diện giọng nói và đóng vai tự do với AI là giai đoạn 2. Giọng nói là dữ liệu cá nhân: <strong>bản thu chỉ ở trên thiết bị</strong> trong lúc luyện và tự xóa khi rời bài; dữ liệu tự học riêng tư của từng HV, GV không xem được, không ảnh hưởng xếp hạng hay dashboard của lớp.</p>
+      <div class="callout note"><strong>Quy tắc cốt lõi (tóm tắt)</strong>
+        <ul>
+          <li><b>Ai dùng:</b> chỉ HV đã kích hoạt, không bị khóa, không cần lớp; GV mở S17 / S18 → A05 (<a href="#AC-1.6">AC-1.6</a>); vào từ <a class="chip screen" href="../screen-flow-design.html#S13">S13</a> Tự học — <a href="#AC-1.1">AC-1.1</a>, <a href="#AC-1.2">AC-1.2</a>.</li>
+          <li><b>Nội dung</b> chỉ từ Kho nội dung tự học của workspace của HV (016, GV quản lý; đang phát hành), chọn theo cấp HSK1–HSK9 và chủ đề / tình huống — <a href="#REQ-2">REQ-2</a>.</li>
+          <li><b>Trình phát:</b> tốc độ 0,5× / 0,75× / 1× / 1,25× giữ cao độ, "Lặp lại" nghỉ 1 giây, một âm thanh tại một thời điểm — <a href="#REQ-3">REQ-3</a>.</li>
+          <li><b>Bài nghe:</b> câu hỏi một lựa chọn, lời thoại ẩn tới khi nộp, phải trả lời đủ mới nộp, làm lại không giới hạn, mỗi lần nộp là một lượt — <a href="#REQ-5">REQ-5</a>, <a href="#REQ-6">REQ-6</a>.</li>
+          <li><b>Bản thu:</b> ≤ 15 giây (Nói theo) / ≤ 30 giây (Đóng vai), ≥ 0,5 giây, tối đa một bản thu mỗi mục / lượt; <b>chỉ trên thiết bị, không gửi đi</b>, tự xóa khi rời mục / lần đóng vai — <a href="#REQ-9">REQ-9</a>, <a href="#REQ-15">REQ-15</a>.</li>
+          <li><b>Không chấm tự động phát âm</b> trong MVP: người học tự đánh giá "Giống" / "Chưa giống" — <a href="#AC-11.3">AC-11.3</a>.</li>
+          <li><b>Riêng tư:</b> dữ liệu tự học gắn với tài khoản HV, chỉ chính HV thấy (GV không thấy, kể cả trên T23–T27); không vào Điểm xếp hạng (008) hay tiến độ (009) — <a href="#REQ-16">REQ-16</a>.</li>
+        </ul>
+      </div>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mục tiêu</th><th>Chỉ số</th><th>Ngưỡng</th></tr></thead>
+        <tbody>
+          <tr><td>Người học dùng Luyện nghe &amp; nói đều đặn</td><td>Tỷ lệ HV đã kích hoạt mở S17 hoặc S18 ít nhất 1 lần mỗi tháng</td><td>≥ 30%</td></tr>
+          <tr><td>Bài nghe được làm trọn</td><td>Tỷ lệ bài nghe đã mở được nộp (không thoát giữa chừng)</td><td>≥ 70%</td></tr>
+          <tr><td>Đóng vai được làm trọn</td><td>Tỷ lệ lần đóng vai đã "Bắt đầu" đi tới "Hoàn thành hội thoại"</td><td>≥ 50%</td></tr>
+          <tr><td>Thu âm hoạt động trên điện thoại</td><td>Tỷ lệ lần chạm "Thu âm" (quyền micro đã cấp, trình duyệt được hỗ trợ — NFR-5) tạo được bản thu nghe lại được</td><td>≥ 98%</td></tr>
+          <tr><td>Nghe ngay không phải chờ</td><td>Thời gian từ khi chạm phát đến khi nghe âm thanh bản xứ, p95 trên 4G</td><td>≤ 1 giây (NFR-1)</td></tr>
+          <tr><td>Giọng nói không rời thiết bị</td><td>Số byte dữ liệu âm thanh từ micro được gửi ra khỏi thiết bị</td><td>0 (NFR-8)</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi (MVP):</strong> S17 "Luyện nghe" (tab "Nghe từ &amp; câu", "Nghe hiểu", "Lịch sử"); S18 "Luyện nói" (tab "Nói theo", "Đóng vai", "Tiến độ"); trình phát âm thanh bản xứ; quyền micro và lỗi micro; thu, nghe lại, so sánh, xóa bản thu; tự đánh giá; đóng vai theo kịch bản với gợi ý, bỏ qua, nghe lại cả hội thoại, làm lại, đổi vai; riêng tư bản thu và dữ liệu tự học; thay đổi nội dung kho do GV thực hiện.
+      &nbsp; <strong>Ngoài phạm vi:</strong> <b>giai đoạn 2:</b> chấm phát âm / thanh điệu bằng nhận diện giọng nói, đóng vai AI; GV dùng S17 / S18 (V15); GV giao bài cho lớp; lưu bản thu lâu dài hay gửi bản thu; sóng âm / đường thanh điệu; nội dung do người dùng tạo (chi tiết <a href="#out-of-scope">§13</a>).</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill hv">Học viên</span></td><td>Tài khoản do GV tạo và kích hoạt (001, V4-6), dùng điện thoại là chính (360–430 px). Mở S17 / S18 từ trang Tự học S13 (012) bất kỳ lúc nào, kể cả khi chưa thuộc lớp nào hoặc mọi lớp đã kết thúc (V14-1).</td><td>Luyện nghe theo cấp HSK, nói theo người bản xứ, đóng vai các tình huống đời sống và công sở.</td></tr>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>Chủ workspace (D1), người quản lý duy nhất của "Kho nội dung tự học" của workspace (016, T23–T27, V15).</td><td>Sửa, thêm, ẩn mục từ và câu, bài nghe, kịch bản đóng vai trong kho (nạp sẵn bộ HSK khởi tạo); xem trước nội dung chỉ trong T23–T27. <b>Không dùng S17 / S18</b> (→ A05), không xem dữ liệu tự học của HV, không giao bài nghe / nói cho lớp trong MVP.</td></tr>
+          <tr><td><span class="pill">Hệ thống</span></td><td>Phát âm thanh, thu âm trên thiết bị, chấm tự động câu hỏi nghe hiểu.</td><td>Lưu lịch sử, tự đánh giá, lần hoàn thành đóng vai riêng cho từng HV; không bao giờ nhận dữ liệu giọng nói.</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <p><em>Chỉ có hai vai trò GV và HV (V15). "Người khác" = tài khoản khác bất kỳ (HV khác, GV kể cả GV của workspace của HV) và người chưa đăng nhập. "Người dùng" trong các AC = HV đã đăng nhập, đã kích hoạt, không bị khóa.</em></p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">HV đã kích hoạt</th><th class="center">GV</th><th class="center">Người chưa đăng nhập</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Mở S17 / S18, nghe, làm bài nghe, nói theo, đóng vai</td><td class="center yes">✓ (không cần lớp)</td><td class="center no">— (→ A05)</td><td class="center no">→ A01</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.5</span> <span class="chip ac">AC-1.6</span></td></tr>
+          <tr><td>Xem lịch sử, độ chính xác, tự đánh giá, tiến độ của chính mình</td><td class="center yes">✓</td><td class="center no">— (GV không có dữ liệu tự học)</td><td class="center no">—</td><td><span class="chip ac">AC-16.1</span></td></tr>
+          <tr><td>Xem dữ liệu Luyện nghe &amp; nói của người khác</td><td class="center no">— (A05)</td><td class="center no">— kể cả HV của mình, kể cả trên T23–T27</td><td class="center no">—</td><td><span class="chip ac">AC-16.2</span> <span class="chip ac">AC-16.4</span></td></tr>
+          <tr><td>Nghe, tải xuống, chia sẻ bản thu</td><td class="center yes">Chỉ nghe, trên thiết bị đang thu</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-15.1</span> <span class="chip ac">AC-15.4</span></td></tr>
+          <tr><td>Giao bài nghe / nói cho lớp, xem kết quả của HV</td><td class="center no">—</td><td class="center no">— (ngoài phạm vi)</td><td class="center no">—</td><td><span class="chip ac">AC-16.2</span></td></tr>
+          <tr><td>Sửa / thêm / ẩn nội dung Kho nội dung tự học, xem trước nội dung</td><td class="center no">—</td><td class="center yes">✓ trên T23–T27 (016)</td><td class="center no">—</td><td><span class="chip ac">AC-17.1</span> <span class="chip ac">AC-17.4</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn nghe người bản xứ đọc từ và câu theo cấp HSK, chỉnh tốc độ, lặp lại và ẩn/hiện pinyin, nghĩa, để luyện tai và bắt chước phát âm chuẩn.</td><td>HV chưa thuộc lớp nào mở S13 → "Luyện nghe" → S17 tab "Nghe từ &amp; câu", chọn HSK2 → chạm phát "谢谢 · xièxie · cảm ơn" → nghe âm thanh ≤ 1 giây; chọn "0,75×" và bật "Lặp lại" → âm thanh lặp chậm hơn mà không đổi giọng; tắt "Pinyin" → chỉ còn chữ Hán và nghĩa.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-2</span> <span class="chip">REQ-3</span> <span class="chip">REQ-4</span></td></tr>
+          <tr><td class="id">US-2</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn nghe một đoạn hội thoại rồi chọn đáp án, xem ngay đúng/sai, đáp án đúng, giải thích và lời thoại, để biết mình nghe hiểu tới đâu.</td><td>Mở bài nghe "Ở nhà hàng" (HSK2, 3 câu) → chưa thấy lời thoại; chọn 3 đáp án → "Nộp bài" → "2/3 câu đúng", câu sai hiển thị đáp án đúng và giải thích, lời thoại chữ Hán kèm công tắc "Pinyin", "Nghĩa".</td><td><span class="chip">REQ-5</span> <span class="chip">REQ-6</span> <span class="chip">REQ-17</span></td></tr>
+          <tr><td class="id">US-3</td><td><span class="pill p2">P2</span></td><td>Là <b>HV</b>, tôi muốn xem lịch sử các lần làm bài nghe và độ chính xác theo từng cấp HSK, để thấy mình tiến bộ.</td><td>Sau 2 lượt cùng bài nghe HSK2 "Ở nhà hàng" (lượt đầu 2/3, làm lại 3/3) → tab "Lịch sử" hiển thị "HSK2 · 67% · 1 bài" và 2 dòng lượt làm mới nhất trước (3/3 rồi 2/3); chạm một dòng → xem lại kết quả chỉ xem.</td><td><span class="chip">REQ-7</span></td></tr>
+          <tr><td class="id">US-4</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn nghe mẫu một từ hoặc câu, thu giọng mình, nghe lại ngay cạnh âm thanh mẫu và tự đánh giá "Giống" / "Chưa giống", để luyện phát âm và thanh điệu khi chưa có chấm tự động.</td><td>S18 tab "Nói theo" → "我想要一杯咖啡。" → "Nghe mẫu" → "Thu âm" (lần đầu: giải thích quyền micro → cho phép) → nói → "Dừng" → "So sánh" phát mẫu rồi bản thu → chọn "Giống" → danh sách hiển thị nhãn "Giống".</td><td><span class="chip">REQ-8</span> <span class="chip">REQ-9</span> <span class="chip">REQ-10</span> <span class="chip">REQ-11</span></td></tr>
+          <tr><td class="id">US-5</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn đóng vai trong một kịch bản (gọi món, mua sắm, phỏng vấn, giao tiếp công sở), để ứng dụng đóng vai kia, tôi nói lượt của mình, xem gợi ý khi cần và nghe lại cả cuộc hội thoại.</td><td>Tab "Đóng vai" → "Gọi món ở quán mì" (HSK2, vai "Khách hàng" / "Nhân viên phục vụ") → chọn "Khách hàng" → "Bắt đầu" → ứng dụng tự phát lượt của nhân viên → "Đến lượt bạn" → "Gợi ý" hiện pinyin và nghĩa → thu âm → "Tiếp tục" … → "Hoàn thành hội thoại" → "Nghe lại cả hội thoại" phát xen kẽ âm thanh mẫu và bản thu.</td><td><span class="chip">REQ-12</span> <span class="chip">REQ-13</span> <span class="chip">REQ-14</span></td></tr>
+          <tr><td class="id">US-6</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn giọng nói của tôi không rời khỏi thiết bị và kết quả tự học của tôi không ai khác xem được hay tính vào lớp, để yên tâm luyện tập.</td><td>Theo dõi lưu lượng mạng trong toàn bộ luồng Nói theo và Đóng vai → 0 byte âm thanh gửi đi; rời mục → bản thu biến mất; GV của HV mở T15 → không có dữ liệu Luyện nghe &amp; nói; GV mở đường dẫn S17 → A05; Điểm xếp hạng lớp không đổi.</td><td><span class="chip">REQ-15</span> <span class="chip">REQ-16</span></td></tr>
+          <tr><td class="id">US-7</td><td><span class="pill p2">P2</span></td><td>Là <b>HV</b>, tôi muốn xem tiến độ luyện nói (bao nhiêu từ, câu tôi đã tự đánh giá "Giống" ở mỗi cấp, kịch bản nào đã hoàn thành) và luyện lại các mục "Chưa giống", để biết cần luyện gì tiếp.</td><td>Tự đánh giá 3 mục HSK2 "Giống", 1 mục "Chưa giống", hoàn thành 1 kịch bản → tab "Tiến độ" hiển thị "HSK2 · Giống 3/40 · Chưa giống 1" và kịch bản "Đã hoàn thành 1 lần"; "Luyện lại mục Chưa giống" mở đúng 1 mục.</td><td><span class="chip">REQ-11</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>Năm luồng bao phủ module: nghe từ và câu (F-1), làm bài nghe hiểu và xem lịch sử (F-2), xin quyền micro và thu âm (F-3), nói theo và tự đánh giá (F-4), đóng vai theo kịch bản (F-5). Ví dụ dùng HV <b>Trần Minh Anh</b> (không thuộc lớp nào), cấp HSK2.</p>
+
+      <!-- F-1 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Nghe từ &amp; câu">F-1: Nghe từ và câu bản xứ (S17)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn "Luyện nghe" trên S13</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đã đăng nhập bằng tài khoản HV đã kích hoạt, không bị khóa; không cần lớp (GV mở S17 / S18 → A05, AC-1.6)</div>
+          <div class="fact"><span class="k">Kết quả</span>Người dùng nghe từ / câu ở tốc độ mong muốn, có hoặc không có pinyin, nghĩa; không có dữ liệu nào được ghi</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Chọn Luyện nghe trên S13"]) --> B["S17 tab Nghe từ và câu, cấp chọn gần nhất hoặc HSK1"]
+  B --> C{"Tải được danh sách?"}
+  C -- Không --> E1["Không tải được nội dung + Thử lại"]
+  E1 --> C
+  C -- Có --> D{"Có nội dung cho cấp và chủ đề?"}
+  D -- Không --> E2["Chưa có nội dung cho cấp và chủ đề này."]
+  D -- Có --> F["Danh sách: chữ Hán, pinyin, nghĩa, nút phát, Nói theo"]
+  F --> G["Chạm phát: âm thanh bản xứ"]
+  G --> H{"Phát được?"}
+  H -- Không --> E3["Không phát được âm thanh + Thử lại"]
+  H -- Có --> I["Tốc độ 0,5 đến 1,25, Lặp lại, công tắc Pinyin và Nghĩa"]
+  F -- "Nói theo" --> S18(["S18 Nói theo tại mục đó"])
+</pre>
+          <figcaption>Hình F-1 — Nghe từ và câu bản xứ</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chọn "Luyện nghe" trên S13</td><td>Mở S17 với 3 tab, "Nghe từ &amp; câu" chọn sẵn, nút "Quay lại" về S13</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.3</span></td></tr>
+            <tr><td class="id">2</td><td>Hệ thống</td><td>—</td><td>Chọn sẵn cấp gần nhất (hoặc HSK1), "Tất cả" chủ đề; liệt kê mục đang phát hành theo thứ tự kho, 20 mục mỗi lần</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span> <span class="chip ac">AC-2.3</span> <span class="chip ac">AC-4.1</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Chạm phát "谢谢"</td><td>Phát âm thanh bản xứ, đánh dấu mục đang phát; không tự phát mục kế</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.5</span> <span class="chip ac">AC-3.4</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Chọn "0,75×", bật "Lặp lại"</td><td>Phát chậm hơn, giữ cao độ; lặp lại sau 1 giây nghỉ; tốc độ được nhớ trên thiết bị</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.3</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Tắt "Pinyin"</td><td>Ẩn pinyin của mọi mục, chữ Hán luôn hiển thị; lựa chọn được nhớ trên thiết bị</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-4.3</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Chọn "Nói theo" ở một mục</td><td>Mở S18 tab "Nói theo" tại màn hình luyện của mục đó (→ F-4)</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-4.4</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Không có nội dung cho cấp / chủ đề <span class="chip ac">AC-2.4</span></summary><div class="body"><ol><li>Hiển thị "Chưa có nội dung cho cấp và chủ đề này."; bộ lọc giữ nguyên.</li></ol></div></details>
+        <details class="alt"><summary>E-0 · GV mở S17 (kể cả bằng đường dẫn) <span class="chip ac">AC-1.6</span></summary><div class="body"><ol><li>Hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu."; không hiển thị nội dung hay dữ liệu nào. GV xem trước nội dung trong T23–T27 (016).</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Không tải được danh sách <span class="chip ac">AC-2.5</span></summary><div class="body"><ol><li>"Không tải được nội dung. Vui lòng thử lại." kèm "Thử lại"; không hiển thị danh sách trống.</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Không phát được âm thanh <span class="chip ac">AC-3.6</span></summary><div class="body"><ol><li>"Không phát được âm thanh. Vui lòng thử lại." kèm "Thử lại" tại trình phát; phần khác vẫn dùng được.</li></ol></div></details>
+      </div>
+
+      <!-- F-2 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-2">
+        <h3 data-toc="F-2 Nghe hiểu và lịch sử">F-2: Làm bài nghe hiểu, xem kết quả và lịch sử (S17)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn tab "Nghe hiểu" rồi một bài nghe</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Bài nghe đang phát hành trong Kho nội dung tự học của workspace của HV (016)</div>
+          <div class="fact"><span class="k">Kết quả</span>Một lượt làm (bản lưu nội dung tại thời điểm nộp) trong lịch sử riêng của HV; độ chính xác theo cấp chỉ cập nhật khi đó là lượt nộp đầu tiên của bài</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor HV as Người học
+  participant S as S17 Luyện nghe
+  participant K as Kho nội dung tự học của workspace
+  HV->>S: Mở tab Nghe hiểu, chọn bài Ở nhà hàng
+  S->>K: Lấy bài nghe đang phát hành
+  K-->>S: Âm thanh, câu hỏi, đáp án, giải thích, lời thoại
+  S-->>HV: Trình phát và 3 câu hỏi, lời thoại ẩn
+  HV->>S: Nghe, tua, đổi tốc độ, chọn đáp án
+  S-->>HV: Đã trả lời 3/3 câu, bật Nộp bài
+  HV->>S: Nộp bài
+  S-->>HV: 2/3 câu đúng, đáp án đúng, giải thích, lời thoại
+  S->>S: Lưu lượt làm vào lịch sử riêng
+  HV->>S: Mở tab Lịch sử
+  S-->>HV: Độ chính xác theo cấp và danh sách lượt làm
+</pre>
+          <figcaption>Hình F-2 — Bài nghe hiểu từ mở bài đến lịch sử</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Mở tab "Nghe hiểu"</td><td>Danh sách bài: tên, "Hội thoại" / "Đoạn văn", thời lượng m:ss, số câu, "Gần nhất: x/y câu đúng" hoặc "Chưa làm"</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-5.1</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Mở bài "Ở nhà hàng"</td><td>Trình phát có thanh tiến trình; câu hỏi một lựa chọn 2–4 phương án; lời thoại, pinyin, bản dịch, đáp án ẩn</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-5.2</span> <span class="chip ac">AC-5.3</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Nghe lại, tua, chọn / đổi đáp án</td><td>Không giới hạn; "Nộp bài" vô hiệu kèm "Đã trả lời x/y câu" cho tới khi trả lời đủ</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-5.4</span> <span class="chip ac">AC-5.5</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>"Nộp bài"</td><td>Chấm, lưu lượt làm, hiển thị "2/3 câu đúng", từng câu "Đúng" / "Sai", đáp án đúng, giải thích; lời thoại theo câu kèm công tắc "Pinyin", "Nghĩa"</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.2</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>"Làm lại" hoặc "Bài tiếp theo" / "Về danh sách"</td><td>Làm lại = lượt mới, lượt cũ giữ; bài cuối không có "Bài tiếp theo"</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-6.3</span> <span class="chip ac">AC-6.4</span> <span class="chip ac">AC-6.5</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Mở tab "Lịch sử", chạm một lượt</td><td>"Độ chính xác theo cấp" (% làm tròn, chỉ tính lượt nộp đầu tiên mỗi bài, "{n} bài"); lượt mới nhất trước "dd/mm/yyyy HH:mm"; xem lại chỉ xem đúng nội dung lúc nộp</td><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.2</span> <span class="chip ac">AC-7.3</span> <span class="chip ac">AC-7.5</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Thoát khi chưa nộp <span class="chip ac">AC-5.6</span></summary><div class="body"><ol><li>Nếu đã chọn ít nhất một phương án: "Thoát bài nghe? Các câu đã chọn sẽ không được lưu." — "Thoát" không lưu lượt nào; "Ở lại" giữ nguyên.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Chưa có lượt làm nào <span class="chip ac">AC-7.4</span></summary><div class="body"><ol><li>Tab "Lịch sử": "Bạn chưa làm bài nghe nào." kèm "Đến Nghe hiểu".</li></ol></div></details>
+        <details class="alt"><summary>A-3 · GV sửa / ẩn / gỡ bài khỏi kho <span class="chip ac">AC-17.1</span> <span class="chip ac">AC-17.2</span> <span class="chip ac">AC-17.3</span></summary><div class="body"><ol><li>Đang làm: làm xong và chấm theo nội dung đã mở.</li><li>Đã nộp: lượt giữ trong lịch sử, lượt nộp đầu tiên của bài vẫn giữ trong độ chính xác; bài đã gỡ có nhãn "Bài không còn trong kho", không có "Làm lại".</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Không nộp được bài <span class="chip ac">AC-6.6</span></summary><div class="body"><ol><li>Giữ phương án đã chọn; "Không nộp được bài. Kiểm tra kết nối và thử lại." kèm "Thử lại"; chỉ một lượt được ghi khi thử lại thành công.</li></ol></div></details>
+      </div>
+
+      <!-- F-3 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-3">
+        <h3 data-toc="F-3 Quyền micro và thu âm">F-3: Xin quyền micro và thu một bản thu (S18)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chạm "Thu âm" ở "Nói theo" hoặc ở lượt của mình khi đóng vai</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đang ở màn hình luyện của một mục hoặc lượt của người dùng trong lần đóng vai</div>
+          <div class="fact"><span class="k">Kết quả</span>Một bản thu 0,5–15 giây (Nói theo) hoặc 0,5–30 giây (Đóng vai) chỉ trên thiết bị; micro được nhả ngay khi dừng</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Chạm Thu âm"]) --> U{"Trình duyệt hỗ trợ thu âm?"}
+  U -- Không --> X0["Trình duyệt này không hỗ trợ thu âm..., Thu âm vô hiệu"]
+  U -- Có --> P{"Đã có quyền micro?"}
+  P -- "Chưa hỏi" --> G["Giải thích: SAT cần dùng micro..., Tiếp tục / Để sau"]
+  G -- "Để sau" --> Z(["Không thu"])
+  G -- "Tiếp tục" --> Q{"Trình duyệt cho phép?"}
+  Q -- "Từ chối" --> X1["Bạn đã chặn quyền dùng micro... + Thử lại"]
+  P -- "Đã chặn" --> X1
+  Q -- "Cho phép" --> M{"Tìm thấy micro?"}
+  P -- "Đã cho phép" --> M
+  M -- Không --> X2["Không tìm thấy micro trên thiết bị này."]
+  M -- Có --> R["Đang thu..., đồng hồ, mức âm lượng, Dừng"]
+  R -- "Gián đoạn" --> X3["Thu âm bị gián đoạn. Vui lòng thu lại."]
+  R -- "Đạt 15 hoặc 30 giây" --> L["Tự dừng, giữ bản thu"]
+  R -- "Dừng" --> S{"Dưới 0,5 giây?"}
+  S -- Có --> X4["Bản thu quá ngắn..."]
+  S -- Không --> OK["Bản thu trên thiết bị: Nghe bản thu, Thu lại, Xóa bản thu"]
+  L --> OK
+</pre>
+          <figcaption>Hình F-3 — Quyền micro, lỗi và giới hạn bản thu</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chạm "Thu âm" lần đầu</td><td>Lời giải thích "SAT cần dùng micro để thu giọng của bạn. Bản thu chỉ lưu trên thiết bị này và tự xóa khi bạn rời bài." với "Tiếp tục" / "Để sau"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-8.1</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>"Tiếp tục" → cho phép trong hộp thoại trình duyệt</td><td>Dừng âm thanh đang phát; "Đang thu…", đồng hồ, mức âm lượng, "Dừng"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-15.5</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>"Dừng"</td><td>Nhả micro; hiển thị "Nghe bản thu", "Thu lại", "Xóa bản thu"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-9.2</span> <span class="chip ac">AC-15.5</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>"Thu lại" / "Xóa bản thu"</td><td>Bản mới thay bản cũ khi hoàn tất (tối đa 1 bản mỗi mục / lượt); xóa ngay không hỏi</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-9.5</span> <span class="chip ac">AC-9.6</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>E-1 · Từ chối / đã chặn quyền micro <span class="chip ac">AC-8.2</span></summary><div class="body"><ol><li>"Bạn đã chặn quyền dùng micro. Hãy cho phép micro cho trang này trong cài đặt trình duyệt rồi chọn Thử lại." kèm "Thử lại"; vẫn nghe mẫu và đi tiếp đóng vai bằng "Bỏ qua".</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Không có micro / trình duyệt không hỗ trợ <span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.4</span></summary><div class="body"><ol><li>"Không tìm thấy micro trên thiết bị này." hoặc "Trình duyệt này không hỗ trợ thu âm. Hãy dùng phiên bản mới của Chrome, Safari, Edge hoặc Firefox."; "Thu âm" vô hiệu; phần nghe vẫn dùng được.</li></ol></div></details>
+        <details class="alt"><summary>E-3 · Gián đoạn, quá dài, quá ngắn <span class="chip ac">AC-8.5</span> <span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.4</span></summary><div class="body"><ol><li>Gián đoạn: bỏ phần dở, giữ bản trước, "Thu âm bị gián đoạn. Vui lòng thu lại."</li><li>Đạt 15 / 30 giây: tự dừng, giữ bản thu, "Đã đạt thời lượng tối đa 15 giây." / "… 30 giây."</li><li>Dưới 0,5 giây: bỏ, "Bản thu quá ngắn. Hãy chọn Thu âm, nói rồi chọn Dừng."</li></ol></div></details>
+      </div>
+
+      <!-- F-4 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-4">
+        <h3 data-toc="F-4 Nói theo">F-4: Nói theo, so sánh và tự đánh giá (S18)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn "Luyện nói" trên S13 (tab "Nói theo" chọn sẵn) hoặc "Nói theo" ở một mục của S17</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Mục từ / câu đang phát hành trong Kho nội dung tự học của workspace của HV (016)</div>
+          <div class="fact"><span class="k">Kết quả</span>Tự đánh giá gần nhất "Giống" / "Chưa giống" được lưu cho HV; bản thu bị xóa khi rời mục</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor HV as Người học
+  participant S as S18 Nói theo
+  participant T as Thiết bị
+  HV->>S: Chọn câu 我想要一杯咖啡
+  S-->>HV: Chữ Hán lớn, pinyin, nghĩa, Nghe mẫu, Thu âm
+  HV->>S: Nghe mẫu
+  S-->>HV: Phát âm thanh bản xứ ở tốc độ đang chọn
+  HV->>S: Thu âm rồi Dừng
+  S->>T: Giữ bản thu trong trang, không gửi đi
+  HV->>S: So sánh
+  S-->>HV: Phát Mẫu, nghỉ 1 giây, phát Bạn ở 1x
+  HV->>S: Chọn Giống
+  S-->>HV: Lưu tự đánh giá gần nhất, nhãn Giống trên danh sách
+  HV->>S: Tiếp
+  S->>T: Xóa bản thu của mục vừa rời
+</pre>
+          <figcaption>Hình F-4 — Nói theo: nghe mẫu, thu, so sánh, tự đánh giá</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Mở tab "Nói theo"</td><td>Danh sách mục (cùng nguồn "Nghe từ &amp; câu") kèm nhãn "Giống" / "Chưa giống" gần nhất</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-10.1</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Chọn một mục</td><td>Chữ Hán lớn, pinyin có dấu thanh luôn hiện, nghĩa, "Nghe mẫu", "Thu âm", dòng riêng tư, "Trước" / "Tiếp" (vô hiệu ở đầu / cuối)</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-10.2</span> <span class="chip ac">AC-10.6</span> <span class="chip ac">AC-15.3</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Thu âm (F-3)</td><td>Có bản thu: "Nghe bản thu" (1×), "So sánh", câu hỏi "Bạn thấy mình nói giống mẫu chưa?"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-11.1</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>"So sánh"</td><td>Phát mẫu ("Mẫu"), nghỉ 1 giây, phát bản thu ("Bạn")</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-10.5</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>"Giống" / "Chưa giống"</td><td>Lưu tự đánh giá gần nhất (thay lựa chọn trước); không có chấm tự động</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.3</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>"Tiếp" / quay lại danh sách</td><td>Xóa vĩnh viễn bản thu của mục vừa rời</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-15.2</span></td></tr>
+            <tr><td class="id">7</td><td>HV</td><td>Mở tab "Tiến độ"</td><td>Mỗi cấp "Giống x/y" và "Chưa giống z", kịch bản đã hoàn thành; "Luyện lại mục Chưa giống"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-11.4</span> <span class="chip ac">AC-11.5</span> <span class="chip ac">AC-11.6</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- F-5 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-5">
+        <h3 data-toc="F-5 Đóng vai">F-5: Đóng vai theo kịch bản (S18)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Tab "Đóng vai" → chọn kịch bản → chọn vai → "Bắt đầu"</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Kịch bản đang phát hành có ≥ 2 vai, mỗi lượt có âm thanh và văn bản</div>
+          <div class="fact"><span class="k">Kết quả</span>Một lần hoàn thành (kịch bản, vai, ngày, số lượt đã thu) được ghi cho HV; bản thu bị xóa khi rời lần đóng vai</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Tab Đóng vai: kịch bản nhóm theo tình huống"]) --> B["Chọn Gọi món ở quán mì: bối cảnh, vai, Xem trước kịch bản"]
+  B --> C["Chọn vai Khách hàng, Bắt đầu"]
+  C --> D{"Lượt kế tiếp thuộc vai nào?"}
+  D -- "Vai do ứng dụng đóng" --> E["Hiện chữ Hán, tự phát âm thanh mẫu"]
+  E -- "Trình duyệt chặn tự phát" --> E1["Nút Phát, chờ người dùng chạm"]
+  E1 --> E
+  E --> D
+  D -- "Vai của người dùng" --> F["Đến lượt bạn: chữ Hán, Gợi ý, Nghe mẫu, Thu âm, Bỏ qua"]
+  F -- "Thu âm" --> G["Nghe bản thu, Thu lại, Tiếp tục"]
+  G -- "Tiếp tục" --> D
+  F -- "Bỏ qua" --> D
+  D -- "Hết lượt" --> H["Hoàn thành hội thoại: Đã thu x/y lượt, ghi nhận hoàn thành"]
+  H --> I{"Chọn"}
+  I -- "Nghe lại cả hội thoại" --> J["Phát mẫu và bản thu xen kẽ, nghỉ 0,5 giây"]
+  I -- "Làm lại" --> K["Xác nhận, xóa bản thu, cùng vai từ lượt đầu"]
+  I -- "Đổi vai" --> L["Xóa bản thu, về bước chọn vai"]
+  K --> D
+</pre>
+          <figcaption>Hình F-5 — Đóng vai theo lượt, hoàn thành, nghe lại, làm lại</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Mở tab "Đóng vai"</td><td>Kịch bản của cấp, nhóm theo tình huống ("Gọi món", "Mua sắm", "Phỏng vấn", "Giao tiếp công sở"), số lượt, "Đã hoàn thành n lần" / "Chưa luyện"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-12.1</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Chọn "Gọi món ở quán mì"</td><td>Bối cảnh tiếng Việt, các vai kèm số lượt, "Xem trước kịch bản"; "Bắt đầu" bật khi đã chọn một vai</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-12.2</span> <span class="chip ac">AC-12.3</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Chọn "Khách hàng" → "Bắt đầu"</td><td>Ứng dụng đóng mọi vai còn lại; khung hội thoại hai phía, "Làm lại từ đầu"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-12.4</span> <span class="chip ac">AC-13.1</span></td></tr>
+            <tr><td class="id">4</td><td>Hệ thống</td><td>—</td><td>Lượt của "Nhân viên phục vụ": hiện chữ Hán, tự phát mẫu, tự chuyển lượt (hoặc nút "Phát" nếu trình duyệt chặn tự phát)</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-13.2</span> <span class="chip ac">AC-13.3</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>"Đến lượt bạn": "Gợi ý", "Nghe mẫu", "Thu âm" → "Tiếp tục" (hoặc "Bỏ qua")</td><td>Gợi ý hiện / ẩn pinyin và nghĩa; có bản thu thì chỉ chuyển lượt khi "Tiếp tục"; "Bỏ qua" đánh dấu "Đã bỏ qua"</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-13.4</span> <span class="chip ac">AC-13.5</span> <span class="chip ac">AC-13.6</span> <span class="chip ac">AC-13.7</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Chạm "Nghe lại" ở lượt đã qua</td><td>Phát mẫu hoặc bản thu của lượt đó, không đổi lượt hiện tại</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-13.8</span></td></tr>
+            <tr><td class="id">7</td><td>Hệ thống</td><td>—</td><td>"Hoàn thành hội thoại", "Đã thu x/y lượt của bạn"; ghi nhận lần hoàn thành</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-14.1</span></td></tr>
+            <tr><td class="id">8</td><td>HV</td><td>"Nghe lại cả hội thoại"</td><td>Phát mọi lượt theo thứ tự: vai khác = mẫu, lượt đã thu = bản thu, lượt bỏ qua = mẫu kèm "Bản mẫu"; "Tạm dừng", "Phát tiếp", chạm lượt để phát từ đó</td><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td><span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.3</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Làm lại / Đổi vai <span class="chip ac">AC-14.4</span> <span class="chip ac">AC-14.5</span></summary><div class="body"><ol><li>"Làm lại" (hoặc "Làm lại từ đầu" khi đang đóng vai): "Bắt đầu lại? Các bản thu của lần này sẽ bị xóa." → xóa bản thu, cùng vai, từ lượt đầu.</li><li>"Đổi vai": xóa bản thu, về bước chọn vai.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Thoát giữa chừng <span class="chip ac">AC-14.6</span></summary><div class="body"><ol><li>"Thoát đóng vai? Các bản thu của lần này sẽ bị xóa." — "Thoát" xóa bản thu và không ghi nhận hoàn thành.</li></ol></div></details>
+        <details class="alt"><summary>A-3 · Không có micro <span class="chip ac">AC-8.2</span> <span class="chip ac">AC-13.7</span></summary><div class="body"><ol><li>Đi hết kịch bản bằng "Bỏ qua"; nghe lại toàn bộ bằng âm thanh mẫu; vẫn ghi nhận hoàn thành với "Đã thu 0/y lượt của bạn".</li></ol></div></details>
+      </div>
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>.</p>
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: Access and entry — Truy cập và lối vào</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S18">S18</a><a class="chip screen" href="../screen-flow-design.html#A01">A01</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN HV đã đăng nhập bằng tài khoản đã kích hoạt, không bị khóa chọn "Luyện nghe" hoặc "Luyện nói" trên trang Tự học S13 THE SYSTEM SHALL mở tương ứng S17 "Luyện nghe" hoặc S18 "Luyện nói" kèm nút "Quay lại" về S13.</td></tr>
+            <tr id="AC-1.2"><td class="id">AC-1.2</td><td class="ears">THE SYSTEM SHALL cho mọi HV đã kích hoạt, không bị khóa của workspace dùng toàn bộ chức năng của S17 và S18 như nhau với nội dung của Kho nội dung tự học thuộc workspace của HV (016), không yêu cầu HV thuộc lớp nào, kể cả HV không thuộc lớp nào hoặc chỉ thuộc lớp Đã kết thúc.</td></tr>
+            <tr id="AC-1.3"><td class="id">AC-1.3</td><td class="ears">WHEN người dùng mở S17 THE SYSTEM SHALL hiển thị ba tab "Nghe từ &amp; câu", "Nghe hiểu" và "Lịch sử", với tab "Nghe từ &amp; câu" được chọn sẵn.</td></tr>
+            <tr id="AC-1.4"><td class="id">AC-1.4</td><td class="ears">WHEN người dùng mở S18 THE SYSTEM SHALL hiển thị ba tab "Nói theo", "Đóng vai" và "Tiến độ", với tab "Nói theo" được chọn sẵn.</td></tr>
+            <tr id="AC-1.5"><td class="id">AC-1.5</td><td class="ears">IF người chưa đăng nhập mở S17 hoặc S18, kể cả bằng đường dẫn trực tiếp THEN THE SYSTEM SHALL chuyển tới A01 và sau khi đăng nhập thành công bằng tài khoản HV mở lại đúng màn hình đó, hoặc hiển thị A05 theo AC-1.6 khi tài khoản đã đăng nhập là GV.</td></tr>
+            <tr id="AC-1.6"><td class="id">AC-1.6</td><td class="ears">IF tài khoản GV mở S17 hoặc S18, kể cả bằng đường dẫn trực tiếp THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." (001) và không hiển thị nội dung, lượt làm hay dữ liệu Luyện nghe &amp; nói nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-2">
+        <header>
+          <h3>REQ-2: Browse by HSK level and topic — Chọn nội dung theo cấp HSK và chủ đề</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-2</span><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-2.1"><td class="id">AC-2.1</td><td class="ears">THE SYSTEM SHALL hiển thị ở đầu các tab "Nghe từ &amp; câu", "Nghe hiểu", "Nói theo" và "Đóng vai" bộ lọc "Cấp HSK" gồm các cấp HSK1 … HSK9 và bộ lọc "Chủ đề" (ở tab "Đóng vai" là "Tình huống") gồm "Tất cả" cùng các chủ đề hoặc tình huống của Kho nội dung tự học (016) thuộc workspace của HV có nội dung đang phát hành ở cấp đang chọn.</td></tr>
+            <tr id="AC-2.2"><td class="id">AC-2.2</td><td class="ears">WHEN người dùng mở S17 hoặc S18 THE SYSTEM SHALL chọn sẵn cấp HSK mà người dùng đã chọn gần nhất ở bất kỳ tab nào của S17 hoặc S18, hoặc HSK1 nếu chưa từng chọn, và chọn sẵn "Tất cả" cho bộ lọc "Chủ đề" / "Tình huống".</td></tr>
+            <tr id="AC-2.3"><td class="id">AC-2.3</td><td class="ears">WHEN người dùng đổi cấp HSK hoặc chủ đề / tình huống THE SYSTEM SHALL chỉ liệt kê các nội dung đang phát hành trong Kho nội dung tự học (016) thuộc workspace của HV, đúng cấp và chủ đề / tình huống đó, theo thứ tự của kho, và tải thêm 20 mục mỗi lần khi người dùng cuộn tới cuối danh sách.</td></tr>
+            <tr id="AC-2.4"><td class="id">AC-2.4</td><td class="ears">IF không có nội dung nào đang phát hành cho cấp và chủ đề / tình huống đang chọn THEN THE SYSTEM SHALL hiển thị "Chưa có nội dung cho cấp và chủ đề này." và giữ nguyên bộ lọc để người dùng chọn lại.</td></tr>
+            <tr id="AC-2.5"><td class="id">AC-2.5</td><td class="ears">IF không tải được danh sách nội dung THEN THE SYSTEM SHALL hiển thị "Không tải được nội dung. Vui lòng thử lại." kèm nút "Thử lại" và không hiển thị danh sách trống thay thế.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-3">
+        <header>
+          <h3>REQ-3: Native audio player — Trình phát âm thanh bản xứ</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-2</span><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-3.1"><td class="id">AC-3.1</td><td class="ears">THE SYSTEM SHALL cung cấp cho mọi âm thanh bản xứ (từ, câu, bài nghe, lượt thoại) nút "Phát" / "Tạm dừng", nút tốc độ và nút "Lặp lại", và riêng với âm thanh bài nghe thêm thanh tiến trình kéo được kèm thời gian đã phát và tổng thời lượng dạng m:ss.</td></tr>
+            <tr id="AC-3.2"><td class="id">AC-3.2</td><td class="ears">WHEN người dùng chọn nút tốc độ THE SYSTEM SHALL cho chọn "0,5×", "0,75×", "1×" (mặc định) hoặc "1,25×", phát ở tốc độ đã chọn mà không làm thay đổi cao độ giọng đọc, và giữ tốc độ đó cho mọi âm thanh mẫu tiếp theo trong S17 và S18 trên thiết bị đó cho tới khi người dùng đổi.</td></tr>
+            <tr id="AC-3.3"><td class="id">AC-3.3</td><td class="ears">WHILE "Lặp lại" đang bật THE SYSTEM SHALL phát lại âm thanh hiện tại từ đầu sau khoảng nghỉ 1 giây mỗi khi phát hết, cho tới khi người dùng tắt "Lặp lại", chọn "Tạm dừng" hoặc rời mục đó.</td></tr>
+            <tr id="AC-3.4"><td class="id">AC-3.4</td><td class="ears">WHEN người dùng phát một âm thanh trong khi một âm thanh khác (âm thanh mẫu hoặc bản thu) đang phát THE SYSTEM SHALL dừng âm thanh đang phát và chỉ phát âm thanh mới.</td></tr>
+            <tr id="AC-3.5"><td class="id">AC-3.5</td><td class="ears">WHILE âm thanh đang được tải trước khi phát THE SYSTEM SHALL hiển thị trạng thái đang tải trên nút "Phát" và không phát hai lần khi người dùng chạm nhiều lần.</td></tr>
+            <tr id="AC-3.6"><td class="id">AC-3.6</td><td class="ears">IF không tải hoặc không phát được âm thanh THEN THE SYSTEM SHALL hiển thị "Không phát được âm thanh. Vui lòng thử lại." kèm nút "Thử lại" ngay tại trình phát đó và giữ các phần khác của màn hình dùng được.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-4">
+        <header>
+          <h3>REQ-4: Words and sentences listening — Nghe từ và câu</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-4.1"><td class="id">AC-4.1</td><td class="ears">WHEN người dùng mở tab "Nghe từ &amp; câu" THE SYSTEM SHALL liệt kê các mục từ và câu có âm thanh bản xứ của cấp và chủ đề đang chọn, mỗi mục gồm chữ Hán giản thể, pinyin có dấu thanh, nghĩa tiếng Việt, nút phát và nút "Nói theo", cùng bộ chọn "Tất cả" / "Từ" / "Câu" (mặc định "Tất cả").</td></tr>
+            <tr id="AC-4.2"><td class="id">AC-4.2</td><td class="ears">WHEN người dùng chạm nút phát của một mục THE SYSTEM SHALL phát âm thanh bản xứ của mục đó theo REQ-3 và đánh dấu mục đang phát cho tới khi phát xong.</td></tr>
+            <tr id="AC-4.3"><td class="id">AC-4.3</td><td class="ears">WHEN người dùng tắt hoặc bật công tắc "Pinyin" hoặc "Nghĩa" THE SYSTEM SHALL ẩn hoặc hiện pinyin hoặc nghĩa của mọi mục trong danh sách, luôn giữ chữ Hán hiển thị, và giữ lựa chọn đó cho các lần mở S17 sau trên cùng thiết bị.</td></tr>
+            <tr id="AC-4.4"><td class="id">AC-4.4</td><td class="ears">WHEN người dùng chọn "Nói theo" ở một mục THE SYSTEM SHALL mở S18 tab "Nói theo" tại màn hình luyện của đúng mục đó (REQ-10).</td></tr>
+            <tr id="AC-4.5"><td class="id">AC-4.5</td><td class="ears">THE SYSTEM SHALL không tự phát mục tiếp theo khi một mục phát xong; mỗi lần chạm phát chỉ phát một mục (kèm lặp lại nếu "Lặp lại" đang bật).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-5">
+        <header>
+          <h3>REQ-5: Listening comprehension — Làm bài nghe hiểu</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-5.1"><td class="id">AC-5.1</td><td class="ears">WHEN người dùng mở tab "Nghe hiểu" THE SYSTEM SHALL liệt kê các bài nghe của cấp và chủ đề đang chọn, mỗi bài gồm tên bài, loại "Hội thoại" hoặc "Đoạn văn", thời lượng âm thanh dạng m:ss, số câu hỏi và kết quả gần nhất của chính người dùng dạng "Gần nhất: x/y câu đúng" hoặc "Chưa làm".</td></tr>
+            <tr id="AC-5.2"><td class="id">AC-5.2</td><td class="ears">WHEN người dùng mở một bài nghe THE SYSTEM SHALL hiển thị tên bài, trình phát âm thanh của bài (REQ-3) và mọi câu hỏi của bài theo thứ tự của kho, mỗi câu có từ 2 đến 4 phương án và chỉ chọn được một phương án.</td></tr>
+            <tr id="AC-5.3"><td class="id">AC-5.3</td><td class="ears">WHILE người dùng chưa nộp bài nghe THE SYSTEM SHALL không hiển thị lời thoại, pinyin, bản dịch hay đáp án của bài.</td></tr>
+            <tr id="AC-5.4"><td class="id">AC-5.4</td><td class="ears">WHILE người dùng chưa nộp bài nghe THE SYSTEM SHALL cho phát lại, tua và đổi tốc độ âm thanh không giới hạn số lần và cho đổi phương án đã chọn.</td></tr>
+            <tr id="AC-5.5"><td class="id">AC-5.5</td><td class="ears">WHILE còn câu hỏi chưa được chọn phương án THE SYSTEM SHALL vô hiệu nút "Nộp bài" và hiển thị "Đã trả lời x/y câu".</td></tr>
+            <tr id="AC-5.6"><td class="id">AC-5.6</td><td class="ears">WHEN người dùng rời bài nghe khi đã chọn ít nhất một phương án mà chưa nộp THE SYSTEM SHALL hỏi "Thoát bài nghe? Các câu đã chọn sẽ không được lưu." với "Thoát" và "Ở lại", và khi người dùng chọn "Thoát" không lưu lượt làm nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-6">
+        <header>
+          <h3>REQ-6: Listening result and review — Kết quả và xem lại bài nghe</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-6.1"><td class="id">AC-6.1</td><td class="ears">WHEN người dùng chọn "Nộp bài" THE SYSTEM SHALL chấm tự động, lưu lượt làm vào lịch sử của người dùng và hiển thị kết quả "x/y câu đúng" kèm, cho từng câu, phương án người dùng đã chọn, nhãn "Đúng" hoặc "Sai", đáp án đúng và giải thích của kho.</td></tr>
+            <tr id="AC-6.2"><td class="id">AC-6.2</td><td class="ears">WHEN kết quả bài nghe được hiển thị THE SYSTEM SHALL hiển thị lời thoại đầy đủ của bài theo từng câu bằng chữ Hán (kèm tên người nói với bài "Hội thoại") cùng công tắc "Pinyin" và "Nghĩa", và vẫn cho phát lại âm thanh của bài theo REQ-3.</td></tr>
+            <tr id="AC-6.3"><td class="id">AC-6.3</td><td class="ears">WHEN người dùng chọn "Làm lại" trên màn hình kết quả THE SYSTEM SHALL mở lại bài nghe với mọi câu chưa chọn phương án, coi lần nộp kế tiếp là một lượt làm mới và giữ nguyên các lượt trước trong lịch sử.</td></tr>
+            <tr id="AC-6.4"><td class="id">AC-6.4</td><td class="ears">WHEN người dùng chọn "Bài tiếp theo" trên màn hình kết quả THE SYSTEM SHALL mở bài nghe kế tiếp trong danh sách của cấp và chủ đề đang chọn.</td></tr>
+            <tr id="AC-6.5"><td class="id">AC-6.5</td><td class="ears">IF bài vừa nộp là bài cuối của danh sách đang chọn THEN THE SYSTEM SHALL không hiển thị "Bài tiếp theo" và hiển thị "Về danh sách".</td></tr>
+            <tr id="AC-6.6"><td class="id">AC-6.6</td><td class="ears">IF không gửi được bài nộp do mất kết nối hoặc lỗi THEN THE SYSTEM SHALL giữ nguyên các phương án đã chọn, hiển thị "Không nộp được bài. Kiểm tra kết nối và thử lại." kèm nút "Thử lại", và chỉ ghi một lượt làm khi lần thử lại thành công.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-7">
+        <header>
+          <h3>REQ-7: Listening history and accuracy — Lịch sử và độ chính xác bài nghe</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-7.1"><td class="id">AC-7.1</td><td class="ears">WHEN người dùng mở tab "Lịch sử" của S17 THE SYSTEM SHALL hiển thị khối "Độ chính xác theo cấp" gồm mỗi cấp HSK mà người dùng đã nộp ít nhất một lượt, với tỷ lệ phần trăm số câu đúng trên tổng số câu chỉ tính lượt nộp đầu tiên của mỗi bài nghe ở cấp đó, làm tròn tới số nguyên, và số bài nghe đã làm ở cấp đó dạng "{n} bài".</td></tr>
+            <tr id="AC-7.2"><td class="id">AC-7.2</td><td class="ears">THE SYSTEM SHALL liệt kê dưới khối "Độ chính xác theo cấp" mọi lượt làm bài nghe của người dùng, mới nhất trước, mỗi lượt gồm tên bài, cấp HSK, thời điểm nộp dạng "dd/mm/yyyy HH:mm" theo giờ Việt Nam và "x/y câu đúng", tải thêm 20 lượt mỗi lần.</td></tr>
+            <tr id="AC-7.3"><td class="id">AC-7.3</td><td class="ears">WHEN người dùng chọn một lượt trong lịch sử THE SYSTEM SHALL hiển thị kết quả của lượt đó ở dạng chỉ xem như AC-6.1 và AC-6.2, đúng nội dung câu hỏi, phương án, đáp án, giải thích và lời thoại tại thời điểm nộp, kèm nút "Làm lại" khi bài nghe còn trong kho.</td></tr>
+            <tr id="AC-7.4"><td class="id">AC-7.4</td><td class="ears">IF người dùng chưa nộp lượt bài nghe nào THEN THE SYSTEM SHALL hiển thị trên tab "Lịch sử" thông điệp "Bạn chưa làm bài nghe nào." kèm nút "Đến Nghe hiểu" mở tab "Nghe hiểu".</td></tr>
+            <tr id="AC-7.5"><td class="id">AC-7.5</td><td class="ears">WHEN người dùng nộp một lượt cho bài nghe đã có lượt nộp trước đó THE SYSTEM SHALL thêm lượt đó vào danh sách lịch sử với "x/y câu đúng" của chính lượt đó và giữ nguyên "Độ chính xác theo cấp".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-8">
+        <header>
+          <h3>REQ-8: Microphone permission and errors — Quyền micro và lỗi micro</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-8.1"><td class="id">AC-8.1</td><td class="ears">WHEN người dùng chọn "Thu âm" lần đầu khi trình duyệt chưa được cấp quyền micro cho SAT THE SYSTEM SHALL hiển thị trước lời giải thích "SAT cần dùng micro để thu giọng của bạn. Bản thu chỉ lưu trên thiết bị này và tự xóa khi bạn rời bài." với "Tiếp tục" và "Để sau", và chỉ yêu cầu quyền micro của trình duyệt khi người dùng chọn "Tiếp tục".</td></tr>
+            <tr id="AC-8.2"><td class="id">AC-8.2</td><td class="ears">IF người dùng từ chối hoặc trước đó đã chặn quyền micro THEN THE SYSTEM SHALL hiển thị "Bạn đã chặn quyền dùng micro. Hãy cho phép micro cho trang này trong cài đặt trình duyệt rồi chọn Thử lại." kèm nút "Thử lại", không bắt đầu thu, và vẫn cho nghe âm thanh mẫu và đi tiếp đóng vai bằng "Bỏ qua".</td></tr>
+            <tr id="AC-8.3"><td class="id">AC-8.3</td><td class="ears">IF thiết bị không có hoặc không tìm thấy micro THEN THE SYSTEM SHALL hiển thị "Không tìm thấy micro trên thiết bị này." và vô hiệu nút "Thu âm" cho tới khi người dùng chọn "Thử lại".</td></tr>
+            <tr id="AC-8.4"><td class="id">AC-8.4</td><td class="ears">IF trình duyệt không hỗ trợ thu âm THEN THE SYSTEM SHALL hiển thị ngay khi mở S18 "Trình duyệt này không hỗ trợ thu âm. Hãy dùng phiên bản mới của Chrome, Safari, Edge hoặc Firefox.", vô hiệu nút "Thu âm" và vẫn cho dùng mọi chức năng nghe.</td></tr>
+            <tr id="AC-8.5"><td class="id">AC-8.5</td><td class="ears">IF micro đang bị ứng dụng khác dùng hoặc việc thu âm bị gián đoạn (cuộc gọi đến, ngắt tai nghe, chuyển ứng dụng hoặc khóa màn hình) THEN THE SYSTEM SHALL dừng thu, bỏ phần đang thu dở, giữ bản thu hoàn chỉnh trước đó của cùng mục hoặc lượt thoại nếu có, và hiển thị "Thu âm bị gián đoạn. Vui lòng thu lại."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-9">
+        <header>
+          <h3>REQ-9: Recording takes and limits — Thu âm và giới hạn bản thu</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-9.1"><td class="id">AC-9.1</td><td class="ears">WHEN người dùng chọn "Thu âm" khi đã có quyền micro THE SYSTEM SHALL dừng mọi âm thanh đang phát, bắt đầu thu và hiển thị "Đang thu…" kèm đồng hồ đếm giây, mức âm lượng thời gian thực và nút "Dừng".</td></tr>
+            <tr id="AC-9.2"><td class="id">AC-9.2</td><td class="ears">WHEN người dùng chọn "Dừng" THE SYSTEM SHALL kết thúc bản thu và hiển thị các nút "Nghe bản thu", "Thu lại" và "Xóa bản thu".</td></tr>
+            <tr id="AC-9.3"><td class="id">AC-9.3</td><td class="ears">WHEN thời lượng đang thu đạt giới hạn 15 giây với một mục ở "Nói theo" hoặc 30 giây với một lượt thoại ở "Đóng vai" THE SYSTEM SHALL tự dừng thu, giữ bản thu đã có và hiển thị "Đã đạt thời lượng tối đa 15 giây." hoặc "Đã đạt thời lượng tối đa 30 giây."</td></tr>
+            <tr id="AC-9.4"><td class="id">AC-9.4</td><td class="ears">IF bản thu ngắn hơn 0,5 giây THEN THE SYSTEM SHALL bỏ bản thu đó, giữ bản thu hoàn chỉnh trước đó nếu có và hiển thị "Bản thu quá ngắn. Hãy chọn Thu âm, nói rồi chọn Dừng."</td></tr>
+            <tr id="AC-9.5"><td class="id">AC-9.5</td><td class="ears">WHEN người dùng hoàn tất một bản thu mới sau khi chọn "Thu lại" THE SYSTEM SHALL thay bản thu cũ của cùng mục hoặc cùng lượt thoại bằng bản thu mới, để mỗi mục hoặc lượt thoại chỉ có tối đa một bản thu.</td></tr>
+            <tr id="AC-9.6"><td class="id">AC-9.6</td><td class="ears">WHEN người dùng chọn "Xóa bản thu" THE SYSTEM SHALL xóa ngay bản thu đó khỏi thiết bị mà không hỏi xác nhận và đưa mục hoặc lượt thoại về trạng thái chưa thu.</td></tr>
+            <tr id="AC-9.7"><td class="id">AC-9.7</td><td class="ears">WHEN người dùng chọn "Nghe mẫu" hoặc phát một âm thanh khác trong lúc đang thu THE SYSTEM SHALL kết thúc bản thu như khi chọn "Dừng" rồi mới phát âm thanh đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-10">
+        <header>
+          <h3>REQ-10: Shadowing and self-compare — Nói theo và tự so sánh</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-10.1"><td class="id">AC-10.1</td><td class="ears">WHEN người dùng mở tab "Nói theo" THE SYSTEM SHALL liệt kê các mục từ và câu có âm thanh bản xứ của cấp và chủ đề đang chọn (cùng nguồn với tab "Nghe từ &amp; câu"), mỗi mục gồm chữ Hán, pinyin có dấu thanh, nghĩa và nhãn tự đánh giá gần nhất "Giống" hoặc "Chưa giống" của người dùng, không có nhãn khi chưa tự đánh giá.</td></tr>
+            <tr id="AC-10.2"><td class="id">AC-10.2</td><td class="ears">WHEN người dùng chọn một mục ở tab "Nói theo" THE SYSTEM SHALL mở màn hình luyện của mục gồm chữ Hán cỡ lớn, pinyin có dấu thanh luôn hiển thị, nghĩa tiếng Việt, nút "Nghe mẫu" (trình phát REQ-3), nút "Thu âm", dòng quyền riêng tư của AC-15.3 và các nút "Trước" / "Tiếp" để chuyển sang mục liền kề trong danh sách.</td></tr>
+            <tr id="AC-10.3"><td class="id">AC-10.3</td><td class="ears">WHEN người dùng chọn "Nghe bản thu" THE SYSTEM SHALL phát bản thu của người dùng ở tốc độ 1×.</td></tr>
+            <tr id="AC-10.4"><td class="id">AC-10.4</td><td class="ears">WHILE mục ở tab "Nói theo" đang có bản thu THE SYSTEM SHALL hiển thị nút "So sánh" cạnh "Nghe bản thu".</td></tr>
+            <tr id="AC-10.5"><td class="id">AC-10.5</td><td class="ears">WHEN người dùng chọn "So sánh" THE SYSTEM SHALL phát âm thanh mẫu ở tốc độ đang chọn, nghỉ 1 giây rồi phát bản thu của người dùng ở tốc độ 1×, lần lượt đánh dấu "Mẫu" và "Bạn" trong lúc mỗi phần đang phát.</td></tr>
+            <tr id="AC-10.6"><td class="id">AC-10.6</td><td class="ears">WHILE màn hình luyện đang ở mục đầu hoặc mục cuối của danh sách "Nói theo" THE SYSTEM SHALL vô hiệu tương ứng nút "Trước" hoặc nút "Tiếp".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-11">
+        <header>
+          <h3>REQ-11: Self-assessment and speaking progress — Tự đánh giá và tiến độ luyện nói</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="chip">US-7</span><span class="pill p1">P1</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-11.1"><td class="id">AC-11.1</td><td class="ears">WHILE mục ở tab "Nói theo" đang có bản thu THE SYSTEM SHALL hiển thị câu hỏi "Bạn thấy mình nói giống mẫu chưa?" với hai nút "Giống" và "Chưa giống".</td></tr>
+            <tr id="AC-11.2"><td class="id">AC-11.2</td><td class="ears">WHEN người dùng chọn "Giống" hoặc "Chưa giống" THE SYSTEM SHALL lưu lựa chọn đó làm tự đánh giá gần nhất của người dùng cho mục, thay lựa chọn trước, và hiển thị nhãn tương ứng trên danh sách "Nói theo" ở lần hiển thị kế tiếp.</td></tr>
+            <tr id="AC-11.3"><td class="id">AC-11.3</td><td class="ears">THE SYSTEM SHALL không tự chấm, không cho điểm và không nhận xét phát âm hay thanh điệu trong MVP; nhãn "Giống" / "Chưa giống" chỉ do chính người dùng chọn.</td></tr>
+            <tr id="AC-11.4"><td class="id">AC-11.4</td><td class="ears">WHEN người dùng mở tab "Tiến độ" của S18 THE SYSTEM SHALL hiển thị, cho mỗi cấp HSK có nội dung "Nói theo" đang phát hành, "Giống x/y" (x là số mục đang phát hành của cấp có tự đánh giá gần nhất "Giống", y là tổng số mục đang phát hành của cấp) và "Chưa giống z", cùng danh sách kịch bản đóng vai người dùng đã hoàn thành với số lần hoàn thành, vai của lần gần nhất và ngày gần nhất dạng dd/mm/yyyy.</td></tr>
+            <tr id="AC-11.5"><td class="id">AC-11.5</td><td class="ears">WHEN người dùng chọn "Luyện lại mục Chưa giống" ở một cấp trên tab "Tiến độ" THE SYSTEM SHALL mở tab "Nói theo" của cấp đó chỉ với các mục có tự đánh giá gần nhất "Chưa giống", kèm nút "Bỏ lọc" để xem lại toàn bộ danh sách.</td></tr>
+            <tr id="AC-11.6"><td class="id">AC-11.6</td><td class="ears">IF người dùng chưa có tự đánh giá nào và chưa hoàn thành kịch bản nào THEN THE SYSTEM SHALL hiển thị trên tab "Tiến độ" thông điệp "Bạn chưa luyện nói. Hãy thử Nói theo hoặc Đóng vai."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-12">
+        <header>
+          <h3>REQ-12: Role-play scenario and role selection — Chọn kịch bản và vai đóng</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-12.1"><td class="id">AC-12.1</td><td class="ears">WHEN người dùng mở tab "Đóng vai" THE SYSTEM SHALL liệt kê các kịch bản đóng vai đang phát hành của cấp đang chọn, nhóm theo tình huống của kho (ví dụ "Gọi món", "Mua sắm", "Phỏng vấn", "Giao tiếp công sở"), mỗi kịch bản gồm tên, cấp HSK, số lượt thoại và "Đã hoàn thành n lần" hoặc "Chưa luyện".</td></tr>
+            <tr id="AC-12.2"><td class="id">AC-12.2</td><td class="ears">WHEN người dùng chọn một kịch bản THE SYSTEM SHALL hiển thị mô tả bối cảnh bằng tiếng Việt, danh sách các vai của kịch bản kèm số lượt thoại của mỗi vai, nút "Xem trước kịch bản" và nút "Bắt đầu" chỉ được bật khi người dùng đã chọn đúng một vai.</td></tr>
+            <tr id="AC-12.3"><td class="id">AC-12.3</td><td class="ears">WHEN người dùng chọn "Xem trước kịch bản" THE SYSTEM SHALL hiển thị toàn bộ lượt thoại theo thứ tự (vai, chữ Hán, pinyin có dấu thanh, nghĩa tiếng Việt), cho phát âm thanh mẫu của từng lượt, và không ghi nhận đó là một lần luyện.</td></tr>
+            <tr id="AC-12.4"><td class="id">AC-12.4</td><td class="ears">WHEN người dùng chọn "Bắt đầu" THE SYSTEM SHALL bắt đầu một lần đóng vai với vai đã chọn, trong đó ứng dụng đóng mọi vai còn lại.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-13">
+        <header>
+          <h3>REQ-13: Turn-by-turn role-play — Đóng vai theo lượt</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-13.1"><td class="id">AC-13.1</td><td class="ears">WHILE một lần đóng vai đang diễn ra THE SYSTEM SHALL hiển thị các lượt thoại đã tới theo thứ tự kịch bản dạng khung hội thoại, mỗi lượt gắn tên vai, lượt của người dùng nằm ở một phía và lượt của vai khác ở phía còn lại, cùng nút "Làm lại từ đầu".</td></tr>
+            <tr id="AC-13.2"><td class="id">AC-13.2</td><td class="ears">WHEN tới lượt của một vai do ứng dụng đóng THE SYSTEM SHALL hiển thị chữ Hán của lượt đó, tự phát âm thanh mẫu của lượt ở tốc độ đang chọn và tự chuyển sang lượt kế tiếp sau khi phát xong.</td></tr>
+            <tr id="AC-13.3"><td class="id">AC-13.3</td><td class="ears">IF trình duyệt chặn tự phát âm thanh của lượt do ứng dụng đóng THEN THE SYSTEM SHALL dừng ở lượt đó, hiển thị nút "Phát" và tiếp tục như AC-13.2 sau khi người dùng chạm "Phát".</td></tr>
+            <tr id="AC-13.4"><td class="id">AC-13.4</td><td class="ears">WHEN tới lượt của người dùng THE SYSTEM SHALL dừng tự chuyển lượt và hiển thị "Đến lượt bạn" cùng chữ Hán của lượt cần nói và các nút "Gợi ý", "Nghe mẫu", "Thu âm" và "Bỏ qua".</td></tr>
+            <tr id="AC-13.5"><td class="id">AC-13.5</td><td class="ears">WHEN người dùng chọn "Gợi ý" ở một lượt bất kỳ THE SYSTEM SHALL hiện pinyin có dấu thanh và nghĩa tiếng Việt của lượt đó, và ẩn lại khi người dùng chọn "Gợi ý" lần nữa.</td></tr>
+            <tr id="AC-13.6"><td class="id">AC-13.6</td><td class="ears">WHEN lượt của người dùng đã có bản thu THE SYSTEM SHALL hiển thị "Nghe bản thu", "Thu lại" và "Tiếp tục", và chỉ chuyển sang lượt kế tiếp khi người dùng chọn "Tiếp tục".</td></tr>
+            <tr id="AC-13.7"><td class="id">AC-13.7</td><td class="ears">WHEN người dùng chọn "Bỏ qua" ở lượt của mình THE SYSTEM SHALL đánh dấu lượt đó "Đã bỏ qua" và chuyển sang lượt kế tiếp.</td></tr>
+            <tr id="AC-13.8"><td class="id">AC-13.8</td><td class="ears">WHEN người dùng chạm "Nghe lại" ở một lượt đã qua THE SYSTEM SHALL phát âm thanh mẫu của lượt đó nếu là lượt của vai khác hoặc lượt đã bỏ qua, hoặc bản thu của người dùng nếu là lượt đã thu, mà không thay đổi lượt hiện tại.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-14">
+        <header>
+          <h3>REQ-14: Completion, replay and restart — Hoàn thành, nghe lại và làm lại đóng vai</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-14.1"><td class="id">AC-14.1</td><td class="ears">WHEN lượt cuối cùng của kịch bản kết thúc THE SYSTEM SHALL hiển thị "Hoàn thành hội thoại" kèm "Đã thu x/y lượt của bạn", các nút "Nghe lại cả hội thoại", "Làm lại", "Đổi vai" và "Về danh sách", và ghi nhận cho người dùng một lần hoàn thành kịch bản với vai đã chọn và ngày hoàn thành.</td></tr>
+            <tr id="AC-14.2"><td class="id">AC-14.2</td><td class="ears">WHEN người dùng chọn "Nghe lại cả hội thoại" THE SYSTEM SHALL phát lần lượt mọi lượt thoại theo thứ tự kịch bản, với lượt của vai khác bằng âm thanh mẫu, lượt người dùng đã thu bằng bản thu của người dùng và lượt đã bỏ qua bằng âm thanh mẫu kèm nhãn "Bản mẫu", nghỉ 0,5 giây giữa hai lượt và đánh dấu lượt đang phát.</td></tr>
+            <tr id="AC-14.3"><td class="id">AC-14.3</td><td class="ears">WHILE đang nghe lại cả hội thoại THE SYSTEM SHALL cho "Tạm dừng", "Phát tiếp" và chạm vào một lượt để phát tiếp từ lượt đó.</td></tr>
+            <tr id="AC-14.4"><td class="id">AC-14.4</td><td class="ears">WHEN người dùng chọn "Làm lại" ở màn hình hoàn thành hoặc "Làm lại từ đầu" trong lúc đóng vai THE SYSTEM SHALL hỏi "Bắt đầu lại? Các bản thu của lần này sẽ bị xóa." với "Bắt đầu lại" và "Hủy", và khi người dùng xác nhận xóa mọi bản thu của lần đó, giữ vai đã chọn và bắt đầu lại từ lượt đầu tiên.</td></tr>
+            <tr id="AC-14.5"><td class="id">AC-14.5</td><td class="ears">WHEN người dùng chọn "Đổi vai" ở màn hình hoàn thành THE SYSTEM SHALL xóa mọi bản thu của lần đóng vai vừa xong và đưa người dùng về bước chọn vai của cùng kịch bản.</td></tr>
+            <tr id="AC-14.6"><td class="id">AC-14.6</td><td class="ears">WHEN người dùng rời một lần đóng vai trước khi tới lượt cuối THE SYSTEM SHALL hỏi "Thoát đóng vai? Các bản thu của lần này sẽ bị xóa." với "Thoát" và "Ở lại", và khi người dùng chọn "Thoát" xóa các bản thu đó và không ghi nhận lần hoàn thành nào.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-15">
+        <header>
+          <h3>REQ-15: Voice recording privacy and retention — Riêng tư và thời hạn giữ bản thu</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-15.1"><td class="id">AC-15.1</td><td class="ears">THE SYSTEM SHALL chỉ giữ bản thu giọng nói trên thiết bị của người dùng trong trang đang mở và không gửi bản thu hay bất kỳ dữ liệu âm thanh nào thu từ micro ra khỏi thiết bị.</td></tr>
+            <tr id="AC-15.2"><td class="id">AC-15.2</td><td class="ears">WHEN người dùng rời màn hình luyện của một mục "Nói theo" (chuyển mục bằng "Trước" / "Tiếp", quay lại danh sách hoặc rời S18), kết thúc một lần đóng vai bằng "Làm lại", "Đổi vai", "Về danh sách" hoặc "Thoát", đăng xuất, tải lại hoặc đóng trang THE SYSTEM SHALL xóa vĩnh viễn khỏi thiết bị mọi bản thu của mục hoặc lần đóng vai đó.</td></tr>
+            <tr id="AC-15.3"><td class="id">AC-15.3</td><td class="ears">THE SYSTEM SHALL hiển thị cạnh nút "Thu âm" ở tab "Nói theo" và trong lần đóng vai dòng "Bản thu chỉ lưu trên thiết bị này và tự xóa khi bạn rời bài."</td></tr>
+            <tr id="AC-15.4"><td class="id">AC-15.4</td><td class="ears">THE SYSTEM SHALL không cung cấp cách tải xuống, chia sẻ hay gửi bản thu cho GV hay bất kỳ ai trong MVP.</td></tr>
+            <tr id="AC-15.5"><td class="id">AC-15.5</td><td class="ears">WHEN bản thu kết thúc, bị hủy hoặc người dùng rời màn hình đang thu THE SYSTEM SHALL ngừng dùng micro ngay, để chỉ báo micro của trình duyệt và hệ điều hành tắt, và chỉ dùng micro trong lúc hiển thị "Đang thu…".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-16">
+        <header>
+          <h3>REQ-16: Self-study data privacy and class independence — Dữ liệu tự học riêng tư, tách khỏi lớp</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S18">S18</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-16.1"><td class="id">AC-16.1</td><td class="ears">THE SYSTEM SHALL lưu cho mỗi HV các lượt làm bài nghe, tự đánh giá "Giống" / "Chưa giống" gần nhất của từng mục và các lần hoàn thành đóng vai, gắn với tài khoản HV chứ không với lớp, và chỉ hiển thị chúng cho chính HV đó.</td></tr>
+            <tr id="AC-16.2"><td class="id">AC-16.2</td><td class="ears">THE SYSTEM SHALL không hiển thị dữ liệu Luyện nghe &amp; nói của một HV cho bất kỳ GV nào, kể cả GV của workspace của HV, hay cho HV khác, trên bất kỳ màn hình nào (kể cả T01, T04, T15, các màn hình quản lý kho T23–T27, S09, S12).</td></tr>
+            <tr id="AC-16.3"><td class="id">AC-16.3</td><td class="ears">THE SYSTEM SHALL không tính dữ liệu Luyện nghe &amp; nói vào Điểm xếp hạng, hạng (008), tiến độ "Bộ bài tập x/y" hay trạng thái "Đã làm" / "Chưa làm" (009) của bất kỳ lớp nào.</td></tr>
+            <tr id="AC-16.4"><td class="id">AC-16.4</td><td class="ears">IF người dùng mở đường dẫn tới một lượt làm bài nghe không thuộc tài khoản của mình hoặc không tồn tại THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." giống hệt nhau trong cả hai trường hợp.</td></tr>
+            <tr id="AC-16.5"><td class="id">AC-16.5</td><td class="ears">WHEN một tài khoản HV bị xóa theo 001 THE SYSTEM SHALL xóa vĩnh viễn toàn bộ dữ liệu Luyện nghe &amp; nói của HV đó trong vòng 24 giờ.</td></tr>
+            <tr id="AC-16.6"><td class="id">AC-16.6</td><td class="ears">WHILE tài khoản HV bị khóa theo 001 THE SYSTEM SHALL giữ nguyên dữ liệu Luyện nghe &amp; nói của HV và hiển thị lại đầy đủ khi tài khoản được mở khóa.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-17">
+        <header>
+          <h3>REQ-17: Library content changes — Thay đổi nội dung trong kho</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="chip">US-3</span><span class="chip">US-4</span><span class="chip">US-5</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-17.1"><td class="id">AC-17.1</td><td class="ears">WHEN GV ẩn, lưu trữ hoặc gỡ khỏi phát hành một mục từ hoặc câu, bài nghe hoặc kịch bản trong Kho nội dung tự học (016) của workspace THE SYSTEM SHALL không còn liệt kê nội dung đó trong S17 và S18 cho HV của workspace từ lần mở hoặc tải lại kế tiếp.</td></tr>
+            <tr id="AC-17.2"><td class="id">AC-17.2</td><td class="ears">THE SYSTEM SHALL giữ lượt làm bài nghe trong lịch sử, và giữ lượt nộp đầu tiên của bài nghe trong "Độ chính xác theo cấp", kể cả khi GV sau đó sửa, ẩn hoặc gỡ bài nghe khỏi kho, và gắn nhãn "Bài không còn trong kho" cho lượt của bài không còn đang phát hành, không kèm nút "Làm lại".</td></tr>
+            <tr id="AC-17.3"><td class="id">AC-17.3</td><td class="ears">IF GV sửa, ẩn hoặc gỡ khỏi kho bài nghe hoặc kịch bản người dùng đang mở trong lúc người dùng đang làm THEN THE SYSTEM SHALL cho người dùng làm xong theo nội dung đã mở và chấm bài nghe theo đáp án của nội dung đó.</td></tr>
+            <tr id="AC-17.4"><td class="id">AC-17.4</td><td class="ears">WHEN GV sửa âm thanh mẫu hoặc nội dung chữ của một mục từ hoặc câu trong kho THE SYSTEM SHALL giữ tự đánh giá gần nhất của người dùng cho mục đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td class="id">BR-1</td><td>Chỉ HV đã kích hoạt, không bị khóa của workspace dùng S17 / S18, như nhau, không cần lớp; GV mở S17 / S18 → A05 (V15); chưa đăng nhập → A01 (đăng nhập bằng GV → A05).</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.5</span> <span class="chip ac">AC-1.6</span></td></tr>
+          <tr><td class="id">BR-2</td><td>Chỉ hiển thị nội dung đang phát hành (không nháp, không bị GV ẩn, không lưu trữ) của Kho nội dung tự học thuộc workspace của HV (016), theo cấp HSK1–HSK9 và chủ đề / tình huống, thứ tự của kho, 20 mục mỗi lần tải; cấp mặc định = cấp chọn gần nhất trong S17 / S18, hoặc HSK1.</td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span> <span class="chip ac">AC-2.3</span> <span class="chip ac">AC-17.1</span></td></tr>
+          <tr><td class="id">BR-3</td><td>Tốc độ phát: "0,5×", "0,75×", "1×" (mặc định), "1,25×"; giữ cao độ; nhớ trên thiết bị. "Lặp lại" nghỉ 1 giây. Một âm thanh tại một thời điểm. Bản thu luôn phát ở 1×.</td><td><span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.3</span> <span class="chip ac">AC-3.4</span> <span class="chip ac">AC-10.3</span></td></tr>
+          <tr><td class="id">BR-4</td><td>Bài nghe: câu hỏi một lựa chọn 2–4 phương án; lời thoại / pinyin / bản dịch / đáp án ẩn tới khi nộp; phải trả lời đủ mới nộp; nghe, tua, đổi tốc độ không giới hạn; làm lại không giới hạn, mỗi lần nộp = một lượt.</td><td><span class="chip ac">AC-5.2</span> <span class="chip ac">AC-5.3</span> <span class="chip ac">AC-5.4</span> <span class="chip ac">AC-5.5</span> <span class="chip ac">AC-6.3</span></td></tr>
+          <tr><td class="id">BR-5</td><td>Độ chính xác theo cấp = tổng câu đúng / tổng câu, chỉ tính lượt nộp đầu tiên (lượt được ghi nhận sớm nhất) của mỗi bài nghe ở cấp đó, làm tròn tới số nguyên; hiển thị kèm "{n} bài". Lượt làm lại vẫn vào lịch sử với điểm riêng, không đổi độ chính xác. Lượt lưu bản sao nội dung tại thời điểm nộp; không chấm lại khi kho sửa đáp án.</td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.3</span> <span class="chip ac">AC-7.5</span> <span class="chip ac">AC-17.2</span></td></tr>
+          <tr><td class="id">BR-6</td><td>Bản thu: tối thiểu 0,5 giây; tối đa 15 giây (Nói theo) / 30 giây (Đóng vai), tự dừng ở giới hạn; tối đa một bản thu mỗi mục / lượt; bản mới chỉ thay bản cũ khi hoàn tất.</td><td><span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-9.5</span></td></tr>
+          <tr><td class="id">BR-7</td><td>Bản thu chỉ ở trên thiết bị trong trang đang mở, không bao giờ được gửi đi, tải xuống hay chia sẻ; tự xóa khi rời mục / lần đóng vai, làm lại, đổi vai, đăng xuất, tải lại hoặc đóng trang. Micro chỉ được dùng trong lúc "Đang thu…".</td><td><span class="chip ac">AC-15.1</span> <span class="chip ac">AC-15.2</span> <span class="chip ac">AC-15.4</span> <span class="chip ac">AC-15.5</span></td></tr>
+          <tr><td class="id">BR-8</td><td>Tự đánh giá "Giống" / "Chưa giống" do người dùng chọn, chỉ giữ lựa chọn gần nhất mỗi mục; không chấm tự động trong MVP. "Giống x/y": chỉ đếm mục đang phát hành.</td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.3</span> <span class="chip ac">AC-11.4</span> <span class="chip ac">AC-17.4</span></td></tr>
+          <tr><td class="id">BR-9</td><td>Đóng vai: người dùng chọn đúng một vai, ứng dụng đóng mọi vai còn lại; lượt của ứng dụng tự phát và tự chuyển; lượt của người dùng chờ "Tiếp tục" hoặc "Bỏ qua". Hoàn thành được ghi khi tới hết lượt cuối, kể cả có lượt bỏ qua; thoát giữa chừng không ghi.</td><td><span class="chip ac">AC-12.4</span> <span class="chip ac">AC-13.2</span> <span class="chip ac">AC-13.6</span> <span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.6</span></td></tr>
+          <tr><td class="id">BR-10</td><td>Dữ liệu tự học (lượt làm, tự đánh giá, lần hoàn thành) gắn với tài khoản HV, chỉ chính HV thấy (không GV nào, kể cả trên T23–T27); không vào Điểm xếp hạng, hạng, tiến độ, "Đã làm" / "Chưa làm" của lớp; xóa trong 24 giờ khi tài khoản bị xóa; giữ khi tài khoản bị khóa.</td><td><span class="chip ac">AC-16.1</span> <span class="chip ac">AC-16.2</span> <span class="chip ac">AC-16.3</span> <span class="chip ac">AC-16.5</span> <span class="chip ac">AC-16.6</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> ChuaThu
+  ChuaThu --> DangThu: Thu âm, có quyền micro
+  DangThu --> CoBanThu: Dừng hoặc đạt giới hạn
+  DangThu --> ChuaThu: Quá ngắn hoặc gián đoạn, chưa có bản trước
+  DangThu --> CoBanThu: Quá ngắn hoặc gián đoạn, giữ bản trước
+  CoBanThu --> DangThu: Thu lại
+  CoBanThu --> ChuaThu: Xóa bản thu
+  CoBanThu --> [*]: Rời mục hoặc lần đóng vai, bản thu bị xóa
+  ChuaThu --> [*]: Rời mục
+</pre>
+        <figcaption>Vòng đời bản thu của một mục "Nói theo" hoặc một lượt thoại — tên hiển thị: Chưa thu / Đang thu… / Có bản thu</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Được phép</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Chưa thu</td><td>Mục / lượt chưa có bản thu trên thiết bị</td><td>Nghe mẫu, Thu âm (và Bỏ qua khi đóng vai)</td><td><span class="chip ac">AC-9.6</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td>Đang thu…</td><td>Micro đang dùng; đồng hồ, mức âm lượng; tự dừng ở 15 / 30 giây</td><td>Dừng; "Nghe mẫu" hoặc phát âm thanh khác kết thúc bản thu trước khi phát</td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.7</span> <span class="chip ac">AC-15.5</span></td></tr>
+          <tr><td>Có bản thu</td><td>Một bản thu chỉ trên thiết bị</td><td>Nghe bản thu, So sánh, Thu lại, Xóa bản thu, Giống / Chưa giống (Nói theo), Tiếp tục (Đóng vai)</td><td><span class="chip ac">AC-9.2</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-11.1</span> <span class="chip ac">AC-13.6</span></td></tr>
+        </tbody>
+      </table></div>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> ChonVai: Chọn kịch bản
+  ChonVai --> DangDong: Bắt đầu
+  DangDong --> DangDong: Lượt kế tiếp
+  DangDong --> ChonVai: Thoát rồi chọn lại
+  DangDong --> DangDong: Làm lại từ đầu, xóa bản thu
+  DangDong --> HoanThanh: Hết lượt cuối, ghi nhận hoàn thành
+  HoanThanh --> DangDong: Làm lại, xóa bản thu
+  HoanThanh --> ChonVai: Đổi vai, xóa bản thu
+  HoanThanh --> [*]: Về danh sách, xóa bản thu
+</pre>
+        <figcaption>Một lần đóng vai — tên hiển thị: Chọn vai / Đang đóng vai / Hoàn thành hội thoại</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Được phép</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Chọn vai</td><td>Bối cảnh, các vai, xem trước kịch bản</td><td>Xem trước kịch bản, chọn một vai, Bắt đầu</td><td><span class="chip ac">AC-12.2</span> <span class="chip ac">AC-12.3</span></td></tr>
+          <tr><td>Đang đóng vai</td><td>Các lượt đã tới hiển thị; ứng dụng đóng vai còn lại</td><td>Gợi ý, Nghe mẫu, Thu âm, Bỏ qua, Tiếp tục, Nghe lại, Làm lại từ đầu, Thoát (có xác nhận)</td><td><span class="chip ac">AC-13.1</span> <span class="chip ac">AC-14.4</span> <span class="chip ac">AC-14.6</span></td></tr>
+          <tr><td>Hoàn thành hội thoại</td><td>Đã ghi nhận một lần hoàn thành; bản thu còn trên thiết bị tới khi rời</td><td>Nghe lại cả hội thoại, Làm lại, Đổi vai, Về danh sách</td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.5</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td>Luyện nghe <em>(owner 014)</em></td><td><span class="pill hv">HV</span></td><td>"Quay lại" về S13; tab "Nghe từ &amp; câu" (bộ lọc "Cấp HSK", "Chủ đề", "Tất cả" / "Từ" / "Câu", công tắc "Pinyin" / "Nghĩa", danh sách mục có nút phát và "Nói theo"), "Nghe hiểu" (danh sách bài; màn hình làm bài: trình phát có thanh tiến trình, câu hỏi, "Đã trả lời x/y câu", "Nộp bài"; màn hình kết quả: "x/y câu đúng", đáp án, giải thích, lời thoại, "Làm lại", "Bài tiếp theo" / "Về danh sách"), "Lịch sử" ("Độ chính xác theo cấp", danh sách lượt, xem lại chỉ xem).</td><td>F-1, F-2 · REQ-1–7, REQ-16, REQ-17</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S18">S18</a></td><td>Luyện nói <em>(owner 014)</em></td><td><span class="pill hv">HV</span></td><td>"Quay lại" về S13; tab "Nói theo" (danh sách mục kèm nhãn tự đánh giá; màn hình luyện: chữ Hán lớn, pinyin, nghĩa, "Nghe mẫu", "Thu âm" / "Dừng", "Nghe bản thu", "So sánh", "Thu lại", "Xóa bản thu", "Giống" / "Chưa giống", "Trước" / "Tiếp", dòng riêng tư), "Đóng vai" (kịch bản theo tình huống; chọn vai, "Xem trước kịch bản", "Bắt đầu"; khung hội thoại theo lượt với "Gợi ý", "Nghe mẫu", "Thu âm", "Bỏ qua", "Tiếp tục", "Nghe lại", "Làm lại từ đầu"; "Hoàn thành hội thoại"), "Tiến độ". Lời giải thích quyền micro và thông báo lỗi micro là hộp thoại / thông báo của S18.</td><td>F-3, F-4, F-5 · REQ-1–4, REQ-8–17</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a></td><td>Tự học <em>(012)</em></td><td><span class="pill hv">HV</span></td><td>Lối vào "Luyện nghe" → S17, "Luyện nói" → S18 (chỉ HV). 012 bổ sung.</td><td>F-1, F-4 · REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A01">A01</a></td><td>Đăng nhập <em>(001)</em></td><td><span class="pill hv">HV</span> <span class="pill gv">GV</span></td><td>Chưa đăng nhập mở S17 / S18 → A01, sau đó mở lại đúng màn hình (tài khoản HV) hoặc A05 (tài khoản GV).</td><td>REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td>Không tìm thấy nội dung <em>(001)</em></td><td><span class="pill hv">HV</span> <span class="pill gv">GV</span></td><td>GV mở S17 / S18; đường dẫn tới lượt làm bài nghe của người khác hoặc không tồn tại.</td><td>REQ-1, REQ-16</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–<a class="chip screen" href="../screen-flow-design.html#T27">T27</a></td><td>Kho nội dung tự học <em>(016)</em></td><td><span class="pill gv">GV</span></td><td>GV sửa / thêm / ẩn mục từ và câu, bài nghe, kịch bản đóng vai và xem trước nội dung; thay đổi tới HV theo REQ-17. Không hiển thị dữ liệu tự học của HV.</td><td>REQ-2, REQ-16, REQ-17</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Màn hình đề xuất bổ sung (chưa có trong danh mục chung):</em> — không có — (màn hình làm bài, kết quả, lịch sử là trạng thái của S17; màn hình luyện, lần đóng vai, tiến độ là trạng thái của S18). S17 và S18 chưa có trong prototype — cần bổ sung theo spec này (V13-5).</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Performance</td><td>âm thanh bản xứ bắt đầu phát p95 ≤ 1 giây sau khi chạm phát lần đầu trên mạng di động 4G (≥ 10 Mbps), và ≤ 300 ms khi phát lại âm thanh đã tải trong cùng phiên.</td></tr>
+          <tr><td class="id">NFR-2</td><td>Performance</td><td>thu âm bắt đầu p95 ≤ 500 ms sau khi chạm "Thu âm" khi quyền micro đã được cấp, không mất quá 100 ms đầu của lời nói; "Nghe bản thu" và "So sánh" bắt đầu phát p95 ≤ 300 ms.</td></tr>
+          <tr><td class="id">NFR-3</td><td>Performance</td><td>20 mục đầu của mọi danh sách trên S17 / S18 hiển thị p95 ≤ 2 giây trên 4G ở màn hình 360 px với cấp có 500 mục; kết quả bài nghe hiển thị p95 ≤ 1 giây sau khi chọn "Nộp bài".</td></tr>
+          <tr><td class="id">NFR-4</td><td>Capacity</td><td>mỗi bản thu ≤ 15 giây ở "Nói theo" và ≤ 30 giây ở "Đóng vai", ≤ 1 MB mỗi bản thu; một lần đóng vai giữ tối đa 40 bản thu với tổng ≤ 40 MB bộ nhớ thiết bị và mọi bản thu được giải phóng ≤ 1 giây sau khi bị xóa.</td></tr>
+          <tr><td class="id">NFR-5</td><td>Compatibility</td><td>100% chức năng của S17 và S18 (kể cả thu âm, nghe bản thu, "So sánh", đóng vai) hoạt động trên Safari iOS 16.4 trở lên, Chrome Android 10 trở lên và 2 phiên bản chính mới nhất của Chrome, Edge, Firefox, Safari trên máy tính, kiểm chứng trên ≥ 2 iPhone và ≥ 2 điện thoại Android thật trước mỗi bản phát hành.</td></tr>
+          <tr><td class="id">NFR-6</td><td>Usability</td><td>S17 và S18 dùng được ở chiều rộng 360–430 px (HV trên điện thoại) và ≥ 1280 px (HV trên màn hình rộng) không có cuộn ngang, vùng chạm ≥ 44×44 px; chữ Hán ở màn hình luyện "Nói theo" và lượt thoại cao ≥ 32 px; 100% pinyin hiển thị đúng dấu thanh (ā á ǎ à và ü).</td></tr>
+          <tr><td class="id">NFR-7</td><td>Accessibility</td><td>100% âm thanh có văn bản tương đương (chữ Hán + pinyin + nghĩa cho từ, câu, lượt thoại; lời thoại đầy đủ cho bài nghe sau khi nộp); 100% điều khiển phát, tốc độ, thu âm, tự đánh giá thao tác được bằng bàn phím và có nhãn đọc được bằng trình đọc màn hình; trạng thái "Đang thu…" và kết quả "Đúng" / "Sai" được thông báo cho trình đọc màn hình; tương phản chữ ≥ 4,5:1 (WCAG 2.1 AA).</td></tr>
+          <tr><td class="id">NFR-8</td><td>Privacy</td><td>0 byte dữ liệu âm thanh từ micro được gửi ra khỏi thiết bị, kiểm chứng bằng kiểm thử tự động ghi toàn bộ lưu lượng mạng trong các luồng "Nói theo" và "Đóng vai"; chỉ báo micro tắt ≤ 1 giây sau khi dừng thu hoặc rời màn hình; 0 dữ liệu Luyện nghe &amp; nói của HV xuất hiện trong phản hồi tới tài khoản khác (kể cả GV của workspace của HV) và 100% lần tài khoản GV mở S17 / S18 nhận A05, trong bộ kiểm thử phân quyền bao phủ 100% dữ liệu của S17 / S18.</td></tr>
+          <tr><td class="id">NFR-9</td><td>Reliability</td><td>0 lượt làm bài nghe bị mất hoặc bị ghi trùng trong 100 lần kiểm thử nộp bài với mất kết nối và thử lại.</td></tr>
+          <tr><td class="id">NFR-10</td><td>Observability</td><td>100% lượt nộp bài nghe, lần tự đánh giá, lần hoàn thành đóng vai, lỗi phát âm thanh và lỗi micro (loại lỗi, trình duyệt) được ghi nhật ký có cấu trúc gồm thời điểm, mã tài khoản, mã nội dung, loại thao tác và kết quả, không chứa họ tên, email hay dữ liệu âm thanh, truy vết được trong ≥ 90 ngày.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thực thể</th><th>Ý nghĩa</th><th>Thuộc tính nghiệp vụ chính</th><th>Quan hệ</th></tr></thead>
+        <tbody>
+          <tr><td><b>Mục từ và câu</b> <em>(016)</em></td><td>Một từ hoặc câu của Kho nội dung tự học của workspace (GV quản lý); dùng chung cho "Nghe từ &amp; câu" và "Nói theo".</td><td>Loại (Từ / Câu), chữ Hán giản thể, pinyin có dấu thanh, nghĩa tiếng Việt, âm thanh bản xứ, cấp HSK, chủ đề, thứ tự, trạng thái phát hành</td><td>Có nhiều Tự đánh giá nói theo (mỗi HV một)</td></tr>
+          <tr><td><b>Bài nghe</b> <em>(016)</em></td><td>Một âm thanh hội thoại hoặc đoạn văn kèm câu hỏi.</td><td>Tên, loại ("Hội thoại" / "Đoạn văn"), cấp HSK, chủ đề, âm thanh, lời thoại theo câu (người nói, chữ Hán, pinyin, nghĩa), câu hỏi một lựa chọn (2–4 phương án, đáp án đúng, giải thích), trạng thái phát hành</td><td>Có nhiều Lượt làm bài nghe</td></tr>
+          <tr><td><b>Kịch bản đóng vai</b> <em>(016)</em></td><td>Một tình huống hội thoại có sẵn.</td><td>Tên, tình huống, cấp HSK, mô tả bối cảnh tiếng Việt, ≥ 2 vai, lượt thoại theo thứ tự (vai, chữ Hán, pinyin, nghĩa, âm thanh), trạng thái phát hành</td><td>Có nhiều Lần hoàn thành đóng vai</td></tr>
+          <tr><td><b>Lượt làm bài nghe</b></td><td>Một lần nộp một bài nghe của một HV; chỉ chính HV đó xem; giữ tới khi tài khoản HV bị xóa. Chỉ lượt được ghi nhận đầu tiên của mỗi bài nghe tính vào độ chính xác theo cấp.</td><td>Bài nghe, cấp HSK, thời điểm nộp, phương án đã chọn, số câu đúng / tổng số câu, bản lưu nội dung câu hỏi, đáp án, giải thích, lời thoại lúc nộp</td><td>Thuộc một HV, không thuộc lớp</td></tr>
+          <tr><td><b>Tự đánh giá nói theo</b></td><td>Tự đánh giá gần nhất của một HV cho một mục.</td><td>"Giống" / "Chưa giống", thời điểm</td><td>Tối đa một bản ghi mỗi HV mỗi mục</td></tr>
+          <tr><td><b>Lần hoàn thành đóng vai</b></td><td>Một lần đi tới lượt cuối của một kịch bản.</td><td>Kịch bản, vai đã chọn, ngày hoàn thành, số lượt đã thu / tổng số lượt của vai</td><td>Thuộc một HV</td></tr>
+          <tr><td><b>Bản thu</b> <em>(chỉ trên thiết bị)</em></td><td>Âm thanh người dùng thu cho một mục hoặc một lượt thoại; không bao giờ được lưu ngoài thiết bị.</td><td>Thời lượng 0,5–15 giây (Nói theo) / 0,5–30 giây (Đóng vai)</td><td>Tối đa một mỗi mục / lượt; tự xóa theo AC-15.2</td></tr>
+          <tr><td><em>Tham chiếu</em></td><td colspan="3">Không thuộc module này: tài khoản HV / GV, trạng thái kích hoạt / khóa / xóa (001); trang Tự học S13 và cấp HSK dùng chung của khu Tự học (012); Kho nội dung tự học của mỗi workspace, bộ nội dung khởi tạo, trạng thái phát hành / ẩn / lưu trữ và các màn hình quản lý T23–T27 của GV (016).</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Hành vi mong đợi</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Điện thoại đang ở chế độ im lặng hoặc âm lượng 0</td><td>âm thanh có thể không nghe được do hệ điều hành; đây không phải lỗi phát, thông báo lỗi chỉ hiện khi không tải hoặc không phát được</td><td><a class="chip ac" href="#AC-3.6">AC-3.6</a></td></tr>
+          <tr><td>Người dùng chạm "Thu âm" khi âm thanh mẫu đang phát</td><td>âm thanh mẫu dừng, rồi mới thu, để bản thu không lẫn tiếng mẫu</td><td><a class="chip ac" href="#AC-9.1">AC-9.1</a></td></tr>
+          <tr><td>Người dùng chạm "Nghe mẫu" trong lúc đang thu</td><td>bản thu kết thúc như khi chọn "Dừng" rồi mới phát mẫu</td><td><a class="chip ac" href="#AC-9.7">AC-9.7</a></td></tr>
+          <tr><td>Bản thu im lặng hoặc rất nhỏ (≥ 0,5 giây)</td><td>được giữ; người dùng tự nghe và tự đánh giá — MVP không phân tích âm thanh</td><td><a class="chip ac" href="#AC-9.4">AC-9.4</a> <a class="chip ac" href="#AC-11.3">AC-11.3</a></td></tr>
+          <tr><td>Thu đúng 15,0 giây ở "Nói theo" / 30,0 giây ở "Đóng vai", hoặc chỉ 0,49 giây</td><td>tự dừng và giữ bản thu ở giới hạn; bản thu 0,49 giây bị bỏ</td><td><a class="chip ac" href="#AC-9.3">AC-9.3</a> <a class="chip ac" href="#AC-9.4">AC-9.4</a></td></tr>
+          <tr><td>Cuộc gọi đến, chuyển ứng dụng, khóa màn hình trong lúc thu</td><td>phần đang thu bị bỏ, bản thu trước giữ nguyên</td><td><a class="chip ac" href="#AC-8.5">AC-8.5</a></td></tr>
+          <tr><td>Người dùng cấp quyền micro rồi thu hồi trong cài đặt trình duyệt</td><td>lần "Thu âm" kế tiếp hiển thị thông báo chặn quyền kèm "Thử lại"</td><td><a class="chip ac" href="#AC-8.2">AC-8.2</a></td></tr>
+          <tr><td>Người dùng chọn "Để sau" ở lời giải thích micro</td><td>không thu; lần "Thu âm" kế tiếp hiển thị lại lời giải thích</td><td><a class="chip ac" href="#AC-8.1">AC-8.1</a></td></tr>
+          <tr><td>Trình duyệt trong ứng dụng (mở link từ Zalo / Facebook) không hỗ trợ thu âm</td><td>thông báo trình duyệt không hỗ trợ thu âm, các chức năng nghe vẫn dùng được</td><td><a class="chip ac" href="#AC-8.4">AC-8.4</a></td></tr>
+          <tr><td>Không có micro và người dùng đóng vai</td><td>đi hết kịch bản bằng "Bỏ qua"; "Nghe lại cả hội thoại" phát toàn bộ bằng âm thanh mẫu kèm nhãn "Bản mẫu"; vẫn ghi nhận một lần hoàn thành với "Đã thu 0/y lượt của bạn"</td><td><a class="chip ac" href="#AC-8.2">AC-8.2</a> <a class="chip ac" href="#AC-14.1">AC-14.1</a> <a class="chip ac" href="#AC-14.2">AC-14.2</a></td></tr>
+          <tr><td>Trình duyệt chặn tự phát lượt của vai khác (thường gặp trên iOS)</td><td>dừng ở lượt đó với nút "Phát"</td><td><a class="chip ac" href="#AC-13.3">AC-13.3</a></td></tr>
+          <tr><td>Kịch bản có 3 vai trở lên</td><td>người dùng chọn một vai, ứng dụng đóng mọi vai còn lại</td><td><a class="chip ac" href="#AC-12.4">AC-12.4</a></td></tr>
+          <tr><td>Kịch bản mà vai đã chọn nói lượt đầu tiên</td><td>"Đến lượt bạn" hiển thị ngay sau "Bắt đầu"</td><td><a class="chip ac" href="#AC-13.4">AC-13.4</a></td></tr>
+          <tr><td>Hai lượt liên tiếp của vai người dùng</td><td>mỗi lượt có bản thu riêng; chuyển lượt chỉ khi chọn "Tiếp tục" / "Bỏ qua"</td><td><a class="chip ac" href="#AC-13.6">AC-13.6</a> <a class="chip ac" href="#AC-13.7">AC-13.7</a></td></tr>
+          <tr><td>Tải lại trang giữa lần đóng vai</td><td>bản thu bị xóa, không ghi nhận hoàn thành; người dùng bắt đầu lại từ bước chọn vai</td><td><a class="chip ac" href="#AC-14.6">AC-14.6</a> <a class="chip ac" href="#AC-15.2">AC-15.2</a></td></tr>
+          <tr><td>Mất kết nối khi đang làm bài nghe nhưng âm thanh đã tải xong</td><td>vẫn nghe và chọn đáp án được; nộp bài bị lỗi thì giữ phương án và cho "Thử lại"</td><td><a class="chip ac" href="#AC-6.6">AC-6.6</a></td></tr>
+          <tr><td>Nộp cùng một bài nghe từ hai thiết bị</td><td>hai lượt làm riêng biệt, cả hai vào lịch sử; lượt được ghi nhận trước là lượt đầu tiên tính vào độ chính xác theo cấp</td><td><a class="chip ac" href="#AC-6.1">AC-6.1</a> <a class="chip ac" href="#AC-7.1">AC-7.1</a> <a class="chip ac" href="#AC-7.2">AC-7.2</a> <a class="chip ac" href="#AC-7.5">AC-7.5</a></td></tr>
+          <tr><td>Tự đánh giá cùng một mục trên hai thiết bị</td><td>lựa chọn sau cùng là tự đánh giá gần nhất</td><td><a class="chip ac" href="#AC-11.2">AC-11.2</a></td></tr>
+          <tr><td>Làm lại một bài nghe nhiều lần</td><td>mỗi lần nộp là một lượt trong lịch sử với điểm riêng, nhưng chỉ lượt nộp đầu tiên của bài tính vào độ chính xác theo cấp; làm lại để học không làm tăng độ chính xác</td><td><a class="chip ac" href="#AC-6.3">AC-6.3</a> <a class="chip ac" href="#AC-7.1">AC-7.1</a> <a class="chip ac" href="#AC-7.5">AC-7.5</a></td></tr>
+          <tr><td>Lần nộp đầu tiên bị lỗi rồi "Thử lại" thành công</td><td>lượt thành công đó là lượt đầu tiên của bài</td><td><a class="chip ac" href="#AC-6.6">AC-6.6</a> <a class="chip ac" href="#AC-7.1">AC-7.1</a></td></tr>
+          <tr><td>GV sửa đáp án của bài nghe trong kho sau khi HV đã nộp</td><td>lượt cũ giữ kết quả và nội dung tại thời điểm nộp, không chấm lại</td><td><a class="chip ac" href="#AC-7.3">AC-7.3</a> <a class="chip ac" href="#AC-17.2">AC-17.2</a></td></tr>
+          <tr><td>GV ẩn một bài nghe khi HV đang làm</td><td>HV làm xong và được chấm theo nội dung đã mở; từ lần mở sau bài không còn trong danh sách, lượt cũ mang nhãn "Bài không còn trong kho"</td><td><a class="chip ac" href="#AC-17.1">AC-17.1</a> <a class="chip ac" href="#AC-17.2">AC-17.2</a> <a class="chip ac" href="#AC-17.3">AC-17.3</a></td></tr>
+          <tr><td>Kho của workspace chưa có nội dung cho cấp cao (ví dụ HSK8), hoặc GV đã ẩn hết nội dung của một cấp</td><td>"Chưa có nội dung cho cấp và chủ đề này."</td><td><a class="chip ac" href="#AC-2.4">AC-2.4</a></td></tr>
+          <tr><td>Workspace mới, GV chưa chỉnh kho</td><td>HV thấy đúng bộ nội dung HSK khởi tạo đang phát hành</td><td><a class="chip ac" href="#AC-1.2">AC-1.2</a> <a class="chip ac" href="#AC-2.3">AC-2.3</a></td></tr>
+          <tr><td>Nội dung GV khác thêm vào kho của workspace khác</td><td>không bao giờ hiển thị cho HV của workspace này</td><td><a class="chip ac" href="#AC-2.3">AC-2.3</a></td></tr>
+          <tr><td>HV bị gỡ khỏi mọi lớp hoặc mọi lớp kết thúc</td><td>vẫn dùng S17 / S18 và giữ toàn bộ dữ liệu</td><td><a class="chip ac" href="#AC-1.2">AC-1.2</a> <a class="chip ac" href="#AC-16.1">AC-16.1</a></td></tr>
+          <tr><td>HV bị khóa giữa lúc luyện</td><td>phiên kết thúc theo 001; bản thu trên thiết bị mất theo AC-15.2; dữ liệu đã lưu được giữ</td><td><a class="chip ac" href="#AC-16.6">AC-16.6</a></td></tr>
+          <tr><td>GV mở S17 / S18 (kể cả bằng đường dẫn trực tiếp hoặc sau khi đăng nhập từ A01)</td><td>A05, không lộ dữ liệu; GV xem trước nội dung chỉ bên trong T23–T27 (016)</td><td><a class="chip ac" href="#AC-1.5">AC-1.5</a> <a class="chip ac" href="#AC-1.6">AC-1.6</a></td></tr>
+          <tr><td>HV dùng S17 / S18 trên máy tính màn hình rộng</td><td>cùng chức năng, không cuộn ngang</td><td><a class="chip ac" href="#AC-1.2">AC-1.2</a> NFR-6</td></tr>
+          <tr><td>Người dùng chuyển tốc độ sang "0,5×" rồi mở mục khác</td><td>tốc độ được giữ (AC-3.2); "Nghe bản thu" luôn 1×</td><td><a class="chip ac" href="#AC-10.3">AC-10.3</a></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <p>Quyết định của stakeholder được dùng: D1 (workspace riêng của GV), D4 / V4-6 (GV tạo và kích hoạt tài khoản HV; không tự đăng ký), V14-1 (Tự học không phụ thuộc lớp; riêng tư; không vào xếp hạng / dashboard), V14-3 (MVP không AI: thu và nghe lại, đóng vai theo kịch bản; chấm phát âm / thanh điệu và đóng vai AI ở giai đoạn 2), <b>V15</b> (chỉ hai vai trò GV và HV; Tự học chỉ dành cho HV — mọi HV đã kích hoạt, không bị khóa của workspace, không phụ thuộc lớp; GV chỉ quản lý "Kho nội dung tự học" của workspace mình, nạp sẵn bộ nội dung HSK khởi tạo, GV sửa / thêm / ẩn tùy ý — 016), V12-4 (phong cách "Mực &amp; giấy"). V14-2 (kho nội dung hệ thống do Quản trị nội dung duy trì) <em>[thay thế 2026-10-22 V15]</em>.</p>
+      <p>Giả định được dùng: A4 (HV mobile-first 360–430 px, vẫn dùng được trên màn hình rộng), A5 (giao diện tiếng Việt, chữ Hán giản thể, pinyin có dấu thanh), A7 (giờ Việt Nam UTC+7). Các giả định riêng của module ở <a href="#clarifications">§15</a> Session 2026-10-22 (V14) và Session 2026-10-22 (V15 — Tự học chỉ cho HV).</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hướng</th><th>Module</th><th>Sự kiện / dữ liệu nghiệp vụ</th></tr></thead>
+        <tbody>
+          <tr><td>Nhận từ</td><td><a class="chip mod" href="../016-content-library/spec.html">016</a></td><td>Nguồn duy nhất: "Kho nội dung tự học" của workspace của HV (GV quản lý trên T23–T27, nạp sẵn bộ nội dung HSK khởi tạo; GV xem trước nội dung ở đó). Mục từ và câu có âm thanh bản xứ (loại Từ / Câu, chữ Hán, pinyin, nghĩa, cấp, chủ đề, thứ tự); bài nghe (loại, âm thanh, lời thoại theo câu có người nói, pinyin, nghĩa; câu hỏi một lựa chọn 2–4 phương án kèm đáp án và giải thích); kịch bản đóng vai (tình huống, bối cảnh, ≥ 2 vai, lượt thoại có âm thanh); trạng thái phát hành / ẩn / lưu trữ do GV đặt.</td></tr>
+          <tr><td>Cần bảo đảm</td><td><a class="chip mod" href="../016-content-library/spec.html">016</a></td><td>Mọi nội dung đang phát hành có đủ âm thanh và văn bản (NFR-7); tình huống gồm ít nhất "Gọi món", "Mua sắm", "Phỏng vấn", "Giao tiếp công sở"; ≤ 10 câu hỏi mỗi bài nghe, âm thanh bài nghe ≤ 5 phút, ≤ 40 lượt thoại mỗi kịch bản (NFR-4). 014 lưu bản sao nội dung vào lượt làm nên GV được sửa kho tự do; T23–T27 không hiển thị dữ liệu tự học của HV (AC-16.2).</td></tr>
+          <tr><td>Cần bổ sung / xác nhận</td><td><a class="chip mod" href="../012-vocabulary-srs/spec.md">012</a></td><td>Hai ô lối vào "Luyện nghe" → S17 và "Luyện nói" → S18 trên S13 (chỉ HV); có dùng chung "cấp HSK chọn gần nhất" cho cả khu Tự học hay không (AC-2.2).</td></tr>
+          <tr><td>Nhận từ / cần bổ sung</td><td><a class="chip mod" href="../001-accounts-auth/spec.html">001</a></td><td>Đăng nhập, A01 và mở lại màn hình sau đăng nhập, A05, khóa / xóa tài khoản. <b>Cần 001 bổ sung:</b> quy tắc định tuyến cho S17 / S18 (chỉ HV được vào; GV mở → A05 — AC-1.6); xóa tài khoản HV kéo theo xóa dữ liệu tự học trong 24 giờ (AC-16.5).</td></tr>
+          <tr><td>Ràng buộc âm</td><td><a class="chip mod" href="../008-scoring-leaderboard/spec.html">008</a> <a class="chip mod" href="../009-teacher-dashboard/spec.html">009</a></td><td>Dữ liệu 014 không xuất hiện trên S09, T01, T04, T15 và không vào Điểm xếp hạng / tiến độ (AC-16.2, AC-16.3).</td></tr>
+          <tr><td>Không chia sẻ</td><td><a class="chip mod" href="../015-hsk-mock-tests/spec.md">015</a></td><td>Thi thử HSK có phần nghe riêng (cùng Kho nội dung tự học của workspace); 014 không chia sẻ lượt làm hay độ chính xác với 015.</td></tr>
+          <tr><td>Thiết kế</td><td>Prototype</td><td>S17, S18 chưa có trong <code>specs/screen-flow-design.html</code>; cần bổ sung theo spec này (V13-5).</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul>
+        <li><b>Giai đoạn 2 (V14-3):</b> nhận xét và chấm phát âm, thanh điệu bằng nhận diện giọng nói; đóng vai tự do / hội thoại với AI; mọi việc gửi giọng nói lên máy chủ (sẽ cần yêu cầu đồng ý riêng khi tới giai đoạn 2).</li>
+        <li>GV giao bài nghe, bài nói hoặc kịch bản cho lớp; GV xem kết quả tự học của HV; tính tự học vào xếp hạng / dashboard.</li>
+        <li>Lưu bản thu lâu dài (trên thiết bị qua các lần mở hay trên máy chủ), tải xuống, chia sẻ, gửi bản thu cho GV.</li>
+        <li>Hiển thị dạng sóng âm, đường cao độ / thanh điệu, chấm điểm tự động hoặc so khớp bản thu với mẫu.</li>
+        <li>HV tự tạo nội dung nghe / nói hay tải âm thanh của riêng mình. Việc GV sửa / thêm / ẩn nội dung trong Kho nội dung tự học thuộc 016 (T23–T27), không thuộc 014.</li>
+        <li>GV dùng S17 / S18 để tự luyện hay xem trước nội dung (V15) — GV xem trước bên trong T23–T27 (016).</li>
+        <li>Phát tự động cả danh sách từ / câu, danh sách phát, chế độ nghe khi tắt màn hình, tải nội dung để dùng ngoại tuyến.</li>
+        <li>Câu hỏi nghe hiểu ngoài loại một lựa chọn (điền từ, nhiều lựa chọn, sắp xếp); giới hạn số lần nghe kiểu đề thi HSK (thi thử HSK thuộc 015).</li>
+        <li>Phụ đề chạy theo thời gian thực (karaoke) cho bài nghe; tốc độ khác 0,5× / 0,75× / 1× / 1,25×.</li>
+        <li>Bảng xếp hạng, huy hiệu, chuỗi ngày luyện cho Luyện nghe &amp; nói.</li>
+      </ul>
+      <h4>Removed (2026-10-22, V15)</h4>
+      <div class="callout warn"><strong>Không mã AC nào bị bỏ (không có mã bỏ trống); các hành vi sau không còn:</strong>
+        <ul>
+          <li><b>GV dùng S17 / S18 như một người học</b> (tự luyện, lượt làm, tự đánh giá, lần hoàn thành của chính GV) — <span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.5</span> <span class="chip ac">AC-16.1</span> viết lại chỉ cho HV; GV mở S17 / S18 → A05 (<span class="chip ac">AC-1.6</span>).</li>
+          <li><b>Lối vào S13 và bố cục máy tính dành cho GV</b>; giữ hiển thị trên màn hình rộng cho HV (NFR-6).</li>
+          <li><b>Vai trò "Quản trị nội dung"</b> và việc chuyển vai trò này về màn hình Q01 (AC-1.6 cũ) — vai trò không còn tồn tại.</li>
+          <li><b>Kho nội dung hệ thống dùng chung cho mọi workspace</b> — thay bằng Kho nội dung tự học của từng workspace do GV quản lý (<span class="chip ac">AC-1.2</span> <span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.3</span> <span class="chip ac">AC-17.1</span> … <span class="chip ac">AC-17.4</span>).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <div class="callout note" id="Q-1"><strong>Không còn câu hỏi mở.</strong> Q-1 (<a class="chip ac" href="#AC-7.1">AC-7.1</a>) đã đóng ngày 2026-10-22: độ chính xác theo cấp chỉ tính lượt nộp đầu tiên của mỗi bài nghe; lịch sử vẫn liệt kê mọi lượt với điểm riêng (<span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.5</span> <span class="chip ac">AC-17.2</span>; xem §15 Session 2026-10-22 (chốt câu hỏi mở)).</div>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session 2026-10-22 (V14)</h4>
+      <ul>
+        <li>Q: Yêu cầu của module? → A: Nguyên văn: "giờ sẽ thêm các module feature global cho tất cả user để có thể dùng được và không phân biệt lớp: 5. Luyện nghe và nói — Nghe người bản xứ đọc từ và câu. Thu âm giọng nói của học viên. Nhận xét phát âm và thanh điệu bằng công nghệ nhận diện giọng nói. Nghe hội thoại rồi chọn đáp án. Luyện đóng vai: gọi món, mua sắm, phỏng vấn, giao tiếp công sở." <em>(source: stakeholder)</em></li>
+        <li><em>[thay thế 2026-10-22 V15: chỉ HV dùng; GV mở S17 / S18 → A05]</em> Q: Ai được dùng? → A: Mọi tài khoản HV và GV hiện có, không cần lớp, không tự đăng ký công khai (AC-1.1, AC-1.2) <em>(source: stakeholder — V14-1)</em></li>
+        <li><em>[thay thế 2026-10-22 V15: nguồn là Kho nội dung tự học của workspace của HV, GV quản lý]</em> Q: Nội dung lấy từ đâu? → A: Kho nội dung hệ thống (016): âm thanh bản xứ cho từ và câu, bài nghe và hội thoại kèm câu hỏi, kịch bản đóng vai có vai, lượt thoại, pinyin, nghĩa và âm thanh (REQ-2, §7) <em>(source: stakeholder — V14-2)</em></li>
+        <li>Q: MVP gồm gì, phần nào để sau? → A: MVP = nghe âm thanh bản xứ (tốc độ, lặp lại, ẩn/hiện pinyin và bản dịch), nghe hiểu (hội thoại → chọn đáp án, tự chấm kèm giải thích), thu giọng và nghe lại cạnh âm thanh mẫu (nói theo / tự so sánh), đóng vai theo kịch bản (ứng dụng đóng vai kia, người học đọc / thu lượt của mình, xem gợi ý, nghe lại cả hội thoại); giai đoạn 2 = chấm phát âm và thanh điệu bằng nhận diện giọng nói, đóng vai tự do với AI (REQ-3…REQ-14, §9) <em>(source: stakeholder — V14-3)</em></li>
+        <li>Q: Ai xem được dữ liệu tự học? → A: Riêng từng người dùng, GV không xem được, không ảnh hưởng xếp hạng / dashboard của lớp (REQ-16) <em>(source: stakeholder — V14-1)</em></li>
+        <li>Q: Vào từ đâu? → A: Từ trang Tự học S13 (012) (AC-1.1) <em>(source: stakeholder)</em></li>
+        <li>Q: Bản thu có được lưu không? → A: Chỉ trên thiết bị, trong trang đang mở; không gửi đi; tự xóa khi rời mục / lần đóng vai, đăng xuất, tải lại hay đóng trang; mỗi mục / lượt tối đa một bản thu; có "Xóa bản thu" (REQ-15, AC-9.5, AC-9.6) <em>(source: assumption — giọng nói là dữ liệu cá nhân, HV có thể là trẻ vị thành niên; MVP không cần máy chủ xử lý giọng nên lưu giữ là rủi ro không có lợi ích; không phải xin đồng ý hay đặt thời hạn lưu trữ trên máy chủ)</em></li>
+        <li>Q: Giới hạn thời lượng bản thu? → A: 15 giây mỗi mục "Nói theo", 30 giây mỗi lượt "Đóng vai", tối thiểu 0,5 giây (AC-9.3, AC-9.4, NFR-4) <em>(source: assumption — câu HSK dài nhất đọc chậm &lt; 10 giây, lượt thoại dài &lt; 20 giây; giới hạn ngăn thu quên tắt)</em></li>
+        <li>Q: Xin quyền micro thế nào? → A: Giải thích trước bằng lời của SAT rồi mới hỏi quyền trình duyệt; từ chối / không có micro / trình duyệt không hỗ trợ đều có thông báo riêng và vẫn dùng được phần nghe (REQ-8) <em>(source: assumption — giảm tỷ lệ từ chối quyền trên điện thoại; không chặn người không có micro)</em></li>
+        <li>Q: Tự đánh giá trong MVP? → A: "Giống" / "Chưa giống" cho từng mục "Nói theo", chỉ lưu lựa chọn gần nhất; đóng vai chỉ ghi nhận lần hoàn thành (REQ-11, AC-14.1) <em>(source: assumption — gợi ý của brief; đơn giản, không giả lập chấm điểm)</em></li>
+        <li>Q: Tốc độ phát và lặp lại? → A: 0,5× / 0,75× / 1× / 1,25×, giữ cao độ, nhớ trên thiết bị; "Lặp lại" nghỉ 1 giây giữa hai lần (AC-3.2, AC-3.3) <em>(source: assumption — giữ cao độ quan trọng với thanh điệu; khoảng nghỉ để người học nói theo)</em></li>
+        <li><em>[thay thế 2026-10-22 — một phần: mỗi lần nộp vẫn là một lượt trong lịch sử, nhưng chỉ lượt đầu tiên của mỗi bài tính vào độ chính xác theo cấp]</em> Q: Bài nghe được làm lại không, nghe mấy lần? → A: Làm lại không giới hạn, mỗi lần nộp là một lượt; nghe, tua, đổi tốc độ không giới hạn trước khi nộp; lời thoại chỉ hiện sau khi nộp (AC-5.3, AC-5.4, AC-6.3) <em>(source: assumption — đây là tự học, khác quy tắc một lần làm của bài tập lớp V11; giới hạn số lần nghe thuộc thi thử 015)</em></li>
+        <li>Q: Câu hỏi nghe hiểu loại nào? → A: Một lựa chọn, 2–4 phương án, bắt buộc trả lời đủ trước khi nộp (AC-5.2, AC-5.5) <em>(source: assumption — "chọn đáp án" trong yêu cầu; tránh câu bỏ trống làm sai lệch độ chính xác)</em></li>
+        <li>Q: Lịch sử giữ bao lâu, lưu gì? → A: Mọi lượt nộp, tới khi tài khoản bị xóa; mỗi lượt lưu bản sao nội dung tại thời điểm nộp để xem lại đúng dù kho thay đổi (AC-7.3, AC-16.5, AC-17.2) <em>(source: assumption — dữ liệu nhỏ, không nhạy cảm, có ích cho người học)</em></li>
+        <li>Q: Đóng vai: bỏ qua lượt, gợi ý, tự phát? → A: Ứng dụng tự phát và tự chuyển lượt của vai khác; lượt của người học dừng chờ, có "Gợi ý" (pinyin + nghĩa), "Nghe mẫu", "Bỏ qua"; lượt bỏ qua phát bằng âm thanh mẫu khi nghe lại; hoàn thành được ghi nhận khi tới lượt cuối kể cả có lượt bỏ qua (REQ-13, REQ-14) <em>(source: assumption — người không có micro vẫn luyện đọc được; tránh mắc kẹt giữa kịch bản)</em></li>
+        <li><em>[thay thế 2026-10-22 V15: vai trò Quản trị nội dung không còn; AC-1.6 nay chặn GV bằng A05]</em> Q: Quản trị nội dung có dùng S17 / S18? → A: Không; chuyển về màn hình của vai trò (AC-1.6) <em>(source: assumption — V14-2 mô tả vai trò chỉ quản lý nội dung, không có dữ liệu người học; xem trước nội dung thuộc 016)</em></li>
+        <li>Q: Cấp HSK mặc định? → A: Cấp chọn gần nhất trong S17 / S18, hoặc HSK1 (AC-2.2) <em>(source: assumption — 012 có thể mở rộng thành cấp dùng chung cho cả khu Tự học, xem §10)</em></li>
+        <li>Q: Dữ liệu khi tài khoản bị khóa / xóa? → A: Khóa: giữ nguyên; xóa: xóa vĩnh viễn trong 24 giờ (AC-16.5, AC-16.6) <em>(source: assumption — nhất quán với 011 NFR-5 về xóa ảnh trong 24 giờ)</em></li>
+      </ul>
+      <h4>Session 2026-10-22 (chốt câu hỏi mở)</h4>
+      <ul>
+        <li>Q: Q-1 — Độ chính xác theo cấp tính trên mọi lượt nộp (kể cả làm lại cùng một bài) hay chỉ lượt đầu tiên của mỗi bài nghe? → A: Chỉ lượt nộp đầu tiên (lượt được ghi nhận sớm nhất) của mỗi bài nghe tính vào độ chính xác; lịch sử vẫn liệt kê mọi lượt với điểm riêng; làm lại để học, không làm tăng độ chính xác; khối hiển thị "{n} bài" thay cho số lượt (sửa AC-7.1, AC-17.2, US-3; thêm AC-7.5; cập nhật §10, §11, §14; thay giả định tạm "mọi lượt nộp" ở §14 cũ và mục "Bài nghe được làm lại không" được gắn "[thay thế 2026-10-22 — một phần]") <em>(source: stakeholder — 'làm theo recommend tốt nhất của bạn', phương án đề xuất của điều phối)</em></li>
+      </ul>
+      <h4>Session 2026-10-22 (V15 — Tự học chỉ cho HV)</h4>
+      <ul>
+        <li>Q: Ai dùng Tự học và ai quản lý nội dung tự học? → A: Nguyên văn: "Hệ thống hiện tại chỉ có 2 role là GV và học viên, và phần quản lí các nội dung tự học sẽ làm chung phần quản lí của GV luôn, và GV chỉ quản lí thôi, chức năng tự học chỉ dành cho user học viên. Gom quản lí hệ thống vào cho GV." → Chỉ hai vai trò GV và HV; S17 / S18 chỉ dành cho HV (mọi HV đã kích hoạt, không bị khóa của workspace, không phụ thuộc lớp); GV không dùng S17 / S18, mở → A05; vai trò Quản trị nội dung bị bỏ (AC-1.1, AC-1.2, AC-1.5, AC-1.6, AC-16.1, AC-16.5, US-1 … US-7, §2, §11, §13 "Removed (2026-10-22, V15)", §12) <em>(source: stakeholder — V15)</em></li>
+        <li>Q: Nội dung tự học lấy từ kho nào khi không còn kho hệ thống? → A: Mỗi GV có "Kho nội dung tự học" riêng trong workspace, được nạp sẵn bộ nội dung HSK khởi tạo, GV sửa / thêm / ẩn tùy ý (016, T23–T27); HV chỉ thấy kho của workspace mình (AC-1.2, AC-2.1, AC-2.3, AC-17.1 … AC-17.4, §10, §12) <em>(source: stakeholder — V15, câu trả lời cho câu hỏi tiếp theo)</em></li>
+        <li>Q: GV xem trước nội dung nghe / nói ở đâu? → A: Chỉ bên trong T23–T27 của 016; 014 không cung cấp chế độ xem trước cho GV (§2, §13) <em>(source: assumption — V15 "GV chỉ quản lí thôi"; tránh GV tạo dữ liệu tự học hay thấy dữ liệu của HV qua S17 / S18)</em></li>
+        <li>Q: GV mở S17 / S18 thì thấy gì? → A: A05 "Không tìm thấy nội dung bạn yêu cầu.", giống trường hợp nội dung không tồn tại; sau đăng nhập từ A01 bằng tài khoản GV cũng là A05 (AC-1.5, AC-1.6, NFR-8) <em>(source: assumption — quy ước A05 của sản phẩm cho nội dung không thuộc quyền; không lộ việc màn hình tồn tại)</em></li>
+        <li>Q: Màn hình rộng còn được hỗ trợ không? → A: Có, cho HV dùng máy tính (≥ 1280 px); bỏ mọi bố cục dành riêng cho GV (NFR-6) <em>(source: assumption — NFR-6 đã quy định ≥ 1280 px; HV vẫn có thể học trên máy tính)</em></li>
+        <li>Q: Lượt làm và tự đánh giá khi GV sửa / ẩn nội dung kho? → A: Giữ nguyên quy tắc cũ, nay do GV kích hoạt: lượt giữ bản sao lúc nộp, không chấm lại; nội dung bị ẩn / gỡ biến mất khỏi danh sách, lượt cũ mang nhãn "Bài không còn trong kho"; đang làm thì làm xong theo nội dung đã mở (AC-17.1 … AC-17.4) <em>(source: assumption — quy tắc giữ lịch sử của V14 không đổi, chỉ đổi người thao tác)</em></li>
+        <li>Q: Dữ liệu tự học có hiện cho GV trên màn hình quản lý kho không? → A: Không; T23–T27 không hiển thị dữ liệu Luyện nghe &amp; nói của HV, kể cả số liệu từng HV (AC-16.2) <em>(source: assumption — quyền riêng tư của V14-1 không đổi theo V15)</em></li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

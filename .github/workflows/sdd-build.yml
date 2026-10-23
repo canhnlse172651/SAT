@@ -1,0 +1,110 @@
+# Step 2 of the GitHub-native pipeline:
+#   a human adds the label `sdd:approved` to a spec PR → approval is recorded (deterministically, not by an agent)
+#   → Claude runs plan → tasks → analyze → implement → verify on the PR branch → PR marked ready for review.
+name: SDD · build approved spec
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions: {}
+
+concurrency:
+  group: sdd-build-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event.label.name == 'sdd:approved' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    env:
+      SDD_HEADLESS: "1"
+      MONGOMS_DOWNLOAD_DIR: ${{ github.workspace }}/.mongodb-binaries
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      APPROVER: ${{ github.event.sender.login }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.SDD_BOT_TOKEN || github.token }}
+      # >>> sdd:toolchain-setup — Node 24 + npm cache + MongoDB binary cache (ADR-0002)
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: .mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: mongodb-binaries-${{ runner.os }}-
+      # <<< sdd:toolchain-setup
+      - name: Git identity
+        run: |
+          git config user.name "sdd-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Record human approval
+        run: |
+          if ! [[ "$HEAD_REF" =~ ^feat/([0-9]{3})-[a-z0-9-]+$ ]]; then
+            echo "::error::Not a feature branch: $HEAD_REF"; exit 1
+          fi
+          id="${BASH_REMATCH[1]}"
+          echo "FEATURE_ID=$id" >> "$GITHUB_ENV"
+          status="$(node .sdd/scripts/sdd.mjs current "$id" --json | node -p 'JSON.parse(require("fs").readFileSync(0, "utf8")).status')"
+          if [ "$status" = "clarified" ]; then
+            node .sdd/scripts/sdd.mjs approve "$id" --by "@${APPROVER} (label on PR #${PR_NUMBER})"
+            git commit -am "docs(${id}): spec approved by @${APPROVER}"
+          else
+            echo "Spec status is '$status' — approval not (re)recorded."
+          fi
+
+      - name: Install toolchain
+        run: node .sdd/scripts/sdd.mjs run install
+      - name: Install Playwright browser (e2e runs inside /sdd-verify)
+        run: npx playwright install --with-deps chromium
+
+      - name: Claude → plan · tasks · analyze · implement · verify (headless)
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Feature ${{ env.FEATURE_ID }} has a human-approved spec. Work headless. Run these skills in order,
+            each with the arguments "${{ env.FEATURE_ID }} --headless", starting from the phase that
+            `node .sdd/scripts/sdd.mjs status` lists as NEXT for this feature:
+              /sdd-plan → /sdd-tasks → /sdd-analyze → /sdd-implement → /sdd-verify
+            Invoke /sdd-implement repeatedly until `node .sdd/scripts/sdd.mjs next-task ${{ env.FEATURE_ID }}`
+            reports no pending tasks. Stop at the first closed gate, blocked task or FAIL verdict and explain why.
+            The skills commit locally. Do NOT push and do NOT run /sdd-ship — the workflow handles delivery.
+          claude_args: |
+            --max-turns 500
+            --permission-mode acceptEdits
+            --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,Agent,Task,Skill,TodoWrite,WebSearch,WebFetch,mcp__context7,Bash(node .sdd/scripts/sdd.mjs:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git add:*),Bash(git commit:*),Bash(git rev-parse:*)"
+
+      - name: Push progress
+        if: always()
+        run: git push origin "HEAD:${HEAD_REF}"
+
+      - name: Report on the PR
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.SDD_BOT_TOKEN || github.token }}
+        run: |
+          status="$(node .sdd/scripts/sdd.mjs current "$FEATURE_ID" --json | node -p 'JSON.parse(require("fs").readFileSync(0, "utf8")).status')"
+          {
+            echo "### 🤖 SDD build — feature ${FEATURE_ID}: \`${status}\`"
+            echo '```'
+            node .sdd/scripts/sdd.mjs status
+            node .sdd/scripts/sdd.mjs check "$FEATURE_ID" || true
+            echo '```'
+            echo "Run log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } > report.md
+          gh pr comment "$PR_NUMBER" --body-file report.md
+          if [ "$status" = "verified" ]; then gh pr ready "$PR_NUMBER"; fi

@@ -1,0 +1,914 @@
+<!doctype html>
+<!--
+  specs/013-hanzi-writing/spec.html — bản trình bày (flow-rich) của spec.md.
+  spec.md là hợp đồng được kiểm tra bằng máy; trang này phản chiếu nguyên văn REQ/AC/NFR của spec.md.
+  Mọi BR, bước luồng có phản hồi hệ thống và quy tắc kiểm tra dữ liệu đều dẫn chiếu AC.
+  Tạo mới 2026-10-22 theo quyết định V14 (tự học: Luyện viết chữ Hán, S16).
+  Cập nhật 2026-10-22 theo V15: S16 chỉ dành cho HV; dữ liệu chữ từ Kho nội dung tự học của workspace (016, T23–T27); GV mở S16 → A05.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>013 Luyện viết chữ Hán — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module 013</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module 013 · Hanzi writing practice</div>
+    <h1>Luyện viết chữ Hán</h1>
+    <p class="lede">Tính năng tự học dành cho học viên, không cần lớp (giáo viên chỉ quản lý dữ liệu chữ ở Kho nội dung tự học): xem minh họa thứ tự nét, tô theo mẫu và viết từ trí nhớ trong khung 田字格 / 米字格 với kiểm tra từng nét so với nét mẫu, gợi ý khi sai, bộ thủ và cấu tạo chữ, cùng lịch sử và "Chữ cần luyện" riêng tư của từng người.</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Feature 013</span>
+      <span class="pill">Cập nhật 2026-10-22</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <p>Người học tiếng Trung khó nhớ mặt chữ và hay viết sai thứ tự, sai hướng nét vì trên lớp không ai sửa từng nét cho từng người; hiện họ tự tập trên giấy theo sách hoặc dùng ứng dụng ngoài. Theo quyết định của stakeholder ngày 2026-10-22 (<b>V14</b>, <b>V15</b>), module này thêm một tính năng <strong>tự học</strong> chỉ dành cho <strong>Học viên (HV)</strong> — mọi HV đã kích hoạt của workspace, không cần lớp: màn hình <strong>S16 "Luyện viết chữ Hán"</strong>, mở từ trang <strong>S13 "Tự học"</strong> (012). <strong>Giáo viên (GV) không dùng S16</strong>; GV chỉ quản lý dữ liệu chữ trong "Kho nội dung tự học" của workspace mình (016, T23–T27). Người dùng chọn chữ theo cấp HSK, theo bộ thủ, từ một từ hoặc bộ từ của 012, hoặc tìm chữ; xem <strong>minh họa thứ tự nét</strong> (phát lại, tốc độ, từng nét, số thứ tự nét); luyện <strong>"Tô theo mẫu"</strong> và <strong>"Viết từ trí nhớ"</strong> trong khung 田字格 / 米字格, trong đó <strong>từng nét được kiểm tra ngay với nét mẫu</strong> (thứ tự, hướng, vị trí và hình dạng gần đúng), có gợi ý sau 3 lỗi liên tiếp và nhận xét "Tốt" / "Cần luyện thêm" cho mỗi chữ; xem bộ thủ, thành phần, loại cấu tạo và mẹo nhớ; và tự ôn qua "Lịch sử" và "Chữ cần luyện". Dữ liệu chữ lấy từ Kho nội dung tự học của workspace của HV (016: nạp sẵn bộ nội dung HSK mẫu, GV sửa / thêm / ẩn tùy ý). Dữ liệu luyện viết là <strong>riêng tư của từng HV</strong>, GV không xem được và không ảnh hưởng xếp hạng hay dashboard của lớp. Nhận diện chữ viết tự do và gợi ý sửa lỗi bằng AI thuộc <strong>giai đoạn 2</strong>.</p>
+      <div class="callout note"><strong>Quy tắc cốt lõi (tóm tắt)</strong>
+        <ul>
+          <li><b>Ai dùng:</b> chỉ HV — mọi HV đã kích hoạt, không bị khóa, không cần lớp; GV mở S16 → A05, người chưa đăng nhập → A01 — <a href="#AC-1.2">AC-1.2</a>, <a href="#AC-1.3">AC-1.3</a>, <a href="#AC-1.4">AC-1.4</a>.</li>
+          <li><b>Nội dung:</b> dữ liệu chữ và bộ thủ của Kho nội dung tự học thuộc workspace của HV (016, GV quản lý trên <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–T27); chữ ngoài kho của workspace → A05 — <a href="#AC-1.2">AC-1.2</a>, <a href="#AC-1.7">AC-1.7</a>.</li>
+          <li><b>Nét khớp</b> = điểm đầu và điểm cuối cách nét mẫu ≤ 20% cạnh khung, độ lệch trung bình ≤ 12% cạnh khung, độ dài 50–150% nét mẫu (nét ngắn: 2–20% cạnh khung) — <a href="#AC-9.1">AC-9.1</a>.</li>
+          <li><b>Phân loại lỗi</b> (theo thứ tự): khớp nét cần viết → chấp nhận; khớp khi đảo hướng → "Sai hướng nét"; khớp nét khác chưa viết → "Sai thứ tự nét"; còn lại → "Nét chưa đúng" — <a href="#REQ-9">REQ-9</a>.</li>
+          <li><b>Gợi ý</b> tự động sau 3 lỗi liên tiếp ở cùng nét, hoặc khi chọn "Gợi ý"; "Xem chữ" (2 giây) ở "Viết từ trí nhớ" cũng tính 1 gợi ý — <a href="#REQ-10">REQ-10</a>.</li>
+          <li><b>Nhận xét chữ:</b> "Tốt" khi ≤ 2 lỗi và 0 gợi ý, ngược lại "Cần luyện thêm" — <a href="#AC-11.2">AC-11.2</a>.</li>
+          <li><b>Chữ cần luyện:</b> vào khi có lượt "Cần luyện thêm"; rời khi lượt "Viết từ trí nhớ" đạt "Tốt" hoặc bỏ thủ công — <a href="#AC-13.3">AC-13.3</a>, <a href="#AC-13.4">AC-13.4</a>; là danh sách riêng của S16, không nối với SRS / "từ khó" của 012 — <a href="#AC-14.6">AC-14.6</a>.</li>
+          <li><b>Riêng tư:</b> chỉ chính HV thấy dữ liệu luyện viết; GV (kể cả trên T23–T27), bạn cùng lớp không thấy; không ảnh hưởng 008/009/003 — <a href="#REQ-14">REQ-14</a>.</li>
+        </ul>
+      </div>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mục tiêu</th><th>Chỉ số</th><th>Ngưỡng</th></tr></thead>
+        <tbody>
+          <tr><td>Người học dùng tính năng</td><td>Tỷ lệ HV đã đăng nhập trong tháng hoàn thành ít nhất 1 lượt viết trên S16</td><td>≥ 25% sau 60 ngày ra mắt</td></tr>
+          <tr><td>Viết đúng thứ tự nét</td><td>Tỷ lệ chữ trong "Chữ cần luyện" được bỏ khỏi danh sách nhờ một lượt "Viết từ trí nhớ" đạt "Tốt" trong 14 ngày kể từ khi vào danh sách</td><td>≥ 50%</td></tr>
+          <tr><td>Kiểm tra nét đáng tin</td><td>Tỷ lệ nét viết đúng bị từ chối trên bộ kiểm thử chuẩn (NFR-6)</td><td>≤ 5%</td></tr>
+          <tr><td>Phản hồi tức thì</td><td>Thời gian từ khi nhấc nét tới khi có phản hồi</td><td>p95 ≤ 100 ms (NFR-1)</td></tr>
+          <tr><td>Dễ dùng trên điện thoại</td><td>Người dùng mới hoàn thành chữ đầu tiên ở "Tô theo mẫu" không cần trợ giúp</td><td>≥ 9/10 người trong kiểm thử khả dụng (NFR-7)</td></tr>
+          <tr><td>Riêng tư</td><td>Số dữ liệu luyện viết của một HV hiển thị cho tài khoản khác hoặc làm đổi chỉ số lớp</td><td>0 (NFR-9)</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi:</strong> S16 trang chính (tìm kiếm; tab "Theo cấp HSK", "Bộ thủ", "Chữ cần luyện", "Lịch sử"); màn hình luyện với thẻ thông tin chữ (pinyin, nghĩa, HSK, số nét, bộ thủ, "Cấu tạo chữ", "Mẹo nhớ"); ba chế độ "Xem thứ tự nét", "Tô theo mẫu", "Viết từ trí nhớ"; khung 田字格 / 米字格; kiểm tra từng nét; gợi ý; bảng kết quả; danh sách luyện và chuyển chữ; luyện từ một từ / bộ từ của 012; trang chi tiết bộ thủ; lịch sử và "Chữ cần luyện"; thuận tay trái, bàn phím, trình đọc màn hình, giảm chuyển động; ngoại tuyến sau khi tải chữ.
+      &nbsp; <strong>Ngoài phạm vi:</strong> <b>giai đoạn 2:</b> nhận diện chữ viết tự do + gợi ý AI; chấm thư pháp; chữ phồn thể; GV giao bài hoặc xem kết quả luyện viết; đồng bộ "Chữ cần luyện" với SRS 012 (Q-1 đã chốt: MVP tách riêng) (chi tiết <a href="#out-of-scope">§13</a>).</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill hv">Học viên</span></td><td>Tài khoản do GV tạo và kích hoạt (001); dùng điện thoại là chính (360–430 px), viết bằng ngón tay; bố cục rộng khi "HV trên màn hình rộng" (chuột, bút). Người dùng duy nhất của S16, kể cả khi chưa thuộc hoặc không còn thuộc lớp nào.</td><td>Nhớ mặt chữ của bài đang học, ôn chữ của một cấp HSK, luyện chữ của từ vựng đã lưu ở 012, sửa thói quen viết sai thứ tự/hướng nét.</td></tr>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>Chủ workspace, máy tính (≥ 1280 px). Quản lý dữ liệu chữ và bộ thủ trong Kho nội dung tự học (016, T23–T27).</td><td>Không dùng S16 (V15): mở S16 → A05. Sửa / thêm / ẩn dữ liệu chữ và xem trước thứ tự nét trong T23–T27. Không xem được dữ liệu luyện viết của HV, không giao bài luyện viết trong MVP.</td></tr>
+          <tr><td><span class="pill">Kho nội dung tự học (016)</span></td><td>Một kho cho mỗi workspace, nạp sẵn bộ HSK mẫu rồi do GV sở hữu; nguồn duy nhất của dữ liệu chữ và bộ thủ cho HV của workspace.</td><td>Cung cấp pinyin, nghĩa, cấp HSK, số nét, nét mẫu theo thứ tự (hình nét + đường giữa có hướng), tên nét, bộ thủ, thành phần, loại cấu tạo, mẹo nhớ, danh sách bộ thủ.</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <p><em>"HV khác" = mọi HV không phải chủ dữ liệu, cùng hoặc khác workspace. "GV" gồm GV chủ workspace và GV của lớp HV đang học.</em></p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">HV (chủ dữ liệu)</th><th class="center">HV khác</th><th class="center">GV</th><th class="center">Chưa đăng nhập</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Mở S16, tìm và chọn chữ, xem thông tin chữ và bộ thủ</td><td class="center yes">✓</td><td class="center yes">✓ (cho chính mình)</td><td class="center no">— (A05)</td><td class="center no">→ A01</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.3</span> <span class="chip ac">AC-1.4</span> <span class="chip ac">AC-1.7</span></td></tr>
+          <tr><td>Xem thứ tự nét, tô theo mẫu, viết từ trí nhớ</td><td class="center yes">✓</td><td class="center yes">✓ (cho chính mình)</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-1.2</span></td></tr>
+          <tr><td>Xem lịch sử, "Chữ cần luyện", nhãn trạng thái, cài đặt S16</td><td class="center yes">✓ của mình</td><td class="center no">— (A05)</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.4</span></td></tr>
+          <tr><td>Thấy dữ liệu luyện viết của HV trên màn hình GV (T04, T15, T01, T23–T27) hoặc S12</td><td class="center no">n/a</td><td class="center no">—</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-14.2</span></td></tr>
+          <tr><td>Dữ liệu luyện viết tác động tới Điểm xếp hạng, tiến độ, email nhắc hạn</td><td class="center no">— (không bao giờ)</td><td class="center no">—</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-14.3</span></td></tr>
+          <tr><td>Sửa dữ liệu nét, bộ thủ, mẹo nhớ của kho workspace</td><td class="center no">—</td><td class="center no">—</td><td class="center yes">✓ (ở 016, T23–T27)</td><td class="center no">—</td><td>—</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn chọn một chữ theo cấp HSK hoặc bằng tìm kiếm và xem minh họa thứ tự nét (phát lại, đổi tốc độ, xem từng nét có số thứ tự), để biết viết chữ đúng thứ tự và hướng.</td><td>HV mở S13 → "Luyện viết chữ Hán" → tab "Theo cấp HSK" → "HSK 1" → chạm 你 → màn hình luyện hiển thị "nǐ", "bạn", "HSK 1", "7 nét", minh họa tự vẽ 7 nét theo thứ tự với số thứ tự; "Từng nét" → "Nét 3/7".</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-2</span> <span class="chip">REQ-3</span> <span class="chip">REQ-5</span> <span class="chip">REQ-6</span> <span class="chip">REQ-7</span> <span class="chip">REQ-16</span></td></tr>
+          <tr><td class="id">US-2</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn tô theo đường viền mẫu và được báo ngay khi một nét sai thứ tự, sai hướng hoặc lệch, để sửa thói quen viết sai từ đầu.</td><td>Ở 你 chế độ "Tô theo mẫu", người dùng viết nét 2 trước nét 1 → "Sai thứ tự nét — nét này chưa đến lượt.", vệt mực đỏ biến mất; viết đúng 7 nét → kết quả "Tốt · Số lỗi: 1 · Gợi ý: 0".</td><td><span class="chip">REQ-8</span> <span class="chip">REQ-9</span> <span class="chip">REQ-10</span> <span class="chip">REQ-11</span></td></tr>
+          <tr><td class="id">US-3</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn viết chữ từ trí nhớ khi chỉ thấy pinyin và nghĩa, có gợi ý khi bí, rồi nhận nhận xét và chuyển sang chữ tiếp theo, để ghi nhớ mặt chữ.</td><td>Danh sách luyện HSK 1, chữ 好 chế độ "Viết từ trí nhớ": màn hình hiển thị "hǎo", "tốt, hay", "6 nét", không hiển thị 好; viết sai nét 1 ba lần liên tiếp → đường viền nét 1 hiện kèm hướng viết; hoàn thành → "Cần luyện thêm · Số lỗi: 3 · Gợi ý: 1", chữ vào "Chữ cần luyện"; "Chữ tiếp theo" mở chữ kế tiếp.</td><td><span class="chip">REQ-10</span> <span class="chip">REQ-11</span> <span class="chip">REQ-13</span></td></tr>
+          <tr><td class="id">US-4</td><td><span class="pill p2">P2</span></td><td>Là <b>HV</b>, tôi muốn xem bộ thủ, thành phần, loại cấu tạo và mẹo nhớ của chữ và luyện theo danh sách bộ thủ, để hiểu cấu tạo chữ và nhớ lâu hơn.</td><td>Tab "Bộ thủ" → nhóm "4 nét" → 水 · 氵 (bộ Thủy) → trang chi tiết với "Luyện viết bộ này" và các chữ thuộc bộ theo cấp HSK; chạm 没 → màn hình luyện; "Cấu tạo chữ" hiển thị "Trái – phải".</td><td><span class="chip">REQ-5</span> <span class="chip">REQ-12</span></td></tr>
+          <tr><td class="id">US-5</td><td><span class="pill p2">P2</span></td><td>Là <b>HV</b>, tôi muốn luyện viết các chữ của một từ hoặc của bộ từ vựng cá nhân ở 012, để luyện đúng những chữ tôi đang học.</td><td>HV chọn "Luyện viết" ở từ 妈妈 trên 012 → danh sách luyện chỉ có 妈 ("Chữ 1/1"); chọn "Luyện viết" ở một bộ 20 từ → danh sách luyện gồm các chữ khác nhau của bộ theo thứ tự xuất hiện.</td><td><span class="chip">REQ-4</span></td></tr>
+          <tr><td class="id">US-6</td><td><span class="pill p2">P2</span></td><td>Là <b>HV</b>, tôi muốn xem lịch sử luyện viết và danh sách "Chữ cần luyện" rồi luyện lại cả danh sách, để tập trung vào chữ tôi còn viết sai.</td><td>Sau một lượt "Cần luyện thêm" ở 好, tab "Chữ cần luyện (1)" có 好; "Luyện tất cả" → "Viết từ trí nhớ" → đạt "Tốt" → 好 rời danh sách, tab "Lịch sử" ghi "Đã luyện 2 lần".</td><td><span class="chip">REQ-13</span> <span class="chip">REQ-16</span></td></tr>
+          <tr><td class="id">US-7</td><td><span class="pill p1">P1</span></td><td>Là <b>HV</b>, tôi muốn dữ liệu luyện viết của tôi là riêng tư và không ảnh hưởng điểm lớp, để tự luyện thoải mái mà không sợ GV hay bạn cùng lớp đánh giá.</td><td>HV luyện 10 chữ; GV của lớp mở T04, T15, T23–T27 và mọi màn hình GV → không có dữ liệu luyện viết nào; GV mở S16 bằng đường dẫn trực tiếp → A05; Điểm xếp hạng và tiến độ của HV ở 008/009 không đổi; tài khoản khác mở đường dẫn dữ liệu luyện viết của HV → A05.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-14</span></td></tr>
+          <tr><td class="id">US-8</td><td><span class="pill p2">P2</span></td><td>Là <b>HV thuận tay trái, dùng bút trên máy tính bảng hoặc dùng trình đọc màn hình</b>, tôi muốn S16 thích ứng với cách tôi dùng, để vẫn học được thứ tự nét.</td><td>Bật "Thuận tay trái" → thanh công cụ dồn về bên trái; với trình đọc màn hình, "Danh sách nét" của 你 đọc "Nét 1: Phẩy, từ trên phải xuống dưới trái" … và mỗi nét viết được thông báo "Đúng nét 1".</td><td><span class="chip">REQ-8</span> <span class="chip">REQ-15</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>Năm luồng bao phủ module: chọn chữ và xem thứ tự nét (F-1), kiểm tra một nét (F-2), viết từ trí nhớ với gợi ý và kết quả (F-3), luyện từ 012 hoặc bộ thủ (F-4), ôn "Chữ cần luyện" (F-5). Ví dụ dùng HV <b>Trần Minh Anh</b> trên điện thoại 390 px và các chữ HSK 1 你 (7 nét), 好 (6 nét).</p>
+
+      <!-- F-1 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Chọn chữ, xem thứ tự nét">F-1: Chọn chữ và xem thứ tự nét</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn thẻ "Luyện viết chữ Hán" trên S13, hoặc mở đường dẫn trực tiếp tới S16 / một chữ</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đã đăng nhập bằng tài khoản HV (đã kích hoạt, không bị khóa); không cần lớp</div>
+          <div class="fact"><span class="k">Kết quả</span>Người dùng thấy thông tin chữ và minh họa thứ tự nét; có thể chuyển sang "Tô theo mẫu"</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["S13: chọn Luyện viết chữ Hán"]) --> B["S16 trang chính, tab Theo cấp HSK chọn sẵn"]
+  B --> C{"Chọn chữ bằng cách nào?"}
+  C -- "Cấp HSK" --> D["Danh sách chữ của cấp, nhãn Tốt / Cần luyện"]
+  C -- "Tìm kiếm" --> E["Tối đa 50 kết quả: chữ Hán, pinyin, nghĩa"]
+  C -- "Bộ thủ" --> F["Trang chi tiết bộ thủ"]
+  D --> G["Màn hình luyện, danh sách luyện = cả cấp, Chữ k/n"]
+  E --> G1["Màn hình luyện, danh sách luyện = 1 chữ"]
+  F --> G
+  G --> H{"Chữ có dữ liệu nét?"}
+  G1 --> H
+  H -- Không --> X1["Chỉ thẻ thông tin + Chữ này chưa có dữ liệu nét"]
+  H -- Có --> I["Thẻ thông tin chữ + chế độ gần nhất"]
+  I --> J{"Thiết bị bật giảm chuyển động?"}
+  J -- Có --> K["Chữ hoàn chỉnh + số nét, mở sẵn Từng nét"]
+  J -- Không --> L["Tự phát minh họa, 0,6 giây mỗi nét ở 1x"]
+  L --> M["Chữ hoàn chỉnh + nút Tô theo mẫu"]
+  K --> N["Nét trước / Nét sau, Nét k/n"]
+</pre>
+          <figcaption>Hình F-1 — Từ S13 tới minh họa thứ tự nét</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chọn thẻ "Luyện viết chữ Hán" trên S13</td><td>Mở S16 trang chính: ô "Tìm chữ Hán, pinyin hoặc nghĩa", tab "Theo cấp HSK" (chọn sẵn), "Bộ thủ", "Chữ cần luyện (n)", "Lịch sử"</td><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a> <a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Chọn "HSK 1"</td><td>Danh sách mọi chữ HSK 1 có dữ liệu nét theo thứ tự của kho, "{n} chữ", mỗi chữ có pinyin và nhãn trạng thái luyện</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span> <span class="chip ac">AC-13.5</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Chạm 你</td><td>Màn hình luyện "Chữ k/n"; thẻ thông tin "你 · nǐ · bạn · HSK 1 · 7 nét · Bộ thủ: 亻 (Nhân – người)"; bộ chọn chế độ; khung 田字格</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-2.3</span> <span class="chip ac">AC-5.1</span> <span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.2</span> <span class="chip ac">AC-6.4</span></td></tr>
+            <tr><td class="id">4</td><td>Hệ thống</td><td>—</td><td>Tự phát minh họa từng nét theo hướng viết, số thứ tự cạnh điểm đầu mỗi nét</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.2</span> <span class="chip ac">AC-7.3</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Chọn "Từng nét", "Nét sau" hai lần</td><td>Hiển thị nét 1–3, nét 3 tô màu nhấn, "Nét 3/7" (kèm tên nét nếu kho có)</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-7.4</span> <span class="chip ac">AC-15.5</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Mở "Cấu tạo chữ", chạm bộ thủ 亻</td><td>Loại cấu tạo "Trái – phải", thành phần, "Mẹo nhớ" (nếu có); chạm bộ thủ → trang chi tiết bộ thủ</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-5.2</span> <span class="chip ac">AC-5.3</span> <span class="chip ac">AC-5.4</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Tìm kiếm nhiều chữ "你好" <span class="chip ac">AC-3.3</span></summary><div class="body"><ol><li>你 và 好 đứng đầu kết quả kèm "Luyện cả 2 chữ" → danh sách luyện 2 chữ.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Thiết bị bật giảm chuyển động <span class="chip ac">AC-7.6</span></summary><div class="body"><ol><li>Không tự phát; chữ hoàn chỉnh kèm số thứ tự nét; "Từng nét" mở sẵn ở nét 1.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Không tìm thấy / chưa có dữ liệu nét <span class="chip ac">AC-3.4</span> <span class="chip ac">AC-16.1</span> <span class="chip ac">AC-2.4</span></summary><div class="body"><ol><li>"Không tìm thấy chữ phù hợp. Hãy thử chữ Hán giản thể, pinyin hoặc nghĩa tiếng Việt." · "Chữ này chưa có dữ liệu nét để luyện viết." · "Cấp này chưa có chữ nào để luyện viết."</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Không tải được dữ liệu <span class="chip ac">AC-16.6</span></summary><div class="body"><ol><li>"Không tải được dữ liệu. Vui lòng thử lại." + "Thử lại"; không hiển thị danh sách rỗng.</li></ol></div></details>
+        <details class="alt"><summary>E-3 · Chưa đăng nhập / GV / chữ ngoài kho của workspace <span class="chip ac">AC-1.3</span> <span class="chip ac">AC-1.4</span> <span class="chip ac">AC-1.7</span></summary><div class="body"><ol><li>Chưa đăng nhập → A01, đăng nhập bằng tài khoản HV xong mở lại đúng màn hình.</li><li>Tài khoản GV mở S16 (đường dẫn trực tiếp hoặc sau khi đăng nhập) → A05, không lộ dữ liệu chữ hay dữ liệu luyện viết; GV xem trước thứ tự nét trong T23–T27 (016).</li><li>HV mở đường dẫn tới chữ không có trong kho của workspace mình → A05 giống hệt chữ không tồn tại.</li></ol></div></details>
+      </div>
+
+      <!-- F-2 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-2">
+        <h3 data-toc="F-2 Kiểm tra một nét">F-2: Kiểm tra một nét ("Tô theo mẫu" và "Viết từ trí nhớ")</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV; Hệ thống</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Người dùng nhấc ngón tay, chuột hoặc bút sau khi viết một nét trong khung</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Chữ đã tải xong (có thể đang mất mạng); "nét cần viết" = nét mẫu có số thứ tự nhỏ nhất chưa được chấp nhận</div>
+          <div class="fact"><span class="k">Kết quả</span>Nét được chấp nhận (thay bằng nét mẫu) hoặc bị tính 1 lỗi với loại lỗi; phản hồi p95 ≤ 100 ms</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Nhấc nét"]) --> B{"Bắt đầu ngoài khung hoặc di chuyển dưới 2% cạnh khung?"}
+  B -- Có --> Z1["Bỏ qua, không tính lỗi"]
+  B -- Không --> C{"Khớp nét cần viết?"}
+  C -- Có --> D["Chấp nhận, thay bằng nét mẫu màu mực"]
+  D --> E{"Còn nét?"}
+  E -- Có --> A
+  E -- Không --> R(["Bảng kết quả"])
+  C -- Không --> F{"Khớp nét cần viết khi đảo hướng?"}
+  F -- Có --> G["Lỗi: Sai hướng nét"]
+  F -- Không --> H{"Khớp một nét khác chưa viết?"}
+  H -- Có --> I["Lỗi: Sai thứ tự nét"]
+  H -- Không --> J["Lỗi: Nét chưa đúng vị trí hoặc hình dạng"]
+  G --> K["Vệt mực màu lỗi 0,8 giây rồi xóa, lỗi +1"]
+  I --> K
+  J --> K
+  K --> L{"Lỗi thứ 3 liên tiếp ở nét này?"}
+  L -- Có --> M["Tự hiện gợi ý cho nét, gợi ý +1"]
+  L -- Không --> A
+  M --> A
+</pre>
+          <figcaption>Hình F-2 — Phân loại một nét viết</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chọn "Tô theo mẫu" cho 你</td><td>Đường viền nhạt của cả chữ trong khung; trang không cuộn khi kéo trong khung</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-10.1</span> <span class="chip ac">AC-8.2</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Viết một nét bằng ngón tay</td><td>Vệt mực bám theo ngón tay trong khi viết</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-8.1</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Nét khớp nét cần viết (ngưỡng 20% / 12% / 50–150%) → chấp nhận, thay bằng nét mẫu màu mực; thông báo "Đúng nét {k}" cho trình đọc màn hình</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-9.2</span> <span class="chip ac">AC-15.4</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Viết nét 2 trước nét 1</td><td>"Sai thứ tự nét — nét này chưa đến lượt.", vệt mực màu lỗi 0,8 giây rồi xóa, lỗi +1</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-9.4</span> <span class="chip ac">AC-9.6</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Viết nét 1 ngược hướng</td><td>"Sai hướng nét — viết lại nét này theo đúng hướng."</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-9.3</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Viết lệch xa</td><td>"Nét chưa đúng vị trí hoặc hình dạng."; lỗi thứ 3 liên tiếp → gợi ý tự hiện</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-9.5</span> <span class="chip ac">AC-10.3</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · "Hoàn tác" / "Viết lại" <span class="chip ac">AC-8.4</span> <span class="chip ac">AC-8.5</span></summary><div class="body"><ol><li>"Hoàn tác": gỡ nét được chấp nhận gần nhất, số lỗi/gợi ý giữ nguyên. "Viết lại": xóa hết, lỗi và gợi ý về 0, lượt dở không được ghi.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Chạm nhầm, nét ngoài khung, ngón tay thứ hai <span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.2</span></summary><div class="body"><ol><li>Nét bắt đầu ngoài khung hoặc ngắn dưới 2% cạnh khung bị bỏ qua, không tính lỗi; điểm chạm thứ hai và lòng bàn tay bị bỏ qua khi đang viết.</li></ol></div></details>
+        <details class="alt"><summary>A-3 · Xoay màn hình giữa lượt <span class="chip ac">AC-8.6</span></summary><div class="body"><ol><li>Nét đã chấp nhận giữ đúng vị trí tương đối; số lỗi, số gợi ý giữ nguyên.</li></ol></div></details>
+      </div>
+
+      <!-- F-3 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-3">
+        <h3 data-toc="F-3 Viết từ trí nhớ">F-3: Viết từ trí nhớ, gợi ý và kết quả chữ</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV; Hệ thống</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Người dùng chọn "Viết từ trí nhớ" (hoặc vào từ "Luyện tất cả" của "Chữ cần luyện")</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Chữ có dữ liệu nét đã tải xong</div>
+          <div class="fact"><span class="k">Kết quả</span>Lượt hoàn thành được ghi vào lịch sử; nhận xét "Tốt" / "Cần luyện thêm" cập nhật "Chữ cần luyện"</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor HV as Học viên
+  participant SYS as Hệ thống
+  HV->>SYS: Chọn Viết từ trí nhớ cho chữ 好
+  SYS-->>HV: Đề bài hǎo, tốt hay, 6 nét. Khung trống, không có chữ hay đường viền
+  HV->>SYS: Viết sai nét 1 ba lần liên tiếp
+  SYS-->>HV: Ba thông báo lỗi, lỗi thứ 3 tự hiện đường viền nét 1 kèm hướng viết
+  HV->>SYS: Viết đúng nét 1 đến nét 6
+  SYS-->>HV: Bảng kết quả Cần luyện thêm, Số lỗi 3, Gợi ý 1, nét 1 đánh dấu màu lỗi
+  SYS-->>SYS: Ghi lượt vào lịch sử, thêm 好 vào Chữ cần luyện
+  alt Còn chữ trong danh sách luyện
+    HV->>SYS: Chữ tiếp theo
+    SYS-->>HV: Chữ kế tiếp ở cùng chế độ, cập nhật Chữ k/n
+  else Chữ cuối của danh sách
+    HV->>SYS: Xong
+    SYS-->>HV: Đã luyện a/n chữ, Tốt b, Cần luyện thêm c, Về trang chính
+  end
+</pre>
+          <figcaption>Hình F-3 — Một lượt "Viết từ trí nhớ" có gợi ý</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chọn "Viết từ trí nhớ"</td><td>Lượt dở (nếu có) bị bỏ; đề bài pinyin, nghĩa, "{n} nét"; không hiển thị chữ hay đường viền</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-6.3</span> <span class="chip ac">AC-10.2</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Sai 3 lần liên tiếp ở nét 1</td><td>Gợi ý tự hiện: đường viền nhạt của riêng nét 1 + minh họa hướng, giữ tới khi nét được chấp nhận</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-10.3</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Chọn "Gợi ý" / "Xem chữ"</td><td>Gợi ý của nét cần viết ngay lập tức / chữ hoàn chỉnh hiện 2 giây rồi ẩn; mỗi lần tính gợi ý theo AC-10.6</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-10.4</span> <span class="chip ac">AC-10.5</span> <span class="chip ac">AC-10.6</span></td></tr>
+            <tr><td class="id">4</td><td>Hệ thống</td><td>—</td><td>Nét cuối được chấp nhận → chữ hoàn chỉnh, thẻ thông tin, "Số lỗi: 3", "Gợi ý: 1", nét có lỗi đánh dấu; nhận xét "Cần luyện thêm"</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.2</span></td></tr>
+            <tr><td class="id">5</td><td>Hệ thống</td><td>—</td><td>Ghi lượt vào lịch sử; thêm 好 vào "Chữ cần luyện"</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-13.1</span> <span class="chip ac">AC-13.3</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>"Viết lại" / "Chữ tiếp theo" / "Xong"</td><td>Lượt mới cùng chữ / chữ kế tiếp cùng chế độ / tóm tắt "Đã luyện {a}/{n} chữ · Tốt: {b} · Cần luyện thêm: {c}"</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-11.3</span> <span class="chip ac">AC-11.4</span> <span class="chip ac">AC-11.5</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Kết quả "Tốt" ở "Tô theo mẫu" <span class="chip ac">AC-11.3</span> <span class="chip ac">AC-13.4</span></summary><div class="body"><ol><li>Bảng kết quả có thêm "Viết từ trí nhớ"; chữ không rời "Chữ cần luyện" (chỉ lượt viết từ trí nhớ đạt "Tốt" mới bỏ chữ).</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Mất mạng khi đang luyện <span class="chip ac">AC-16.4</span> <span class="chip ac">AC-16.5</span></summary><div class="body"><ol><li>Ba chế độ vẫn chạy với chữ đã tải; bảng kết quả hiện kèm "Chưa lưu được kết quả vào lịch sử. Hệ thống sẽ tự thử lại khi có mạng."; có mạng lại → "Đã lưu kết quả."</li></ol></div></details>
+        <details class="alt"><summary>E-2 · GV cập nhật nét giữa lượt <span class="chip ac">AC-16.2</span></summary><div class="body"><ol><li>Lượt hiện tại dùng dữ liệu đã tải; lần mở chữ kế tiếp dùng dữ liệu mới.</li></ol></div></details>
+      </div>
+
+      <!-- F-4 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-4">
+        <h3 data-toc="F-4 Luyện từ 012 / bộ thủ">F-4: Luyện chữ của một từ, bộ từ (012) hoặc bộ thủ</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>"Luyện viết" ở một từ / bộ từ vựng cá nhân của 012, hoặc chạm bộ thủ trên tab "Bộ thủ"</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>012 có nút "Luyện viết" (cần 012 bổ sung); kho có danh sách bộ thủ</div>
+          <div class="fact"><span class="k">Kết quả</span>Danh sách luyện gồm các chữ Hán có dữ liệu nét, không trùng, tối đa 100 chữ khi từ 012</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["012: Luyện viết ở một từ hoặc bộ từ"]) --> B["Lấy chữ Hán theo thứ tự, bỏ ký tự không phải chữ Hán, bỏ chữ trùng"]
+  B --> C{"Có chữ chưa có dữ liệu nét?"}
+  C -- Có --> C1["Bỏ qua n chữ chưa có dữ liệu nét"]
+  C -- Không --> D
+  C1 --> D{"Còn chữ nào?"}
+  D -- Không --> X["Chưa có chữ nào trong mục này để luyện viết."]
+  D -- Có --> E{"Hơn 100 chữ?"}
+  E -- Có --> E1["Giữ 100 chữ đầu + thông báo"]
+  E -- Không --> F
+  E1 --> F["Màn hình luyện, đầu trang hiển thị từ + pinyin + nghĩa"]
+  F --> G(["Quay lại: về đúng màn hình 012"])
+  H(["Tab Bộ thủ"]) --> I["Nhóm theo số nét, lọc bộ thủ"]
+  I --> J["Chi tiết bộ thủ: Luyện viết bộ này + chữ theo cấp HSK"]
+  J --> K["Màn hình luyện"]
+</pre>
+          <figcaption>Hình F-4 — Tạo danh sách luyện từ 012 và từ bộ thủ</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>"Luyện viết" ở từ 妈妈 (S14/S15)</td><td>Màn hình luyện, danh sách luyện chỉ có 妈; đầu trang "妈妈 · māma · mẹ"</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a> <a class="chip screen" href="../screen-flow-design.html#S15">S15</a> <a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-4.1</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>"Luyện viết" ở một bộ từ cá nhân</td><td>Danh sách luyện theo thứ tự từ rồi thứ tự chữ, mỗi chữ một lần; bỏ ký tự không phải chữ Hán; tối đa 100 chữ</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.3</span> <span class="chip ac">AC-4.4</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>"Bỏ qua {n} chữ chưa có dữ liệu nét: {các chữ}" hoặc "Chưa có chữ nào trong mục này để luyện viết."</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-4.5</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>"Quay lại"</td><td>Về đúng màn hình 012 đã mở S16</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a> <a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-4.6</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Tab "Bộ thủ", gõ "thuy" vào "Lọc bộ thủ", chạm 水 · 氵</td><td>Trang chi tiết: dạng chính và biến thể, "Thủy", "nước", "4 nét", "Luyện viết bộ này", chữ theo cấp HSK</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-12.1</span> <span class="chip ac">AC-12.2</span> <span class="chip ac">AC-12.3</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>"Luyện viết bộ này" / chạm 没</td><td>Danh sách luyện = 水 rồi 氵 / danh sách chữ của bộ, bắt đầu từ 没</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-12.4</span> <span class="chip ac">AC-12.5</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>E-1 · Bộ thủ chưa có chữ để luyện <span class="chip ac">AC-12.6</span></summary><div class="body"><ol><li>"Chưa có chữ nào thuộc bộ này để luyện viết."</li></ol></div></details>
+      </div>
+
+      <!-- F-5 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-5">
+        <h3 data-toc="F-5 Ôn Chữ cần luyện">F-5: Ôn "Chữ cần luyện" và xem lịch sử</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn tab "Chữ cần luyện ({n})" hoặc "Lịch sử" trên trang chính S16</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đã có lượt viết hoàn thành (nếu không: trạng thái trống)</div>
+          <div class="fact"><span class="k">Kết quả</span>Chữ đạt "Tốt" ở "Viết từ trí nhớ" rời danh sách; lịch sử cập nhật — chỉ chủ tài khoản thấy</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor U as Người dùng
+  participant SYS as Hệ thống
+  U->>SYS: Chọn tab Chữ cần luyện (3)
+  SYS-->>U: 3 chữ, thêm sớm nhất trước, Bỏ khỏi danh sách ở mỗi chữ, Luyện tất cả
+  U->>SYS: Luyện tất cả
+  SYS-->>U: Danh sách luyện 3 chữ ở chế độ Viết từ trí nhớ
+  U->>SYS: Hoàn thành chữ 1 với 1 lỗi, 0 gợi ý
+  SYS-->>U: Tốt. Chữ 1 rời Chữ cần luyện, nhãn đổi thành Tốt
+  U->>SYS: Chọn tab Lịch sử
+  SYS-->>U: Mỗi chữ một dòng, gần nhất trước, Đã luyện n lần, ngày dd/mm/yyyy
+</pre>
+          <figcaption>Hình F-5 — Vòng ôn "Chữ cần luyện"</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>Người dùng</td><td>Tab "Chữ cần luyện (3)"</td><td>Danh sách theo thời điểm được thêm, "Bỏ khỏi danh sách", "Luyện tất cả"</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-13.6</span></td></tr>
+            <tr><td class="id">2</td><td>Người dùng</td><td>"Luyện tất cả", đạt "Tốt"</td><td>Chữ rời "Chữ cần luyện"; nhãn "Tốt" ở mọi danh sách</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-13.4</span> <span class="chip ac">AC-13.5</span></td></tr>
+            <tr><td class="id">3</td><td>Người dùng</td><td>Tab "Lịch sử"</td><td>Mỗi chữ một dòng, "Đã luyện {n} lần", ngày gần nhất theo giờ Việt Nam, tải thêm 50 dòng mỗi lần</td><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td><span class="chip ac">AC-13.2</span></td></tr>
+            <tr><td class="id">4</td><td>GV / HV khác</td><td>Tìm dữ liệu này ở T04, T15, S12 hoặc qua đường dẫn</td><td>Không có ở đâu; đường dẫn trực tiếp → A05</td><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.4</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Danh sách trống <span class="chip ac">AC-13.7</span></summary><div class="body"><ol><li>"Chưa có chữ nào cần luyện. Chữ viết chưa tốt sẽ xuất hiện ở đây." · "Bạn chưa luyện viết chữ nào. Hãy chọn một chữ để bắt đầu."</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Chữ không còn trong kho <span class="chip ac">AC-16.3</span></summary><div class="body"><ol><li>Dòng giữ nguyên với nhãn "Không còn dữ liệu luyện", không mở được; vẫn "Bỏ khỏi danh sách".</li></ol></div></details>
+      </div>
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>.</p>
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: Access and entry — Truy cập và lối vào S16</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-7</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S16">S16</a><a class="chip screen" href="../screen-flow-design.html#A01">A01</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN HV đã đăng nhập chọn thẻ "Luyện viết" trên S13 "Tự học" (012) THE SYSTEM SHALL mở trang chính của S16 "Luyện viết chữ Hán" gồm ô tìm kiếm "Tìm chữ Hán, pinyin hoặc nghĩa" và bốn tab "Theo cấp HSK", "Bộ thủ", "Chữ cần luyện ({n})" và "Lịch sử", với tab "Theo cấp HSK" được chọn sẵn.</td></tr>
+            <tr id="AC-1.2"><td class="id">AC-1.2</td><td class="ears">THE SYSTEM SHALL cho mọi tài khoản HV đã kích hoạt và không bị khóa dùng toàn bộ chức năng của S16 trên dữ liệu chữ của Kho nội dung tự học thuộc workspace của GV đã tạo tài khoản HV đó (016), không phụ thuộc HV có thuộc lớp nào hay lớp đã kết thúc.</td></tr>
+            <tr id="AC-1.3"><td class="id">AC-1.3</td><td class="ears">IF người chưa đăng nhập mở S16 (kể cả đường dẫn trực tiếp tới một chữ) THEN THE SYSTEM SHALL chuyển đến A01 và, sau khi đăng nhập thành công bằng tài khoản HV, mở lại đúng màn hình đã yêu cầu.</td></tr>
+            <tr id="AC-1.4"><td class="id">AC-1.4</td><td class="ears">IF tài khoản GV mở S16 (kể cả đường dẫn trực tiếp tới một chữ hoặc sau khi đăng nhập theo AC-1.3) THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." và không hiển thị dữ liệu chữ hay dữ liệu luyện viết nào.</td></tr>
+            <tr id="AC-1.5"><td class="id">AC-1.5</td><td class="ears">THE SYSTEM SHALL hiển thị S16 theo bố cục điện thoại ở chiều rộng 360–430 px và, cho HV trên màn hình rộng, theo bố cục rộng ở chiều rộng ≥ 1024 px, với cùng chức năng ở cả hai bố cục.</td></tr>
+            <tr id="AC-1.6"><td class="id">AC-1.6</td><td class="ears">WHEN người dùng mở đường dẫn trực tiếp tới một chữ trên S16 THE SYSTEM SHALL mở màn hình luyện của chữ đó với danh sách luyện chỉ gồm chữ đó.</td></tr>
+            <tr id="AC-1.7"><td class="id">AC-1.7</td><td class="ears">IF HV mở đường dẫn trực tiếp tới một chữ không có trong Kho nội dung tự học của workspace của HV (kể cả chữ chỉ có trong kho của workspace khác) THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." giống hệt chữ không tồn tại.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-2">
+        <header>
+          <h3>REQ-2: Choose by HSK level — Chọn chữ theo cấp HSK</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-2.1"><td class="id">AC-2.1</td><td class="ears">WHEN người dùng chọn tab "Theo cấp HSK" THE SYSTEM SHALL hiển thị 7 nút cấp theo kho 016: "HSK 1" đến "HSK 6" và "HSK 7–9", với cấp người dùng chọn lần gần nhất được chọn sẵn (lần đầu: "HSK 1").</td></tr>
+            <tr id="AC-2.2"><td class="id">AC-2.2</td><td class="ears">WHEN người dùng chọn một cấp HSK THE SYSTEM SHALL liệt kê mọi chữ có dữ liệu nét mà kho gán cho cấp đó theo thứ tự của kho, kèm tổng "{n} chữ", mỗi chữ hiển thị chữ Hán, pinyin và nhãn trạng thái luyện của chính người dùng theo AC-13.5.</td></tr>
+            <tr id="AC-2.3"><td class="id">AC-2.3</td><td class="ears">WHEN người dùng chạm một chữ trong danh sách của một cấp HSK THE SYSTEM SHALL mở màn hình luyện của chữ đó với danh sách luyện là toàn bộ danh sách của cấp đó theo cùng thứ tự, bắt đầu từ chữ được chạm, và hiển thị "Chữ {k}/{n}".</td></tr>
+            <tr id="AC-2.4"><td class="id">AC-2.4</td><td class="ears">IF cấp HSK được chọn chưa có chữ nào có dữ liệu nét THEN THE SYSTEM SHALL hiển thị "Cấp này chưa có chữ nào để luyện viết."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-3">
+        <header>
+          <h3>REQ-3: Search a character — Tìm chữ</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-3.1"><td class="id">AC-3.1</td><td class="ears">WHEN người dùng nhập vào ô "Tìm chữ Hán, pinyin hoặc nghĩa" ít nhất 1 chữ Hán hoặc ít nhất 2 ký tự khác THE SYSTEM SHALL hiển thị tối đa 50 chữ của kho khớp với nội dung nhập, sắp theo cấp HSK tăng dần rồi theo thứ tự của kho, mỗi kết quả gồm chữ Hán, pinyin, nghĩa tiếng Việt, cấp HSK và nhãn trạng thái luyện theo AC-13.5.</td></tr>
+            <tr id="AC-3.2"><td class="id">AC-3.2</td><td class="ears">THE SYSTEM SHALL coi một chữ là khớp khi nội dung nhập chứa chính chữ đó, hoặc trùng một cách đọc pinyin của chữ (viết có dấu thanh, có số thanh như "hao3" hoặc không dấu, không phân biệt hoa thường), hoặc là một phần nghĩa tiếng Việt của chữ (không phân biệt hoa thường và dấu tiếng Việt).</td></tr>
+            <tr id="AC-3.3"><td class="id">AC-3.3</td><td class="ears">WHEN nội dung nhập gồm từ 2 chữ Hán trở lên (ví dụ "你好") THE SYSTEM SHALL liệt kê các chữ đó trước mọi kết quả khác theo thứ tự xuất hiện, mỗi chữ một lần, kèm nút "Luyện cả {n} chữ" mở danh sách luyện gồm các chữ có dữ liệu nét trong số đó theo cùng thứ tự.</td></tr>
+            <tr id="AC-3.4"><td class="id">AC-3.4</td><td class="ears">IF không có chữ nào khớp THEN THE SYSTEM SHALL hiển thị "Không tìm thấy chữ phù hợp. Hãy thử chữ Hán giản thể, pinyin hoặc nghĩa tiếng Việt."</td></tr>
+            <tr id="AC-3.5"><td class="id">AC-3.5</td><td class="ears">WHEN người dùng chạm một kết quả tìm kiếm THE SYSTEM SHALL mở màn hình luyện của chữ đó với danh sách luyện chỉ gồm chữ đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-4">
+        <header>
+          <h3>REQ-4: Practise from vocabulary (012) — Luyện viết từ một từ hoặc bộ từ vựng cá nhân</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-4.1"><td class="id">AC-4.1</td><td class="ears">WHEN người dùng chọn "Luyện viết" ở một từ trên màn hình của 012 THE SYSTEM SHALL mở màn hình luyện của S16 với danh sách luyện gồm các chữ Hán của từ đó theo thứ tự trong từ, mỗi chữ một lần, và hiển thị từ đó cùng pinyin và nghĩa của từ ở đầu màn hình luyện.</td></tr>
+            <tr id="AC-4.2"><td class="id">AC-4.2</td><td class="ears">WHEN người dùng chọn "Luyện viết" ở một bộ từ vựng cá nhân của 012 THE SYSTEM SHALL mở màn hình luyện với danh sách luyện gồm các chữ Hán của mọi từ trong bộ theo thứ tự từ trong bộ rồi thứ tự chữ trong từ, mỗi chữ chỉ giữ lần xuất hiện đầu tiên.</td></tr>
+            <tr id="AC-4.3"><td class="id">AC-4.3</td><td class="ears">IF danh sách luyện tạo từ một từ hoặc bộ từ có hơn 100 chữ khác nhau THEN THE SYSTEM SHALL chỉ giữ 100 chữ đầu tiên và hiển thị "Danh sách luyện chỉ gồm 100 chữ đầu tiên."</td></tr>
+            <tr id="AC-4.4"><td class="id">AC-4.4</td><td class="ears">WHEN một từ hoặc bộ từ có ký tự không phải chữ Hán (chữ Latinh, chữ số, dấu câu, khoảng trắng) THE SYSTEM SHALL bỏ qua các ký tự đó khi tạo danh sách luyện mà không báo lỗi.</td></tr>
+            <tr id="AC-4.5"><td class="id">AC-4.5</td><td class="ears">IF một từ hoặc bộ từ có chữ Hán chưa có dữ liệu nét trong kho THEN THE SYSTEM SHALL bỏ các chữ đó khỏi danh sách luyện và hiển thị "Bỏ qua {n} chữ chưa có dữ liệu nét: {các chữ}", và hiển thị "Chưa có chữ nào trong mục này để luyện viết." thay cho màn hình luyện khi không còn chữ nào.</td></tr>
+            <tr id="AC-4.6"><td class="id">AC-4.6</td><td class="ears">WHEN người dùng chọn "Quay lại" trên màn hình luyện mở từ 012 THE SYSTEM SHALL đưa người dùng về đúng màn hình 012 đã mở S16.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-5">
+        <header>
+          <h3>REQ-5: Character information and structure — Thông tin chữ, bộ thủ và cấu tạo</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-4</span><span class="pill p1">P1</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-5.1"><td class="id">AC-5.1</td><td class="ears">WHEN màn hình luyện mở một chữ ở chế độ "Xem thứ tự nét" hoặc "Tô theo mẫu" THE SYSTEM SHALL hiển thị trong thẻ thông tin chữ: chữ Hán giản thể, mọi cách đọc pinyin có dấu thanh mà kho có (ngăn bởi " · "), nghĩa tiếng Việt, "HSK {n}", "{n} nét" và "Bộ thủ: {bộ} ({tên Hán Việt} – {nghĩa})".</td></tr>
+            <tr id="AC-5.2"><td class="id">AC-5.2</td><td class="ears">WHEN người dùng mở "Cấu tạo chữ" trong thẻ thông tin THE SYSTEM SHALL hiển thị loại cấu tạo của chữ theo kho (ví dụ "Độc thể", "Trái – phải", "Trên – dưới", "Bao quanh"), các thành phần của chữ theo kho và "Mẹo nhớ" khi kho có văn bản mẹo nhớ cho chữ.</td></tr>
+            <tr id="AC-5.3"><td class="id">AC-5.3</td><td class="ears">IF kho không có một trường thông tin của chữ (nghĩa, bộ thủ, loại cấu tạo, thành phần hoặc mẹo nhớ) THEN THE SYSTEM SHALL ẩn dòng tương ứng thay vì hiển thị dòng trống, và ẩn "Cấu tạo chữ" khi không có cả loại cấu tạo, thành phần lẫn mẹo nhớ.</td></tr>
+            <tr id="AC-5.4"><td class="id">AC-5.4</td><td class="ears">WHEN người dùng chạm bộ thủ trong thẻ thông tin chữ THE SYSTEM SHALL mở trang chi tiết của bộ thủ đó theo AC-12.3.</td></tr>
+            <tr id="AC-5.5"><td class="id">AC-5.5</td><td class="ears">WHEN người dùng chạm một thành phần là chữ có trong kho THE SYSTEM SHALL mở màn hình luyện của thành phần đó với danh sách luyện chỉ gồm thành phần đó, kèm nút "Quay lại" trở về chữ ban đầu ở đúng chế độ trước đó.</td></tr>
+            <tr id="AC-5.6"><td class="id">AC-5.6</td><td class="ears">WHERE kho đánh dấu các nét thuộc bộ thủ của chữ THE SYSTEM SHALL cho người dùng bật "Tô màu bộ thủ" để hiển thị các nét đó bằng màu nhấn trong "Xem thứ tự nét" và "Tô theo mẫu", kèm chú thích "Phần tô màu: bộ {bộ}".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-6">
+        <header>
+          <h3>REQ-6: Practice modes and grid — Chế độ luyện và khung chữ</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-2</span><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-6.1"><td class="id">AC-6.1</td><td class="ears">THE SYSTEM SHALL hiển thị trên màn hình luyện bộ chọn chế độ "Xem thứ tự nét", "Tô theo mẫu", "Viết từ trí nhớ", khung luyện hình vuông có lưới, nút "Cài đặt", nút "Quay lại" và, khi danh sách luyện có hơn 1 chữ, "Chữ {k}/{n}" cùng nút "‹" và "›".</td></tr>
+            <tr id="AC-6.2"><td class="id">AC-6.2</td><td class="ears">WHEN người dùng mở một chữ trên màn hình luyện THE SYSTEM SHALL chọn sẵn chế độ người dùng dùng gần nhất (lần đầu: "Xem thứ tự nét"), trừ khi chế độ được chỉ định bởi lối vào (AC-11.3, AC-13.6).</td></tr>
+            <tr id="AC-6.3"><td class="id">AC-6.3</td><td class="ears">WHEN người dùng đổi chế độ, chọn "‹" hoặc "›", hoặc rời màn hình luyện khi đang viết dở một chữ THE SYSTEM SHALL bỏ lượt viết dở đó mà không ghi vào lịch sử và không hỏi xác nhận.</td></tr>
+            <tr id="AC-6.4"><td class="id">AC-6.4</td><td class="ears">WHEN người dùng chọn "Khung chữ" là "田字格" hoặc "米字格" trong "Cài đặt" THE SYSTEM SHALL vẽ lưới tương ứng bằng nét đứt nhạt (田字格: đường giữa ngang và dọc; 米字格: thêm hai đường chéo) mà không ảnh hưởng tới việc kiểm tra nét, mặc định "田字格".</td></tr>
+            <tr id="AC-6.5"><td class="id">AC-6.5</td><td class="ears">THE SYSTEM SHALL ghi nhớ cho từng tài khoản, trên mọi thiết bị, chế độ dùng gần nhất, cấp HSK chọn gần nhất, "Khung chữ", tốc độ minh họa, "Hiện số thứ tự nét", "Tô màu bộ thủ" và "Thuận tay trái".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-7">
+        <header>
+          <h3>REQ-7: Stroke order animation — Xem thứ tự nét</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-7.1"><td class="id">AC-7.1</td><td class="ears">WHEN chế độ "Xem thứ tự nét" được mở cho một chữ THE SYSTEM SHALL tự phát một lần minh họa vẽ lần lượt từng nét theo thứ tự của kho, mỗi nét chạy từ điểm đầu đến điểm cuối theo đúng hướng viết, trừ khi áp dụng AC-7.6.</td></tr>
+            <tr id="AC-7.2"><td class="id">AC-7.2</td><td class="ears">THE SYSTEM SHALL ở tốc độ "1×" vẽ mỗi nét trong 0,6 giây và nghỉ 0,2 giây giữa hai nét, còn ở "0,5×" và "2×" các thời lượng đó lần lượt gấp đôi và giảm một nửa.</td></tr>
+            <tr id="AC-7.3"><td class="id">AC-7.3</td><td class="ears">THE SYSTEM SHALL cung cấp trong "Xem thứ tự nét" các nút "Phát" / "Tạm dừng", "Phát lại" (vẽ lại từ nét 1), bộ chọn tốc độ "0,5×", "1×", "2×" (mặc định "1×") và công tắc "Hiện số thứ tự nét" (mặc định bật) để hiển thị số thứ tự cạnh điểm đầu của mỗi nét đã vẽ.</td></tr>
+            <tr id="AC-7.4"><td class="id">AC-7.4</td><td class="ears">WHEN người dùng chọn "Từng nét" THE SYSTEM SHALL dừng minh họa, hiển thị các nét 1 đến k với nét k tô màu nhấn, dòng "Nét {k}/{n}" (kèm tên nét khi kho có, ví dụ "Nét 2/6: Ngang") và các nút "Nét trước" / "Nét sau" để giảm hoặc tăng k trong khoảng 1 đến n.</td></tr>
+            <tr id="AC-7.5"><td class="id">AC-7.5</td><td class="ears">WHEN minh họa phát xong nét cuối THE SYSTEM SHALL hiển thị chữ hoàn chỉnh cùng nút "Tô theo mẫu" chuyển sang chế độ đó cho cùng chữ.</td></tr>
+            <tr id="AC-7.6"><td class="id">AC-7.6</td><td class="ears">WHILE thiết bị bật tùy chọn giảm chuyển động THE SYSTEM SHALL không tự phát minh họa mà hiển thị chữ hoàn chỉnh kèm số thứ tự nét và mở sẵn "Từng nét" ở nét 1.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-8">
+        <header>
+          <h3>REQ-8: Stroke input on the writing frame — Nhập nét trên khung luyện</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="chip">US-3</span><span class="chip">US-8</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-8.1"><td class="id">AC-8.1</td><td class="ears">WHILE chế độ "Tô theo mẫu" hoặc "Viết từ trí nhớ" đang mở THE SYSTEM SHALL nhận nét viết trong khung bằng ngón tay, chuột (nhấn giữ và kéo) hoặc bút cảm ứng, mỗi nét tính từ lúc chạm hoặc nhấn xuống tới lúc nhấc lên, và vẽ vệt mực bám theo đầu ngón tay, con trỏ hoặc đầu bút trong khi viết.</td></tr>
+            <tr id="AC-8.2"><td class="id">AC-8.2</td><td class="ears">WHILE người dùng đang viết một nét trong khung THE SYSTEM SHALL không cuộn, không phóng to trang và bỏ qua mọi điểm chạm khác (kể cả lòng bàn tay khi viết bằng bút) cho tới khi nét được nhấc lên.</td></tr>
+            <tr id="AC-8.3"><td class="id">AC-8.3</td><td class="ears">IF một nét bắt đầu ngoài khung luyện hoặc có quãng di chuyển dưới 2% cạnh khung THEN THE SYSTEM SHALL bỏ qua nét đó, không vẽ lại và không tính lỗi.</td></tr>
+            <tr id="AC-8.4"><td class="id">AC-8.4</td><td class="ears">WHEN người dùng chọn "Hoàn tác" THE SYSTEM SHALL gỡ nét được chấp nhận gần nhất khỏi khung và đưa nét đó trở lại làm nét cần viết, không thay đổi số lỗi và số gợi ý đã tính; nút "Hoàn tác" bị vô hiệu khi chưa có nét nào được chấp nhận.</td></tr>
+            <tr id="AC-8.5"><td class="id">AC-8.5</td><td class="ears">WHEN người dùng chọn "Viết lại" khi đang viết dở THE SYSTEM SHALL xóa mọi nét trên khung, đặt số lỗi và số gợi ý về 0 và bắt đầu lại từ nét 1 mà không ghi lượt viết dở vào lịch sử.</td></tr>
+            <tr id="AC-8.6"><td class="id">AC-8.6</td><td class="ears">WHEN kích thước khung thay đổi khi đang viết dở (xoay màn hình, đổi cỡ cửa sổ) THE SYSTEM SHALL giữ các nét đã được chấp nhận ở đúng vị trí tương đối trong khung, giữ số lỗi và số gợi ý.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-9">
+        <header>
+          <h3>REQ-9: Stroke checking — Kiểm tra từng nét</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-9.1"><td class="id">AC-9.1</td><td class="ears">THE SYSTEM SHALL coi một nét viết là "khớp" với một nét mẫu khi đồng thời: điểm đầu nét viết cách điểm đầu nét mẫu không quá 20% cạnh khung, điểm cuối nét viết cách điểm cuối nét mẫu không quá 20% cạnh khung, khoảng cách trung bình từ các điểm của nét viết tới đường giữa của nét mẫu không quá 12% cạnh khung, và độ dài nét viết từ 50% đến 150% độ dài nét mẫu (với nét mẫu ngắn hơn 10% cạnh khung: từ 2% đến 20% cạnh khung).</td></tr>
+            <tr id="AC-9.2"><td class="id">AC-9.2</td><td class="ears">WHEN người dùng nhấc lên một nét khớp với nét cần viết THE SYSTEM SHALL chấp nhận nét, thay vệt mực bằng nét mẫu tô màu mực tại đúng vị trí của nét mẫu và chuyển nét cần viết sang nét kế tiếp.</td></tr>
+            <tr id="AC-9.3"><td class="id">AC-9.3</td><td class="ears">IF nét viết không khớp với nét cần viết nhưng khớp với nét cần viết khi đảo hướng (điểm đầu và điểm cuối hoán đổi) THEN THE SYSTEM SHALL tính 1 lỗi cho nét cần viết và hiển thị "Sai hướng nét — viết lại nét này theo đúng hướng."</td></tr>
+            <tr id="AC-9.4"><td class="id">AC-9.4</td><td class="ears">IF nét viết không khớp với nét cần viết theo cả hai hướng nhưng khớp với một nét mẫu khác chưa được chấp nhận THEN THE SYSTEM SHALL tính 1 lỗi cho nét cần viết và hiển thị "Sai thứ tự nét — nét này chưa đến lượt."</td></tr>
+            <tr id="AC-9.5"><td class="id">AC-9.5</td><td class="ears">IF nét viết không thuộc trường hợp của AC-9.2, AC-9.3 hay AC-9.4 THEN THE SYSTEM SHALL tính 1 lỗi cho nét cần viết và hiển thị "Nét chưa đúng vị trí hoặc hình dạng."</td></tr>
+            <tr id="AC-9.6"><td class="id">AC-9.6</td><td class="ears">WHEN một nét bị tính lỗi THE SYSTEM SHALL hiển thị vệt mực của nét đó bằng màu báo lỗi trong 0,8 giây rồi xóa vệt mực, giữ nguyên các nét đã được chấp nhận và giữ nguyên nét cần viết.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-10">
+        <header>
+          <h3>REQ-10: Trace and memory modes, hints — Tô theo mẫu, Viết từ trí nhớ và gợi ý</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-10.1"><td class="id">AC-10.1</td><td class="ears">WHILE chế độ "Tô theo mẫu" đang mở THE SYSTEM SHALL hiển thị đường viền nhạt của toàn bộ chữ trong khung luyện.</td></tr>
+            <tr id="AC-10.2"><td class="id">AC-10.2</td><td class="ears">WHILE chế độ "Viết từ trí nhớ" đang mở và chữ chưa hoàn thành THE SYSTEM SHALL không hiển thị chữ đang luyện hay đường viền của chữ ở bất kỳ đâu trên màn hình luyện (ngoài gợi ý của AC-10.3 và "Xem chữ" của AC-10.5), và hiển thị làm đề bài pinyin, nghĩa tiếng Việt và "{n} nét" của chữ (khi mở từ 012: thêm từ chứa chữ với chữ đang luyện thay bằng "□").</td></tr>
+            <tr id="AC-10.3"><td class="id">AC-10.3</td><td class="ears">WHEN người dùng mắc lỗi thứ 3 liên tiếp ở cùng một nét cần viết THE SYSTEM SHALL tự hiển thị gợi ý cho nét đó: ở "Tô theo mẫu" tô nét đó trên đường viền bằng màu gợi ý và chạy minh họa hướng viết của nét một lần; ở "Viết từ trí nhớ" hiện đường viền nhạt của riêng nét đó kèm minh họa hướng viết và giữ hiển thị cho tới khi nét được chấp nhận.</td></tr>
+            <tr id="AC-10.4"><td class="id">AC-10.4</td><td class="ears">WHEN người dùng chọn "Gợi ý" ở "Tô theo mẫu" hoặc "Viết từ trí nhớ" THE SYSTEM SHALL hiển thị ngay gợi ý của nét cần viết như AC-10.3.</td></tr>
+            <tr id="AC-10.5"><td class="id">AC-10.5</td><td class="ears">WHEN người dùng chọn "Xem chữ" ở "Viết từ trí nhớ" THE SYSTEM SHALL hiển thị chữ hoàn chỉnh trong khung 2 giây rồi ẩn đi, giữ các nét đã được chấp nhận.</td></tr>
+            <tr id="AC-10.6"><td class="id">AC-10.6</td><td class="ears">THE SYSTEM SHALL tính số gợi ý của một lượt viết bằng số nét đã được hiển thị gợi ý (tự động hoặc do chọn "Gợi ý", mỗi nét tính tối đa 1 lần) cộng số lần chọn "Xem chữ".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-11">
+        <header>
+          <h3>REQ-11: Character result and next character — Kết quả chữ, viết lại và chữ tiếp theo</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-11.1"><td class="id">AC-11.1</td><td class="ears">WHEN nét cuối của chữ được chấp nhận ở "Tô theo mẫu" hoặc "Viết từ trí nhớ" THE SYSTEM SHALL hiển thị chữ hoàn chỉnh cùng thẻ thông tin chữ và bảng kết quả gồm nhận xét, "Số lỗi: {m}", "Gợi ý: {h}", và đánh dấu bằng màu báo lỗi kèm số thứ tự mọi nét đã có ít nhất một lỗi.</td></tr>
+            <tr id="AC-11.2"><td class="id">AC-11.2</td><td class="ears">THE SYSTEM SHALL đặt nhận xét "Tốt" khi lượt viết có tối đa 2 lỗi và 0 gợi ý, và "Cần luyện thêm" trong mọi trường hợp khác.</td></tr>
+            <tr id="AC-11.3"><td class="id">AC-11.3</td><td class="ears">THE SYSTEM SHALL cung cấp trên bảng kết quả nút "Viết lại" (lượt mới của cùng chữ, cùng chế độ), "Chữ tiếp theo" khi danh sách luyện còn chữ phía sau, "Xong" khi chữ là chữ cuối của danh sách luyện, và thêm nút "Viết từ trí nhớ" (lượt mới của cùng chữ ở chế độ đó) khi lượt vừa xong ở "Tô theo mẫu".</td></tr>
+            <tr id="AC-11.4"><td class="id">AC-11.4</td><td class="ears">WHEN người dùng chọn "Chữ tiếp theo" THE SYSTEM SHALL mở chữ kế tiếp của danh sách luyện ở cùng chế độ và cập nhật "Chữ {k}/{n}".</td></tr>
+            <tr id="AC-11.5"><td class="id">AC-11.5</td><td class="ears">WHEN người dùng chọn "Xong" THE SYSTEM SHALL hiển thị tóm tắt "Đã luyện {a}/{n} chữ · Tốt: {b} · Cần luyện thêm: {c}" (a = số chữ của danh sách có ít nhất một lượt hoàn thành trong lần luyện này, b và c đếm theo nhận xét của lượt cuối của mỗi chữ đó) cùng nút "Về trang chính" đưa về trang chính S16, hoặc về màn hình 012 khi S16 được mở từ 012.</td></tr>
+            <tr id="AC-11.6"><td class="id">AC-11.6</td><td class="ears">WHEN người dùng chọn "‹" hoặc "›" trên màn hình luyện THE SYSTEM SHALL mở chữ trước hoặc sau trong danh sách luyện ở cùng chế độ, với "‹" bị vô hiệu ở chữ đầu và "›" bị vô hiệu ở chữ cuối.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-12">
+        <header>
+          <h3>REQ-12: Radicals — Luyện bộ thủ</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-12.1"><td class="id">AC-12.1</td><td class="ears">WHEN người dùng chọn tab "Bộ thủ" THE SYSTEM SHALL liệt kê mọi bộ thủ trong danh sách bộ thủ của kho (016), nhóm theo số nét ("1 nét", "2 nét", …) và trong mỗi nhóm theo số thứ tự của kho, mỗi bộ gồm dạng chính, các dạng biến thể (ví dụ "水 · 氵"), tên Hán Việt, nghĩa tiếng Việt và "{n} chữ" là số chữ có dữ liệu nét trong kho thuộc bộ đó.</td></tr>
+            <tr id="AC-12.2"><td class="id">AC-12.2</td><td class="ears">WHEN người dùng nhập vào ô "Lọc bộ thủ" THE SYSTEM SHALL chỉ giữ các bộ có dạng chính, dạng biến thể, tên Hán Việt hoặc nghĩa chứa nội dung nhập (không phân biệt hoa thường và dấu tiếng Việt), và hiển thị "Không có bộ thủ phù hợp." khi không còn bộ nào.</td></tr>
+            <tr id="AC-12.3"><td class="id">AC-12.3</td><td class="ears">WHEN người dùng chạm một bộ thủ THE SYSTEM SHALL mở trang chi tiết bộ thủ gồm dạng chính và biến thể, tên Hán Việt, nghĩa, số nét, nút "Luyện viết bộ này" (khi kho có dữ liệu nét của ít nhất một dạng) và danh sách chữ thuộc bộ đó nhóm theo cấp HSK tăng dần, mỗi chữ kèm nhãn trạng thái luyện theo AC-13.5.</td></tr>
+            <tr id="AC-12.4"><td class="id">AC-12.4</td><td class="ears">WHEN người dùng chọn "Luyện viết bộ này" THE SYSTEM SHALL mở màn hình luyện với danh sách luyện gồm dạng chính rồi các dạng biến thể có dữ liệu nét của bộ thủ, với cùng ba chế độ và cùng quy tắc kiểm tra nét như một chữ.</td></tr>
+            <tr id="AC-12.5"><td class="id">AC-12.5</td><td class="ears">WHEN người dùng chạm một chữ trên trang chi tiết bộ thủ THE SYSTEM SHALL mở màn hình luyện của chữ đó với danh sách luyện là danh sách chữ của bộ thủ theo thứ tự hiển thị, bắt đầu từ chữ được chạm.</td></tr>
+            <tr id="AC-12.6"><td class="id">AC-12.6</td><td class="ears">IF một bộ thủ chưa có chữ nào có dữ liệu nét trong kho THEN THE SYSTEM SHALL hiển thị trên trang chi tiết của bộ đó "Chưa có chữ nào thuộc bộ này để luyện viết."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-13">
+        <header>
+          <h3>REQ-13: History and characters to review — Lịch sử và Chữ cần luyện</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-13.1"><td class="id">AC-13.1</td><td class="ears">WHEN một lượt viết hoàn thành ở "Tô theo mẫu" hoặc "Viết từ trí nhớ" THE SYSTEM SHALL ghi vào lịch sử luyện viết của chính người dùng chữ, chế độ, nhận xét, số lỗi, số gợi ý và thời điểm hoàn thành; lượt viết bỏ dở và việc xem "Xem thứ tự nét" không được ghi.</td></tr>
+            <tr id="AC-13.2"><td class="id">AC-13.2</td><td class="ears">WHEN người dùng chọn tab "Lịch sử" THE SYSTEM SHALL liệt kê mỗi chữ đã có lượt hoàn thành một dòng, chữ luyện gần nhất trước, gồm chữ Hán, pinyin, nhận xét của lượt gần nhất, "Đã luyện {n} lần" và ngày luyện gần nhất dạng dd/mm/yyyy theo giờ Việt Nam, tải thêm 50 dòng mỗi khi cuộn tới cuối danh sách.</td></tr>
+            <tr id="AC-13.3"><td class="id">AC-13.3</td><td class="ears">WHEN một lượt viết hoàn thành với nhận xét "Cần luyện thêm" THE SYSTEM SHALL thêm chữ đó vào "Chữ cần luyện" nếu chữ chưa có trong danh sách.</td></tr>
+            <tr id="AC-13.4"><td class="id">AC-13.4</td><td class="ears">WHEN một lượt "Viết từ trí nhớ" hoàn thành với nhận xét "Tốt" THE SYSTEM SHALL bỏ chữ đó khỏi "Chữ cần luyện", còn lượt "Tô theo mẫu" đạt "Tốt" không bỏ chữ khỏi danh sách.</td></tr>
+            <tr id="AC-13.5"><td class="id">AC-13.5</td><td class="ears">THE SYSTEM SHALL hiển thị ở mọi danh sách chữ của S16 nhãn "Cần luyện" cho chữ đang ở "Chữ cần luyện", nhãn "Tốt" cho chữ đã có lượt hoàn thành nhưng không ở "Chữ cần luyện", và không nhãn cho chữ chưa luyện, mỗi nhãn gồm cả chữ và màu.</td></tr>
+            <tr id="AC-13.6"><td class="id">AC-13.6</td><td class="ears">WHEN người dùng chọn tab "Chữ cần luyện ({n})" THE SYSTEM SHALL liệt kê các chữ trong danh sách theo thời điểm được thêm (sớm nhất trước), mỗi chữ có nút "Bỏ khỏi danh sách", kèm nút "Luyện tất cả" mở danh sách luyện gồm các chữ đó theo cùng thứ tự ở chế độ "Viết từ trí nhớ".</td></tr>
+            <tr id="AC-13.7"><td class="id">AC-13.7</td><td class="ears">IF "Chữ cần luyện" hoặc "Lịch sử" chưa có chữ nào THEN THE SYSTEM SHALL hiển thị tương ứng "Chưa có chữ nào cần luyện. Chữ viết chưa tốt sẽ xuất hiện ở đây." hoặc "Bạn chưa luyện viết chữ nào. Hãy chọn một chữ để bắt đầu."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-14">
+        <header>
+          <h3>REQ-14: Private self-study data — Dữ liệu tự học riêng tư, tách khỏi lớp</h3>
+          <div class="req-meta"><span class="chip">US-7</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-14.1"><td class="id">AC-14.1</td><td class="ears">THE SYSTEM SHALL chỉ cho chính chủ tài khoản xem lịch sử luyện viết, "Chữ cần luyện", nhãn trạng thái luyện và cài đặt S16 của tài khoản đó.</td></tr>
+            <tr id="AC-14.2"><td class="id">AC-14.2</td><td class="ears">THE SYSTEM SHALL không hiển thị và không gửi tới thiết bị của GV (kể cả GV chủ workspace hay GV của lớp HV đang học, và trên các màn hình Kho nội dung tự học T23–T27) hoặc của HV khác (kể cả bạn cùng lớp trên S12) bất kỳ dữ liệu luyện viết nào của một HV.</td></tr>
+            <tr id="AC-14.3"><td class="id">AC-14.3</td><td class="ears">THE SYSTEM SHALL không để dữ liệu luyện viết làm thay đổi Điểm xếp hạng, hạng (008), tiến độ, trạng thái "Đã làm" / "Chưa làm" (009), email nhắc hạn nộp (003) hay bất kỳ chỉ số nào của lớp.</td></tr>
+            <tr id="AC-14.4"><td class="id">AC-14.4</td><td class="ears">IF một người dùng yêu cầu dữ liệu luyện viết của tài khoản khác (kể cả qua đường dẫn trực tiếp) THEN THE SYSTEM SHALL không trả dữ liệu đó và hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu."</td></tr>
+            <tr id="AC-14.5"><td class="id">AC-14.5</td><td class="ears">WHEN một tài khoản HV bị xóa theo 001 THE SYSTEM SHALL xóa vĩnh viễn lịch sử luyện viết, "Chữ cần luyện" và cài đặt S16 của tài khoản đó trong vòng 24 giờ.</td></tr>
+            <tr id="AC-14.6"><td class="id">AC-14.6</td><td class="ears">THE SYSTEM SHALL giữ "Chữ cần luyện" là danh sách riêng của S16: việc thêm hoặc bỏ một chữ khỏi "Chữ cần luyện" không thay đổi thẻ ôn tập, lịch ôn tập hay đánh dấu "từ khó" của người dùng trong 012, và thao tác ôn tập trong 012 không thêm hay bỏ chữ nào khỏi "Chữ cần luyện".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-15">
+        <header>
+          <h3>REQ-15: Accessibility, handedness and input devices — Trợ năng, thuận tay trái và thiết bị nhập</h3>
+          <div class="req-meta"><span class="chip">US-8</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-15.1"><td class="id">AC-15.1</td><td class="ears">WHEN người dùng bật "Thuận tay trái" trong "Cài đặt" THE SYSTEM SHALL dồn thanh công cụ của khung luyện ("Hoàn tác", "Viết lại", "Gợi ý", "Xem chữ") về phía bên trái khung (mặc định: bên phải) mà không thay đổi quy tắc kiểm tra nét.</td></tr>
+            <tr id="AC-15.2"><td class="id">AC-15.2</td><td class="ears">THE SYSTEM SHALL cho thao tác bằng bàn phím mọi điều khiển của S16 trừ việc vẽ nét (tab, tìm kiếm, chọn chữ, chọn chế độ, phát/tạm dừng, tốc độ, "Từng nét", "Nét trước"/"Nét sau", "Hoàn tác", "Viết lại", "Gợi ý", "Xem chữ", nút trên bảng kết quả, "‹"/"›", "Cài đặt"), mỗi điều khiển có nhãn đọc được bằng trình đọc màn hình.</td></tr>
+            <tr id="AC-15.3"><td class="id">AC-15.3</td><td class="ears">THE SYSTEM SHALL cung cấp cho mỗi chữ có dữ liệu nét mục "Danh sách nét" dạng văn bản liệt kê từng nét theo thứ tự với số thứ tự, tên nét khi kho có và hướng viết suy ra từ nét mẫu (ví dụ "Nét 1: Ngang, từ trái sang phải").</td></tr>
+            <tr id="AC-15.4"><td class="id">AC-15.4</td><td class="ears">THE SYSTEM SHALL gắn cho khung luyện nhãn đọc được "Khung viết: vẽ bằng ngón tay, chuột hoặc bút. Thứ tự nét có trong Danh sách nét." và thông báo qua vùng thông báo trực tiếp mỗi kết quả kiểm tra nét ("Đúng nét {k}", "Sai hướng nét", "Sai thứ tự nét", "Nét chưa đúng") và nhận xét của chữ.</td></tr>
+            <tr id="AC-15.5"><td class="id">AC-15.5</td><td class="ears">WHILE "Từng nét" đang mở THE SYSTEM SHALL thông báo qua vùng thông báo trực tiếp dòng mô tả nét k của "Danh sách nét" mỗi khi k thay đổi.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-16">
+        <header>
+          <h3>REQ-16: Missing data, library changes and connectivity — Dữ liệu thiếu, thay đổi kho và mất mạng</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-6</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-16.1"><td class="id">AC-16.1</td><td class="ears">IF một chữ trong kết quả tìm kiếm hoặc một thành phần chưa có dữ liệu nét trong kho THEN THE SYSTEM SHALL hiển thị chữ đó với nhãn "Chưa có dữ liệu nét" và, khi mở, chỉ hiển thị thẻ thông tin chữ kèm "Chữ này chưa có dữ liệu nét để luyện viết." với ba chế độ bị vô hiệu.</td></tr>
+            <tr id="AC-16.2"><td class="id">AC-16.2</td><td class="ears">WHEN GV cập nhật dữ liệu nét của một chữ trong Kho nội dung tự học của workspace (016) trong lúc HV đang luyện chữ đó THE SYSTEM SHALL để lượt hiện tại tiếp tục với dữ liệu đã tải và dùng dữ liệu mới từ lần mở chữ kế tiếp.</td></tr>
+            <tr id="AC-16.3"><td class="id">AC-16.3</td><td class="ears">IF một chữ trong "Lịch sử" hoặc "Chữ cần luyện" không còn dữ liệu nét trong kho (kể cả khi GV ẩn, lưu trữ chữ hoặc gỡ dữ liệu nét của chữ) THEN THE SYSTEM SHALL giữ dòng của chữ đó với nhãn "Không còn dữ liệu luyện", không mở màn hình luyện khi chạm, và vẫn cho "Bỏ khỏi danh sách" ở "Chữ cần luyện".</td></tr>
+            <tr id="AC-16.4"><td class="id">AC-16.4</td><td class="ears">WHILE thiết bị mất kết nối mạng sau khi một chữ đã tải xong THE SYSTEM SHALL tiếp tục cho dùng đủ ba chế độ, kiểm tra nét, gợi ý và bảng kết quả của chữ đó.</td></tr>
+            <tr id="AC-16.5"><td class="id">AC-16.5</td><td class="ears">IF không lưu được kết quả của một lượt viết THEN THE SYSTEM SHALL vẫn hiển thị bảng kết quả kèm "Chưa lưu được kết quả vào lịch sử. Hệ thống sẽ tự thử lại khi có mạng.", tự lưu lại khi có kết nối trong lúc S16 còn mở và hiển thị "Đã lưu kết quả." khi lưu được.</td></tr>
+            <tr id="AC-16.6"><td class="id">AC-16.6</td><td class="ears">IF không tải được một danh sách hoặc dữ liệu của một chữ THEN THE SYSTEM SHALL hiển thị "Không tải được dữ liệu. Vui lòng thử lại." kèm nút "Thử lại" và không hiển thị danh sách rỗng như thể không có chữ.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td class="id">BR-1</td><td>S16 chỉ dùng cho HV đã kích hoạt, không bị khóa, không cần lớp, trên Kho nội dung tự học của workspace mình (016). GV → A05 (xem trước trong T23–T27); chữ ngoài kho của workspace → A05; chưa đăng nhập → A01 rồi quay lại.</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.3</span> <span class="chip ac">AC-1.4</span></td></tr>
+          <tr><td class="id">BR-2</td><td><b>Danh sách luyện</b>: dãy chữ có thứ tự tạo theo lối vào (cả cấp HSK bắt đầu từ chữ được chạm; 1 chữ khi tìm kiếm hay đường dẫn; chữ của bộ thủ; chữ của từ/bộ từ 012 không trùng, tối đa 100; "Chữ cần luyện"). Chỉ chữ có dữ liệu nét.</td><td><span class="chip ac">AC-2.3</span> <span class="chip ac">AC-3.5</span> <span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.3</span> <span class="chip ac">AC-12.5</span> <span class="chip ac">AC-13.6</span></td></tr>
+          <tr><td class="id">BR-3</td><td>Tìm kiếm: ≥ 1 chữ Hán hoặc ≥ 2 ký tự khác; khớp chữ Hán, pinyin (dấu thanh / số thanh / không dấu) hoặc một phần nghĩa (không phân biệt hoa thường và dấu); tối đa 50 kết quả, sắp theo cấp HSK rồi thứ tự kho.</td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-3.2</span> <span class="chip ac">AC-3.3</span></td></tr>
+          <tr><td class="id">BR-4</td><td><b>Nét cần viết</b> = nét mẫu có số thứ tự nhỏ nhất chưa được chấp nhận. Nét bắt đầu ngoài khung hoặc di chuyển &lt; 2% cạnh khung bị bỏ qua, không tính lỗi.</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-9.2</span></td></tr>
+          <tr><td class="id">BR-5</td><td><b>Khớp</b> (mọi điều kiện): |điểm đầu viết − điểm đầu mẫu| ≤ 20% cạnh khung; |điểm cuối viết − điểm cuối mẫu| ≤ 20%; khoảng cách trung bình tới đường giữa nét mẫu ≤ 12%; độ dài 50–150% nét mẫu (nét mẫu &lt; 10% cạnh khung: 2–20% cạnh khung). Lưới 田字格 / 米字格 không ảnh hưởng.</td><td><span class="chip ac">AC-9.1</span> <span class="chip ac">AC-6.4</span></td></tr>
+          <tr><td class="id">BR-6</td><td><b>Phân loại</b> theo thứ tự ưu tiên: (1) khớp nét cần viết → chấp nhận; (2) khớp nét cần viết khi đảo hướng → "Sai hướng nét"; (3) khớp nét khác chưa được chấp nhận → "Sai thứ tự nét"; (4) còn lại → "Nét chưa đúng vị trí hoặc hình dạng". Mỗi lỗi tính 1 cho nét cần viết; vệt mực lỗi hiện 0,8 giây rồi xóa.</td><td><span class="chip ac">AC-9.2</span> <span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-9.5</span> <span class="chip ac">AC-9.6</span></td></tr>
+          <tr><td class="id">BR-7</td><td><b>Gợi ý</b>: tự động ở lỗi thứ 3 liên tiếp của cùng một nét; hoặc khi chọn "Gợi ý". "Tô theo mẫu": tô nét trên đường viền + minh họa hướng một lần. "Viết từ trí nhớ": đường viền riêng nét đó + hướng, giữ tới khi chấp nhận. Số gợi ý h = số nét đã hiện gợi ý (mỗi nét tối đa 1) + số lần "Xem chữ" (2 giây).</td><td><span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-10.5</span> <span class="chip ac">AC-10.6</span></td></tr>
+          <tr><td class="id">BR-8</td><td><b>Nhận xét chữ</b>: "Tốt" ⇔ m ≤ 2 và h = 0; ngược lại "Cần luyện thêm". Không phụ thuộc số nét.</td><td><span class="chip ac">AC-11.2</span></td></tr>
+          <tr><td class="id">BR-9</td><td>"Hoàn tác" gỡ nét được chấp nhận gần nhất, không đổi m, h. "Viết lại" đưa m, h về 0. Đổi chế độ, "‹"/"›", rời màn hình hoặc "Viết lại" khi đang viết dở: lượt dở bị bỏ, không ghi, không hỏi xác nhận.</td><td><span class="chip ac">AC-8.4</span> <span class="chip ac">AC-8.5</span> <span class="chip ac">AC-6.3</span></td></tr>
+          <tr><td class="id">BR-10</td><td>"Viết từ trí nhớ" không hiển thị chữ hay đường viền trước khi hoàn thành (trừ gợi ý và "Xem chữ"); đề bài = pinyin, nghĩa, số nét (+ từ chứa chữ với "□" khi từ 012).</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td class="id">BR-11</td><td>Chỉ lượt hoàn thành ở "Tô theo mẫu" / "Viết từ trí nhớ" được ghi lịch sử. <b>Chữ cần luyện</b>: thêm khi lượt bất kỳ đạt "Cần luyện thêm"; bỏ khi lượt "Viết từ trí nhớ" đạt "Tốt" hoặc "Bỏ khỏi danh sách". Tách riêng khỏi SRS / "từ khó" của 012.</td><td><span class="chip ac">AC-13.1</span> <span class="chip ac">AC-13.3</span> <span class="chip ac">AC-13.4</span> <span class="chip ac">AC-13.6</span> <span class="chip ac">AC-14.6</span></td></tr>
+          <tr><td class="id">BR-12</td><td>Nhãn trạng thái luyện: "Cần luyện" (đang ở Chữ cần luyện) · "Tốt" (đã luyện, không ở Chữ cần luyện) · không nhãn (chưa luyện); luôn có chữ kèm màu.</td><td><span class="chip ac">AC-13.5</span></td></tr>
+          <tr><td class="id">BR-13</td><td><b>Riêng tư</b>: dữ liệu luyện viết và cài đặt S16 chỉ chủ tài khoản thấy; không gửi tới GV hay HV khác; không tác động 008, 009, 003; tài khoản bị xóa → xóa dữ liệu ≤ 24 giờ.</td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-14.3</span> <span class="chip ac">AC-14.4</span> <span class="chip ac">AC-14.5</span></td></tr>
+          <tr><td class="id">BR-14</td><td>Cài đặt theo tài khoản, đồng bộ mọi thiết bị: chế độ gần nhất, cấp HSK gần nhất, "Khung chữ" (mặc định 田字格), tốc độ (mặc định 1×), "Hiện số thứ tự nét" (mặc định bật), "Tô màu bộ thủ", "Thuận tay trái".</td><td><span class="chip ac">AC-6.5</span> <span class="chip ac">AC-6.4</span> <span class="chip ac">AC-7.3</span></td></tr>
+          <tr><td class="id">BR-15</td><td>Minh họa: 1× = 0,6 giây mỗi nét + 0,2 giây nghỉ; 0,5× gấp đôi; 2× giảm một nửa. Giảm chuyển động → không tự phát, mở "Từng nét".</td><td><span class="chip ac">AC-7.2</span> <span class="chip ac">AC-7.6</span></td></tr>
+          <tr><td class="id">BR-16</td><td>Dữ liệu thiếu: trường không có → ẩn dòng; chữ không có dữ liệu nét → chỉ thông tin, chế độ bị vô hiệu; kho cập nhật giữa lượt → lượt dùng dữ liệu đã tải; chữ bị gỡ khỏi kho → giữ dòng lịch sử "Không còn dữ liệu luyện".</td><td><span class="chip ac">AC-5.3</span> <span class="chip ac">AC-16.1</span> <span class="chip ac">AC-16.2</span> <span class="chip ac">AC-16.3</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h4>Kiểm tra dữ liệu nhập</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trường</th><th class="center">Bắt buộc</th><th>Quy tắc</th><th>Thông báo khi sai / không có kết quả</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Ô "Tìm chữ Hán, pinyin hoặc nghĩa"</td><td class="center">—</td><td>≥ 1 chữ Hán hoặc ≥ 2 ký tự khác thì mới tìm; tối đa 50 kết quả</td><td>“Không tìm thấy chữ phù hợp. Hãy thử chữ Hán giản thể, pinyin hoặc nghĩa tiếng Việt.”</td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-3.4</span></td></tr>
+          <tr><td>Ô "Lọc bộ thủ"</td><td class="center">—</td><td>Chứa trong dạng chính, biến thể, tên Hán Việt hoặc nghĩa; không phân biệt hoa thường và dấu</td><td>“Không có bộ thủ phù hợp.”</td><td><span class="chip ac">AC-12.2</span></td></tr>
+          <tr><td>Nét viết</td><td class="center">—</td><td>Bắt đầu trong khung; di chuyển ≥ 2% cạnh khung; kiểm tra theo BR-5, BR-6</td><td>“Sai hướng nét — viết lại nét này theo đúng hướng.” · “Sai thứ tự nét — nét này chưa đến lượt.” · “Nét chưa đúng vị trí hoặc hình dạng.”</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-9.5</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h4>Thông báo &amp; trạng thái hiển thị khác</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Văn bản</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Cấp HSK chưa có chữ</td><td>“Cấp này chưa có chữ nào để luyện viết.”</td><td><span class="chip ac">AC-2.4</span></td></tr>
+          <tr><td>Từ 012: giới hạn / bỏ qua / không còn chữ</td><td>“Danh sách luyện chỉ gồm 100 chữ đầu tiên.” · “Bỏ qua {n} chữ chưa có dữ liệu nét: {các chữ}” · “Chưa có chữ nào trong mục này để luyện viết.”</td><td><span class="chip ac">AC-4.3</span> <span class="chip ac">AC-4.5</span></td></tr>
+          <tr><td>Bộ thủ tô màu</td><td>“Phần tô màu: bộ {bộ}”</td><td><span class="chip ac">AC-5.6</span></td></tr>
+          <tr><td>Từng nét</td><td>“Nét {k}/{n}” (+ “: {tên nét}”)</td><td><span class="chip ac">AC-7.4</span></td></tr>
+          <tr><td>Bảng kết quả</td><td>“Tốt” / “Cần luyện thêm” · “Số lỗi: {m}” · “Gợi ý: {h}” · “Viết lại” · “Chữ tiếp theo” · “Xong” · “Viết từ trí nhớ”</td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.3</span></td></tr>
+          <tr><td>Tóm tắt danh sách luyện</td><td>“Đã luyện {a}/{n} chữ · Tốt: {b} · Cần luyện thêm: {c}” + “Về trang chính”</td><td><span class="chip ac">AC-11.5</span></td></tr>
+          <tr><td>Bộ thủ chưa có chữ</td><td>“Chưa có chữ nào thuộc bộ này để luyện viết.”</td><td><span class="chip ac">AC-12.6</span></td></tr>
+          <tr><td>Danh sách trống</td><td>“Chưa có chữ nào cần luyện. Chữ viết chưa tốt sẽ xuất hiện ở đây.” · “Bạn chưa luyện viết chữ nào. Hãy chọn một chữ để bắt đầu.”</td><td><span class="chip ac">AC-13.7</span></td></tr>
+          <tr><td>Nhãn chữ</td><td>“Tốt” · “Cần luyện” · “Chưa có dữ liệu nét” · “Không còn dữ liệu luyện”</td><td><span class="chip ac">AC-13.5</span> <span class="chip ac">AC-16.1</span> <span class="chip ac">AC-16.3</span></td></tr>
+          <tr><td>Chữ không có dữ liệu nét</td><td>“Chữ này chưa có dữ liệu nét để luyện viết.”</td><td><span class="chip ac">AC-16.1</span></td></tr>
+          <tr><td>Lưu kết quả thất bại / thành công sau đó</td><td>“Chưa lưu được kết quả vào lịch sử. Hệ thống sẽ tự thử lại khi có mạng.” → “Đã lưu kết quả.”</td><td><span class="chip ac">AC-16.5</span></td></tr>
+          <tr><td>Lỗi tải</td><td>“Không tải được dữ liệu. Vui lòng thử lại.” + “Thử lại”</td><td><span class="chip ac">AC-16.6</span></td></tr>
+          <tr><td>Nhãn khung viết (trình đọc màn hình)</td><td>“Khung viết: vẽ bằng ngón tay, chuột hoặc bút. Thứ tự nét có trong Danh sách nét.” · “Đúng nét {k}” · “Sai hướng nét” · “Sai thứ tự nét” · “Nét chưa đúng”</td><td><span class="chip ac">AC-15.4</span></td></tr>
+          <tr><td>Không có quyền / vai trò khác</td><td>A05 “Không tìm thấy nội dung bạn yêu cầu.”</td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-14.4</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <h4>Lượt viết (Tô theo mẫu / Viết từ trí nhớ)</h4>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> DangViet: Mở chữ ở chế độ viết
+  DangViet --> DangViet: Nét được chấp nhận hoặc tính lỗi
+  DangViet --> CoGoiY: Lỗi thứ 3 liên tiếp hoặc chọn Gợi ý
+  CoGoiY --> DangViet: Nét có gợi ý được chấp nhận
+  DangViet --> HoanThanh: Nét cuối được chấp nhận
+  CoGoiY --> HoanThanh: Nét cuối được chấp nhận
+  DangViet --> BoDo: Đổi chế độ, chuyển chữ, rời màn hình, Viết lại
+  CoGoiY --> BoDo: Đổi chế độ, chuyển chữ, rời màn hình, Viết lại
+  BoDo --> [*]: Không ghi lịch sử
+  HoanThanh --> [*]: Ghi lịch sử, nhận xét Tốt hoặc Cần luyện thêm
+</pre>
+        <figcaption>Hình S-1 — Vòng đời một lượt viết</figcaption>
+      </figure>
+      <h4>Trạng thái luyện của một chữ (theo từng HV)</h4>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> ChuaLuyen
+  ChuaLuyen --> Tot: Lượt đầu đạt Tốt
+  ChuaLuyen --> CanLuyen: Lượt đạt Cần luyện thêm
+  Tot --> CanLuyen: Lượt bất kỳ đạt Cần luyện thêm
+  CanLuyen --> Tot: Viết từ trí nhớ đạt Tốt
+  CanLuyen --> Tot: Bỏ khỏi danh sách
+  CanLuyen --> CanLuyen: Tô theo mẫu đạt Tốt
+</pre>
+        <figcaption>Hình S-2 — Nhãn "Tốt" / "Cần luyện" và danh sách "Chữ cần luyện"</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Hiển thị</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Chưa luyện</td><td>Chưa có lượt hoàn thành nào</td><td>Không nhãn</td><td><span class="chip ac">AC-13.5</span></td></tr>
+          <tr><td>Cần luyện</td><td>Đang ở "Chữ cần luyện"</td><td>Nhãn "Cần luyện"; có trong tab "Chữ cần luyện"</td><td><span class="chip ac">AC-13.3</span> <span class="chip ac">AC-13.5</span> <span class="chip ac">AC-13.6</span></td></tr>
+          <tr><td>Tốt</td><td>Đã có lượt hoàn thành, không ở "Chữ cần luyện"</td><td>Nhãn "Tốt"</td><td><span class="chip ac">AC-13.4</span> <span class="chip ac">AC-13.5</span></td></tr>
+          <tr><td>Không còn dữ liệu luyện</td><td>Chữ trong lịch sử / Chữ cần luyện bị gỡ khỏi kho</td><td>Nhãn "Không còn dữ liệu luyện"; không mở được</td><td><span class="chip ac">AC-16.3</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td>Luyện viết chữ Hán <em>(owner 013)</em></td><td><span class="pill hv">HV</span></td><td><b>Trang chính:</b> ô "Tìm chữ Hán, pinyin hoặc nghĩa"; tab "Theo cấp HSK" (nút HSK 1–9, lưới chữ + pinyin + nhãn), "Bộ thủ" (nhóm theo số nét, "Lọc bộ thủ", chi tiết bộ thủ), "Chữ cần luyện ({n})", "Lịch sử". <b>Màn hình luyện:</b> "Quay lại", "Chữ {k}/{n}" + "‹" "›", thẻ thông tin chữ ("Cấu tạo chữ", "Mẹo nhớ", "Danh sách nét"), bộ chọn "Xem thứ tự nét | Tô theo mẫu | Viết từ trí nhớ", khung vuông 田字格/米字格, điều khiển minh họa (Phát/Tạm dừng, Phát lại, 0,5×/1×/2×, Hiện số thứ tự nét, Từng nét), thanh công cụ viết (Hoàn tác, Viết lại, Gợi ý, Xem chữ — trái/phải theo "Thuận tay trái"), bảng kết quả, "Cài đặt". Điện thoại 360–430 px và bố cục rộng ≥ 1024 px khi HV dùng màn hình rộng. GV mở → A05.</td><td>F-1 – F-5 · REQ-1 – REQ-16</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a></td><td>Tự học <em>(012)</em></td><td><span class="pill hv">HV</span></td><td>Thẻ "Luyện viết chữ Hán" mở S16. 012 bổ sung. GV không có lối vào (V15).</td><td>F-1 · REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a> <a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td>Từ vựng / bộ từ cá nhân <em>(012)</em></td><td><span class="pill hv">HV</span></td><td>Nút "Luyện viết" ở một từ và ở một bộ từ vựng cá nhân, mở S16; "Quay lại" từ S16 trở về đây. 012 bổ sung.</td><td>F-4 · REQ-4</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A01">A01</a></td><td>Đăng nhập <em>(001)</em></td><td><span class="pill hv">HV</span> <span class="pill gv">GV</span></td><td>Chưa đăng nhập mở S16 → A01; đăng nhập bằng tài khoản HV thì mở lại đúng màn hình, tài khoản GV → A05.</td><td>F-1 · REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td>Không tìm thấy nội dung <em>(001)</em></td><td><span class="pill hv">HV</span> <span class="pill gv">GV</span></td><td>GV mở S16; HV mở chữ ngoài kho của workspace mình; yêu cầu dữ liệu luyện viết của tài khoản khác.</td><td>F-5 · REQ-1, REQ-14</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–T27</td><td>Kho nội dung tự học <em>(016)</em></td><td><span class="pill gv">GV</span></td><td>GV quản lý dữ liệu chữ, nét mẫu, bộ thủ của kho workspace (nạp sẵn bộ HSK mẫu) và xem trước thứ tự nét; thay đổi áp dụng cho HV theo AC-16.2, AC-16.3. Không hiển thị dữ liệu luyện viết của HV.</td><td>REQ-14, REQ-16</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Màn hình đề xuất bổ sung:</em> — không có — (trang chính, màn hình luyện, bảng kết quả, chi tiết bộ thủ và "Cài đặt" là các trạng thái của S16). S16 <b>chưa có</b> trong <code>screen-flow-design.html</code>; cần thêm vào prototype theo <code>docs/design/DESIGN.md</code>.</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Performance</td><td>phản hồi kiểm tra nét (chấp nhận hoặc báo lỗi) hiển thị p95 ≤ 100 ms sau khi nhấc nét, kể cả khi mất mạng, đo trên điện thoại Android tầm trung (≥ 4 GB RAM, ra mắt từ 2022) và trên máy tính để bàn.</td></tr>
+          <tr><td class="id">NFR-2</td><td>Performance</td><td>vệt mực trễ so với đầu ngón tay hoặc con trỏ p95 ≤ 50 ms; minh họa thứ tự nét chạy trung bình ≥ 50 khung hình/giây với ≤ 1% khung hình dài hơn 50 ms, trên cùng loại thiết bị của NFR-1.</td></tr>
+          <tr><td class="id">NFR-3</td><td>Performance</td><td>mở màn hình luyện của một chữ (thông tin và dữ liệu nét) p95 ≤ 1,5 giây trên mạng 4G (≥ 10 Mbps); danh sách một cấp HSK tới 1.500 chữ trong Kho nội dung tự học của một workspace hiển thị 60 chữ đầu p95 ≤ 2 giây; kết quả tìm kiếm hiển thị p95 ≤ 1 giây sau khi người dùng ngừng gõ 300 ms; lưu một kết quả p95 ≤ 500 ms ở 100 lượt lưu mỗi giây.</td></tr>
+          <tr><td class="id">NFR-4</td><td>Efficiency</td><td>dữ liệu tải về để mở một chữ (thông tin và nét mẫu) p95 ≤ 20 KB và tối đa 40 KB với chữ tới 30 nét.</td></tr>
+          <tr><td class="id">NFR-5</td><td>Reliability</td><td>sau khi một chữ đã tải xong, 100% thao tác của ba chế độ trên chữ đó (minh họa, kiểm tra nét, gợi ý, bảng kết quả) hoạt động khi ngắt mạng trong bộ kiểm thử ngoại tuyến; 100% kết quả chưa lưu được lưu trong vòng 10 giây kể từ khi có lại mạng nếu S16 còn mở.</td></tr>
+          <tr><td class="id">NFR-6</td><td>Accuracy</td><td>trên bộ kiểm thử chuẩn gồm ≥ 200 chữ HSK 1–4 do ≥ 5 người viết đúng bằng ngón tay trên điện thoại 360 px và bằng chuột trên máy tính, ≥ 95% nét viết đúng được chấp nhận ngay lần đầu, ≥ 95% nét viết sai thứ tự hoặc sai hướng được báo đúng loại lỗi và ≤ 2% nét viết sai bị chấp nhận.</td></tr>
+          <tr><td class="id">NFR-7</td><td>Usability</td><td>ở chiều rộng 360 px khung luyện có cạnh ≥ 300 px và khung, bộ chọn chế độ, thanh công cụ cùng hiển thị không cần cuộn ở chiều cao ≥ 640 px; ở bố cục rộng (HV trên màn hình rộng) khung có cạnh ≥ 400 px; không có cuộn ngang ở 360–430 px; vùng chạm ≥ 44×44 px; ≥ 9/10 người dùng mới trong kiểm thử khả dụng hoàn thành chữ đầu tiên ở "Tô theo mẫu" không cần trợ giúp.</td></tr>
+          <tr><td class="id">NFR-8</td><td>Accessibility</td><td>mọi điều khiển của S16 trừ việc vẽ nét đạt WCAG 2.1 AA (chữ tương phản ≥ 4,5:1, đường viền mẫu tương phản ≥ 3:1 với nền khung, thao tác được bằng bàn phím, có nhãn cho trình đọc màn hình); 100% chữ có dữ liệu nét có "Danh sách nét"; 100% nhãn trạng thái và nhận xét có chữ kèm màu; 100% minh họa tôn trọng tùy chọn giảm chuyển động của thiết bị.</td></tr>
+          <tr><td class="id">NFR-9</td><td>Privacy</td><td>0 dữ liệu luyện viết của một HV được gửi tới thiết bị của tài khoản khác hoặc xuất hiện trên màn hình GV, và 0 thay đổi giá trị của 008/009 do luyện viết, kiểm chứng bằng kiểm thử tự động bao phủ 100% dữ liệu của S16, S09, S10, S12, T04, T15 và T23–T27 với HV của ít nhất 2 workspace; 100% lần GV mở S16 trong kiểm thử nhận A05.</td></tr>
+          <tr><td class="id">NFR-10</td><td>Observability</td><td>100% lần mở chữ, lượt viết hoàn thành (chế độ, nhận xét, số lỗi, số gợi ý), lỗi tải dữ liệu và lỗi lưu kết quả được ghi nhật ký có cấu trúc gồm thời điểm, mã HV, mã workspace, mã chữ và kết quả, không chứa họ tên, email hay tọa độ nét viết, truy vết được trong ≥ 90 ngày.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thực thể</th><th>Ý nghĩa</th><th>Thuộc tính nghiệp vụ chính</th><th>Quan hệ</th></tr></thead>
+        <tbody>
+          <tr><td><b>Chữ</b> <em>(016, chỉ đọc)</em></td><td>Một chữ Hán giản thể trong Kho nội dung tự học của một workspace (khởi tạo từ bộ HSK mẫu, sau đó GV sửa / thêm / ẩn). "Có dữ liệu nét" khi có đủ nét mẫu cho mọi nét.</td><td>Chữ, pinyin (một hoặc nhiều), nghĩa tiếng Việt, cấp HSK (1–9, một cấp), số nét, nét mẫu theo thứ tự (hình nét + đường giữa có hướng, tên nét nếu có), bộ thủ, thành phần, loại cấu tạo, mẹo nhớ (nếu có), các nét thuộc bộ thủ (nếu có)</td><td>Thuộc một Bộ thủ; thành phần có thể là Chữ khác</td></tr>
+          <tr><td><b>Bộ thủ</b> <em>(016, chỉ đọc)</em></td><td>Một mục trong danh sách bộ thủ của kho workspace (mặc định 214 bộ Khang Hy).</td><td>Dạng chính, dạng biến thể, tên Hán Việt, nghĩa, số nét, số thứ tự, dữ liệu nét của từng dạng (nếu có)</td><td>Có nhiều Chữ</td></tr>
+          <tr><td><b>Danh sách luyện</b></td><td>Dãy chữ có thứ tự tạo khi vào màn hình luyện; chỉ tồn tại trong lần luyện đó.</td><td>Nguồn (cấp HSK, bộ thủ, tìm kiếm, 012, Chữ cần luyện, 1 chữ), các chữ, vị trí hiện tại k/n; tối đa 100 chữ khi từ 012</td><td>Gồm nhiều Chữ</td></tr>
+          <tr><td><b>Lượt viết</b></td><td>Một lần viết trọn một chữ ở "Tô theo mẫu" hoặc "Viết từ trí nhớ". Chỉ lượt hoàn thành được lưu.</td><td>Chữ, chế độ, số lỗi theo từng nét, số gợi ý, nhận xét, thời điểm hoàn thành</td><td>Thuộc một tài khoản; về một Chữ</td></tr>
+          <tr><td><b>Lịch sử luyện viết</b></td><td>Các lượt viết đã lưu của một tài khoản, tổng hợp theo chữ. Riêng tư.</td><td>Theo chữ: số lần luyện, nhận xét và ngày của lượt gần nhất</td><td>Thuộc đúng một tài khoản</td></tr>
+          <tr><td><b>Chữ cần luyện</b></td><td>Tập chữ cần ôn của một tài khoản.</td><td>Chữ, thời điểm được thêm</td><td>Thuộc đúng một tài khoản; cập nhật bởi Lượt viết; tách riêng khỏi SRS / "từ khó" của 012 (AC-14.6)</td></tr>
+          <tr><td><b>Cài đặt luyện viết</b></td><td>Lựa chọn hiển thị và thói quen của người dùng, đồng bộ mọi thiết bị.</td><td>Chế độ gần nhất, cấp HSK gần nhất, "Khung chữ", tốc độ, "Hiện số thứ tự nét", "Tô màu bộ thủ", "Thuận tay trái"</td><td>Thuộc đúng một tài khoản</td></tr>
+          <tr><td><em>Tham chiếu</em></td><td colspan="3">Không thuộc module này: tài khoản, vai trò, đăng nhập, xóa tài khoản (001); S13 "Tự học", từ vựng và bộ từ vựng cá nhân (012); kho chữ và bộ thủ của Kho nội dung tự học, do GV quản lý và xem trước trên T23–T27 (016).</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Hành vi mong đợi</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Người dùng viết hai nét liền một mạch (ví dụ nối nét 1 và 2 của 口)</td><td>nét viết không khớp nét nào → "Nét chưa đúng vị trí hoặc hình dạng." (AC-9.5).</td><td><span class="chip ac">AC-9.5</span></td></tr>
+          <tr><td>Người dùng viết lại đúng một nét đã được chấp nhận</td><td>không khớp nét chưa được chấp nhận nào → "Nét chưa đúng…", tính 1 lỗi cho nét cần viết (AC-9.5).</td><td><span class="chip ac">AC-9.5</span></td></tr>
+          <tr><td>Nét viết khớp đồng thời nét cần viết và một nét khác (hai nét song song gần nhau như 三)</td><td>nét cần viết được ưu tiên, nét được chấp nhận (AC-9.2).</td><td><span class="chip ac">AC-9.2</span></td></tr>
+          <tr><td>Nét viết đảo hướng của một nét khác chưa tới lượt</td><td>không khớp nét nào theo hướng đúng → "Nét chưa đúng…" (AC-9.5).</td><td><span class="chip ac">AC-9.5</span></td></tr>
+          <tr><td>Chạm nhẹ, chạm nhầm hoặc nét dưới 2% cạnh khung, nét bắt đầu ngoài khung</td><td>bỏ qua, không tính lỗi (AC-8.3).</td><td><span class="chip ac">AC-8.3</span></td></tr>
+          <tr><td>Nét bắt đầu trong khung rồi đi ra ngoài</td><td>phần ngoài khung không được vẽ; nét vẫn được kiểm tra với các điểm trong khung (AC-8.1, AC-9.1).</td><td><span class="chip ac">AC-8.1</span> <span class="chip ac">AC-9.1</span></td></tr>
+          <tr><td>Nét chấm rất ngắn (点) viết bằng một cái chạm có kéo nhẹ ≥ 2% cạnh khung</td><td>được kiểm tra theo ngưỡng của nét mẫu ngắn (AC-9.1).</td><td><span class="chip ac">AC-9.1</span></td></tr>
+          <tr><td>Hai ngón tay cùng chạm khi đang viết, lòng bàn tay chạm màn hình khi viết bằng bút</td><td>chỉ nét đầu tiên được ghi nhận (AC-8.2).</td><td><span class="chip ac">AC-8.2</span></td></tr>
+          <tr><td>Trang không cuộn khi người dùng kéo trong khung trên điện thoại; kéo ngoài khung vẫn cuộn bình thường (AC-8.2).</td><td></td><td><span class="chip ac">AC-8.2</span></td></tr>
+          <tr><td>Xoay điện thoại giữa lượt viết</td><td>nét đã chấp nhận, số lỗi, số gợi ý giữ nguyên (AC-8.6).</td><td><span class="chip ac">AC-8.6</span></td></tr>
+          <tr><td>"Hoàn tác" ngay sau khi chữ hoàn thành</td><td>không có — bảng kết quả thay thế; người dùng chọn "Viết lại" (AC-11.3).</td><td><span class="chip ac">AC-11.3</span></td></tr>
+          <tr><td>"Hoàn tác" rồi viết lại nét đó sai</td><td>lỗi tiếp tục được tính, số lỗi cũ giữ nguyên (AC-8.4).</td><td><span class="chip ac">AC-8.4</span></td></tr>
+          <tr><td>Sai 3 lần liên tiếp ở nét 2, đúng nét 2, rồi sai 3 lần ở nét 3</td><td>hai gợi ý, h = 2 (AC-10.3, AC-10.6).</td><td><span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.6</span></td></tr>
+          <tr><td>Sai 2 lần ở nét 1, đúng nét 1, sai 1 lần ở nét 2</td><td>không có gợi ý (bộ đếm liên tiếp theo từng nét), m = 3 → "Cần luyện thêm" (AC-10.3, AC-11.2).</td><td><span class="chip ac">AC-10.3</span> <span class="chip ac">AC-11.2</span></td></tr>
+          <tr><td>Chọn "Gợi ý" rồi lại sai 3 lần ở cùng nét</td><td>nét đó vẫn chỉ tính 1 gợi ý (AC-10.6).</td><td><span class="chip ac">AC-10.6</span></td></tr>
+          <tr><td>Chữ 1 nét (一, 乙)</td><td>chữ hoàn thành ngay khi nét đó được chấp nhận; 0 lỗi → "Tốt" (AC-11.1, AC-11.2).</td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.2</span></td></tr>
+          <tr><td>Chữ nhiều nét (ví dụ 18 nét) với 2 lỗi và không gợi ý</td><td>"Tốt" — ngưỡng không phụ thuộc số nét (AC-11.2; giả định §12).</td><td><span class="chip ac">AC-11.2</span></td></tr>
+          <tr><td>Chữ đa âm (行 xíng · háng, 好 hǎo · hào)</td><td>thẻ thông tin và đề bài "Viết từ trí nhớ" hiển thị mọi cách đọc (AC-5.1, AC-10.2); khi mở từ 012, từ chứa chữ giúp phân biệt.</td><td><span class="chip ac">AC-5.1</span> <span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Hai chữ cùng pinyin và nghĩa gần nhau ở "Viết từ trí nhớ" (ví dụ 他 / 她 tā)</td><td>đề bài có nghĩa và số nét; người dùng có thể chọn "Xem chữ" (tính 1 gợi ý) (AC-10.2, AC-10.5).</td><td><span class="chip ac">AC-10.2</span> <span class="chip ac">AC-10.5</span></td></tr>
+          <tr><td>Từ 012 có chữ lặp (妈妈, 谢谢)</td><td>mỗi chữ một lần (AC-4.1); bộ từ có chữ lặp giữa các từ: giữ lần xuất hiện đầu (AC-4.2).</td><td><span class="chip ac">AC-4.1</span> <span class="chip ac">AC-4.2</span></td></tr>
+          <tr><td>Từ có chữ Latinh hoặc số (卡拉OK, 3D打印)</td><td>bỏ qua ký tự không phải chữ Hán (AC-4.4).</td><td><span class="chip ac">AC-4.4</span></td></tr>
+          <tr><td>Bộ từ 012 có &gt; 100 chữ khác nhau</td><td>chỉ 100 chữ đầu, có thông báo (AC-4.3).</td><td><span class="chip ac">AC-4.3</span></td></tr>
+          <tr><td>Tìm bằng chữ phồn thể (ví dụ 學)</td><td>kho chỉ có giản thể → "Không tìm thấy chữ phù hợp…" (AC-3.4); phồn thể ngoài phạm vi.</td><td><span class="chip ac">AC-3.4</span></td></tr>
+          <tr><td>Tìm "hao" (không dấu)</td><td>khớp 好 và mọi chữ đọc "hao" với bất kỳ thanh nào; tìm "nước" hoặc "nuoc": khớp 水, 氵… (AC-3.2).</td><td><span class="chip ac">AC-3.2</span></td></tr>
+          <tr><td>Nội dung tìm 1 ký tự Latinh ("a")</td><td>chưa tìm (cần ≥ 2 ký tự khác chữ Hán) (AC-3.1).</td><td><span class="chip ac">AC-3.1</span></td></tr>
+          <tr><td>Thành phần không phải chữ trong kho (ví dụ một nét hoặc một bộ phận không đứng riêng)</td><td>hiển thị nhưng không chạm được (AC-5.5).</td><td><span class="chip ac">AC-5.5</span></td></tr>
+          <tr><td>Bộ thủ có biến thể không có dữ liệu nét (ví dụ một dạng hiếm)</td><td>"Luyện viết bộ này" chỉ gồm các dạng có dữ liệu (AC-12.4).</td><td><span class="chip ac">AC-12.4</span></td></tr>
+          <tr><td>Đổi chế độ hoặc chuyển chữ giữa lượt viết</td><td>lượt dở bị bỏ, không ghi lịch sử, không hỏi xác nhận (AC-6.3).</td><td><span class="chip ac">AC-6.3</span></td></tr>
+          <tr><td>Rời S16 khi kết quả chưa lưu được (mất mạng)</td><td>kết quả đó không được lưu; người dùng đã thấy cảnh báo của AC-16.5.</td><td><span class="chip ac">AC-16.5</span></td></tr>
+          <tr><td>Cùng tài khoản luyện trên hai thiết bị cùng lúc</td><td>mọi lượt hoàn thành đều được ghi; "Chữ cần luyện" theo lượt hoàn thành sau cùng của từng chữ (AC-13.3, AC-13.4).</td><td><span class="chip ac">AC-13.3</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td>GV cập nhật nét của chữ đang luyện</td><td>lượt hiện tại không bị ảnh hưởng (AC-16.2); GV ẩn hoặc lưu trữ chữ, hoặc gỡ dữ liệu nét: lịch sử giữ dòng với "Không còn dữ liệu luyện" (AC-16.3).</td><td><span class="chip ac">AC-16.2</span> <span class="chip ac">AC-16.3</span></td></tr>
+          <tr><td>GV sửa nét một chữ của bộ HSK mẫu</td><td>chỉ HV của workspace đó luyện theo nét mới; HV của workspace khác không bị ảnh hưởng (AC-1.2, AC-16.2).</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-16.2</span></td></tr>
+          <tr><td>Đường dẫn tới chữ ngoài kho của workspace</td><td>A05 (AC-1.7); chữ có trong kho nhưng chưa có dữ liệu nét: thẻ thông tin kèm "Chữ này chưa có dữ liệu nét để luyện viết." (AC-16.1).</td><td><span class="chip ac">AC-1.7</span> <span class="chip ac">AC-16.1</span></td></tr>
+          <tr><td>HV bị gỡ khỏi mọi lớp, lớp kết thúc</td><td>vẫn dùng S16 với nguyên dữ liệu (AC-1.2). HV bị khóa: không đăng nhập được (001), dữ liệu giữ nguyên; tài khoản bị xóa: dữ liệu xóa trong 24 giờ (AC-14.5).</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-14.5</span></td></tr>
+          <tr><td>GV mở S16</td><td>đường dẫn trực tiếp hoặc đăng nhập bằng tài khoản GV từ A01: A05, không lộ dữ liệu (AC-1.3, AC-1.4); GV xem trước thứ tự nét chỉ trong T23–T27 (016); GV không thấy dữ liệu luyện viết của HV ở bất kỳ màn hình nào (AC-14.2).</td><td><span class="chip ac">AC-1.4</span> <span class="chip ac">AC-14.2</span></td></tr>
+          <tr><td>Thiết bị bật giảm chuyển động</td><td>không tự phát minh họa; gợi ý hướng viết hiển thị dưới dạng số thứ tự và mũi tên tĩnh thay cho minh họa chạy (AC-7.6, NFR-8).</td><td><span class="chip ac">AC-7.6</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <p>Quyết định của stakeholder được dùng: <b>V14</b> (2026-10-22: tự học không cần lớp; nội dung từ kho 016; MVP = minh họa thứ tự nét + khung viết kiểm tra từng nét với nét mẫu + gợi ý sau lỗi; nhận diện chữ viết tự do + AI ở giai đoạn 2; dữ liệu riêng tư, không ảnh hưởng xếp hạng/dashboard; lối vào từ S13 — phần "mọi HV và GV" và "kho hệ thống" đã bị V15 thay thế), <b>V15</b> (2026-10-22: chỉ hai vai trò GV và HV; tự học chỉ dành cho HV; mỗi workspace có Kho nội dung tự học riêng nạp sẵn bộ HSK mẫu, GV sửa / thêm / ẩn tùy ý; GV chỉ quản lý, không dùng S16), D4 (không tự đăng ký), V12-4 (phong cách "Mực &amp; giấy", chữ Hán serif, <code>lang="zh-Hans"</code>).</p>
+      <p>Giả định được dùng (chi tiết ở §15): HV mobile-first 360–430 px, bố cục rộng khi HV dùng màn hình rộng; ngưỡng kiểm tra nét, ngưỡng gợi ý và ngưỡng "Tốt" như REQ-9 đến REQ-11, hiệu chỉnh bằng NFR-6 trước khi phê duyệt triển khai.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hướng</th><th>Module</th><th>Sự kiện / dữ liệu nghiệp vụ</th></tr></thead>
+        <tbody>
+          <tr><td>Nhận từ / cần cung cấp</td><td><a class="chip mod" href="../016-content-library/spec.html">016</a></td><td><b>Kho nội dung tự học (GV, T23–T27)</b> — mỗi workspace một kho, khởi tạo từ bộ HSK mẫu (có dữ liệu nét và bộ thủ) rồi do GV sở hữu; GV xem trước thứ tự nét trong T23–T27. Cho mỗi chữ: pinyin (mọi cách đọc), nghĩa tiếng Việt, một cấp HSK, số nét, nét mẫu theo thứ tự (hình nét + đường giữa có hướng), tên nét (tùy chọn), bộ thủ, thành phần, loại cấu tạo theo một danh mục cố định, mẹo nhớ (tùy chọn), các nét thuộc bộ thủ (tùy chọn); danh sách bộ thủ (dạng chính, biến thể, tên Hán Việt, nghĩa, số nét, thứ tự, dữ liệu nét của từng dạng); tìm theo pinyin không dấu/số thanh và nghĩa không dấu; thứ tự chữ trong mỗi cấp. GV cập nhật, ẩn, lưu trữ hay gỡ dữ liệu nét không làm hỏng lượt đang luyện hay lịch sử của HV (AC-16.2, AC-16.3); không hiển thị dữ liệu luyện viết của HV trên T23–T27 (AC-14.2).</td></tr>
+          <tr><td>Cần bổ sung</td><td><a class="chip mod" href="../012-vocabulary-srs/spec.html">012</a></td><td>Thẻ "Luyện viết chữ Hán" trên S13; nút "Luyện viết" ở một từ (S14/S15) và ở một bộ từ vựng cá nhân, mở S16 và nhận người dùng quay lại. <b>Đã chốt (2026-10-22, Q-1):</b> "Chữ cần luyện" tách riêng khỏi SRS / "từ khó" của 012 trong MVP, không nối theo chiều nào (AC-14.6).</td></tr>
+          <tr><td>Cần bổ sung</td><td><a class="chip mod" href="../001-accounts-auth/spec.html">001</a></td><td>S13/S16 chỉ thuộc nhóm màn hình của HV trong quy tắc định tuyến; A01 quay lại đúng màn hình; tài khoản GV mở S16 → A05; xóa dữ liệu luyện viết khi xóa tài khoản HV.</td></tr>
+          <tr><td>Không được dùng dữ liệu</td><td><a class="chip mod" href="../008-scoring-leaderboard/spec.html">008</a> <a class="chip mod" href="../009-teacher-dashboard/spec.html">009</a> <a class="chip mod" href="../003-classes/spec.html">003</a> <a class="chip mod" href="../011-student-profile/spec.html">011</a></td><td>Không nhận gì từ 013; không hiển thị hay dùng dữ liệu luyện viết (AC-14.2, AC-14.3).</td></tr>
+          <tr><td>Thiết kế</td><td>prototype</td><td><code>specs/screen-flow-design.html</code> chưa có S16; cần thêm trang chính, màn hình luyện ở ba chế độ, bảng kết quả, chi tiết bộ thủ, "Cài đặt" theo <code>docs/design/DESIGN.md</code>.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul>
+        <li><b>Giai đoạn 2 (V14):</b> nhận diện chữ viết tự do (viết cả chữ một lần, không kiểm tra từng nét) và gợi ý sửa lỗi bằng AI.</li>
+        <li>Chấm điểm thư pháp hay độ đẹp (độ dày, lực bút, nét móc/nét thanh), chấm theo thời gian viết.</li>
+        <li>Chữ phồn thể, chữ dị thể ngoài kho; viết cả từ nhiều chữ trong một khung; bàn phím viết tay để nhập chữ.</li>
+        <li>GV giao bài luyện viết cho lớp, GV xem kết quả luyện viết của HV, xếp hạng hay thi đua luyện viết.</li>
+        <li>Đồng bộ "Chữ cần luyện" với SRS 012: tự động đưa chữ viết chưa tốt vào ôn tập lặp lại ngắt quãng hoặc đánh dấu "từ khó" của 012, hay ngược lại (ý tưởng cho sau MVP; MVP giữ hai danh sách tách riêng — Q-1 đã chốt 2026-10-22, AC-14.6).</li>
+        <li>Phát âm chữ đơn lẻ trên S16 (phát âm thuộc thẻ từ của 012).</li>
+        <li>In hoặc xuất phiếu luyện viết, tải trước cả cấp HSK để dùng ngoại tuyến, cài đặt như ứng dụng.</li>
+        <li>HV tự xóa lịch sử luyện viết; HV tự tạo hay sửa dữ liệu nét; GV soạn hoặc xem trước dữ liệu nét trên S16 (thuộc 016, T23–T27).</li>
+        <li>Thông báo, email hay nhắc lịch luyện viết.</li>
+        <li>GV tự luyện viết trên S16 như một người học (V15: GV chỉ quản lý nội dung); kho chữ dùng chung giữa các workspace.</li>
+      </ul>
+      <h4>Removed (2026-10-22, V15)</h4>
+      <p>Không mã AC nào bị bỏ (AC-1.4 được viết lại tại chỗ; thêm AC-1.7); các hành vi sau không còn:</p>
+      <ul>
+        <li><b>GV dùng S16</b> (AC-1.1, AC-1.2, AC-1.3 cũ; US-1 … US-4, US-6 cũ "Là HV hoặc GV"): lối vào S16 cho GV trên bố cục máy tính, GV tự luyện và kiểm tra thứ tự nét trước khi dạy trên S16, lịch sử / "Chữ cần luyện" / cài đặt riêng của GV — nay GV mở S16 thấy A05 (AC-1.4) và xem trước dữ liệu nét trong T23–T27 (016).</li>
+        <li><b>Vai trò "Quản trị nội dung"</b> bị chặn bằng A05 (AC-1.4 cũ) và <b>một kho chữ hệ thống dùng chung</b> cho mọi tài khoản (AC-1.2 cũ) — nay mỗi workspace có Kho nội dung tự học riêng do GV quản lý.</li>
+      </ul>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <div class="callout note"><strong>Không còn câu hỏi mở.</strong> Q-1 (§10, 012) đã đóng ngày 2026-10-22: "Chữ cần luyện" là danh sách riêng của 013 trong MVP, không tự động nối với SRS hay "từ khó" của 012 (<span class="chip ac">AC-14.6</span>, §13; xem §15 Session 2026-10-22 (chốt câu hỏi mở)).</div>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session 2026-10-22 (V14 — tự học toàn hệ thống)</h4>
+      <ul>
+        <li>Q: Yêu cầu gốc? → A: Nguyên văn: "giờ sẽ thêm các module feature global cho tất cả user để có thể dùng được và không phân biệt lớp: 4. Luyện viết chữ Hán — Hướng dẫn thứ tự các nét. Khung luyện viết trực tiếp trên màn hình. Nhận diện chữ viết và gợi ý sửa lỗi. Luyện bộ thủ, cấu tạo chữ và ghi nhớ mặt chữ." <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Ai được dùng? → A: Mọi tài khoản HV và GV hiện có, không cần lớp; không mở đăng ký công khai (AC-1.2, AC-1.3) <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Nội dung lấy từ đâu? → A: Kho hệ thống (016): mỗi chữ có dữ liệu thứ tự nét, số nét, bộ thủ, thành phần, pinyin, nghĩa, cấp HSK; danh sách bộ thủ (REQ-5, REQ-12, §10) <em>(source: stakeholder)</em></li>
+        <li>Q: MVP gồm gì và phần nào để sau? → A: MVP = minh họa thứ tự nét + khung viết, người học viết từng nét và mỗi nét được kiểm tra với nét mẫu (hướng, thứ tự, hình dạng gần đúng), có gợi ý sau khi sai; giai đoạn 2 = nhận diện chữ viết tự do (cả chữ) và gợi ý sửa lỗi bằng AI (REQ-7 đến REQ-11, §9) <em>(source: stakeholder)</em></li>
+        <li>Q: Ai thấy dữ liệu luyện viết? → A: Chỉ chính người dùng; GV không thấy; không ảnh hưởng xếp hạng hay dashboard của lớp (REQ-14) <em>(source: stakeholder)</em></li>
+        <li>Q: Lối vào? → A: Từ trang S13 "Tự học" (012) (AC-1.1) <em>(source: stakeholder)</em></li>
+        <li>Q: Khi nào một nét được chấp nhận và thế nào là lỗi? → A: Khớp = điểm đầu và điểm cuối cách nét mẫu ≤ 20% cạnh khung, độ lệch trung bình ≤ 12% cạnh khung, độ dài 50–150% (nét ngắn: 2–20% cạnh khung); lỗi chia 3 loại theo thứ tự ưu tiên "Sai hướng nét" → "Sai thứ tự nét" → "Nét chưa đúng", mỗi nét sai tính 1 lỗi cho nét cần viết (REQ-9) <em>(source: assumption — mức dung sai thường dùng của công cụ luyện viết theo nét, đủ rộng cho ngón tay trên màn hình 360 px; hiệu chỉnh bằng NFR-6)</em></li>
+        <li>Q: Gợi ý xuất hiện khi nào? → A: Tự động sau 3 lỗi liên tiếp ở cùng một nét, hoặc khi chọn "Gợi ý"; "Xem chữ" ở "Viết từ trí nhớ" hiện cả chữ 2 giây; mỗi gợi ý được tính (REQ-10) <em>(source: assumption — 3 lần đủ để người học tự sửa trước khi được nhắc)</em></li>
+        <li>Q: Nhận xét của chữ? → A: "Tốt" khi ≤ 2 lỗi và 0 gợi ý, ngược lại "Cần luyện thêm"; không phụ thuộc số nét (AC-11.2) <em>(source: assumption — quy tắc đơn giản, dễ hiểu, kiểm thử được; brief nêu ví dụ "Tốt" / "Cần luyện thêm")</em></li>
+        <li>Q: Chữ vào và rời "Chữ cần luyện" thế nào? → A: Vào khi một lượt bất kỳ đạt "Cần luyện thêm"; rời khi lượt "Viết từ trí nhớ" đạt "Tốt" hoặc người dùng bỏ thủ công (AC-13.3, AC-13.4, AC-13.6) <em>(source: assumption — chỉ viết từ trí nhớ chứng minh đã nhớ mặt chữ; tô theo mẫu thì chưa)</em></li>
+        <li><em>[thay thế 2026-10-22]</em> Q: Có nối với SRS của 012 không? → A: Chưa trong MVP; xem Q-1 <em>(source: assumption — 012 SRS dựa trên từ, chưa có spec; tránh ràng buộc chéo)</em></li>
+        <li>Q: "Viết từ trí nhớ" hiển thị gì làm đề bài? → A: Pinyin, nghĩa, số nét (và từ chứa chữ khi mở từ 012), không hiển thị chữ (AC-10.2) <em>(source: assumption — nếu thấy chữ thì không còn là viết từ trí nhớ)</em></li>
+        <li>Q: Nét được chấp nhận hiển thị thế nào? → A: Thay vệt mực bằng nét mẫu tô màu mực (AC-9.2) <em>(source: assumption — người học luôn thấy hình nét chuẩn; tránh nhầm nét lệch là đúng)</em></li>
+        <li>Q: Khung chữ nào là mặc định? → A: "田字格", có thể đổi sang "米字格"; lưới không ảnh hưởng kiểm tra (AC-6.4) <em>(source: assumption — 田字格 phổ biến nhất trong sách HSK)</em></li>
+        <li>Q: Tốc độ minh họa? → A: "1×" = 0,6 giây mỗi nét, nghỉ 0,2 giây; có "0,5×" và "2×" (AC-7.2) <em>(source: assumption — đủ chậm để theo dõi hướng nét, chữ 10 nét xong trong 8 giây)</em></li>
+        <li>Q: Lượt viết dở có được lưu? → A: Không; đổi chế độ, chuyển chữ, "Viết lại" hoặc rời màn hình bỏ lượt dở không hỏi xác nhận (AC-6.3, AC-8.5) <em>(source: assumption — một lượt chỉ vài chục giây, xác nhận gây phiền)</em></li>
+        <li>Q: Người dùng trình đọc màn hình (không vẽ được) nhận được gì? → A: "Danh sách nét" dạng văn bản (số thứ tự, tên nét, hướng viết), "Từng nét" đọc từng nét, mọi điều khiển dùng được bằng bàn phím; khung viết vẫn cần vẽ bằng tay, chuột hoặc bút (REQ-15) <em>(source: assumption — học thứ tự nét vẫn có giá trị khi không vẽ được)</em></li>
+        <li>Q: Người thuận tay trái? → A: Tùy chọn "Thuận tay trái" dồn thanh công cụ sang trái; quy tắc kiểm tra không đổi (AC-15.1) <em>(source: assumption — tránh tay che nút; thứ tự và hướng nét chuẩn không đổi theo tay thuận)</em></li>
+        <li>Q: Có dùng được khi mất mạng? → A: Có, với chữ đã tải; kết quả lưu lại khi có mạng nếu S16 còn mở (AC-16.4, AC-16.5) <em>(source: assumption — kiểm tra nét không cần mạng; không tải trước cả cấp trong MVP)</em></li>
+        <li>Q: Giới hạn danh sách luyện từ 012? → A: Tối đa 100 chữ (AC-4.3) <em>(source: assumption — một lần luyện thực tế; tránh danh sách vô hạn)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Vai trò Quản trị nội dung (016) có dùng S16? → A: Không; mở S16 → A05 (AC-1.4) <em>(source: assumption — V14 chỉ nêu HV và GV; Quản trị nội dung xem trước dữ liệu ở màn hình của 016)</em></li>
+        <li>Q: Dữ liệu luyện viết giữ bao lâu? → A: Tới khi tài khoản bị xóa; xóa trong 24 giờ sau đó (AC-14.5) <em>(source: assumption — dữ liệu cá nhân tối thiểu, nhất quán với 011 AC-11.4)</em></li>
+      </ul>
+      <h4>Session 2026-10-22 (chốt câu hỏi mở)</h4>
+      <ul>
+        <li>Q: Q-1 — Chữ có lượt "Cần luyện thêm" trên S16 có được tự động đưa vào ôn tập lặp lại ngắt quãng (SRS) hoặc đánh dấu "từ khó" của 012, hay hai danh sách tách riêng? → A: Tách riêng trong MVP: "Chữ cần luyện" ở lại trong 013, không tự động nối với 012 theo chiều nào (thêm AC-14.6; §13 ghi "đồng bộ Chữ cần luyện với SRS 012" là ý tưởng sau MVP; §12, §14 cập nhật; mục "Có nối với SRS của 012 không?" của Session 2026-10-22 (V14) được gắn "[thay thế 2026-10-22]") <em>(source: stakeholder — 'làm theo recommend tốt nhất của bạn', phương án đề xuất của điều phối)</em></li>
+      </ul>
+      <h4>Session 2026-10-22 (V15 — Tự học chỉ cho HV)</h4>
+      <ul>
+        <li>Q: Yêu cầu gốc? → A: Nguyên văn: "Hệ thống hiện tại chỉ có 2 role là GV và học viên, và phần quản lí các nội dung tự học sẽ làm chung phần quản lí của GV luôn, và GV chỉ quản lí thôi, chức năng tự học chỉ dành cho user học viên. Gom quản lí hệ thống vào cho GV." <em>(source: stakeholder)</em></li>
+        <li>Q: Dữ liệu chữ lấy từ đâu khi không còn "Quản trị nội dung"? → A: Mỗi GV có kho tự học riêng trong workspace ("Kho nội dung tự học", 016, T23–T27), nạp sẵn một bộ nội dung HSK mẫu (gồm dữ liệu nét và bộ thủ) mà GV sửa / thêm / ẩn tùy ý; HV luyện trên kho của workspace mình (AC-1.2, §3, §7, §10) <em>(source: stakeholder)</em></li>
+        <li>Q: Ai dùng S16? → A: Chỉ HV: mọi HV đã kích hoạt, không bị khóa, không phân biệt lớp. GV không dùng S16, không có lối vào, không có dữ liệu luyện viết riêng (AC-1.1, AC-1.2, AC-1.3, US-1 … US-4, US-6, §9 Removed) <em>(source: stakeholder)</em></li>
+        <li>Q: GV mở S16 bằng đường dẫn trực tiếp thì sao? → A: A05 "Không tìm thấy nội dung bạn yêu cầu.", không lộ dữ liệu; GV xem trước thứ tự nét chỉ trong T23–T27 (AC-1.4 viết lại tại chỗ thay cho AC chặn vai trò "Quản trị nội dung") <em>(source: assumption — nhất quán với quy tắc A05 của sản phẩm và với 012 AC-1.4)</em></li>
+        <li>Q: Bố cục máy tính của S16 còn không? → A: Còn, chỉ như "HV trên màn hình rộng" (≥ 1024 px, khung ≥ 400 px, viết bằng chuột hoặc bút) (AC-1.5, NFR-7) <em>(source: assumption — spec đã mô tả bố cục rộng; HV vẫn có thể luyện trên máy tính hoặc máy tính bảng)</em></li>
+        <li>Q: Đường dẫn tới một chữ không có trong kho của workspace HV? → A: A05 giống hệt chữ không tồn tại (thêm AC-1.7); chữ có trong kho nhưng chưa có dữ liệu nét vẫn theo AC-16.1 <em>(source: assumption — quy tắc cách ly workspace A05 của sản phẩm)</em></li>
+        <li>Q: GV sửa / ẩn chữ thì dữ liệu của HV ra sao? → A: Giữ nguyên các quy tắc hiện có, nay do GV kích hoạt và chỉ ảnh hưởng HV của workspace đó: lượt đang luyện dùng dữ liệu đã tải, lần mở sau dùng dữ liệu mới (AC-16.2); chữ bị ẩn, lưu trữ hoặc gỡ nét giữ dòng trong "Lịch sử" / "Chữ cần luyện" với "Không còn dữ liệu luyện" (AC-16.3) <em>(source: assumption — thống nhất với 012 REQ-19 và 016; nguyên tắc "không bao giờ mất dữ liệu học")</em></li>
+        <li>Q: Riêng tư thay đổi gì? → A: Không đổi: dữ liệu luyện viết riêng tư của HV, GV không thấy kể cả trên T23–T27, không ảnh hưởng 008/009; xóa trong 24 giờ khi xóa tài khoản HV (AC-14.2, AC-14.5, NFR-9) <em>(source: stakeholder — V15 không đổi điều kiện riêng tư của V14)</em></li>
+        <li>Q: Khối lượng dữ liệu? → A: Tính theo kho của từng workspace: một cấp HSK tới 1.500 chữ trong kho của một workspace; tổng tải lưu kết quả giữ 100 lượt mỗi giây trên toàn hệ thống (NFR-3) <em>(source: assumption — bộ HSK mẫu giống nhau ở mọi workspace lúc khởi tạo; GV thêm chữ không làm một cấp vượt quá danh sách chữ HSK chuẩn nhiều)</em></li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

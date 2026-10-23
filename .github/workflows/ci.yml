@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # mongodb-memory-server binary lives outside node_modules so `npm ci` doesn't wipe the cache.
+  MONGOMS_DOWNLOAD_DIR: ${{ github.workspace }}/.mongodb-binaries
+
+jobs:
+  harness:
+    name: Harness self-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+      - name: sdd CLI + guardrail hooks tests
+        run: npm run test:harness
+
+  verify:
+    name: Lint · Typecheck · Test · Build · Spec gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      # >>> sdd:toolchain-setup — Node 24 + npm cache + MongoDB binary cache (ADR-0002)
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: .mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: mongodb-binaries-${{ runner.os }}-
+      # <<< sdd:toolchain-setup
+      - name: Install
+        run: node .sdd/scripts/sdd.mjs run install
+      - name: lint → typecheck → test → build → check --all
+        run: node .sdd/scripts/sdd.mjs ci
+      - name: Feature status
+        if: always()
+        run: |
+          {
+            echo '### Spec-driven features'
+            echo '```'
+            node .sdd/scripts/sdd.mjs status
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  e2e:
+    name: E2E (Playwright)
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      # >>> sdd:toolchain-setup — Node 24 + npm cache + MongoDB binary cache (ADR-0002)
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: .mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: mongodb-binaries-${{ runner.os }}-
+      # <<< sdd:toolchain-setup
+      - name: Install
+        run: node .sdd/scripts/sdd.mjs run install
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: node .sdd/scripts/sdd.mjs run test:e2e
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  container:
+    name: Container build
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: sat:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Image starts and reports healthy (with a throwaway MongoDB)
+        run: |
+          docker network create sat-ci
+          docker run -d --name mongo --network sat-ci mongo:8
+          for i in $(seq 1 30); do
+            docker exec mongo mongosh --quiet --eval "db.adminCommand('ping').ok" >/dev/null 2>&1 && break
+            sleep 2
+          done
+          # The API fails fast without MongoDB; the restart policy covers any remaining startup race.
+          docker run -d --name app --network sat-ci --restart on-failure:5 -p 8080:8080 \
+            -e MONGODB_URI=mongodb://mongo:27017/sat sat:ci
+          node scripts/smoke.mjs http://127.0.0.1:8080 || { docker logs app; exit 1; }

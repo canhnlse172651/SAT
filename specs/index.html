@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Spec Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <span>SAT · Đặc tả hệ thống</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Spec overview · v11 · 9 module MVP · 171 REQ · 982 AC · 63 flow · 17 câu hỏi mở</div>
+    <h1>SAT — Nền tảng cho giáo viên dạy tiếng Trung</h1>
+    <p class="lede">Giáo viên tạo giáo trình HSK1–HSK9 gồm nhiều bài. Mỗi bài có 2 phần: <b>Bài học</b> và <b>Bài tập</b>. Có hai cách soạn bài, đặt cạnh nhau trên cùng một màn hình: <b>soạn thủ công</b> theo bước và khối, hoặc <b>tạo bằng AI</b> (tải PDF/Word lên kèm mô tả ngắn; AI dựa trên tài liệu tạo thành bài học hoàn chỉnh kèm bài tập; giáo viên review, bấm Duyệt thì xuất bản và thay thế nội dung cũ). Giáo viên nhập email học viên rồi kích hoạt, hệ thống gửi mật khẩu qua email. Sau đó giáo viên mở lớp và ẩn/hiện từng phần cho từng lớp. Học viên có hồ sơ cá nhân và xem được hồ sơ bạn cùng lớp. Hệ thống chỉ theo dõi việc làm bài tập của học viên, không theo dõi thời gian hay việc xem bài học, và dùng kết quả đó cho tiến độ và bảng xếp hạng.</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Cập nhật 2026-10-20 (v4)</span>
+      <a class="pill" href="dashboard.html">Dashboard tiến độ</a>
+      <a class="pill" href="screen-flow-design.html">Prototype</a>
+      <a class="pill" href="#modules">Module</a>
+      <a class="pill" href="#open-questions">Câu hỏi mở</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <section class="doc" id="product">
+      <h2>1. Product <span class="vi">Sản phẩm</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+flowchart LR
+  GT["Giáo trình<br/>HSK1 … HSK9"] --> B1["Bài 1"]
+  GT --> Bn["… Bài n"]
+  B1 --> S1["Phần Bài học<br/>bước học → khối: từ vựng, ngữ pháp,<br/>hội thoại, văn bản, flashcard, tài liệu, video…"]
+  B1 --> S2["Phần Bài tập<br/>bộ bài tập tự chấm<br/>mỗi bộ làm 1 lần"]
+  M["Soạn thủ công"] -.-> S1
+  M -.-> S2
+  AI["Tạo bằng AI<br/>PDF/Word + mô tả ngắn"] -. "review → GV duyệt mới lưu" .-> S1
+  AI -.-> S2
+  L["Lớp học"] -. "ẩn / hiện từng phần" .-> B1
+  S2 == "theo dõi: lượt làm, điểm cao nhất" ==> T["Tiến độ + Xếp hạng"]
+</pre>
+        <figcaption>Hình 1.1 — Cấu trúc v3: Giáo trình → Bài → 2 phần. Chỉ việc làm bài tập được theo dõi.</figcaption>
+      </figure>
+      <h4>Yêu cầu của stakeholder (nguyên văn, mới nhất trước)</h4>
+      <div class="callout note">
+        <b>2026-10-20:</b> chỉ tracking học viên làm bài tập của buổi học chứ không tracking thời lượng và nội dung học · phần giáo trình tinh gọn lại sẽ chỉ có section bài học và bài tập, bỏ lộ trình và bài thi · 2 cách: 1 là thủ công GV sẽ tạo tay dựa vào các bước và khối của hệ thống; 2 là tạo bằng AI: upload tài liệu là file PDF, WORD… AI sẽ phân tích và tự tạo bài học và bài tập tự động dựa vào nội dung được upload (thường AI sẽ bám theo 80% nội dung bài soạn trước đó), có chức năng review các section bài học và bài tập AI tạo, chỉ save khi GV approve · UI chia 2 panel: 1 bên tạo manual và 1 bên AI; bên AI chỉ cần upload, input nhập mô tả ngắn và chức năng review · prototype chia theo role GV và role học sinh<br><br>
+        <b>2026-10-19:</b> admin có thể hidden section thì học viên trong lớp không thấy section đó nữa · bài tập: pending speaking và listening, làm trước reading, writing, từ vựng... hệ thống tự chấm được · học sinh làm bài tập nhiều lần không giới hạn, điểm leo rank lấy lần cao nhất<br><br>
+        <b>2026-10-18:</b> platform cho giáo viên dạy tiếng Trung · giáo trình HSK1–HSK9 · bài học: video, text, doc, hình ảnh, flash card từ vựng · tạo lớp → đặt tên → chọn start date → add từng học viên → chọn giáo án · học viên làm bài tập có thống kê điểm để leo rank · admin có dashboard: danh sách lớp, danh sách học viên, tiến độ số lượng bài tập, rank điểm
+      </div>
+    </section>
+
+    <section class="doc" id="decisions">
+      <h2>2. Decisions <span class="vi">Quyết định đang hiệu lực</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ngày</th><th>Quyết định</th></tr></thead>
+        <tbody>
+          <tr><td class="id">D1</td><td>18/10</td><td>Mỗi giáo viên là admin của workspace riêng; dữ liệu giữa các giáo viên tách biệt hoàn toàn.</td></tr>
+          <tr><td class="id">D4</td><td>18/10</td><td>Giáo viên tạo tài khoản học viên; học viên không tự đăng ký (cách kích hoạt xem V4-6).</td></tr>
+          <tr><td class="id">D3</td><td>19/10</td><td>Chỉ có dạng câu hỏi tự chấm: trắc nghiệm (kể cả các dạng từ vựng), điền chỗ trống, nối cặp, sắp xếp từ thành câu, viết chữ Hán theo pinyin, đọc hiểu. Nói, Nghe, viết đoạn tự do và chấm tay để sau.</td></tr>
+          <tr><td class="id">D5</td><td>19/10</td><td>Giáo viên ẩn/hiện từng phần của từng bài, riêng cho từng lớp.</td></tr>
+          <tr><td class="id">V11</td><td>22/10</td><td><b>Mỗi bộ bài tập chỉ làm 1 lần, tính điểm 1 lần</b> (thay quyết định “làm lại không giới hạn” ngày 19/10). Làm xong học viên xem lại bài làm, đáp án và giải thích. Bảng xếp hạng bỏ “Lịch sử điểm”.</td></tr>
+          <tr><td class="id">V12</td><td>22/10</td><td><b>Prototype là chuẩn</b> cho câu chữ giao diện và hành vi nó thể hiện; mọi spec đã đồng bộ (mục “Session 2026-10-22 (đồng bộ prototype)”). Xem như học viên (T21, T20) chỉ trả lời thử, không nộp. Thư nhắc hạn: một thư mỗi lớp mỗi ngày, nút “Làm bài ngay”. Giao diện mới “Mực & giấy” (<code>docs/design/DESIGN.md</code>).</td></tr>
+          <tr><td class="id">V13</td><td>22/10</td><td><b>Bài thi trở lại MVP</b> (module 006, độc lập, gán cho lớp, giờ mở + thời lượng + giờ đóng). <b>Điểm xếp hạng = 30% TB bài tập + 70% TB bài thi</b>, tính bài đã nộp hoặc đã quá hạn. Học viên học được mọi bài; bộ bài tập chỉ làm được khi giáo viên đã đặt hạn nộp (“Chưa mở”).</td></tr>
+          <tr><td class="id">V14</td><td>22/10</td><td><em>(vai trò và người dùng được thay bởi V15)</em> <b>Khu Tự học không phụ thuộc lớp</b> cho mọi học viên và giáo viên: từ vựng SRS, luyện viết chữ Hán, nghe &amp; nói, thi thử HSK; nội dung từ <b>kho chung HSK 1–9</b> do vai trò mới “Quản trị nội dung” quản lý. Dữ liệu tự học riêng tư, không tính vào xếp hạng lớp. MVP chưa dùng AI (nhận diện chữ viết, chấm phát âm, đóng vai AI ở giai đoạn 2).</td></tr>
+          <tr><td class="id">V15</td><td>22/10</td><td><b>Chỉ còn 2 vai trò: giáo viên và học viên.</b> Bỏ “Quản trị nội dung”; quản lý nội dung tự học gom vào giáo viên (“Kho tự học”, T23–T27): mỗi workspace một kho, nạp sẵn bộ HSK mẫu. <b>Tự học chỉ dành cho học viên</b>; giáo viên chỉ quản lý.</td></tr>
+          <tr><td class="id">X5</td><td>19/10</td><td>Sửa đáp án sau khi đã có bài nộp: giáo viên xác nhận thì hệ thống chấm lại các bài cũ.</td></tr>
+          <tr><td class="id">V3-1</td><td>20/10</td><td><b>Chỉ theo dõi việc làm bài tập.</b> Không theo dõi thời gian học hay việc xem bài học; không còn “Đánh dấu đã học”.</td></tr>
+          <tr><td class="id">V3-2</td><td>20/10</td><td><b>Mỗi bài chỉ còn 2 phần: Bài học và Bài tập.</b> Bỏ lộ trình và Bài thi; module 006 hoãn.</td></tr>
+          <tr><td class="id">V3-3</td><td>20/10</td><td><b>Màn hình “Soạn bài” chia 2 panel</b> (21/10: soạn thủ công trên một màn hình 2 tab Bài học / Bài tập, chỉ chế độ soạn; “Xem như học viên” mở từ danh sách bài để xem trọn bài): bên trái soạn thủ công (bước + khối, bộ bài tập), bên phải tạo bằng AI (tải PDF/Word, mô tả ngắn, tạo). AI bám khoảng 80% nội dung tài liệu.</td></tr>
+          <tr><td class="id">V3-4</td><td>20/10</td><td><b>Review nội dung AI theo từng phần; chỉ lưu khi giáo viên duyệt</b> (xem V4-2/3).</td></tr>
+          <tr><td class="id">V4-1</td><td>20/10</td><td><b>Tài liệu là nguồn.</b> AI phân tích và sáng tạo thành bài học hoàn chỉnh, có hệ thống, kèm bài tập. Bao phủ ≥ 80% kiến thức của tài liệu và không vượt cấp HSK của tài liệu.</td></tr>
+          <tr><td class="id">V4-2/3</td><td>20/10</td><td><b>Bấm “Duyệt” là xuất bản luôn và thay thế hoàn toàn nội dung cũ của phần đó.</b> Mục cũ chưa có dữ liệu thì xóa; bộ bài tập đã có người làm thì lưu trữ, giữ bài nộp và điểm.</td></tr>
+          <tr><td class="id">V4-4</td><td>20/10</td><td>Được đổi cấp HSK của giáo trình đang dùng. Mọi chỉnh sửa giáo trình cập nhật ngay cho các lớp.</td></tr>
+          <tr><td class="id">V4-6</td><td>20/10</td><td><b>Kích hoạt học viên bằng email.</b> Giáo viên nhập email (từng người hoặc Excel) rồi bấm “Kích hoạt”; hệ thống tạo tài khoản và gửi mật khẩu ngẫu nhiên qua email. Không bắt buộc đổi mật khẩu lần đầu.</td></tr>
+          <tr><td class="id">V4-7</td><td>20/10</td><td><b>Hồ sơ học viên.</b> Đổi mật khẩu, ảnh đại diện, ảnh bìa, các lớp đang học kèm tiến độ và hạng. Học viên xem được hồ sơ bạn cùng lớp, chỉ với thông tin của các lớp học chung.</td></tr>
+          <tr><td class="id">V8</td><td>21/10</td><td><b>Hạn nộp và theo dõi Đã làm / Chưa làm.</b> GV đặt hạn nộp cho từng bộ bài tập theo lớp. Dashboard: chọn một bài tập → danh sách Đã làm / Chưa làm. 8:00 sáng ngày hạn nộp hệ thống gửi email nhắc học viên chưa làm. Nộp sau hạn vẫn tính điểm, ghi “Nộp muộn”.</td></tr>
+          <tr><td class="id">V3-5</td><td>20/10</td><td><b>Prototype chia theo vai trò:</b> chọn Giáo viên hoặc Học viên để trải nghiệm toàn bộ màn hình của vai trò đó.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="doc" id="modules">
+      <h2>3. Modules <span class="vi">Bản đồ module</span></h2>
+      <p>Mỗi module là một feature trong pipeline SDD, nằm ở <code>specs/NNN-slug/</code>. <b>spec.html</b> là bản đọc chi tiết có flow. <b>spec.md</b> là hợp đồng để máy kiểm tra và để duyệt.</p>
+      <div class="cards">
+        <article class="card"><span class="pill">001 · draft</span><h3>Tài khoản &amp; Xác thực</h3><div class="sub">Giáo viên đăng ký / đăng nhập. Giáo viên nhập email học viên (từng người hoặc Excel) rồi kích hoạt; hệ thống gửi mật khẩu ngẫu nhiên qua email và có nút gửi lại. Khóa tài khoản, tách biệt workspace.</div><div class="sub">A01–A03, A05, T11, T12, T17</div><div class="sub"><b>8</b> story · <b>18</b> REQ · <b>91</b> AC · <b>1</b> câu hỏi mở</div><div class="links"><a class="chip" href="001-accounts-auth/spec.html">spec.html</a><a class="chip" href="001-accounts-auth/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">002 · draft</span><h3>Giáo trình &amp; Bài</h3><div class="sub">Giáo trình theo cấp HSK, danh sách bài, 2 phần của mỗi bài, màn hình Soạn bài 2 panel (panel thủ công), xuất bản, nhân bản, lưu trữ, xem trước như học viên.</div><div class="sub">T05, T06, T18, T21</div><div class="sub"><b>9</b> story · <b>19</b> REQ · <b>117</b> AC · <b>1</b> câu hỏi mở</div><div class="links"><a class="chip" href="002-curriculum/spec.html">spec.html</a><a class="chip" href="002-curriculum/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">003 · draft</span><h3>Lớp học</h3><div class="sub">Tạo lớp: tên → ngày bắt đầu → học viên → giáo trình. Tab “Nội dung” để ẩn/hiện phần và đặt hạn nộp từng bộ bài tập theo lớp; email nhắc học viên chưa làm lúc 8:00 ngày hạn nộp. Phía học viên: Lớp của tôi, danh sách bài (x/y bộ bài tập), danh sách thành viên lớp, trang bài 2 tab.</div><div class="sub">T02, T03, T04, S01, S02, S11</div><div class="sub"><b>13</b> story · <b>26</b> REQ · <b>143</b> AC · <b>2</b> câu hỏi mở</div><div class="links"><a class="chip" href="003-classes/spec.html">spec.html</a><a class="chip" href="003-classes/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">004 · draft</span><h3>Phần Bài học &amp; Flashcard</h3><div class="sub">Bước học gồm các khối từ vựng, ngữ pháp, hội thoại/bài khóa, văn bản, flashcard, tài liệu, video, ảnh, âm thanh. Học viên chỉ xem; không theo dõi.</div><div class="sub">T07, T08, S03, S04</div><div class="sub"><b>10</b> story · <b>19</b> REQ · <b>116</b> AC · <b>3</b> câu hỏi mở</div><div class="links"><a class="chip" href="004-lessons-flashcards/spec.html">spec.html</a><a class="chip" href="004-lessons-flashcards/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">005 · draft</span><h3>Phần Bài tập</h3><div class="sub">Bộ bài tập tự chấm với 6 dạng câu hỏi; mỗi bộ làm 1 lần, sau khi nộp xem lại đáp án và giải thích; sửa đáp án thì chấm lại; giáo viên xem bài nộp chỉ đọc. Đây là nguồn theo dõi duy nhất.</div><div class="sub">T09, T14, S05, S06</div><div class="sub"><b>11</b> story · <b>23</b> REQ · <b>162</b> AC · <b>2</b> câu hỏi mở</div><div class="links"><a class="chip" href="005-exercises/spec.html">spec.html</a><a class="chip" href="005-exercises/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">008 · draft</span><h3>Điểm &amp; Xếp hạng</h3><div class="sub">Điểm theo lớp bằng tổng điểm của từng bộ bài tập (mỗi bộ làm 1 lần, 0–100 điểm). Xử lý đồng hạng, chấm lại, phần bị ẩn. Hiện top 10 và vị trí của học viên.</div><div class="sub">S09, T04 (Xếp hạng)</div><div class="sub"><b>8</b> story · <b>12</b> REQ · <b>63</b> AC · <b>1</b> câu hỏi mở</div><div class="links"><a class="chip" href="008-scoring-leaderboard/spec.html">spec.html</a><a class="chip" href="008-scoring-leaderboard/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">009 · draft</span><h3>Dashboard giáo viên</h3><div class="sub">Dashboard là danh sách lớp (Đang hoạt động / Đã kết thúc, lọc ngày tạo lớp bằng lịch popup). Mỗi lớp: chọn một bài tập → danh sách Đã làm / Chưa làm (Nộp muộn, Quá hạn), và top 3. Có 2 KPI: “x / y lớp đang hoạt động” và “Bài đang chờ AI duyệt”. Ngoài ra có ma trận tiến độ học viên × bài và hồ sơ học viên.</div><div class="sub">T01, T04 (Tiến độ), T15</div><div class="sub"><b>8</b> story · <b>19</b> REQ · <b>104</b> AC · <b>2</b> câu hỏi mở</div><div class="links"><a class="chip" href="009-teacher-dashboard/spec.html">spec.html</a><a class="chip" href="009-teacher-dashboard/spec.md">spec.md</a></div></article>
+        <article class="card" style="border-color:var(--accent)"><span class="pill p1">010 · draft</span><h3>Tạo bài bằng AI</h3><div class="sub">Panel phải của Soạn bài: tải PDF/Word, nhập mô tả ngắn, bấm “Tạo bằng AI”. Review: xem trước như học viên (tab Bài học, tab Bài tập), bấm “Chỉnh sửa” để sửa từng khối ngay trong khung. “Duyệt” là xuất bản và thay thế nội dung cũ. AI bao phủ ≥ 80% kiến thức tài liệu.</div><div class="sub">T18 (panel AI), T20</div><div class="sub"><b>7</b> story · <b>21</b> REQ · <b>114</b> AC · <b>3</b> câu hỏi mở</div><div class="links"><a class="chip" href="010-ai-lesson-generation/spec.html">spec.html</a><a class="chip" href="010-ai-lesson-generation/spec.md">spec.md</a></div></article>
+        <article class="card" style="border-color:var(--accent)"><span class="pill p1">011 · mới</span><h3>Hồ sơ học viên</h3><div class="sub">Hồ sơ của tôi: ảnh đại diện, ảnh bìa, đổi mật khẩu, các lớp đang học kèm tiến độ và hạng. Xem hồ sơ bạn cùng lớp (chỉ các lớp học chung, không có email hay số điện thoại). Giáo viên gỡ được ảnh không phù hợp.</div><div class="sub">S10, S12</div><div class="sub"><b>8</b> story · <b>14</b> REQ · <b>72</b> AC · <b>2</b> câu hỏi mở</div><div class="links"><a class="chip" href="011-student-profile/spec.html">spec.html</a><a class="chip" href="011-student-profile/spec.md">spec.md</a></div></article>
+        <article class="card"><span class="pill">012 · draft</span><h3>Từ vựng thông minh</h3><div class="sub">Trang Tự học (S13); kho từ HSK 1–9, flashcard 2 mặt có phát âm và ví dụ, ôn tập lặp lại ngắt quãng (Quên / Khó / Nhớ / Dễ), từ khó, bộ từ của tôi.</div><div class="sub">S13, S14, S15</div><div class="links"><a class="chip" href="012-vocabulary-srs/spec.html">spec.html</a></div></article>
+        <article class="card"><span class="pill">013 · draft</span><h3>Luyện viết chữ Hán</h3><div class="sub">Xem thứ tự nét, tô theo mẫu, viết từ trí nhớ trên khung 田/米; kiểm từng nét theo nét mẫu; bộ thủ và cấu tạo chữ. Nhận diện chữ viết tự do: giai đoạn 2.</div><div class="sub">S16</div><div class="links"><a class="chip" href="013-hanzi-writing/spec.html">spec.html</a></div></article>
+        <article class="card"><span class="pill">014 · draft</span><h3>Luyện nghe &amp; nói</h3><div class="sub">Nghe bản xứ, nghe hội thoại chọn đáp án, thu âm và nghe lại (giọng nói không rời thiết bị), đóng vai theo kịch bản. Chấm phát âm/thanh điệu, đóng vai AI: giai đoạn 2.</div><div class="sub">S17, S18</div><div class="links"><a class="chip" href="014-listening-speaking/spec.html">spec.html</a></div></article>
+        <article class="card"><span class="pill">015 · draft</span><h3>Thi thử HSK</h3><div class="sub">Luyện theo dạng, kiểm tra cuối chương, đề thi thử có giờ; chấm tự động, giải thích đáp án, thống kê lỗi sai, luyện lại câu sai.</div><div class="sub">S19, S20</div><div class="links"><a class="chip" href="015-hsk-mock-tests/spec.html">spec.html</a></div></article>
+        <article class="card"><span class="pill">016 · draft</span><h3>Kho nội dung tự học (GV)</h3><div class="sub">Mỗi giáo viên có kho tự học riêng trong workspace, nạp sẵn bộ nội dung HSK mẫu; giáo viên sửa, thêm, ẩn: từ vựng + âm thanh, chữ Hán + dữ liệu nét, bài nghe, kịch bản đóng vai, đề thi thử. Học viên của giáo viên dùng ở khu Tự học.</div><div class="sub">T23–T27</div><div class="links"><a class="chip" href="016-content-library/spec.html">spec.html</a></div></article>
+        <article class="card"><span class="pill">006 · draft</span><h3>Bài thi</h3><div class="sub">Bài thi độc lập (22/10): giáo viên soạn đề tự chấm, gán cho lớp, đặt giờ mở + thời lượng + giờ đóng. Học viên vào thi trong khoảng mở, có đồng hồ, tự lưu, tự nộp; thấy điểm ngay, đáp án sau giờ đóng.</div><div class="sub">T10, T22, T16, S07, S08</div><div class="links"><a class="chip" href="006-exams/spec.html">spec.html</a></div></article>
+        <article class="card" style="opacity:.7"><span class="pill">007 · hoãn</span><h3>Chấm bài tự luận</h3><div class="sub">Ngoài MVP (19/10). Dành cho giai đoạn có Nói, Nghe, viết đoạn tự do.</div><div class="links"><a class="chip" href="007-manual-grading/spec.html">spec.html</a></div></article>
+      </div>
+    </section>
+
+    <section class="doc" id="journey">
+      <h2>4. End-to-end Flow <span class="vi">Luồng tổng thể</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+flowchart TB
+  g1["GV đăng ký / đăng nhập · 001"] --> g2["Tạo giáo trình HSK1 · 002"]
+  g2 --> g3["Thêm Bài 1 → mở Soạn bài (T18) · 002"]
+  g3 --> g4{"Panel nào?"}
+  g4 -- "Thủ công" --> g5["Soạn bước học + khối · 004<br/>Soạn bộ bài tập · 005"]
+  g4 -- "Tạo bằng AI" --> g6["Tải PDF/Word + mô tả ngắn<br/>AI tạo Bài học + Bài tập · 010"]
+  g6 --> g7["Review từng phần (T20)<br/>sửa / xóa / tạo lại · 010"]
+  g7 -- "Duyệt = lưu" --> g8["Nội dung vào bài (Nháp)"]
+  g7 -- "Bỏ" --> g3
+  g5 --> g9["Xuất bản bài · 002"]
+  g8 --> g9
+  g9 --> g10["Tạo học viên · 001<br/>Tạo lớp, chọn giáo trình · 003"]
+  g10 --> g11["Ẩn / hiện phần theo lớp · 003"]
+  g11 --> h1["HV: Lớp của tôi → Bài → Bài học / Bài tập · 003"]
+  h1 --> h2["Xem bài học, flashcard · 004 (không theo dõi)"]
+  h1 --> h3["Làm bài tập (1 lần), xem lại đáp án · 005"]
+  h3 --> r1["Điểm bài tập → Xếp hạng · 008"]
+  h3 --> p1["Tiến độ bài tập · 009"]
+  r1 --> d1["Dashboard GV · 009"]
+  p1 --> d1
+</pre>
+        <figcaption>Hình 4.1 — Luồng tổng thể v3</figcaption>
+      </figure>
+    </section>
+
+    <section class="doc" id="screens">
+      <h2>5. Screens <span class="vi">Màn hình trong MVP</span></h2>
+      <p>Có thể mở trực tiếp từng màn hình trong <a href="screen-flow-design.html">prototype</a> bằng mã màn hình, ví dụ <code>screen-flow-design.html#T18</code>.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Vai trò</th><th>Màn hình</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>T01 Dashboard · T02 Danh sách lớp · T03 Tạo lớp · T04 Chi tiết lớp (Tổng quan · Học viên · Nội dung · Tiến độ · Xếp hạng) · T05 Danh sách giáo trình · T06 Danh sách bài · <b>T18 Soạn bài (Thủ công | Tạo bằng AI)</b> · T07 Soạn bước học · T08 Soạn bộ thẻ · T09 Soạn bộ bài tập · <b>T20 Review nội dung AI</b> · T21 Xem trước như học viên · T11 Danh sách học viên · T12 Thêm / Import học viên · T14 Xem bài nộp · T15 Chi tiết học viên · T17 Tài khoản</td></tr>
+          <tr><td><span class="pill hv">Học viên</span></td><td>S01 Lớp của tôi · S02 Trang lớp (danh sách bài) · S11 Trang bài (Bài học · Bài tập) · S03 Xem bài học · S04 Flashcard · S05 Làm bài tập · S06 Kết quả · S09 Xếp hạng · S10 Hồ sơ của tôi · S12 Hồ sơ bạn học</td></tr>
+          <tr><td>Chung</td><td>A01 Đăng nhập · A02 Đăng ký giáo viên · A03 Quên mật khẩu · A05 Không tìm thấy</td></tr>
+          <tr><td>Bài thi (006)</td><td>T10 Danh sách bài thi · T22 Soạn bài thi · T16 Kết quả bài thi · S07 Bài thi của học viên · S08 Làm bài thi</td></tr>
+          <tr><td>Tự học (012–015)</td><td>S13 Tự học · S14 Từ vựng · S15 Ôn tập · S16 Luyện viết · S17 Luyện nghe · S18 Luyện nói · S19 Thi thử HSK · S20 Kết quả &amp; thống kê lỗi (chỉ học viên)</td></tr>
+          <tr><td>Kho tự học (016, giáo viên)</td><td>T23 Tổng quan kho tự học · T24 Từ vựng tự học · T25 Nghe &amp; hội thoại · T26 Đề thi thử HSK · T27 Chữ Hán &amp; bộ thủ</td></tr>
+          <tr><td>Hoãn</td><td>T13 (chấm tay) · T19 (gộp vào T18) · A04 (bỏ, không bắt buộc đổi mật khẩu)</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="doc" id="process">
+      <h2>6. Review &amp; Approval <span class="vi">Quy trình duyệt</span></h2>
+      <ol>
+        <li>Trả lời các câu hỏi mở ở §7. Câu nào không trả lời sẽ hiểu là đồng ý với đề xuất.</li>
+        <li>Chạy <code>/sdd-clarify NNN</code> cho từng module, rồi người duyệt chạy <code>node .sdd/scripts/sdd.mjs approve NNN --by "Tên"</code> trong terminal của mình.</li>
+        <li><code>/sdd-auto --feature NNN</code>. Thứ tự đề xuất theo đợt (specs/modules.json): 001 → 002 → 003 → 004 ∥ 005 → 006 ∥ 008 ∥ 010 → 009 → 011 → 016 → 012 ∥ 013 ∥ 014 ∥ 015.</li>
+      </ol>
+    </section>
+
+    <section class="doc" id="open-questions">
+      <h2>7. Open Questions <span class="vi">Câu hỏi mở (17)</span></h2>
+      <p>Đã chốt ngày 20/10: 010 Q-6, Q-7 · 005 Q-3 · 001 Q-2 · 002 Q-1 (xem V4-1 → V4-4). Câu nào không trả lời sẽ hiểu là đồng ý với đề xuất.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Module</th><th>Câu hỏi</th><th>Đề xuất (đang áp dụng tạm)</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip mod" href="010-ai-lesson-generation/spec.html#open-questions">010 Q-1</a></td><td>Định dạng và giới hạn tài liệu cho AI</td><td>Chỉ PDF và Word (.docx); 1–5 tệp mỗi lượt, mỗi tệp ≤ 50 MB; ≤ 30 trang mỗi lượt</td></tr>
+          <tr><td><a class="chip mod" href="010-ai-lesson-generation/spec.html#open-questions">010 Q-2</a></td><td>Hạn mức và ngân sách AI</td><td>Mỗi giáo viên 5 lượt/ngày, 30 lượt/tháng; ≤ 20 USD mỗi tháng</td></tr>
+          <tr><td><a class="chip mod" href="010-ai-lesson-generation/spec.html#open-questions">010 Q-3</a></td><td>Có được gửi tài liệu tới dịch vụ AI bên ngoài không?</td><td>Có, nếu nhà cung cấp không lưu quá 30 ngày và không dùng để huấn luyện; giáo viên tích xác nhận có quyền sử dụng tài liệu</td></tr>
+          <tr><td><a class="chip mod" href="001-accounts-auth/spec.html#open-questions">001 Q-1</a></td><td>Email học viên là duy nhất toàn hệ thống hay chỉ trong một workspace? Câu này quan trọng hơn trước, vì mật khẩu giờ được gửi tới email đó.</td><td>Toàn hệ thống</td></tr>
+          <tr><td><a class="chip mod" href="011-student-profile/spec.html#open-questions">011 Q-1</a></td><td>Ảnh mới hiện cho bạn học ngay hay phải chờ giáo viên duyệt?</td><td>Hiện ngay; giáo viên gỡ được nếu không phù hợp</td></tr>
+          <tr><td><a class="chip mod" href="011-student-profile/spec.html#open-questions">011 Q-2</a></td><td>Học viên có được ẩn tiến độ, điểm và hạng của mình khỏi bạn học không?</td><td>Không trong MVP</td></tr>
+          <tr><td><a class="chip mod" href="008-scoring-leaderboard/spec.html#open-questions">008 Q-2</a></td><td>Bảng xếp hạng và hồ sơ hiện họ tên đầy đủ hay tên rút gọn?</td><td>Họ tên đầy đủ</td></tr>
+          <tr><td><a class="chip mod" href="002-curriculum/spec.html#open-questions">002 Q-3</a></td><td>Nhân bản giáo trình có giữ trạng thái xuất bản không?</td><td>Giữ nguyên</td></tr>
+          <tr><td><a class="chip mod" href="003-classes/spec.html#open-questions">003 Q-1</a></td><td>Lớp đã có bài nộp có được đổi giáo trình không?</td><td>Không, chặn</td></tr>
+          <tr><td><a class="chip mod" href="003-classes/spec.html#open-questions">003 Q-3</a></td><td>Lớp kết thúc thế nào?</td><td>Giáo viên bấm “Kết thúc lớp”</td></tr>
+          <tr><td><a class="chip mod" href="004-lessons-flashcards/spec.html#open-questions">004 Q-1</a></td><td>Dung lượng lưu trữ cho mỗi giáo viên?</td><td>10 GB, tính cả tài liệu tải lên cho AI</td></tr>
+          <tr><td><a class="chip mod" href="004-lessons-flashcards/spec.html#open-questions">004 Q-2</a></td><td>Word/PowerPoint xem trực tiếp hay chỉ cho tải về?</td><td>Xem trực tiếp</td></tr>
+          <tr><td><a class="chip mod" href="004-lessons-flashcards/spec.html#open-questions">004 Q-3</a></td><td>Khối Video có nhận link YouTube không?</td><td>Có, ưu tiên P2</td></tr>
+          <tr><td><a class="chip mod" href="005-exercises/spec.html#open-questions">005 Q-1</a></td><td>Đề bài tập có gắn âm thanh không?</td><td>Hoãn cùng dạng Nghe</td></tr>
+          <tr><td><a class="chip mod" href="005-exercises/spec.html#open-questions">005 Q-2</a></td><td>Chấm lại có áp dụng cho lớp đã kết thúc không?</td><td>Có</td></tr>
+          <tr><td><a class="chip mod" href="009-teacher-dashboard/spec.html#open-questions">009 Q-2</a></td><td>Có chốt tiến độ khi lớp kết thúc không?</td><td>Có</td></tr>
+          <tr><td><a class="chip mod" href="009-teacher-dashboard/spec.html#open-questions">009 Q-4</a></td><td>Có cần xuất Excel trong MVP không?</td><td>Không, để sau</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+  </main>
+</div>
+<div class="footer">SAT · Spec-Driven Development. Nguồn sự thật cho pipeline là <code>specs/NNN-slug/spec.md</code>. Các trang HTML là bản trình bày.</div>
+</body>
+</html>

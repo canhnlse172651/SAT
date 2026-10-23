@@ -1,0 +1,265 @@
+<!doctype html>
+<!--
+  TEMPLATE for specs/NNN-slug/spec.html — the human-readable, flow-rich view of spec.md.
+  Copy this file to specs/NNN-slug/spec.html and replace every {{…}} and every EXAMPLE block.
+
+  Rules
+  - spec.md is the machine-checked contract (sdd check / approve). This page MIRRORS it:
+    every REQ-n and AC-n.m here has the same ID and the same EARS sentence, verbatim.
+  - This page may explain (flows, rules, screens, states) but must not add requirements:
+    every business rule (BR-n), flow step with a system response, and validation rule cites
+    the AC(s) that make it testable. No AC → add one to spec.md first.
+  - Prose in Vietnamese. IDs, EARS keywords (WHEN/IF/THEN/WHILE/WHERE/THE SYSTEM SHALL)
+    and the English half of headings stay in English.
+  - Screens are referenced only by the global IDs in specs/index.html (A01…, T01…, S01…), as
+    <a class="chip screen" href="../screen-flow-design.html#T03">T03</a>.
+  - Diagrams: Mermaid inside <pre class="mermaid">. Quote labels containing punctuation:
+    A["Nhập tên lớp (bắt buộc)"]. Keep node ids ASCII.
+  - Unknowns: <span class="nc">[NEEDS CLARIFICATION: …]</span>, mirrored in §14 and in spec.md.
+  - No implementation terms (API, endpoint, table, React, MongoDB…). Describe what users observe.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{NNN}} {{Tên module}} — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module {{NNN}}</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module {{NNN}} · {{English module name}}</div>
+    <h1>{{Tên module tiếng Việt}}</h1>
+    <p class="lede">{{1–2 câu: module này giải quyết vấn đề gì, cho ai.}}</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Feature {{NNN}}</span>
+      <span class="pill">Cập nhật {{YYYY-MM-DD}}</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <p>{{Vấn đề, người gặp vấn đề, kết quả mong muốn — giống §1 spec.md.}}</p>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mục tiêu</th><th>Chỉ số</th><th>Ngưỡng</th></tr></thead>
+        <tbody><tr><td>EXAMPLE</td><td>…</td><td>…</td></tr></tbody>
+      </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi:</strong> … &nbsp; <strong>Ngoài phạm vi:</strong> … (chi tiết §13)</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>…</td><td>…</td></tr>
+          <tr><td><span class="pill hv">Học viên</span></td><td>…</td><td>…</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">GV (chủ workspace)</th><th class="center">HV trong lớp</th><th class="center">Người khác</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>EXAMPLE: Xem …</td><td class="center yes">✓</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-1.3</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là <b>giáo viên</b>, tôi muốn …, để …</td><td>…</td><td><span class="chip">REQ-1</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>{{Một câu giới thiệu các luồng. Mỗi luồng: sự kiện kích hoạt, điều kiện trước/sau, sơ đồ, bảng bước, luồng thay thế/ngoại lệ.}}</p>
+
+      <!-- EXAMPLE flow — repeat per flow, ids F-1, F-2 … -->
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Tạo lớp">F-1: {{Tên luồng}}</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>Giáo viên</div>
+          <div class="fact"><span class="k">Kích hoạt</span>…</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>…</div>
+          <div class="fact"><span class="k">Kết quả</span>…</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart LR
+  A([GV bấm "Tạo lớp"]) --> B["T03 · Bước 1: nhập tên + ngày bắt đầu"]
+  B --> C{Hợp lệ?}
+  C -- Không --> B
+  C -- Có --> D["Bước 2: thêm học viên"]
+  D --> E([Lớp được tạo])
+</pre>
+          <figcaption>Hình F-1 — {{chú thích}}</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV</td><td>…</td><td>…</td><td><a class="chip screen" href="../screen-flow-design.html#T03">T03</a></td><td><span class="chip ac">AC-1.1</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Luồng thay thế: … <span class="chip ac">AC-1.4</span></summary><div class="body"><ol><li>…</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Ngoại lệ: … <span class="chip ac">AC-1.5</span></summary><div class="body"><ol><li>…</li></ol></div></details>
+      </div>
+
+      <!-- Sequence diagrams are welcome for cross-actor/cross-module flows:
+<pre class="mermaid">
+sequenceDiagram
+  actor HV as Học viên
+  participant SYS as Hệ thống
+  actor GV as Giáo viên
+  HV->>SYS: Nộp bài Viết
+  SYS-->>GV: Bài nộp vào hàng chờ chấm
+</pre> -->
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>.</p>
+      <!-- EXAMPLE REQ block — repeat per REQ -->
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: {{title}}</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#T03">T03</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN … THE SYSTEM SHALL …</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody><tr><td class="id">BR-1</td><td>…</td><td><span class="chip ac">AC-1.2</span></td></tr></tbody>
+      </table></div>
+      <h4>Kiểm tra dữ liệu nhập</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trường</th><th class="center">Bắt buộc</th><th>Quy tắc</th><th>Thông báo khi sai</th><th>AC</th></tr></thead>
+        <tbody><tr><td>Tên lớp</td><td class="center yes">✓</td><td>1–100 ký tự, không trùng trong workspace</td><td>“Tên lớp đã tồn tại”</td><td><span class="chip ac">AC-1.3</span></td></tr></tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Nhap: Tạo mới
+  Nhap --> DaXuatBan: Xuất bản
+  DaXuatBan --> LuuTru: Lưu trữ
+</pre>
+        <figcaption>Vòng đời {{thực thể}} — tên trạng thái hiển thị: Nháp / Đã xuất bản / Lưu trữ</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Được phép</th><th>AC</th></tr></thead>
+        <tbody><tr><td>…</td><td>…</td><td>…</td><td>…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody><tr><td><a class="chip screen" href="../screen-flow-design.html#T03">T03</a></td><td>Tạo lớp</td><td><span class="pill gv">GV</span></td><td>…</td><td>F-1 · REQ-1</td></tr></tbody>
+      </table></div>
+      <p><em>Màn hình đề xuất bổ sung (chưa có trong danh mục chung):</em> — không có —</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody><tr><td class="id">NFR-1</td><td>Performance</td><td>…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thực thể</th><th>Ý nghĩa</th><th>Thuộc tính nghiệp vụ chính</th><th>Quan hệ</th></tr></thead>
+        <tbody><tr><td>…</td><td>…</td><td>…</td><td>…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tình huống</th><th>Hành vi mong đợi</th><th>AC</th></tr></thead>
+        <tbody><tr><td>…</td><td>…</td><td>…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hướng</th><th>Module</th><th>Sự kiện / dữ liệu nghiệp vụ</th></tr></thead>
+        <tbody><tr><td>Nhận từ</td><td><a class="chip mod" href="../001-accounts-auth/spec.html">001</a></td><td>…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul><li>…</li></ul>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <div class="callout question"><strong>Q-1</strong>[NEEDS CLARIFICATION: …] — Ảnh hưởng: … — Đề xuất: …</div>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session YYYY-MM-DD</h4>
+      <ul><li>Q: … → A: … <em>(source: stakeholder)</em></li></ul>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

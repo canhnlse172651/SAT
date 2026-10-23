@@ -1,0 +1,1029 @@
+<!doctype html>
+<!--
+  specs/012-vocabulary-srs/spec.html — bản trình bày (flow-rich) của spec.md.
+  spec.md là hợp đồng được kiểm tra bằng máy; trang này phản chiếu nguyên văn REQ/AC/NFR của spec.md.
+  Tạo mới 2026-10-22 theo quyết định V14 (Tự học: Từ vựng thông minh + SRS; S13, S14, S15).
+  Cập nhật 2026-10-22 theo V15: Tự học chỉ dành cho HV; nội dung từ Kho nội dung tự học của workspace (016, T23–T27); GV không dùng S13–S15 (A05).
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>012 Từ vựng thông minh — Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="../assets/spec.css">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script src="../assets/spec.js"></script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="inner">
+    <div class="crumbs">
+      <a href="../index.html">SAT · Tổng quan spec</a> <span>›</span> <span>Module 012</span>
+      <button class="theme-toggle" type="button">Sáng / Tối</button>
+    </div>
+    <div class="eyebrow">Module 012 · Smart vocabulary SRS</div>
+    <h1>Từ vựng thông minh</h1>
+    <p class="lede">Trang Tự học dành cho học viên (giáo viên chỉ quản lý nội dung ở Kho nội dung tự học), kho từ HSK 1–9 của workspace tra được bằng chữ Hán, pinyin hoặc nghĩa, flashcard hai mặt có phát âm bản xứ và ví dụ, ôn tập lặp lại ngắt quãng (SRS) theo giờ Việt Nam, từ khó và bộ từ cá nhân — riêng tư, không phụ thuộc lớp, không tính vào điểm lớp.</p>
+    <div class="meta">
+      <span class="pill status">draft</span>
+      <span class="pill">Feature 012</span>
+      <span class="pill">Cập nhật 2026-10-22</span>
+      <a class="pill" href="spec.md">spec.md (bản kiểm tra máy)</a>
+      <a class="pill" href="../screen-flow-design.html">Screen flow design</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Mục lục"><div class="toc-title">Mục lục</div><ol></ol></nav>
+  <main>
+
+    <!-- 1 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="summary">
+      <h2>1. Summary <span class="vi">Tổng quan</span></h2>
+      <p>Đến nay mọi tính năng của SAT gắn với một lớp: HV chỉ học từ vựng qua các bộ flashcard GV đặt trong bài (004), và không có cách tự ôn từ theo nhịp riêng, tra từ, nghe phát âm hay giữ danh sách từ của mình. Quyết định V14 (2026-10-22) thêm nhóm tính năng <b>Tự học</b> không cần lớp; quyết định <b>V15</b> (2026-10-22) chốt rằng hệ thống chỉ có hai vai trò GV và HV, <b>Tự học chỉ dành cho HV</b> (mọi HV đã kích hoạt của workspace, không phân biệt lớp) còn <b>GV chỉ quản lý nội dung</b> tự học trong "Kho nội dung tự học" của workspace mình (016, T23–T27: nạp sẵn bộ nội dung HSK mẫu, GV sửa / thêm / ẩn tùy ý) và không dùng Tự học. Module này định nghĩa <b>S13 "Tự học"</b> (trang chung dẫn tới Từ vựng 012, Luyện viết 013, Luyện nghe &amp; nói 014, Thi thử HSK 015), <b>S14 "Từ vựng"</b> (duyệt kho từ HSK 1–9 trong Kho nội dung tự học của workspace của HV (016) theo cấp và chủ đề, tìm theo chữ Hán / pinyin có hoặc không dấu thanh / nghĩa tiếng Việt, chi tiết từ với phát âm bản xứ, ví dụ và cách dùng, đánh dấu từ khó, bộ từ cá nhân và từ tự thêm) và <b>S15 "Ôn tập"</b> (flashcard hai mặt, bốn mức đánh giá "Quên" / "Khó" / "Nhớ" / "Dễ" với quy tắc lặp lại ngắt quãng (SRS) kiểu SM-2 kiểm chứng được, hạn mức từ mới và lượt ôn mỗi ngày theo giờ Việt Nam, tổng kết phiên, chịu được mất mạng). Dữ liệu tự học là riêng tư của từng HV, không bao giờ hiển thị cho GV và không ảnh hưởng xếp hạng (008), theo dõi (009) hay hồ sơ (011). Kết quả mong muốn: HV học và nhớ lâu từ vựng HSK mỗi ngày với vài phút ôn tập, độc lập với lớp học.</p>
+      <div class="callout note"><strong>Quy tắc cốt lõi (tóm tắt)</strong>
+        <ul>
+          <li><b>Ai dùng:</b> chỉ HV — mọi HV đã kích hoạt, không bị khóa, không cần lớp; vào từ mục "Tự học" của thanh tab dưới → <a class="chip screen" href="../screen-flow-design.html#S13">S13</a>. GV không dùng Tự học: mở S13–S15 → <a class="chip screen" href="../screen-flow-design.html#A05">A05</a> — <a href="#AC-1.1">AC-1.1</a>, <a href="#AC-1.2">AC-1.2</a>, <a href="#AC-1.4">AC-1.4</a>.</li>
+          <li><b>Nội dung:</b> Kho nội dung tự học của workspace của HV (016, GV quản lý trên <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–T27; nạp sẵn bộ HSK mẫu) — <a href="#AC-1.2">AC-1.2</a>, <a href="#REQ-19">REQ-19</a>.</li>
+          <li><b>Một từ — một tiến độ</b> cho mỗi người dùng, dùng chung cho mọi cấp, chủ đề, bộ từ — <a href="#AC-13.7">AC-13.7</a>.</li>
+          <li><b>SRS:</b> "Quên" / "Khó" / "Nhớ" / "Dễ" theo bảng kiểu SM-2 (E đầu 2,50, tối thiểu 1,30; 1 → 3 → I×E ngày; tối đa 365) — <a href="#REQ-13">REQ-13</a>, <a href="#BR-SRS">BR-SRS</a>.</li>
+          <li><b>Đến hạn</b> = ngày đến hạn ≤ hôm nay theo giờ Việt Nam (ngày mới lúc 00:00 UTC+7); từ bỏ lỡ dồn lại, không phạt — <a href="#AC-14.1">AC-14.1</a>, <a href="#AC-14.2">AC-14.2</a>.</li>
+          <li><b>Hạn mức mỗi ngày:</b> 10 từ mới (0–50), 200 lượt ôn (20–500); "Học thêm 5 từ mới" / "Ôn thêm 50 từ" cho riêng hôm nay — <a href="#REQ-14">REQ-14</a>, <a href="#REQ-15">REQ-15</a>.</li>
+          <li><b>Từ khó</b> chỉ do người dùng đánh dấu, không đổi lịch ôn — <a href="#AC-7.5">AC-7.5</a>, <a href="#AC-7.6">AC-7.6</a>.</li>
+          <li><b>Riêng tư:</b> GV và người khác không bao giờ thấy dữ liệu Tự học; không ảnh hưởng 008, 009, 011; tách biệt flashcard lớp (004) — <a href="#REQ-20">REQ-20</a>.</li>
+          <li><b>GV đổi kho:</b> từ GV ngừng xuất bản (ẩn, lưu trữ) vẫn ôn được với nhãn "Không còn trong kho" — <a href="#REQ-19">REQ-19</a>.</li>
+        </ul>
+      </div>
+      <h4>Mục tiêu &amp; chỉ số thành công</h4>
+      <div class="table-wrap"><table>
+          <thead><tr><th>Goal</th><th>Metric</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td>Người dùng tự học đều đặn</td><td>Tỷ lệ HV đã kích hoạt có ≥ 1 phiên ôn tập (S15) mỗi tuần, đo sau 60 ngày phát hành</td><td>≥ 30%</td></tr>
+            <tr><td>SRS giữ trí nhớ tốt</td><td>Tỷ lệ lượt đánh giá từ đến hạn (không phải từ mới) khác "Quên"</td><td>80–90%</td></tr>
+            <tr><td>Ôn kịp lịch</td><td>Trung vị, trên các người dùng có ≥ 1 phiên trong ngày, của tỷ lệ "từ đến hạn trong hạn mức đã được ôn trong ngày"</td><td>≥ 80%</td></tr>
+            <tr><td>Ôn tập trôi chảy</td><td>Thời gian từ khi chọn mức đánh giá tới khi thẻ kế tiếp hiện</td><td>p95 ≤ 150 ms (NFR-1)</td></tr>
+            <tr><td>Tra từ nhanh</td><td>Thời gian từ lần gõ phím cuối tới khi có kết quả tìm kiếm</td><td>p95 ≤ 1 giây (NFR-2)</td></tr>
+            <tr><td>Không lẫn với dữ liệu lớp</td><td>Số dữ liệu Tự học xuất hiện trên màn hình GV, xếp hạng, dashboard hoặc hồ sơ</td><td>0 (AC-20.3, NFR-8)</td></tr>
+          </tbody>
+        </table></div>
+      <h4>Phạm vi nhanh</h4>
+      <p><strong>Trong phạm vi:</strong> S13 "Tự học" (bốn thẻ, "Ôn hôm nay", "Từ mới hôm nay"); S14 "Từ vựng" (duyệt theo cấp HSK và chủ đề, tìm kiếm chữ Hán / pinyin có hoặc không dấu thanh / nghĩa, chi tiết từ với phát âm, ví dụ, cách dùng, từ khó, bộ từ của tôi, từ tự thêm, cài đặt ôn tập); S15 "Ôn tập" (thẻ hai mặt, bốn mức đánh giá, quy tắc SRS, hạn mức ngày, tổng kết, hoàn tác, luyện thêm, chịu mất mạng); phản ánh thay đổi của kho 016; riêng tư.
+      &nbsp; <strong>Ngoài phạm vi:</strong> mọi tính năng AI; chia sẻ bộ từ; GV giao bộ từ hay xem tiến độ; chuỗi ngày, huy hiệu; thống kê dài hạn; âm thanh cho từ tự thêm; ngoại tuyến hoàn toàn; kiểu ôn khác lật thẻ; nhập / xuất bộ từ (chi tiết <a href="#out-of-scope">§13</a>).</p>
+    </section>
+
+    <!-- 2 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="actors">
+      <h2>2. Actors &amp; Permissions <span class="vi">Tác nhân &amp; phân quyền</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu trong module này</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill hv">Học viên</span></td><td>Tài khoản do GV tạo và kích hoạt (001); điện thoại 360–430 px (bố cục rộng khi "HV trên màn hình rộng"); có thể không thuộc lớp nào. Người dùng duy nhất của S13–S15.</td><td>Ôn từ mỗi ngày vài phút, tra từ, nghe phát âm, gom từ khó, tạo bộ từ riêng; ôn tiếp được khi mạng chập chờn.</td></tr>
+          <tr><td><span class="pill gv">Giáo viên</span></td><td>Chủ workspace (D1), máy tính ≥ 1280 px. Quản lý "Kho nội dung tự học" của workspace (016, T23–T27).</td><td>Không dùng Tự học (V15): mở S13–S15 → A05. Sửa / thêm / ẩn / xuất bản lại mục từ và xem trước trong T23–T27; 012 phản ánh cho HV của workspace (REQ-19). Không thấy dữ liệu Tự học của từng HV.</td></tr>
+          <tr><td><span class="pill">Hệ thống</span></td><td>Tính lịch ôn, hạn mức ngày theo giờ Việt Nam, đồng bộ đánh giá giữa các thiết bị.</td><td>Lịch ôn đúng quy tắc, không mất đánh giá, không lộ dữ liệu.</td></tr>
+        </tbody>
+      </table></div>
+      <h4>Ma trận quyền</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Thao tác</th><th class="center">HV (chủ dữ liệu)</th><th class="center">HV khác (cùng hoặc khác workspace)</th><th class="center">GV</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Mở S13, S14, S15</td><td class="center yes">✓</td><td class="center yes">✓ (dữ liệu của chính họ)</td><td class="center no">— (A05)</td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.4</span></td></tr>
+          <tr><td>Duyệt, tìm, xem chi tiết từ của kho</td><td class="center yes">✓ kho của workspace mình</td><td class="center yes">✓ kho của workspace của họ</td><td class="center no">— (xem trước trong T23–T27, 016)</td><td><span class="chip ac">AC-3.1</span> <span class="chip ac">AC-4.1</span> <span class="chip ac">AC-5.1</span> <span class="chip ac">AC-5.6</span></td></tr>
+          <tr><td>Sửa / thêm / ẩn / xuất bản lại mục từ của kho</td><td class="center no">—</td><td class="center no">—</td><td class="center yes">✓ kho của workspace mình (016)</td><td><span class="chip ac">AC-19.1</span> <span class="chip ac">AC-19.3</span> <span class="chip ac">AC-19.5</span></td></tr>
+          <tr><td>Tạo / sửa / xóa bộ từ, từ tự thêm, đánh dấu từ khó</td><td class="center yes">✓ của mình</td><td class="center no">— (A05)</td><td class="center no">—</td><td><span class="chip ac">AC-8.2</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-20.2</span></td></tr>
+          <tr><td>Xem tiến độ ôn tập, số liệu ngày, tổng kết</td><td class="center yes">✓ của mình</td><td class="center no">—</td><td class="center no">— (không ở T01, T04, T11, T15, T23–T27)</td><td><span class="chip ac">AC-20.1</span> <span class="chip ac">AC-20.3</span></td></tr>
+          <tr><td>Dữ liệu Tự học vào Điểm xếp hạng, tiến độ lớp, hồ sơ</td><td class="center no">không bao giờ</td><td class="center no">—</td><td class="center no">—</td><td><span class="chip ac">AC-20.3</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 3 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="stories">
+      <h2>3. User Stories <span class="vi">Câu chuyện người dùng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Ưu tiên</th><th>Câu chuyện</th><th>Kiểm thử độc lập</th><th>REQ</th></tr></thead>
+        <tbody>
+          <tr><td class="id">US-1</td><td><span class="pill p1">P1</span></td><td>Là HV, tôi muốn chọn một cấp HSK, học mỗi ngày một số từ mới và ôn lại đúng lúc sắp quên bằng flashcard hai mặt, để nhớ từ lâu mà không phải tự lên lịch.<br><em>Why this priority: là lõi của yêu cầu "Ôn tập theo phương pháp lặp lại ngắt quãng (SRS)" và lý do người dùng quay lại mỗi ngày; mọi phần khác dựa trên tiến độ ôn tập này.</em></td><td>người dùng mới mở "Tự học" → S13 → "Từ vựng" → "HSK 1" → "Học HSK 1" → S15 hiện 10 từ mới; chọn "Nhớ" cho cả 10 → tổng kết "10 từ mới"; S13 hiện "Ôn hôm nay: 0 từ" và "Từ mới hôm nay: 10/10"; ngày hôm sau (giờ Việt Nam) S13 hiện "Ôn hôm nay: 10 từ", chọn "Ôn tập ngay" ôn 10 từ đó rồi 10 từ mới tiếp theo của HSK 1.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-2</span> <span class="chip">REQ-3</span> <span class="chip">REQ-11</span> <span class="chip">REQ-12</span> <span class="chip">REQ-13</span> <span class="chip">REQ-14</span> <span class="chip">REQ-16</span></td></tr>
+          <tr><td class="id">US-2</td><td><span class="pill p1">P1</span></td><td>Là HV, tôi muốn tìm một từ bằng chữ Hán, pinyin (có hoặc không dấu thanh) hoặc nghĩa tiếng Việt và xem chi tiết từ với phát âm bản xứ, ví dụ câu và cách dùng, để hiểu và dùng đúng từ.<br><em>Why this priority: stakeholder yêu cầu "Nghe phát âm từng từ. Ví dụ câu và cách dùng từ"; tra cứu là lối vào phổ biến nhất tới từ cần học.</em></td><td>gõ "nihao" → thấy 你好 nǐ hǎo "xin chào" nhãn "HSK 1"; mở chi tiết → nghe phát âm, thấy 2 câu ví dụ có pinyin và nghĩa; gõ "xin chao" → cùng từ; gõ "你" → các từ chứa 你.</td><td><span class="chip">REQ-4</span> <span class="chip">REQ-5</span> <span class="chip">REQ-6</span></td></tr>
+          <tr><td class="id">US-3</td><td><span class="pill p1">P1</span></td><td>Là người học, tôi muốn đánh dấu từ khó và ôn riêng nhóm từ khó, để tập trung vào những từ hay quên.<br><em>Why this priority: stakeholder yêu cầu "Đánh dấu từ khó"; chi phí thấp, giá trị cao.</em></td><td>đánh dấu 3 từ khó (chi tiết từ, thẻ ôn tập, tổng kết phiên) → tab "Từ khó (3)" liệt kê 3 từ → "Ôn từ khó" chỉ phục vụ 3 từ đó; lịch ôn của chúng không đổi vì việc đánh dấu.</td><td><span class="chip">REQ-7</span> <span class="chip">REQ-11</span></td></tr>
+          <tr><td class="id">US-4</td><td><span class="pill p1">P1</span></td><td>Là người học, tôi muốn tạo bộ từ của riêng mình, đổi tên, xóa, thêm / bớt từ và học theo bộ, để ôn đúng nhóm từ tôi cần (theo bài, theo chủ đề tôi tự chọn).<br><em>Why this priority: stakeholder yêu cầu "tự tạo bộ từ vựng cá nhân".</em></td><td>tạo bộ "Từ bài 3" → thêm 5 từ từ chi tiết từ và 7 từ bằng "Chọn nhiều" (2 đã có) → "Đã thêm 5 từ vào "Từ bài 3" (2 từ đã có sẵn)."; bộ có 10 từ → "Học" → S15 chỉ phục vụ từ của bộ; xóa bộ → tiến độ của 10 từ vẫn còn.</td><td><span class="chip">REQ-8</span> <span class="chip">REQ-9</span> <span class="chip">REQ-11</span></td></tr>
+          <tr><td class="id">US-5</td><td><span class="pill p2">P2</span></td><td>Là người học, tôi muốn tự thêm một từ không có trong kho (chữ Hán, pinyin, nghĩa, ví dụ) vào bộ từ của mình, để ôn cả những từ gặp ngoài giáo trình HSK.<br><em>Why this priority: mở rộng "bộ từ vựng cá nhân"; bộ HSK mẫu nạp sẵn trong kho của workspace (016) đã phủ ~11.000 từ HSK nên phần lớn nhu cầu được đáp ứng không cần tính năng này.</em></td><td>trong bộ "Từ đi chợ" chọn "Thêm từ của tôi" → nhập 砍价 / kǎn jià / mặc cả → "Lưu" → từ có nhãn "Từ của tôi", không có nút phát âm, được ôn như từ khác; HV khác tìm "kanjia" không thấy từ này.</td><td><span class="chip">REQ-10</span></td></tr>
+          <tr><td class="id">US-6</td><td><span class="pill p2">P2</span></td><td>Là người học, tôi muốn chỉnh số từ mới / lượt ôn mỗi ngày, mặt trước của thẻ, tự phát âm, hoàn tác một đánh giá bấm nhầm và đặt lại tiến độ một từ, để việc ôn hợp với thời gian và cách học của tôi.<br><em>Why this priority: mặc định hợp lý đủ cho MVP; tùy chỉnh tăng độ hài lòng của người học lâu dài.</em></td><td>đặt "Từ mới mỗi ngày" = 5 và "Mặt trước thẻ" = "Nghĩa tiếng Việt" → phiên kế tiếp tối đa 5 từ mới, mặt trước hiện nghĩa; bấm nhầm "Quên" → "Hoàn tác" → thẻ hiện lại, lịch ôn như trước khi bấm.</td><td><span class="chip">REQ-15</span> <span class="chip">REQ-17</span></td></tr>
+          <tr><td class="id">US-7</td><td><span class="pill p1">P1</span></td><td>Là HV ôn trên điện thoại khi mạng chập chờn, tôi muốn tiếp tục ôn khi mất mạng và không mất kết quả, để không phải ôn lại.<br><em>Why this priority: HV ôn ở nơi công cộng; mất kết quả ôn làm hỏng lịch SRS và niềm tin vào tính năng.</em></td><td>tải phiên 30 thẻ → tắt mạng sau thẻ 5 → ôn tiếp 20 thẻ, thấy "Đang ngoại tuyến — kết quả sẽ được lưu khi có mạng." → bật mạng → trong 30 giây 25 đánh giá được lưu đúng một lần; HV mở trên máy tính (màn hình rộng) thấy cùng lịch ôn.</td><td><span class="chip">REQ-18</span></td></tr>
+          <tr><td class="id">US-8</td><td><span class="pill p1">P1</span></td><td>Là HV, tôi muốn dữ liệu tự học là của riêng tôi, không bị GV hay bạn khác xem, không ảnh hưởng điểm lớp, và không bị mất khi kho từ thay đổi, để tự học thoải mái và an toàn.<br><em>Why this priority: điều kiện của V14 ("không phân biệt lớp", không tính vào xếp hạng) và V15 (GV chỉ quản lý nội dung); dữ liệu học không được mất.</em></td><td>HV ôn 50 từ → GV mở T04, T15, T01 và T23–T27 không thấy dữ liệu tự học nào của HV; GV mở S13 bằng đường dẫn trực tiếp → A05; Điểm xếp hạng không đổi; GV ngừng xuất bản (ẩn) 1 từ HV đang học trong Kho nội dung tự học → từ vẫn trong bộ của HV với nhãn "Không còn trong kho" và vẫn đến hạn ôn.</td><td><span class="chip">REQ-1</span> <span class="chip">REQ-19</span> <span class="chip">REQ-20</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 4 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="flows">
+      <h2>4. Business Flows <span class="vi">Luồng nghiệp vụ</span></h2>
+      <p>Sáu luồng bao phủ module: ôn hằng ngày từ S13 (F-1), bắt đầu học một nguồn mới và các giới hạn ngày (F-2), tra từ và xem chi tiết (F-3), quản lý bộ từ và từ tự thêm (F-4), ôn khi mất mạng và đồng bộ (F-5), kho từ thay đổi (F-6). Ví dụ dùng người dùng <b>Minh Anh</b> (HV) đang học HSK 2.</p>
+
+      <!-- F-1 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-1">
+        <h3 data-toc="F-1 Ôn hôm nay">F-1: Ôn hằng ngày từ S13 ("Ôn tập ngay")</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Chọn "Tự học" → S13 → "Ôn tập ngay"</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đã đăng nhập; có từ đến hạn hoặc có "Nguồn từ mới" còn từ mới trong hạn mức</div>
+          <div class="fact"><span class="k">Kết quả</span>Mỗi từ được đánh giá có tiến độ mới theo BR-SRS; tổng kết phiên; số liệu S13 cập nhật</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Chọn Tự học"]) --> B["S13: Ôn hôm nay n từ, Từ mới hôm nay x/y"]
+  B --> C{"Có từ để phục vụ?"}
+  C -- "Không, có Nguồn từ mới" --> C1["Bạn đã ôn xong hôm nay + Ngày mai k từ"]
+  C -- "Không, chưa có nguồn" --> C2["Chọn từ để học → S14"]
+  C -- Có --> D["S15: hàng đợi = Quên hôm nay, rồi từ đến hạn cũ nhất trước, rồi từ mới"]
+  D --> E["Mặt trước theo cài đặt"]
+  E --> F["Hiện đáp án: mặt sau + 4 nút kèm khoảng ôn"]
+  F --> G{"Đánh giá"}
+  G -- Quên --> H["I = 0, đưa lại sau 3 thẻ"]
+  H --> E
+  G -- "Khó / Nhớ / Dễ" --> I["Tính I, E, n theo bảng, ngày đến hạn = hôm nay + I"]
+  I --> J{"Còn thẻ?"}
+  J -- Có --> E
+  J -- Không --> K(["Kết quả phiên ôn"])
+</pre>
+          <figcaption>Hình F-1 — Phiên "Ôn hôm nay"</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Chọn "Tự học"</td><td>S13 với bốn thẻ; thẻ "Từ vựng": "Ôn hôm nay: 24 từ", "Từ mới hôm nay: 0/10", "Từ mới từ: HSK 2", "Ôn tập ngay"</td><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a></td><td><span class="chip ac">AC-1.1</span> <span class="chip ac">AC-2.1</span> <span class="chip ac">AC-2.2</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Chọn "Ôn tập ngay"</td><td>S15 với 24 từ đến hạn (cũ nhất trước, cùng ngày thì từ khó trước) rồi 10 từ mới của HSK 2; phần đầu "HSK 2 · Còn 34"</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-2.5</span> <span class="chip ac">AC-11.1</span> <span class="chip ac">AC-14.3</span> <span class="chip ac">AC-12.1</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Mặt trước "Chữ Hán" (≥ 48 px), nhãn "Mới" nếu từ mới, dấu sao, "Hiện đáp án"; chưa có nút đánh giá</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-12.2</span> <span class="chip ac">AC-12.4</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Chạm thẻ / Space</td><td>Mặt sau: chữ Hán, pinyin, từ loại, nghĩa, câu ví dụ đầu, phát âm; nút "Quên · Hôm nay", "Khó · 2 ngày", "Nhớ · 3 ngày", "Dễ · 5 ngày"</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-12.3</span> <span class="chip ac">AC-12.6</span> <span class="chip ac">AC-12.8</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>Chọn "Nhớ" (hoặc phím 3)</td><td>Tính tiến độ theo BR-SRS, hiện thẻ kế tiếp ngay (không chờ lưu), hiện "Hoàn tác"</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-12.7</span> <span class="chip ac">AC-13.1</span> <span class="chip ac">AC-18.1</span> <span class="chip ac">AC-12.9</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>Chọn "Quên"</td><td>Khoảng ôn 0, từ quay lại sau 3 thẻ; lần sau tính theo cột n = 0</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-13.3</span></td></tr>
+            <tr><td class="id">7</td><td>Hệ thống</td><td>—</td><td>Hết hàng đợi → "Kết quả phiên ôn": số từ đã ôn, từ mới, số lần từng mức, "Tỷ lệ nhớ", thời lượng, "Từ đã quên trong phiên" kèm dấu sao, "Ôn tiếp (n)", "Về Từ vựng", "Về Tự học"</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-16.1</span> <span class="chip ac">AC-16.2</span> <span class="chip ac">AC-16.3</span> <span class="chip ac">AC-16.4</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Không còn gì để ôn <span class="chip ac">AC-2.6</span> <span class="chip ac">AC-2.7</span></summary><div class="body"><ol><li>Có "Nguồn từ mới": "Bạn đã ôn xong hôm nay." + "Ngày mai: {k} từ đến hạn".</li><li>Chưa có nguồn: "Chọn cấp HSK, chủ đề hoặc bộ từ để bắt đầu học từ mới." + "Chọn từ để học" → S14.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Bấm nhầm <span class="chip ac">AC-17.1</span> <span class="chip ac">AC-17.2</span></summary><div class="body"><ol><li>"Hoàn tác" (hoặc U) khôi phục tiến độ, số liệu và hàng đợi trước đánh giá gần nhất; chỉ một bước.</li></ol></div></details>
+        <details class="alt"><summary>A-3 · Kết thúc giữa chừng <span class="chip ac">AC-16.5</span> <span class="chip ac">AC-16.6</span></summary><div class="body"><ol><li>"Kết thúc" khi chưa đánh giá thẻ nào → đóng S15, không tổng kết.</li><li>Rời S15 bằng cách khác → mọi đánh giá đã làm được giữ.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Không tải được số liệu S13 <span class="chip ac">AC-2.8</span></summary><div class="body"><ol><li>Thẻ "Từ vựng" hiển thị "Không tải được số liệu ôn tập." + "Thử lại"; bốn thẻ vẫn mở được.</li></ol></div></details>
+        <details class="alt"><summary>E-2 · GV mở S13–S15 (V15) <span class="chip ac">AC-1.3</span> <span class="chip ac">AC-1.4</span></summary><div class="body"><ol><li>GV không có mục "Tự học"; mở S13, S14 hoặc S15 bằng đường dẫn trực tiếp (hoặc đăng nhập bằng tài khoản GV sau khi bị chuyển tới A01) → A05 "Không tìm thấy nội dung bạn yêu cầu.", không lộ nội dung hay số liệu.</li><li>GV xem trước mục từ trong Kho nội dung tự học (016, T23–T27).</li></ol></div></details>
+      </div>
+
+      <!-- F-2 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-2">
+        <h3 data-toc="F-2 Học một nguồn">F-2: Bắt đầu học một cấp HSK, chủ đề, bộ từ hoặc từ khó</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>"Học HSK {c}", "Học HSK {c} · {chủ đề}", "Học" của bộ từ, "Ôn từ khó"</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đang ở S14</div>
+          <div class="fact"><span class="k">Kết quả</span>Phiên S15 chỉ gồm từ của nguồn; nguồn cấp / chủ đề / bộ trở thành "Nguồn từ mới"</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Chọn nút học của nguồn"]) --> B{"Hàng đợi của nguồn có từ?"}
+  B -- Có --> C["S15: từ đến hạn của nguồn, rồi từ mới của nguồn"]
+  C --> N["Ghi Nguồn từ mới, trừ Từ khó"]
+  B -- "Không, còn từ mới nhưng hết hạn mức từ mới" --> D["Bạn đã học đủ y từ mới hôm nay + Học thêm 5 từ mới / Để mai"]
+  B -- "Không, còn từ đến hạn nhưng hết hạn mức ôn" --> E["Bạn đã ôn đủ r từ hôm nay + Ôn thêm 50 từ / Để mai"]
+  B -- "Không, không có gì đến hạn hay mới" --> F["Không có từ nào cần ôn + Luyện thêm / Quay lại"]
+  D -- "Học thêm 5 từ mới" --> C
+  E -- "Ôn thêm 50 từ" --> C
+  F -- "Luyện thêm" --> G["S15 luyện thêm: tối đa 20 từ, không đổi lịch ôn"]
+</pre>
+          <figcaption>Hình F-2 — Mở phiên theo nguồn và các giới hạn ngày</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>S14 → "HSK 3" → "Chủ đề: Mua sắm" → "Học HSK 3 · Mua sắm"</td><td>Danh sách lọc, "{y'} từ · Đã học {x'}/{y'}"</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-3.3</span> <span class="chip ac">AC-3.4</span></td></tr>
+            <tr><td class="id">2</td><td>Hệ thống</td><td>—</td><td>Mở S15: từ đến hạn của nguồn (hạn mức ôn còn lại) rồi từ mới theo thứ tự kho (hạn mức từ mới còn lại); ghi "Nguồn từ mới" = HSK 3 · Mua sắm</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.3</span> <span class="chip ac">AC-11.4</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Hạn mức tính theo ngày giờ Việt Nam: từ mới = cài đặt + học thêm − từ có đánh giá đầu tiên hôm nay</td><td>—</td><td><span class="chip ac">AC-14.5</span> <span class="chip ac">AC-14.7</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Hết hạn mức từ mới <span class="chip ac">AC-11.5</span></summary><div class="body"><ol><li>"Bạn đã học đủ 10 từ mới hôm nay." → "Học thêm 5 từ mới" tăng hạn mức của riêng hôm nay thêm 5.</li></ol></div></details>
+        <details class="alt"><summary>A-2 · Hết hạn mức ôn <span class="chip ac">AC-11.6</span> <span class="chip ac">AC-14.6</span></summary><div class="body"><ol><li>"Bạn đã ôn đủ 200 từ hôm nay." → "Ôn thêm 50 từ"; S13 báo "Còn {m} từ quá hạn sẽ chuyển sang ngày sau."</li></ol></div></details>
+        <details class="alt"><summary>A-3 · Luyện thêm <span class="chip ac">AC-11.7</span> <span class="chip ac">AC-11.8</span> <span class="chip ac">AC-16.7</span></summary><div class="body"><ol><li>Nguồn đã ôn hết → "Luyện thêm": tối đa 20 từ đã học (từ khó trước), nhãn "Luyện thêm — không thay đổi lịch ôn", không khoảng ôn dưới nút, không đổi tiến độ hay số liệu ngày.</li></ol></div></details>
+        <details class="alt"><summary>A-4 · Bộ từ là Nguồn từ mới bị xóa <span class="chip ac">AC-11.9</span></summary><div class="body"><ol><li>"Nguồn từ mới" về trạng thái chưa chọn; S13 theo AC-2.7 khi không có từ đến hạn.</li></ol></div></details>
+      </div>
+
+      <!-- F-3 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-3">
+        <h3 data-toc="F-3 Tra từ">F-3: Tra từ và xem chi tiết từ</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Gõ vào ô "Tìm chữ Hán, pinyin hoặc nghĩa" trên S14, hoặc chọn một từ trong danh sách</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đang ở S14</div>
+          <div class="fact"><span class="k">Kết quả</span>Chi tiết từ với phát âm, ví dụ, cách dùng, tiến độ; có thể đánh dấu khó hoặc thêm vào bộ</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A(["Gõ chuỗi 1–50 ký tự"]) --> B{"Có chữ Hán?"}
+  B -- Có --> C["Chữ Hán chứa chuỗi"]
+  B -- Không --> D["Pinyin bắt đầu bằng chuỗi, không dấu khớp mọi thanh + nghĩa tiếng Việt chứa chuỗi"]
+  C --> E["Xếp nhóm: khớp toàn bộ, khớp một phần, khớp nghĩa, rồi theo cấp HSK"]
+  D --> E
+  E --> F{"Có kết quả?"}
+  F -- Không --> G["Không tìm thấy từ phù hợp... + Thêm từ của tôi"]
+  F -- Có --> H["Chọn một từ"]
+  H --> I["Chi tiết từ: chữ Hán, pinyin, phát âm, từ loại, nghĩa, Ví dụ, Cách dùng, Tiến độ ôn tập"]
+  I --> J["Đánh dấu từ khó / Thêm vào bộ từ / Đặt lại tiến độ"]
+</pre>
+          <figcaption>Hình F-3 — Tìm kiếm và chi tiết từ</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Gõ "nihao"</td><td>你好 nǐ hǎo "xin chào" · HSK 1 ở nhóm khớp toàn bộ</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-4.1</span> <span class="chip ac">AC-4.3</span> <span class="chip ac">AC-4.5</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Gõ "xin chao"</td><td>Khớp nghĩa "xin chào" (không dấu khớp có dấu)</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-4.4</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>Chọn 你好</td><td>Chi tiết từ (khung phải khi HV dùng màn hình rộng, màn hình riêng trên điện thoại)</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-5.1</span> <span class="chip ac">AC-5.2</span> <span class="chip ac">AC-5.3</span> <span class="chip ac">AC-5.4</span> <span class="chip ac">AC-5.5</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Chọn nút phát âm</td><td>Phát âm thanh bản xứ một lần, dừng âm thanh khác</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-6.1</span> <span class="chip ac">AC-6.2</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>"Đánh dấu từ khó"</td><td>Dấu sao ở mọi nơi; "Từ khó (n+1)"; lịch ôn không đổi</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-7.1</span> <span class="chip ac">AC-7.5</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Không có kết quả <span class="chip ac">AC-4.6</span></summary><div class="body"><ol><li>"Không tìm thấy từ phù hợp với "{chuỗi}". Thử tìm bằng chữ Hán, pinyin hoặc nghĩa tiếng Việt." + "Thêm từ của tôi".</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Không phát được âm thanh / không có âm thanh <span class="chip ac">AC-6.3</span> <span class="chip ac">AC-6.4</span></summary><div class="body"><ol><li>Không có âm thanh (kể cả từ tự thêm) → không có nút. Lỗi phát → "Không phát được âm thanh. Vui lòng thử lại."</li></ol></div></details>
+        <details class="alt"><summary>E-2 · Đường dẫn tới từ không xem được <span class="chip ac">AC-5.6</span></summary><div class="body"><ol><li>Từ không tồn tại, chưa xuất bản, đã ngừng mà người dùng không có, thuộc kho của workspace khác, hoặc từ tự thêm của người khác → A05.</li></ol></div></details>
+      </div>
+
+      <!-- F-4 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-4">
+        <h3 data-toc="F-4 Bộ từ của tôi">F-4: Bộ từ của tôi và từ tự thêm</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Tab "Bộ từ của tôi" → "Tạo bộ từ"; "Thêm vào bộ từ"; "Chọn nhiều"; "Thêm từ của tôi"</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Đang ở S14</div>
+          <div class="fact"><span class="k">Kết quả</span>Bộ từ riêng có thứ tự; xóa bộ không làm mất tiến độ</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor U as Người dùng
+  participant S as S14 Từ vựng
+  participant D as Dữ liệu Tự học
+  U->>S: Tạo bộ từ "Từ bài 3"
+  S->>D: Kiểm tra tên 1–60 ký tự, không trùng, dưới 50 bộ
+  D-->>S: Đã tạo
+  S-->>U: Đã tạo bộ từ "Từ bài 3"
+  U->>S: Chọn nhiều 7 từ, Thêm vào bộ từ
+  S->>D: Thêm từ chưa có, bỏ qua từ đã có, tối đa 1.000
+  D-->>S: 5 thêm, 2 đã có
+  S-->>U: Đã thêm 5 từ vào "Từ bài 3" (2 từ đã có sẵn)
+  U->>S: Thêm từ của tôi 砍价 / kǎn jià / mặc cả
+  S->>D: Kiểm tra trường, kiểm tra trùng chữ Hán với kho
+  D-->>S: Đã lưu, chỉ người dùng thấy
+  S-->>U: Đã thêm từ "砍价"
+  U->>S: Xóa bộ và xác nhận
+  S->>D: Xóa bộ, giữ tiến độ và dấu từ khó
+  S-->>U: Đã xóa bộ từ
+</pre>
+          <figcaption>Hình F-4 — Tạo bộ, thêm từ, từ tự thêm, xóa bộ</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>"Tạo bộ từ" → "Từ bài 3" → "Tạo"</td><td>Bộ rỗng ở đầu danh sách, "Đã tạo bộ từ "Từ bài 3"."</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-8.1</span> <span class="chip ac">AC-8.2</span> <span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.4</span> <span class="chip ac">AC-8.5</span></td></tr>
+            <tr><td class="id">2</td><td>HV</td><td>Chi tiết từ → "Thêm vào bộ từ" → tích "Từ bài 3"</td><td>Lưu ngay, "Đã thêm vào "Từ bài 3"."</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-9.1</span></td></tr>
+            <tr><td class="id">3</td><td>HV</td><td>"Chọn nhiều" → 7 từ → "Thêm vào bộ từ"</td><td>"Đã thêm 5 từ vào "Từ bài 3". (2 từ đã có sẵn)"; tối đa 1.000 từ</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-9.2</span> <span class="chip ac">AC-9.5</span></td></tr>
+            <tr><td class="id">4</td><td>HV</td><td>Mở bộ → "Bỏ khỏi bộ" một từ</td><td>"Đã bỏ khỏi bộ." + "Hoàn tác" 5 giây; tiến độ giữ</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-9.3</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-9.6</span></td></tr>
+            <tr><td class="id">5</td><td>HV</td><td>"Thêm từ của tôi" → nhập → "Lưu"</td><td>Kiểm tra trường (BR-7); trùng chữ Hán với kho thì hỏi "Dùng từ trong kho" / "Vẫn tạo từ riêng"; nhãn "Từ của tôi"</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-10.1</span> <span class="chip ac">AC-10.2</span> <span class="chip ac">AC-10.3</span> <span class="chip ac">AC-10.4</span> <span class="chip ac">AC-10.7</span> <span class="chip ac">AC-10.8</span></td></tr>
+            <tr><td class="id">6</td><td>HV</td><td>"Đổi tên" / "Xóa bộ"</td><td>"Đã đổi tên bộ từ." / xác nhận rồi "Đã xóa bộ từ.", tiến độ và từ tự thêm giữ nguyên</td><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td><span class="chip ac">AC-8.6</span> <span class="chip ac">AC-8.7</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Sửa / xóa từ tự thêm <span class="chip ac">AC-10.5</span> <span class="chip ac">AC-10.6</span></summary><div class="body"><ol><li>Sửa: nội dung mới ở mọi nơi, tiến độ giữ. Xóa: xác nhận, mất tiến độ, bỏ khỏi mọi bộ.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Bộ đã bị xóa trên thiết bị khác <span class="chip ac">AC-8.8</span></summary><div class="body"><ol><li>"Bộ từ này không còn tồn tại." và làm mới danh sách.</li></ol></div></details>
+      </div>
+
+      <!-- F-5 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-5">
+        <h3 data-toc="F-5 Ôn khi mất mạng">F-5: Ôn khi mất mạng và đồng bộ đánh giá</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>HV trên điện thoại</div>
+          <div class="fact"><span class="k">Kích hoạt</span>Mất kết nối trong lúc S15 đang mở</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Phiên đã tải các thẻ kế tiếp (≥ 50 hoặc toàn bộ hàng đợi)</div>
+          <div class="fact"><span class="k">Kết quả</span>Mọi đánh giá được lưu đúng một lần, theo thứ tự thực hiện</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor U as Học viên
+  participant P as S15 trên điện thoại
+  participant H as Hệ thống
+  U->>P: Đánh giá thẻ 1 đến 5
+  P->>H: Gửi 5 đánh giá
+  H-->>P: Đã lưu
+  Note over P,H: Mất kết nối
+  U->>P: Đánh giá thẻ 6 đến 25
+  P-->>U: Đang ngoại tuyến, kết quả sẽ được lưu khi có mạng
+  Note over P: Giữ 20 đánh giá trên thiết bị, kể cả khi đóng trình duyệt
+  Note over P,H: Có kết nối lại
+  P->>H: Gửi 20 đánh giá theo thứ tự, kèm thời điểm thực hiện
+  H-->>P: Ghi mỗi đánh giá đúng một lần
+  P-->>U: Bỏ thông báo ngoại tuyến
+</pre>
+          <figcaption>Hình F-5 — Ngoại tuyến và đồng bộ</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Tác nhân</th><th>Hành động</th><th>Hệ thống phản hồi</th><th>Màn hình</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>HV</td><td>Đánh giá khi mất mạng</td><td>Thẻ kế tiếp hiện ngay; "Đang ngoại tuyến — kết quả sẽ được lưu khi có mạng."</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-18.1</span> <span class="chip ac">AC-18.2</span></td></tr>
+            <tr><td class="id">2</td><td>Hệ thống</td><td>—</td><td>Có mạng lại (hoặc mở lại ứng dụng): gửi theo thứ tự, mỗi đánh giá một lần, ngày đánh giá = thời điểm thực hiện</td><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td><span class="chip ac">AC-18.3</span></td></tr>
+            <tr><td class="id">3</td><td>Hệ thống</td><td>—</td><td>Cùng từ được đánh giá trên hai thiết bị: áp dụng theo thứ tự thời điểm thực hiện</td><td>—</td><td><span class="chip ac">AC-18.5</span></td></tr>
+          </tbody>
+        </table></div>
+        <details class="alt"><summary>A-1 · Hết thẻ đã tải <span class="chip ac">AC-18.4</span></summary><div class="body"><ol><li>"Cần kết nối mạng để tải thêm thẻ." + tổng kết các thẻ đã ôn.</li></ol></div></details>
+        <details class="alt"><summary>E-1 · Đăng xuất khi còn kết quả chưa lưu <span class="chip ac">AC-18.6</span></summary><div class="body"><ol><li>"Còn {k} kết quả ôn tập chưa được lưu. Đăng xuất bây giờ sẽ mất các kết quả này." — "Ở lại" (mặc định) / "Vẫn đăng xuất".</li></ol></div></details>
+      </div>
+
+      <!-- F-6 ─────────────────────────────────────────── -->
+      <div class="flow" id="F-6">
+        <h3 data-toc="F-6 Kho từ thay đổi">F-6: GV thay đổi Kho nội dung tự học (016)</h3>
+        <div class="facts">
+          <div class="fact"><span class="k">Tác nhân</span>GV (016, <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–T27), Hệ thống</div>
+          <div class="fact"><span class="k">Kích hoạt</span>GV sửa, đổi cấp / chủ đề, ngừng xuất bản (ẩn, lưu trữ) hoặc xuất bản lại một từ trong kho của workspace</div>
+          <div class="fact"><span class="k">Điều kiện trước</span>Từ đã từng được xuất bản trong kho của workspace (kể cả từ của bộ HSK mẫu nạp sẵn)</div>
+          <div class="fact"><span class="k">Kết quả</span>HV của workspace thấy nội dung mới; tiến độ, dấu khó, bộ từ không bao giờ mất; workspace khác không bị ảnh hưởng</div>
+        </div>
+        <figure class="diagram">
+<pre class="mermaid">
+sequenceDiagram
+  actor G as Giáo viên
+  participant K as Kho nội dung tự học 016
+  participant V as 012 Từ vựng
+  actor U as Học viên cùng workspace
+  G->>K: Sửa nghĩa và âm thanh của 打折 trên T23–T27
+  K-->>V: Từ đã sửa
+  U->>V: Mở lại chi tiết 打折
+  V-->>U: Nội dung mới, tiến độ giữ nguyên
+  G->>K: Ẩn (ngừng xuất bản) 打折
+  K-->>V: Từ ngừng xuất bản, giữ nội dung lần cuối
+  V-->>U: Không còn trong danh sách cấp, tìm kiếm, từ mới
+  V-->>U: Vẫn trong bộ từ và lịch ôn, nhãn Không còn trong kho
+  G->>K: Xuất bản lại
+  V-->>U: Bỏ nhãn, xuất hiện lại, tiến độ giữ nguyên
+</pre>
+          <figcaption>Hình F-6 — Phản ánh thay đổi do GV thực hiện trên kho của workspace</figcaption>
+        </figure>
+        <div class="table-wrap"><table>
+          <thead><tr><th class="id">#</th><th>Sự kiện</th><th>Hệ thống phản hồi</th><th>AC</th></tr></thead>
+          <tbody>
+            <tr><td class="id">1</td><td>GV sửa nội dung</td><td>HV của workspace thấy nội dung mới ở lần tải kế tiếp; tiến độ, dấu khó, bộ giữ nguyên</td><td><span class="chip ac">AC-19.1</span></td></tr>
+            <tr><td class="id">2</td><td>Đổi cấp / chủ đề</td><td>Từ hiển thị ở cấp, chủ đề mới; "Đã học x/y" tính lại</td><td><span class="chip ac">AC-19.2</span></td></tr>
+            <tr><td class="id">3</td><td>GV ngừng xuất bản (ẩn, lưu trữ)</td><td>Biến mất khỏi duyệt, tìm, từ mới; vẫn hiển thị và lên lịch cho người đã có, nhãn "Không còn trong kho"</td><td><span class="chip ac">AC-19.3</span> <span class="chip ac">AC-19.4</span></td></tr>
+            <tr><td class="id">4</td><td>Xuất bản lại</td><td>Bỏ nhãn, xuất hiện lại, tiến độ giữ</td><td><span class="chip ac">AC-19.5</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- 5 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="requirements">
+      <h2>5. Functional Requirements <span class="vi">Yêu cầu chức năng</span></h2>
+      <p>Bản sao nguyên văn REQ/AC trong <a href="spec.md">spec.md</a>.</p>
+      <div class="req" id="REQ-1">
+        <header>
+          <h3>REQ-1: Access and entry to self-study — Quyền truy cập và lối vào Tự học</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-8</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#A01">A01</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-1.1"><td class="id">AC-1.1</td><td class="ears">WHEN HV đã đăng nhập chọn mục "Tự học" trên thanh tab dưới (theo 001) THE SYSTEM SHALL mở S13 "Tự học".</td></tr>
+            <tr id="AC-1.2"><td class="id">AC-1.2</td><td class="ears">THE SYSTEM SHALL cho mọi tài khoản HV đã kích hoạt và không bị khóa dùng S13, S14 và S15 với cùng chức năng, trên nội dung của Kho nội dung tự học thuộc workspace của GV đã tạo tài khoản HV đó (016), không đòi hỏi thuộc lớp nào và không phụ thuộc lớp, giáo trình hay trạng thái lớp.</td></tr>
+            <tr id="AC-1.3"><td class="id">AC-1.3</td><td class="ears">IF người chưa đăng nhập mở S13, S14 hoặc S15 (kể cả qua đường dẫn trực tiếp) THEN THE SYSTEM SHALL chuyển đến A01 và, sau khi đăng nhập thành công bằng tài khoản HV, mở lại đúng màn hình đã yêu cầu.</td></tr>
+            <tr id="AC-1.4"><td class="id">AC-1.4</td><td class="ears">IF tài khoản GV mở S13, S14 hoặc S15 (kể cả qua đường dẫn trực tiếp hoặc sau khi đăng nhập theo AC-1.3) THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." và không hiển thị nội dung, số liệu hay dữ liệu Tự học nào.</td></tr>
+            <tr id="AC-1.5"><td class="id">AC-1.5</td><td class="ears">THE SYSTEM SHALL hiển thị S13, S14 và S15 theo bố cục điện thoại ở chiều rộng 360–1023 px và, cho HV trên màn hình rộng, theo bố cục rộng (không có thanh bên của GV) ở chiều rộng từ 1024 px.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-2">
+        <header>
+          <h3>REQ-2: Self-study hub — Trang Tự học (S13)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#S16">S16</a><a class="chip screen" href="../screen-flow-design.html#S17">S17</a><a class="chip screen" href="../screen-flow-design.html#S19">S19</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-2.1"><td class="id">AC-2.1</td><td class="ears">WHEN người dùng mở S13 THE SYSTEM SHALL hiển thị tiêu đề "Tự học", dòng "Học theo nhịp của bạn — không tính vào điểm lớp." và bốn thẻ theo thứ tự "Từ vựng", "Luyện viết", "Luyện nghe &amp; nói", "Thi thử HSK", mỗi thẻ có tên và một dòng mô tả ngắn.</td></tr>
+            <tr id="AC-2.2"><td class="id">AC-2.2</td><td class="ears">THE SYSTEM SHALL hiển thị trên thẻ "Từ vựng" dòng "Ôn hôm nay: {n} từ" (n theo AC-14.4), dòng "Từ mới hôm nay: {x}/{y}" (x = số từ mới đã học hôm nay, y = hạn mức từ mới của hôm nay theo AC-14.5), dòng "Từ mới từ: {tên nguồn}" khi người dùng đã có "Nguồn từ mới" (AC-11.3) và nút "Ôn tập ngay".</td></tr>
+            <tr id="AC-2.3"><td class="id">AC-2.3</td><td class="ears">WHEN người dùng chọn thẻ "Từ vựng" ở vị trí khác nút "Ôn tập ngay" THE SYSTEM SHALL mở S14.</td></tr>
+            <tr id="AC-2.4"><td class="id">AC-2.4</td><td class="ears">WHEN người dùng chọn thẻ "Luyện viết", "Luyện nghe &amp; nói" hoặc "Thi thử HSK" THE SYSTEM SHALL mở lần lượt S16, S17 hoặc S19.</td></tr>
+            <tr id="AC-2.5"><td class="id">AC-2.5</td><td class="ears">WHEN người dùng chọn "Ôn tập ngay" THE SYSTEM SHALL bắt đầu phiên "Ôn hôm nay" trên S15 theo AC-11.1.</td></tr>
+            <tr id="AC-2.6"><td class="id">AC-2.6</td><td class="ears">IF phiên "Ôn hôm nay" không có từ nào để phục vụ (n = 0 và không có từ mới nào theo AC-11.1) trong khi người dùng đã có "Nguồn từ mới" THEN THE SYSTEM SHALL thay nút "Ôn tập ngay" bằng dòng "Bạn đã ôn xong hôm nay." kèm "Ngày mai: {k} từ đến hạn" (k = số từ có ngày đến hạn là ngày mai hoặc sớm hơn mà chưa được ôn).</td></tr>
+            <tr id="AC-2.7"><td class="id">AC-2.7</td><td class="ears">IF người dùng chưa có "Nguồn từ mới" và n = 0 THEN THE SYSTEM SHALL thay nút "Ôn tập ngay" bằng dòng "Chọn cấp HSK, chủ đề hoặc bộ từ để bắt đầu học từ mới." kèm nút "Chọn từ để học" mở S14.</td></tr>
+            <tr id="AC-2.8"><td class="id">AC-2.8</td><td class="ears">IF không tải được số liệu của thẻ "Từ vựng" THEN THE SYSTEM SHALL hiển thị trên thẻ đó "Không tải được số liệu ôn tập." kèm nút "Thử lại", không hiển thị số 0 thay thế, và vẫn cho mở cả bốn thẻ.</td></tr>
+            <tr id="AC-2.9"><td class="id">AC-2.9</td><td class="ears">THE SYSTEM SHALL không hiển thị trên S13 chuỗi ngày học, mục tiêu ngày, điểm, huy hiệu hay xếp hạng.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-3">
+        <header>
+          <h3>REQ-3: Browse the library by HSK level and topic — Duyệt kho từ theo cấp HSK và chủ đề (S14)</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-3.1"><td class="id">AC-3.1</td><td class="ears">WHEN người dùng mở S14 THE SYSTEM SHALL hiển thị tiêu đề "Từ vựng", ô tìm kiếm có gợi ý "Tìm chữ Hán, pinyin hoặc nghĩa", nút "Cài đặt ôn tập", ba tab "Kho từ", "Bộ từ của tôi", "Từ khó ({n})" và mở sẵn tab "Kho từ".</td></tr>
+            <tr id="AC-3.2"><td class="id">AC-3.2</td><td class="ears">THE SYSTEM SHALL liệt kê trong tab "Kho từ" mỗi cấp HSK có ít nhất một từ đang xuất bản trong Kho nội dung tự học của workspace của HV (016), theo thứ tự cấp tăng dần, mỗi cấp dạng "HSK {c}" kèm "{y} từ · Đã học {x}/{y}", với y là số từ đang xuất bản của cấp và x là số từ trong đó người dùng có nhãn khác "Chưa học".</td></tr>
+            <tr id="AC-3.3"><td class="id">AC-3.3</td><td class="ears">WHEN người dùng chọn một cấp HSK THE SYSTEM SHALL hiển thị danh sách từ đang xuất bản của cấp theo thứ tự của kho, mỗi dòng gồm chữ Hán, pinyin có dấu thanh, nghĩa tiếng Việt đầu tiên, nhãn trạng thái học và dấu sao khi từ được đánh dấu khó, cùng bộ lọc "Chủ đề" (mặc định "Tất cả chủ đề"), nút "Chọn nhiều" và nút "Học HSK {c}".</td></tr>
+            <tr id="AC-3.4"><td class="id">AC-3.4</td><td class="ears">WHEN người dùng chọn một chủ đề trong bộ lọc "Chủ đề" THE SYSTEM SHALL chỉ hiển thị các từ của cấp đang chọn mang thẻ chủ đề đó, hiển thị "{y'} từ · Đã học {x'}/{y'}" của bộ lọc và đổi nút học thành "Học HSK {c} · {chủ đề}".</td></tr>
+            <tr id="AC-3.5"><td class="id">AC-3.5</td><td class="ears">THE SYSTEM SHALL gán cho mỗi từ nhãn trạng thái học riêng của người dùng: "Chưa học" khi từ chưa có tiến độ ôn tập, "Đang học" khi khoảng ôn hiện tại dưới 21 ngày, "Đã thuộc" khi khoảng ôn hiện tại từ 21 ngày trở lên.</td></tr>
+            <tr id="AC-3.6"><td class="id">AC-3.6</td><td class="ears">THE SYSTEM SHALL hiển thị danh sách từ theo từng phần 50 từ và tự tải 50 từ tiếp theo khi người dùng cuộn tới cuối phần đang hiển thị.</td></tr>
+            <tr id="AC-3.7"><td class="id">AC-3.7</td><td class="ears">IF cấp và chủ đề đang chọn không có từ nào đang xuất bản THEN THE SYSTEM SHALL hiển thị "Chưa có từ nào cho bộ lọc này." và vô hiệu nút học.</td></tr>
+            <tr id="AC-3.8"><td class="id">AC-3.8</td><td class="ears">IF không tải được danh sách cấp hoặc danh sách từ THEN THE SYSTEM SHALL hiển thị "Không tải được danh sách từ. Vui lòng thử lại." kèm nút "Thử lại".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-4">
+        <header>
+          <h3>REQ-4: Vocabulary search — Tìm kiếm từ vựng</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-4.1"><td class="id">AC-4.1</td><td class="ears">WHEN người dùng nhập vào ô tìm kiếm của S14 một chuỗi có 1–50 ký tự sau khi bỏ khoảng trắng đầu và cuối THE SYSTEM SHALL hiển thị kết quả tìm trong toàn bộ từ đang xuất bản của kho và các từ tự thêm của chính người dùng, không phụ thuộc tab, cấp hay chủ đề đang chọn, mỗi kết quả hiển thị như một dòng của AC-3.3 kèm nhãn "HSK {c}" hoặc "Từ của tôi".</td></tr>
+            <tr id="AC-4.2"><td class="id">AC-4.2</td><td class="ears">WHEN chuỗi tìm kiếm chứa ít nhất một chữ Hán THE SYSTEM SHALL trả về các từ có chữ Hán chứa nguyên chuỗi đó (ví dụ "你" trả về 你, 你好, 你们).</td></tr>
+            <tr id="AC-4.3"><td class="id">AC-4.3</td><td class="ears">WHEN chuỗi tìm kiếm chỉ gồm chữ cái Latin, chữ có dấu thanh pinyin, ü/v, số 1–5, khoảng trắng hoặc dấu ' THE SYSTEM SHALL trả về các từ có pinyin bắt đầu bằng chuỗi đó, không phân biệt hoa thường, bỏ qua khoảng trắng và dấu ', trong đó âm tiết không có dấu thanh hay số thanh khớp mọi thanh điệu ("ma" khớp mā, má, mǎ, mà, ma; "nihao" và "ni hao" khớp nǐ hǎo) còn âm tiết có dấu thanh hoặc số thanh chỉ khớp đúng thanh đó ("mā" và "ma1" chỉ khớp mā; "ni3hao3" khớp nǐ hǎo).</td></tr>
+            <tr id="AC-4.4"><td class="id">AC-4.4</td><td class="ears">WHEN chuỗi tìm kiếm không chứa chữ Hán THE SYSTEM SHALL đồng thời trả về các từ có một nghĩa tiếng Việt chứa chuỗi đó như một hoặc nhiều từ trọn vẹn liên tiếp, không phân biệt hoa thường, trong đó chuỗi viết không dấu khớp cả nghĩa có dấu ("xin chao" khớp "xin chào") còn chuỗi có dấu tiếng Việt chỉ khớp đúng dấu ("chào" không khớp "chảo").</td></tr>
+            <tr id="AC-4.5"><td class="id">AC-4.5</td><td class="ears">THE SYSTEM SHALL sắp xếp kết quả theo ba nhóm — (1) chữ Hán hoặc pinyin khớp toàn bộ, (2) chữ Hán chứa chuỗi hoặc pinyin bắt đầu bằng chuỗi, (3) khớp nghĩa — mỗi từ chỉ xuất hiện một lần ở nhóm cao nhất, trong mỗi nhóm theo cấp HSK tăng dần (từ tự thêm sau cùng) rồi theo pinyin bỏ dấu theo thứ tự chữ cái.</td></tr>
+            <tr id="AC-4.6"><td class="id">AC-4.6</td><td class="ears">IF tìm kiếm không có kết quả THEN THE SYSTEM SHALL hiển thị "Không tìm thấy từ phù hợp với "{chuỗi}". Thử tìm bằng chữ Hán, pinyin hoặc nghĩa tiếng Việt." kèm nút "Thêm từ của tôi" (REQ-10).</td></tr>
+            <tr id="AC-4.7"><td class="id">AC-4.7</td><td class="ears">WHEN người dùng xóa hết nội dung ô tìm kiếm THE SYSTEM SHALL trở về đúng tab, cấp, chủ đề và vị trí cuộn đang có trước khi tìm.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-5">
+        <header>
+          <h3>REQ-5: Word detail — Chi tiết từ</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-5.1"><td class="id">AC-5.1</td><td class="ears">WHEN người dùng chọn một từ trong danh sách cấp, kết quả tìm kiếm, một bộ từ hoặc tab "Từ khó" THE SYSTEM SHALL mở chi tiết từ gồm chữ Hán cỡ tối thiểu 48 px, pinyin có dấu thanh, nút phát âm, từ loại, mọi nghĩa tiếng Việt theo thứ tự của kho, nhãn "HSK {c}" (hoặc "Từ của tôi"), các thẻ chủ đề, nhãn trạng thái học, nút "Đánh dấu từ khó" (hoặc "Bỏ đánh dấu từ khó") và nút "Thêm vào bộ từ".</td></tr>
+            <tr id="AC-5.2"><td class="id">AC-5.2</td><td class="ears">THE SYSTEM SHALL hiển thị trong chi tiết từ mục "Ví dụ" gồm mọi câu ví dụ của từ theo thứ tự của kho, mỗi câu có chữ Hán với từ đang xem được làm nổi bật, pinyin và nghĩa tiếng Việt, kèm nút phát âm câu khi câu có âm thanh.</td></tr>
+            <tr id="AC-5.3"><td class="id">AC-5.3</td><td class="ears">WHERE từ có nội dung "Cách dùng" trong kho THE SYSTEM SHALL hiển thị mục "Cách dùng" với nội dung đó trong chi tiết từ, và không hiển thị mục này khi từ không có nội dung "Cách dùng".</td></tr>
+            <tr id="AC-5.4"><td class="id">AC-5.4</td><td class="ears">WHILE từ đã có tiến độ ôn tập của người dùng THE SYSTEM SHALL hiển thị trong chi tiết từ khối "Tiến độ ôn tập" gồm "Lần ôn tới: {dd/mm/yyyy}" (hoặc "Hôm nay" khi từ đến hạn), "Khoảng ôn: {I} ngày", "Số lần quên: {L}" và nút "Đặt lại tiến độ" (REQ-17).</td></tr>
+            <tr id="AC-5.5"><td class="id">AC-5.5</td><td class="ears">WHILE chiều rộng màn hình từ 1024 px THE SYSTEM SHALL hiển thị chi tiết từ ở khung bên phải cạnh danh sách; ở chiều rộng nhỏ hơn chi tiết từ mở thành màn hình riêng có nút "Quay lại" đưa về danh sách với bộ lọc và vị trí cuộn được giữ nguyên.</td></tr>
+            <tr id="AC-5.6"><td class="id">AC-5.6</td><td class="ears">IF người dùng mở (kể cả qua đường dẫn trực tiếp) chi tiết của một từ không tồn tại, chưa từng được xuất bản, đã ngừng xuất bản mà người dùng không có trong bộ từ, tab "Từ khó" hay tiến độ ôn tập, thuộc Kho nội dung tự học của workspace khác, hoặc từ tự thêm của người khác THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." giống hệt nhau cho mọi trường hợp đó.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-6">
+        <header>
+          <h3>REQ-6: Pronunciation audio — Phát âm bản xứ</h3>
+          <div class="req-meta"><span class="chip">US-2</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-6.1"><td class="id">AC-6.1</td><td class="ears">WHEN người dùng chọn nút phát âm của một từ hoặc một câu ví dụ THE SYSTEM SHALL phát âm thanh bản xứ tương ứng của kho một lần từ đầu và dừng mọi âm thanh khác đang phát.</td></tr>
+            <tr id="AC-6.2"><td class="id">AC-6.2</td><td class="ears">WHEN người dùng chọn lại nút phát âm trong khi chính âm thanh đó đang phát THE SYSTEM SHALL phát lại từ đầu.</td></tr>
+            <tr id="AC-6.3"><td class="id">AC-6.3</td><td class="ears">IF một từ hoặc câu ví dụ không có âm thanh trong kho (kể cả mọi từ tự thêm) THEN THE SYSTEM SHALL không hiển thị nút phát âm cho mục đó.</td></tr>
+            <tr id="AC-6.4"><td class="id">AC-6.4</td><td class="ears">IF không phát được âm thanh THEN THE SYSTEM SHALL hiển thị "Không phát được âm thanh. Vui lòng thử lại." và không chặn thao tác nào khác.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-7">
+        <header>
+          <h3>REQ-7: Difficult-word marks — Đánh dấu từ khó</h3>
+          <div class="req-meta"><span class="chip">US-3</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-7.1"><td class="id">AC-7.1</td><td class="ears">WHEN người dùng chọn "Đánh dấu từ khó" (hoặc dấu sao) trong chi tiết từ, trên thẻ ôn tập hoặc trong danh sách tổng kết phiên THE SYSTEM SHALL đánh dấu từ đó là từ khó cho riêng người dùng, hiển thị dấu sao ở mọi nơi từ xuất hiện, đổi nút thành "Bỏ đánh dấu từ khó" và tăng n của tab "Từ khó ({n})" thêm 1.</td></tr>
+            <tr id="AC-7.2"><td class="id">AC-7.2</td><td class="ears">WHEN người dùng chọn "Bỏ đánh dấu từ khó" (hoặc chọn lại dấu sao đang bật) THE SYSTEM SHALL bỏ dấu từ khó, bỏ từ khỏi tab "Từ khó" và giảm n đi 1.</td></tr>
+            <tr id="AC-7.3"><td class="id">AC-7.3</td><td class="ears">WHEN người dùng mở tab "Từ khó" THE SYSTEM SHALL liệt kê mọi từ người dùng đã đánh dấu khó, đánh dấu gần nhất trước, mỗi dòng như AC-3.3, kèm nút "Ôn từ khó" bắt đầu phiên với nguồn "Từ khó" theo AC-11.2.</td></tr>
+            <tr id="AC-7.4"><td class="id">AC-7.4</td><td class="ears">IF người dùng chưa đánh dấu từ khó nào THEN THE SYSTEM SHALL hiển thị trong tab "Từ khó" dòng "Bạn chưa đánh dấu từ khó nào. Chạm ☆ trên một từ để thêm vào đây." và không hiển thị nút "Ôn từ khó".</td></tr>
+            <tr id="AC-7.5"><td class="id">AC-7.5</td><td class="ears">THE SYSTEM SHALL không thay đổi khoảng ôn, hệ số dễ, số lần nhớ liên tiếp hay ngày đến hạn của một từ khi từ được đánh dấu hoặc bỏ đánh dấu khó; dấu từ khó chỉ ảnh hưởng thứ tự phục vụ (AC-14.3), chế độ "Luyện thêm" (AC-11.8) và nguồn "Từ khó".</td></tr>
+            <tr id="AC-7.6"><td class="id">AC-7.6</td><td class="ears">THE SYSTEM SHALL chỉ đánh dấu hoặc bỏ đánh dấu từ khó khi chính người dùng thao tác, không bao giờ tự động.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-8">
+        <header>
+          <h3>REQ-8: Personal decks — Bộ từ của tôi</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-8.1"><td class="id">AC-8.1</td><td class="ears">WHEN người dùng mở tab "Bộ từ của tôi" THE SYSTEM SHALL liệt kê các bộ từ của chính người dùng, bộ tạo gần nhất trước, mỗi bộ gồm tên, "{m} từ", "Đến hạn: {d}" (số từ của bộ đang đến hạn) và nút "Học", cùng nút "Tạo bộ từ".</td></tr>
+            <tr id="AC-8.2"><td class="id">AC-8.2</td><td class="ears">WHEN người dùng chọn "Tạo bộ từ", nhập "Tên bộ từ" hợp lệ và chọn "Tạo" THE SYSTEM SHALL tạo bộ từ rỗng, hiển thị bộ ở đầu danh sách và hiển thị "Đã tạo bộ từ "{tên}"."</td></tr>
+            <tr id="AC-8.3"><td class="id">AC-8.3</td><td class="ears">IF "Tên bộ từ" sau khi bỏ khoảng trắng đầu và cuối rỗng hoặc dài hơn 60 ký tự THEN THE SYSTEM SHALL không lưu và hiển thị dưới trường "Tên bộ từ cần từ 1 đến 60 ký tự."</td></tr>
+            <tr id="AC-8.4"><td class="id">AC-8.4</td><td class="ears">IF "Tên bộ từ" sau khi bỏ khoảng trắng đầu và cuối trùng, không phân biệt hoa thường, với tên một bộ khác của chính người dùng THEN THE SYSTEM SHALL không lưu và hiển thị dưới trường "Bạn đã có bộ từ tên này."</td></tr>
+            <tr id="AC-8.5"><td class="id">AC-8.5</td><td class="ears">IF người dùng đã có 50 bộ từ THEN THE SYSTEM SHALL không tạo bộ mới và hiển thị "Bạn đã có tối đa 50 bộ từ. Hãy xóa bớt bộ không dùng."</td></tr>
+            <tr id="AC-8.6"><td class="id">AC-8.6</td><td class="ears">WHEN người dùng chọn "Đổi tên" trên một bộ, nhập tên hợp lệ theo AC-8.3 và AC-8.4 và chọn "Lưu" THE SYSTEM SHALL đổi tên bộ ở mọi nơi tên bộ xuất hiện (kể cả "Từ mới từ: {tên nguồn}" trên S13) và hiển thị "Đã đổi tên bộ từ."</td></tr>
+            <tr id="AC-8.7"><td class="id">AC-8.7</td><td class="ears">WHEN người dùng chọn "Xóa bộ" và xác nhận "Xóa bộ "{tên}"? Các từ vẫn giữ tiến độ ôn tập và dấu từ khó." THE SYSTEM SHALL xóa bộ khỏi danh sách, hiển thị "Đã xóa bộ từ." và giữ nguyên tiến độ ôn tập, dấu từ khó của mọi từ trong bộ cùng mọi từ tự thêm.</td></tr>
+            <tr id="AC-8.8"><td class="id">AC-8.8</td><td class="ears">IF bộ từ người dùng đang thao tác đã bị xóa trên thiết bị khác THEN THE SYSTEM SHALL không thực hiện thao tác, hiển thị "Bộ từ này không còn tồn tại." và làm mới danh sách bộ từ.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-9">
+        <header>
+          <h3>REQ-9: Deck contents — Thêm và bớt từ trong bộ</h3>
+          <div class="req-meta"><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-9.1"><td class="id">AC-9.1</td><td class="ears">WHEN người dùng chọn "Thêm vào bộ từ" trong chi tiết từ THE SYSTEM SHALL hiển thị bảng chọn liệt kê mọi bộ từ của người dùng với ô chọn đã tích sẵn ở các bộ đang chứa từ cùng mục "Tạo bộ từ mới", và lưu ngay mỗi lần tích hoặc bỏ tích kèm thông báo "Đã thêm vào "{tên}"." hoặc "Đã bỏ khỏi "{tên}"."</td></tr>
+            <tr id="AC-9.2"><td class="id">AC-9.2</td><td class="ears">WHEN người dùng dùng "Chọn nhiều" trong danh sách từ hoặc kết quả tìm kiếm, chọn một hoặc nhiều từ, chọn "Thêm vào bộ từ" rồi chọn một bộ THE SYSTEM SHALL thêm vào bộ các từ chưa có trong bộ, bỏ qua các từ đã có và hiển thị "Đã thêm {a} từ vào "{tên}"." kèm " ({b} từ đã có sẵn)" khi b &gt; 0.</td></tr>
+            <tr id="AC-9.3"><td class="id">AC-9.3</td><td class="ears">WHEN người dùng mở một bộ từ THE SYSTEM SHALL hiển thị tên bộ, "{m} từ", "Đến hạn: {d}", các nút "Học", "Đổi tên", "Xóa bộ", "Thêm từ của tôi" và danh sách từ của bộ theo thứ tự thêm vào (thêm sớm nhất trước), mỗi dòng như AC-3.3 kèm nút "Bỏ khỏi bộ".</td></tr>
+            <tr id="AC-9.4"><td class="id">AC-9.4</td><td class="ears">WHEN người dùng chọn "Bỏ khỏi bộ" trên một từ THE SYSTEM SHALL bỏ từ khỏi bộ ngay, hiển thị "Đã bỏ khỏi bộ." kèm nút "Hoàn tác" trong 5 giây (khôi phục đúng vị trí cũ), và giữ nguyên tiến độ ôn tập cùng dấu từ khó của từ.</td></tr>
+            <tr id="AC-9.5"><td class="id">AC-9.5</td><td class="ears">IF việc thêm làm bộ vượt 1.000 từ THEN THE SYSTEM SHALL chỉ thêm đến khi bộ đủ 1.000 từ (theo thứ tự đã chọn) và hiển thị "Bộ "{tên}" đã đủ 1.000 từ. {c} từ chưa được thêm."</td></tr>
+            <tr id="AC-9.6"><td class="id">AC-9.6</td><td class="ears">WHILE một bộ từ chưa có từ nào THE SYSTEM SHALL hiển thị trong bộ "Bộ từ chưa có từ nào. Tìm hoặc duyệt kho từ để thêm." và vô hiệu nút "Học".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-10">
+        <header>
+          <h3>REQ-10: Custom words — Từ tự thêm</h3>
+          <div class="req-meta"><span class="chip">US-5</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+      <p>Quy tắc trường của biểu mẫu "Từ của tôi" (giá trị được bỏ khoảng trắng đầu và cuối trước khi kiểm tra):</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Trường</th><th>Bắt buộc</th><th>Quy tắc</th><th>Thông báo khi sai</th></tr></thead>
+          <tbody>
+            <tr><td>Chữ Hán</td><td>Có</td><td>1–20 ký tự, chỉ chữ Hán (không chữ Latin, số, ký hiệu, khoảng trắng)</td><td>"Chữ Hán cần 1–20 chữ Hán, không có chữ cái, số hay ký hiệu."</td></tr>
+            <tr><td>Pinyin</td><td>Có</td><td>1–100 ký tự, chỉ chữ cái Latin, chữ có dấu thanh pinyin, ü, số 1–5, khoảng trắng, dấu '</td><td>"Pinyin chỉ gồm chữ cái, dấu thanh, số thanh 1–5, khoảng trắng hoặc dấu ' (tối đa 100 ký tự)."</td></tr>
+            <tr><td>Nghĩa tiếng Việt</td><td>Có</td><td>1–200 ký tự</td><td>"Nghĩa tiếng Việt cần từ 1 đến 200 ký tự."</td></tr>
+            <tr><td>Từ loại</td><td>Không</td><td>Một giá trị trong danh sách từ loại của kho (016)</td><td>— (chọn từ danh sách)</td></tr>
+            <tr><td>Câu ví dụ</td><td>Không</td><td>≤ 100 ký tự, phải có chữ Hán; bắt buộc khi "Pinyin câu ví dụ" hoặc "Nghĩa câu ví dụ" có nội dung</td><td>"Câu ví dụ tối đa 100 ký tự và phải có chữ Hán."</td></tr>
+            <tr><td>Pinyin câu ví dụ</td><td>Không</td><td>≤ 300 ký tự</td><td>"Tối đa 300 ký tự."</td></tr>
+            <tr><td>Nghĩa câu ví dụ</td><td>Không</td><td>≤ 300 ký tự</td><td>"Tối đa 300 ký tự."</td></tr>
+            <tr><td>Ghi chú</td><td>Không</td><td>≤ 500 ký tự; hiển thị trong mục "Cách dùng" của chi tiết từ</td><td>"Tối đa 500 ký tự."</td></tr>
+          </tbody>
+        </table></div>
+        <table>
+          <tbody>
+            <tr id="AC-10.1"><td class="id">AC-10.1</td><td class="ears">WHEN người dùng chọn "Thêm từ của tôi" (trong một bộ từ hoặc khi tìm kiếm không có kết quả) THE SYSTEM SHALL hiển thị biểu mẫu "Từ của tôi" gồm các trường "Chữ Hán", "Pinyin", "Nghĩa tiếng Việt", "Từ loại", "Câu ví dụ", "Pinyin câu ví dụ", "Nghĩa câu ví dụ", "Ghi chú" cùng nút "Lưu" và "Hủy", với ô tìm kiếm vừa nhập (nếu có) được điền sẵn vào "Chữ Hán" khi là chữ Hán hoặc vào "Pinyin" khi là chữ Latin.</td></tr>
+            <tr id="AC-10.2"><td class="id">AC-10.2</td><td class="ears">IF một trường của biểu mẫu "Từ của tôi" không đạt quy tắc trong bảng của REQ-10 THEN THE SYSTEM SHALL không lưu, hiển thị thông báo tương ứng dưới đúng trường đó và giữ nguyên các giá trị đã nhập.</td></tr>
+            <tr id="AC-10.3"><td class="id">AC-10.3</td><td class="ears">IF kho có một từ đang xuất bản cùng chữ Hán với từ sắp lưu THEN THE SYSTEM SHALL trước khi lưu hiển thị "Kho đã có từ này: {chữ Hán} – {pinyin} – {nghĩa đầu tiên}." với hai lựa chọn "Dùng từ trong kho" (thêm từ của kho vào bộ đang mở thay cho từ tự thêm, không tạo từ tự thêm) và "Vẫn tạo từ riêng".</td></tr>
+            <tr id="AC-10.4"><td class="id">AC-10.4</td><td class="ears">WHEN người dùng lưu biểu mẫu hợp lệ THE SYSTEM SHALL tạo từ tự thêm chỉ người dùng đó thấy, gắn nhãn "Từ của tôi", thêm từ vào bộ đang mở (khi tạo từ trong một bộ) và hiển thị "Đã thêm từ "{chữ Hán}"."</td></tr>
+            <tr id="AC-10.5"><td class="id">AC-10.5</td><td class="ears">WHEN người dùng chọn "Sửa" trong chi tiết một từ tự thêm và lưu thay đổi hợp lệ THE SYSTEM SHALL hiển thị nội dung mới ở mọi bộ từ, tab "Từ khó" và thẻ ôn tập, và giữ nguyên tiến độ ôn tập, dấu từ khó và các bộ chứa từ.</td></tr>
+            <tr id="AC-10.6"><td class="id">AC-10.6</td><td class="ears">WHEN người dùng chọn "Xóa từ" trong chi tiết một từ tự thêm và xác nhận "Xóa từ "{chữ Hán}"? Từ sẽ bị bỏ khỏi mọi bộ từ và mất tiến độ ôn tập." THE SYSTEM SHALL xóa vĩnh viễn từ đó cùng tiến độ ôn tập và dấu từ khó của nó, bỏ từ khỏi mọi bộ và hiển thị "Đã xóa từ."</td></tr>
+            <tr id="AC-10.7"><td class="id">AC-10.7</td><td class="ears">IF người dùng đã có 2.000 từ tự thêm THEN THE SYSTEM SHALL không tạo từ mới và hiển thị "Bạn đã có tối đa 2.000 từ tự thêm."</td></tr>
+            <tr id="AC-10.8"><td class="id">AC-10.8</td><td class="ears">THE SYSTEM SHALL hiển thị mọi nội dung do người dùng nhập (tên bộ từ, các trường của từ tự thêm) đúng như văn bản thuần, không diễn giải thành định dạng, liên kết hay mã thực thi.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-11">
+        <header>
+          <h3>REQ-11: Starting a study session and new-word sources — Bắt đầu phiên học và nguồn từ mới</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="chip">US-3</span><span class="chip">US-4</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+      <p>Nguồn của một phiên: "Ôn hôm nay" (mọi từ của người dùng), một cấp HSK, một cấp HSK kèm chủ đề, một bộ từ, hoặc "Từ khó". "Hạn mức ôn còn lại" và "hạn mức từ mới còn lại" theo AC-14.5.</p>
+        <table>
+          <tbody>
+            <tr id="AC-11.1"><td class="id">AC-11.1</td><td class="ears">WHEN người dùng bắt đầu phiên "Ôn hôm nay" THE SYSTEM SHALL mở S15 với hàng đợi gồm trước hết các từ đã chọn "Quên" hôm nay mà chưa được đánh giá lại, rồi các từ đến hạn khác thuộc mọi nguồn trong hạn mức ôn còn lại (thứ tự AC-14.3), rồi các từ mới của "Nguồn từ mới" (AC-11.3) trong hạn mức từ mới còn lại.</td></tr>
+            <tr id="AC-11.2"><td class="id">AC-11.2</td><td class="ears">WHEN người dùng chọn nút học của một cấp HSK, của một cấp kèm chủ đề, "Học" của một bộ từ hoặc "Ôn từ khó" THE SYSTEM SHALL mở S15 với hàng đợi chỉ gồm các từ của nguồn đó: trước hết các từ đến hạn trong hạn mức ôn còn lại (thứ tự AC-14.3), rồi các từ mới của nguồn trong hạn mức từ mới còn lại.</td></tr>
+            <tr id="AC-11.3"><td class="id">AC-11.3</td><td class="ears">WHEN người dùng bắt đầu phiên từ một cấp HSK, một cấp kèm chủ đề hoặc một bộ từ THE SYSTEM SHALL ghi nguồn đó làm "Nguồn từ mới" của người dùng (thay nguồn trước), dùng cho mọi phiên "Ôn hôm nay" sau đó.</td></tr>
+            <tr id="AC-11.4"><td class="id">AC-11.4</td><td class="ears">THE SYSTEM SHALL lấy từ mới của một cấp HSK hoặc cấp kèm chủ đề theo thứ tự của kho, của một bộ từ theo thứ tự thêm vào bộ, của nguồn "Từ khó" theo thứ tự của tab "Từ khó", và chỉ lấy các từ đang xuất bản hoặc từ tự thêm mà người dùng chưa có tiến độ ôn tập.</td></tr>
+            <tr id="AC-11.5"><td class="id">AC-11.5</td><td class="ears">IF nguồn còn từ mới chưa học, hàng đợi không có từ nào và hạn mức từ mới hôm nay đã hết THEN THE SYSTEM SHALL không mở phiên mà hiển thị "Bạn đã học đủ {y} từ mới hôm nay." kèm nút "Học thêm 5 từ mới" (tăng hạn mức từ mới của riêng hôm nay thêm 5 rồi mở phiên) và "Để mai".</td></tr>
+            <tr id="AC-11.6"><td class="id">AC-11.6</td><td class="ears">IF nguồn còn từ đến hạn, hàng đợi không có từ nào và hạn mức ôn hôm nay đã hết THEN THE SYSTEM SHALL không mở phiên mà hiển thị "Bạn đã ôn đủ {r} từ hôm nay." kèm nút "Ôn thêm 50 từ" (tăng hạn mức ôn của riêng hôm nay thêm 50 rồi mở phiên) và "Để mai".</td></tr>
+            <tr id="AC-11.7"><td class="id">AC-11.7</td><td class="ears">IF nguồn không có từ đến hạn và không còn từ mới chưa học THEN THE SYSTEM SHALL không mở phiên mà hiển thị "Không có từ nào cần ôn trong {tên nguồn} hôm nay." kèm nút "Luyện thêm" (chỉ khi nguồn có ít nhất 1 từ đã có tiến độ ôn tập) và "Quay lại".</td></tr>
+            <tr id="AC-11.8"><td class="id">AC-11.8</td><td class="ears">WHEN người dùng chọn "Luyện thêm" THE SYSTEM SHALL mở S15 ở chế độ luyện thêm với tối đa 20 từ đã có tiến độ của nguồn (từ khó trước, còn lại ngẫu nhiên), hiển thị nhãn "Luyện thêm — không thay đổi lịch ôn", không hiển thị khoảng ôn dưới các nút đánh giá, và không thay đổi tiến độ ôn tập hay số liệu hôm nay của bất kỳ từ nào.</td></tr>
+            <tr id="AC-11.9"><td class="id">AC-11.9</td><td class="ears">IF bộ từ đang là "Nguồn từ mới" bị xóa THEN THE SYSTEM SHALL bỏ "Nguồn từ mới" của người dùng về trạng thái chưa chọn.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-12">
+        <header>
+          <h3>REQ-12: Two-sided flashcard review — Thẻ hai mặt trên S15</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-12.1"><td class="id">AC-12.1</td><td class="ears">WHILE S15 đang mở THE SYSTEM SHALL hiển thị ở phần đầu tên nguồn, "Còn {r}" (số thẻ còn trong hàng đợi, kể cả thẻ được đưa lại sau "Quên"), nút "Cài đặt ôn tập" và nút "Kết thúc".</td></tr>
+            <tr id="AC-12.2"><td class="id">AC-12.2</td><td class="ears">WHEN S15 hiển thị một thẻ THE SYSTEM SHALL hiển thị mặt trước theo cài đặt "Mặt trước thẻ" — "Chữ Hán" (mặc định): chỉ chữ Hán cỡ tối thiểu 48 px; "Nghĩa tiếng Việt": chỉ từ loại và các nghĩa tiếng Việt; "Pinyin": chỉ pinyin có dấu thanh kèm nút phát âm — cùng nhãn "Mới" nếu là từ mới, dấu sao từ khó bật/tắt được và nút "Hiện đáp án".</td></tr>
+            <tr id="AC-12.3"><td class="id">AC-12.3</td><td class="ears">WHEN người dùng chạm vào thẻ hoặc chọn "Hiện đáp án" THE SYSTEM SHALL lật sang mặt sau gồm chữ Hán, pinyin có dấu thanh, từ loại, các nghĩa tiếng Việt, câu ví dụ đầu tiên của từ (chữ Hán, pinyin, nghĩa) nếu có và nút phát âm, rồi hiển thị bốn nút đánh giá "Quên", "Khó", "Nhớ", "Dễ".</td></tr>
+            <tr id="AC-12.4"><td class="id">AC-12.4</td><td class="ears">THE SYSTEM SHALL không hiển thị các nút đánh giá trước khi thẻ được lật sang mặt sau lần đầu.</td></tr>
+            <tr id="AC-12.5"><td class="id">AC-12.5</td><td class="ears">WHILE mặt sau đã được hiển thị THE SYSTEM SHALL cho chạm vào thẻ để lật qua lại giữa hai mặt mà các nút đánh giá vẫn hiển thị.</td></tr>
+            <tr id="AC-12.6"><td class="id">AC-12.6</td><td class="ears">THE SYSTEM SHALL hiển thị dưới mỗi nút đánh giá khoảng ôn mà nút đó sẽ tạo theo REQ-13: "Hôm nay" dưới "Quên" và "{k} ngày" dưới "Khó", "Nhớ", "Dễ".</td></tr>
+            <tr id="AC-12.7"><td class="id">AC-12.7</td><td class="ears">WHEN người dùng chọn một nút đánh giá THE SYSTEM SHALL ghi đánh giá theo REQ-13, hiển thị nút "Hoàn tác" và hiển thị thẻ kế tiếp ở mặt trước.</td></tr>
+            <tr id="AC-12.8"><td class="id">AC-12.8</td><td class="ears">WHERE cài đặt "Tự phát âm khi lật thẻ" được bật THE SYSTEM SHALL phát âm thanh của từ một lần khi thẻ được lật sang mặt sau lần đầu; khi cài đặt tắt (mặc định) THE SYSTEM SHALL không tự phát âm thanh.</td></tr>
+            <tr id="AC-12.9"><td class="id">AC-12.9</td><td class="ears">THE SYSTEM SHALL hỗ trợ trên S15 các phím tắt Space hoặc Enter (lật thẻ), 1, 2, 3, 4 (chọn "Quên", "Khó", "Nhớ", "Dễ", chỉ sau khi thẻ đã lật), P (phát âm), U (hoàn tác) và Esc (kết thúc phiên), và hiển thị phím tắt tương ứng trên các nút ở bố cục rộng (HV trên màn hình rộng).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-13">
+        <header>
+          <h3>REQ-13: SRS grading and scheduling rule — Quy tắc đánh giá và lập lịch SRS</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+      <p>Mỗi cặp người dùng–từ có <b>một tiến độ ôn tập</b>: n = số lần nhớ liên tiếp, I = khoảng ôn (ngày, số nguyên), E = hệ số dễ, L = số lần quên, D = ngày đến hạn (ngày theo giờ Việt Nam). Từ mới (chưa có tiến độ): n = 0, I = 0, E = 2,50, L = 0. Mỗi đánh giá ở ngày T (giờ Việt Nam) dùng n, I, E <b>ngay trước</b> đánh giá:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Đánh giá</th><th>I mới khi n = 0</th><th>I mới khi n = 1</th><th>I mới khi n ≥ 2</th><th>E mới</th><th>n mới</th><th>L</th></tr></thead>
+          <tbody>
+            <tr><td>"Quên"</td><td>0</td><td>0</td><td>0</td><td>E − 0,20 khi n ≥ 1; giữ nguyên khi n = 0</td><td>0</td><td>+1 khi n ≥ 1</td></tr>
+            <tr><td>"Khó"</td><td>1</td><td>2</td><td>max(I + 1, làm tròn(I × 1,2))</td><td>E − 0,15</td><td>n + 1</td><td>giữ</td></tr>
+            <tr><td>"Nhớ"</td><td>1</td><td>3</td><td>max(I + 1, làm tròn(I × E))</td><td>giữ nguyên</td><td>n + 1</td><td>giữ</td></tr>
+            <tr><td>"Dễ"</td><td>3</td><td>5</td><td>max(I + 1, làm tròn(I × E × 1,3))</td><td>E + 0,15</td><td>n + 1</td><td>giữ</td></tr>
+          </tbody>
+        </table></div>
+      <p>D mới = T + I mới. "làm tròn" = làm tròn tới số nguyên gần nhất, .5 làm tròn lên. E mới không nhỏ hơn 1,30; I mới không lớn hơn 365.</p>
+        <table>
+          <tbody>
+            <tr id="AC-13.1"><td class="id">AC-13.1</td><td class="ears">WHEN người dùng chọn một mức đánh giá cho một từ (ngoài chế độ luyện thêm) THE SYSTEM SHALL tính khoảng ôn mới, hệ số dễ mới, số lần nhớ liên tiếp mới và số lần quên theo đúng bảng quy tắc của REQ-13 từ giá trị ngay trước đánh giá, và đặt ngày đến hạn = ngày đánh giá theo giờ Việt Nam + khoảng ôn mới.</td></tr>
+            <tr id="AC-13.2"><td class="id">AC-13.2</td><td class="ears">THE SYSTEM SHALL làm tròn kết quả I × 1,2, I × E và I × E × 1,3 tới số nguyên gần nhất (.5 làm tròn lên), giới hạn khoảng ôn mới tối đa 365 ngày và giữ hệ số dễ mới tối thiểu 1,30.</td></tr>
+            <tr id="AC-13.3"><td class="id">AC-13.3</td><td class="ears">WHEN người dùng chọn "Quên" THE SYSTEM SHALL đưa từ trở lại hàng đợi của phiên hiện tại ngay sau 3 thẻ kế tiếp (hoặc cuối hàng đợi khi còn ít hơn 3 thẻ), và lần đánh giá lại tính theo cột n = 0.</td></tr>
+            <tr id="AC-13.4"><td class="id">AC-13.4</td><td class="ears">THE SYSTEM SHALL tính khoảng ôn mới chỉ từ khoảng ôn đã lên lịch I, không cộng hay trừ theo số ngày ôn trễ hoặc sớm, để một từ được ôn trễ d ngày nhận cùng kết quả như khi ôn đúng ngày đến hạn.</td></tr>
+            <tr id="AC-13.5"><td class="id">AC-13.5</td><td class="ears">THE SYSTEM SHALL cho kết quả đúng ví dụ kiểm chứng A: một từ mới được đánh giá lần lượt, mỗi lần vào đúng ngày đến hạn, "Nhớ", "Nhớ", "Nhớ", "Khó", "Quên", "Nhớ", "Nhớ", "Nhớ" có khoảng ôn lần lượt 1, 3, 8, 10, 0, 1, 3, 6 ngày, hệ số dễ cuối 2,15 và số lần quên 1.</td></tr>
+            <tr id="AC-13.6"><td class="id">AC-13.6</td><td class="ears">THE SYSTEM SHALL cho kết quả đúng ví dụ kiểm chứng B: một từ mới được đánh giá lần lượt "Dễ", "Dễ", "Dễ" có khoảng ôn 3, 5, 18 ngày và hệ số dễ cuối 2,95; một từ có n = 5, I = 300, E = 2,50 được đánh giá "Nhớ" có khoảng ôn mới 365 ngày.</td></tr>
+            <tr id="AC-13.7"><td class="id">AC-13.7</td><td class="ears">THE SYSTEM SHALL dùng một tiến độ ôn tập duy nhất cho mỗi cặp người dùng–từ, dùng chung cho mọi nguồn chứa từ đó (cấp HSK, chủ đề, bộ từ, "Từ khó", "Ôn hôm nay"), để một từ được ôn ở nguồn này không xuất hiện là đến hạn ở nguồn khác trong cùng ngày.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-14">
+        <header>
+          <h3>REQ-14: Due dates, daily limits and backlog — Ngày đến hạn, hạn mức mỗi ngày và từ tồn</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-14.1"><td class="id">AC-14.1</td><td class="ears">THE SYSTEM SHALL coi một từ là "đến hạn" khi ngày đến hạn của từ nhỏ hơn hoặc bằng ngày hiện tại theo giờ Việt Nam (UTC+7), với mỗi ngày bắt đầu lúc 00:00:00 giờ Việt Nam bất kể múi giờ cài trên thiết bị.</td></tr>
+            <tr id="AC-14.2"><td class="id">AC-14.2</td><td class="ears">WHILE một từ đến hạn chưa được ôn THE SYSTEM SHALL giữ từ đó ở trạng thái đến hạn qua các ngày sau, không tự đặt lại tiến độ, không giảm hệ số dễ và không phạt vì ngày bị bỏ lỡ, cho tới khi từ được đánh giá.</td></tr>
+            <tr id="AC-14.3"><td class="id">AC-14.3</td><td class="ears">THE SYSTEM SHALL sắp xếp các từ đến hạn trong hàng đợi theo ngày đến hạn cũ nhất trước; cùng ngày đến hạn thì từ khó trước; còn lại theo thứ tự ngẫu nhiên.</td></tr>
+            <tr id="AC-14.4"><td class="id">AC-14.4</td><td class="ears">THE SYSTEM SHALL tính "Ôn hôm nay: {n} từ" = số từ đã chọn "Quên" hôm nay mà chưa được đánh giá lại + min(số từ đến hạn khác chưa được ôn hôm nay, hạn mức ôn còn lại hôm nay).</td></tr>
+            <tr id="AC-14.5"><td class="id">AC-14.5</td><td class="ears">THE SYSTEM SHALL tính hạn mức từ mới còn lại = "Từ mới mỗi ngày" + số từ mới được thêm bằng "Học thêm 5 từ mới" hôm nay − số từ có lần đánh giá đầu tiên trong hôm nay, và hạn mức ôn còn lại = "Lượt ôn tối đa mỗi ngày" + số lượt được thêm bằng "Ôn thêm 50 từ" hôm nay − số từ đã có tiến độ từ trước hôm nay và được đánh giá ít nhất một lần trong hôm nay, mỗi hạn mức không nhỏ hơn 0.</td></tr>
+            <tr id="AC-14.6"><td class="id">AC-14.6</td><td class="ears">WHILE số từ đến hạn chưa được ôn hôm nay lớn hơn hạn mức ôn còn lại THE SYSTEM SHALL hiển thị dưới "Ôn hôm nay: {n} từ" trên S13 dòng "Còn {m} từ quá hạn sẽ chuyển sang ngày sau." với m là phần chênh lệch.</td></tr>
+            <tr id="AC-14.7"><td class="id">AC-14.7</td><td class="ears">WHEN một ngày mới bắt đầu lúc 00:00:00 giờ Việt Nam THE SYSTEM SHALL đặt lại về 0 số từ mới đã học, số từ đã ôn và phần "Học thêm" / "Ôn thêm" của ngày.</td></tr>
+            <tr id="AC-14.8"><td class="id">AC-14.8</td><td class="ears">WHILE một phiên đang mở qua thời điểm 00:00:00 giờ Việt Nam THE SYSTEM SHALL tính mỗi đánh giá vào ngày theo giờ Việt Nam của thời điểm đánh giá và lấy ngày đó làm ngày gốc của ngày đến hạn mới.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-15">
+        <header>
+          <h3>REQ-15: Study settings — Cài đặt ôn tập</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-15.1"><td class="id">AC-15.1</td><td class="ears">WHEN người dùng chọn "Cài đặt ôn tập" (trên S14 hoặc S15) THE SYSTEM SHALL hiển thị "Từ mới mỗi ngày" (số nguyên 0–50, mặc định 10), "Lượt ôn tối đa mỗi ngày" (số nguyên 20–500, mặc định 200), "Mặt trước thẻ" ("Chữ Hán" | "Nghĩa tiếng Việt" | "Pinyin", mặc định "Chữ Hán"), "Tự phát âm khi lật thẻ" (mặc định tắt) cùng nút "Lưu" và "Hủy".</td></tr>
+            <tr id="AC-15.2"><td class="id">AC-15.2</td><td class="ears">IF "Từ mới mỗi ngày" không phải số nguyên từ 0 đến 50 hoặc "Lượt ôn tối đa mỗi ngày" không phải số nguyên từ 20 đến 500 THEN THE SYSTEM SHALL không lưu và hiển thị dưới trường tương ứng "Nhập số nguyên từ 0 đến 50." hoặc "Nhập số nguyên từ 20 đến 500."</td></tr>
+            <tr id="AC-15.3"><td class="id">AC-15.3</td><td class="ears">WHEN người dùng lưu cài đặt hợp lệ THE SYSTEM SHALL hiển thị "Đã lưu cài đặt.", tính lại ngay hạn mức còn lại của hôm nay theo AC-14.5, áp dụng mặt trước và tự phát âm từ thẻ kế tiếp (thẻ đang hiển thị giữ nguyên), và áp dụng cùng cài đặt trên mọi thiết bị của người dùng ở lần mở kế tiếp.</td></tr>
+            <tr id="AC-15.4"><td class="id">AC-15.4</td><td class="ears">WHEN người dùng giảm hạn mức xuống thấp hơn số đã học hoặc đã ôn hôm nay THE SYSTEM SHALL giữ nguyên mọi đánh giá đã thực hiện và coi hạn mức còn lại của hôm nay là 0.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-16">
+        <header>
+          <h3>REQ-16: Session end and summary — Kết thúc phiên và tổng kết</h3>
+          <div class="req-meta"><span class="chip">US-1</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-16.1"><td class="id">AC-16.1</td><td class="ears">WHEN hàng đợi của phiên hết hoặc người dùng chọn "Kết thúc" sau khi đã đánh giá ít nhất một thẻ THE SYSTEM SHALL hiển thị màn tổng kết "Kết quả phiên ôn" gồm số từ đã ôn, số từ mới, số lần chọn mỗi mức "Quên", "Khó", "Nhớ", "Dễ", "Tỷ lệ nhớ: {p}%" và thời lượng phiên "{m} phút {s} giây".</td></tr>
+            <tr id="AC-16.2"><td class="id">AC-16.2</td><td class="ears">THE SYSTEM SHALL tính "Tỷ lệ nhớ" là phần trăm, làm tròn tới số nguyên, của các từ trong phiên có lần đánh giá đầu tiên trong phiên khác "Quên".</td></tr>
+            <tr id="AC-16.3"><td class="id">AC-16.3</td><td class="ears">THE SYSTEM SHALL liệt kê trong màn tổng kết mục "Từ đã quên trong phiên" gồm các từ được chọn "Quên" ít nhất một lần trong phiên, mỗi từ có chữ Hán, pinyin, nghĩa đầu tiên và dấu sao để đánh dấu hoặc bỏ đánh dấu từ khó.</td></tr>
+            <tr id="AC-16.4"><td class="id">AC-16.4</td><td class="ears">THE SYSTEM SHALL hiển thị trên màn tổng kết nút "Ôn tiếp ({n})" khi "Ôn hôm nay" còn n &gt; 0 từ, cùng nút "Về Từ vựng" (mở S14) và "Về Tự học" (mở S13).</td></tr>
+            <tr id="AC-16.5"><td class="id">AC-16.5</td><td class="ears">IF người dùng chọn "Kết thúc" khi chưa đánh giá thẻ nào trong phiên THEN THE SYSTEM SHALL đóng S15 và trở về màn hình đã mở phiên mà không hiển thị tổng kết.</td></tr>
+            <tr id="AC-16.6"><td class="id">AC-16.6</td><td class="ears">WHEN người dùng rời S15 mà không qua "Kết thúc" (quay lại, đóng ứng dụng, mất phiên đăng nhập) THE SYSTEM SHALL giữ mọi đánh giá đã thực hiện và giữ nguyên tiến độ của các từ chưa được đánh giá.</td></tr>
+            <tr id="AC-16.7"><td class="id">AC-16.7</td><td class="ears">WHILE ở chế độ luyện thêm THE SYSTEM SHALL hiển thị màn tổng kết có nhãn "Luyện thêm — không thay đổi lịch ôn" và không tính phiên đó vào số từ đã ôn hay số từ mới của hôm nay.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-17">
+        <header>
+          <h3>REQ-17: Undo and reset — Hoàn tác và đặt lại tiến độ</h3>
+          <div class="req-meta"><span class="chip">US-6</span><span class="pill p2">P2</span><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-17.1"><td class="id">AC-17.1</td><td class="ears">WHEN người dùng chọn "Hoàn tác" trên S15 THE SYSTEM SHALL khôi phục tiến độ ôn tập, số liệu hôm nay và hàng đợi về đúng trạng thái ngay trước đánh giá gần nhất của phiên, rồi hiển thị lại thẻ đó ở mặt trước.</td></tr>
+            <tr id="AC-17.2"><td class="id">AC-17.2</td><td class="ears">THE SYSTEM SHALL chỉ cho hoàn tác đánh giá gần nhất trong phiên hiện tại và ẩn nút "Hoàn tác" sau khi đã hoàn tác cho tới đánh giá kế tiếp.</td></tr>
+            <tr id="AC-17.3"><td class="id">AC-17.3</td><td class="ears">WHEN người dùng chọn "Đặt lại tiến độ" trong chi tiết từ và xác nhận "Đặt lại tiến độ của "{chữ Hán}"? Từ sẽ trở về "Chưa học" và được học lại như từ mới." THE SYSTEM SHALL xóa tiến độ ôn tập của từ (n, I, E, L, ngày đến hạn), đổi nhãn thành "Chưa học", hiển thị "Đã đặt lại tiến độ." và giữ nguyên dấu từ khó cùng các bộ chứa từ.</td></tr>
+            <tr id="AC-17.4"><td class="id">AC-17.4</td><td class="ears">THE SYSTEM SHALL không thay đổi số từ mới đã học và số từ đã ôn của hôm nay khi người dùng đặt lại tiến độ một từ.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-18">
+        <header>
+          <h3>REQ-18: Offline tolerance and rating sync — Ôn khi mất mạng và đồng bộ đánh giá</h3>
+          <div class="req-meta"><span class="chip">US-7</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-18.1"><td class="id">AC-18.1</td><td class="ears">WHEN người dùng chọn một mức đánh giá THE SYSTEM SHALL hiển thị thẻ kế tiếp ngay mà không chờ việc lưu đánh giá hoàn tất.</td></tr>
+            <tr id="AC-18.2"><td class="id">AC-18.2</td><td class="ears">IF mất kết nối trong lúc phiên đang mở THEN THE SYSTEM SHALL cho người dùng tiếp tục với các thẻ đã tải (ít nhất 50 thẻ kế tiếp của hàng đợi, hoặc toàn bộ hàng đợi khi ít hơn), hiển thị "Đang ngoại tuyến — kết quả sẽ được lưu khi có mạng." và giữ các đánh giá chưa lưu trên thiết bị, kể cả khi đóng rồi mở lại trình duyệt.</td></tr>
+            <tr id="AC-18.3"><td class="id">AC-18.3</td><td class="ears">WHEN kết nối trở lại hoặc người dùng mở lại ứng dụng trên cùng thiết bị khi còn đánh giá chưa lưu THE SYSTEM SHALL tự gửi mọi đánh giá chưa lưu theo đúng thứ tự thực hiện, ghi mỗi đánh giá đúng một lần với ngày đánh giá là thời điểm thực hiện, rồi bỏ thông báo ngoại tuyến.</td></tr>
+            <tr id="AC-18.4"><td class="id">AC-18.4</td><td class="ears">IF phiên ngoại tuyến đã dùng hết các thẻ đã tải THEN THE SYSTEM SHALL hiển thị "Cần kết nối mạng để tải thêm thẻ." và màn tổng kết của các thẻ đã ôn.</td></tr>
+            <tr id="AC-18.5"><td class="id">AC-18.5</td><td class="ears">IF cùng một từ được đánh giá trên hai thiết bị THEN THE SYSTEM SHALL áp dụng mọi đánh giá của từ đó theo thứ tự thời điểm thực hiện, mỗi đánh giá tính từ tiến độ do đánh giá liền trước tạo ra theo REQ-13.</td></tr>
+            <tr id="AC-18.6"><td class="id">AC-18.6</td><td class="ears">IF người dùng chọn "Đăng xuất" khi thiết bị còn đánh giá chưa lưu THEN THE SYSTEM SHALL hiển thị "Còn {k} kết quả ôn tập chưa được lưu. Đăng xuất bây giờ sẽ mất các kết quả này." với nút "Ở lại" (mặc định) và "Vẫn đăng xuất".</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-19">
+        <header>
+          <h3>REQ-19: Library changes — Từ trong kho bị sửa hoặc ngừng xuất bản</h3>
+          <div class="req-meta"><span class="chip">US-8</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S14">S14</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#T23">T23</a></div>
+        </header>
+        <p>Mọi thay đổi ở REQ-19 do GV thực hiện trên Kho nội dung tự học của workspace mình (016) và chỉ ảnh hưởng HV của workspace đó. "Ngừng xuất bản" gồm mọi thao tác của 016 làm từ không còn hiển thị cho HV (ẩn, lưu trữ).</p>
+        <table>
+          <tbody>
+            <tr id="AC-19.1"><td class="id">AC-19.1</td><td class="ears">WHEN GV sửa một từ đang xuất bản trong Kho nội dung tự học của workspace (016) THE SYSTEM SHALL hiển thị nội dung mới (chữ Hán, pinyin, từ loại, nghĩa, ví dụ, cách dùng, âm thanh, cấp, chủ đề) ở mọi nơi từ xuất hiện từ lần mở hoặc tải lại kế tiếp, và giữ nguyên tiến độ ôn tập, dấu từ khó và các bộ chứa từ của mọi HV của workspace.</td></tr>
+            <tr id="AC-19.2"><td class="id">AC-19.2</td><td class="ears">WHEN cấp HSK hoặc chủ đề của một từ thay đổi trong kho THE SYSTEM SHALL hiển thị từ ở cấp và chủ đề mới, tính lại "Đã học {x}/{y}" của các cấp liên quan và lấy từ làm từ mới theo cấp, chủ đề mới.</td></tr>
+            <tr id="AC-19.3"><td class="id">AC-19.3</td><td class="ears">WHEN GV ngừng xuất bản (ẩn hoặc lưu trữ) một từ trong Kho nội dung tự học của workspace (016) THE SYSTEM SHALL bỏ từ đó khỏi danh sách cấp, chủ đề, kết quả tìm kiếm và nguồn từ mới của mọi HV của workspace.</td></tr>
+            <tr id="AC-19.4"><td class="id">AC-19.4</td><td class="ears">WHILE một từ đã ngừng xuất bản có trong bộ từ, tab "Từ khó" hoặc có tiến độ ôn tập của một người dùng THE SYSTEM SHALL tiếp tục hiển thị từ đó cho người dùng ở các nơi ấy với nội dung của lần xuất bản cuối kèm nhãn "Không còn trong kho", và tiếp tục lên lịch ôn từ đó theo REQ-13.</td></tr>
+            <tr id="AC-19.5"><td class="id">AC-19.5</td><td class="ears">WHEN một từ đã ngừng xuất bản được xuất bản lại THE SYSTEM SHALL bỏ nhãn "Không còn trong kho", đưa từ trở lại danh sách cấp, chủ đề và tìm kiếm, và giữ nguyên tiến độ ôn tập, dấu từ khó và các bộ chứa từ.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="req" id="REQ-20">
+        <header>
+          <h3>REQ-20: Privacy and separation from classes — Riêng tư và tách biệt khỏi lớp học</h3>
+          <div class="req-meta"><span class="chip">US-8</span><span class="pill p1">P1</span><a class="chip screen" href="../screen-flow-design.html#S13">S13</a><a class="chip screen" href="../screen-flow-design.html#S15">S15</a><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></div>
+        </header>
+        <table>
+          <tbody>
+            <tr id="AC-20.1"><td class="id">AC-20.1</td><td class="ears">THE SYSTEM SHALL chỉ hiển thị và chỉ gửi tới thiết bị của chính người dùng các bộ từ, từ tự thêm, dấu từ khó, tiến độ ôn tập, cài đặt, số liệu hôm nay và tổng kết phiên của người dùng đó.</td></tr>
+            <tr id="AC-20.2"><td class="id">AC-20.2</td><td class="ears">IF người dùng mở (kể cả qua đường dẫn trực tiếp) một bộ từ của người khác hoặc một bộ từ không tồn tại THEN THE SYSTEM SHALL hiển thị A05 "Không tìm thấy nội dung bạn yêu cầu." giống hệt nhau cho cả hai trường hợp.</td></tr>
+            <tr id="AC-20.3"><td class="id">AC-20.3</td><td class="ears">THE SYSTEM SHALL không hiển thị bất kỳ dữ liệu Tự học nào của HV trên màn hình của GV (kể cả T04, T11, T15, T01 và các màn hình Kho nội dung tự học T23–T27), trên S10, S12 hay bất kỳ màn hình nào của người dùng khác, và không dùng dữ liệu đó cho Điểm xếp hạng (008), tiến độ và theo dõi (009) hay hồ sơ (011).</td></tr>
+            <tr id="AC-20.4"><td class="id">AC-20.4</td><td class="ears">THE SYSTEM SHALL giữ tách biệt dữ liệu của 012 với đánh dấu "Đã thuộc" / "Chưa thuộc" của flashcard trong bài (004, S04): thao tác ở bên này không thay đổi dữ liệu hay số liệu bên kia.</td></tr>
+            <tr id="AC-20.5"><td class="id">AC-20.5</td><td class="ears">WHILE HV không thuộc lớp nào, đã bị gỡ khỏi mọi lớp hoặc mọi lớp của HV đã kết thúc THE SYSTEM SHALL giữ nguyên toàn bộ dữ liệu Tự học và quyền dùng S13, S14, S15 của HV.</td></tr>
+            <tr id="AC-20.6"><td class="id">AC-20.6</td><td class="ears">WHEN tài khoản HV bị xóa theo 001 THE SYSTEM SHALL xóa vĩnh viễn mọi dữ liệu Tự học của tài khoản (bộ từ, từ tự thêm, dấu từ khó, tiến độ ôn tập, lịch sử đánh giá, cài đặt) trong vòng 24 giờ</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="rules">
+      <h2>6. Business Rules &amp; Validation <span class="vi">Quy tắc nghiệp vụ &amp; kiểm tra dữ liệu</span></h2>
+      <h4 id="BR-SRS">BR-SRS — Bảng quy tắc lập lịch (REQ-13)</h4>
+      <p>Mỗi cặp người dùng–từ: n = số lần nhớ liên tiếp, I = khoảng ôn (ngày), E = hệ số dễ, L = số lần quên, D = ngày đến hạn (giờ Việt Nam). Từ mới: n = 0, I = 0, E = 2,50, L = 0. Mỗi đánh giá ở ngày T dùng n, I, E ngay trước đánh giá; D mới = T + I mới; làm tròn .5 lên; E ≥ 1,30; I ≤ 365.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Đánh giá</th><th>I mới khi n = 0</th><th>I mới khi n = 1</th><th>I mới khi n ≥ 2</th><th>E mới</th><th>n mới</th><th>L</th></tr></thead>
+        <tbody>
+          <tr><td>"Quên"</td><td>0 (lặp lại trong phiên)</td><td>0</td><td>0</td><td>E − 0,20 khi n ≥ 1; giữ khi n = 0</td><td>0</td><td>+1 khi n ≥ 1</td></tr>
+          <tr><td>"Khó"</td><td>1</td><td>2</td><td>max(I + 1, làm tròn(I × 1,2))</td><td>E − 0,15</td><td>n + 1</td><td>giữ</td></tr>
+          <tr><td>"Nhớ"</td><td>1</td><td>3</td><td>max(I + 1, làm tròn(I × E))</td><td>giữ</td><td>n + 1</td><td>giữ</td></tr>
+          <tr><td>"Dễ"</td><td>3</td><td>5</td><td>max(I + 1, làm tròn(I × E × 1,3))</td><td>E + 0,15</td><td>n + 1</td><td>giữ</td></tr>
+        </tbody>
+      </table></div>
+      <p><b>Ví dụ kiểm chứng A</b> (<a href="#AC-13.5">AC-13.5</a>): Nhớ, Nhớ, Nhớ, Khó, Quên, Nhớ, Nhớ, Nhớ → I = 1, 3, 8, 10, 0, 1, 3, 6; E cuối 2,15; L = 1. &nbsp; <b>Ví dụ B</b> (<a href="#AC-13.6">AC-13.6</a>): Dễ, Dễ, Dễ → I = 3, 5, 18; E cuối 2,95; n = 5, I = 300, E = 2,50, "Nhớ" → 365.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Quy tắc</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td class="id">BR-1</td><td>Tự học chỉ dành cho HV: mọi HV đã kích hoạt, không bị khóa, không cần lớp, trên Kho nội dung tự học của workspace mình (016). GV không dùng S13–S15 (A05), chỉ quản lý và xem trước nội dung trong T23–T27 (V15).</td><td><span class="chip ac">AC-1.2</span> <span class="chip ac">AC-1.4</span> <span class="chip ac">AC-20.5</span></td></tr>
+          <tr><td class="id">BR-2</td><td>Một tiến độ ôn tập duy nhất cho mỗi cặp người dùng–từ, dùng chung cho mọi nguồn. Nhãn: "Chưa học" (không có tiến độ), "Đang học" (I &lt; 21), "Đã thuộc" (I ≥ 21).</td><td><span class="chip ac">AC-13.7</span> <span class="chip ac">AC-3.5</span></td></tr>
+          <tr><td class="id">BR-3</td><td>"Đến hạn" = D ≤ hôm nay theo giờ Việt Nam; ngày mới 00:00:00 UTC+7 bất kể múi giờ thiết bị. Ôn trễ không thưởng, không phạt; từ bỏ lỡ dồn lại.</td><td><span class="chip ac">AC-14.1</span> <span class="chip ac">AC-14.2</span> <span class="chip ac">AC-13.4</span></td></tr>
+          <tr><td class="id">BR-4</td><td>Thứ tự hàng đợi: từ "Quên" hôm nay chưa đánh giá lại → từ đến hạn (D cũ nhất trước, cùng D thì từ khó trước, còn lại ngẫu nhiên) → từ mới (thứ tự kho / thứ tự thêm vào bộ / thứ tự tab "Từ khó").</td><td><span class="chip ac">AC-11.1</span> <span class="chip ac">AC-11.2</span> <span class="chip ac">AC-11.4</span> <span class="chip ac">AC-14.3</span></td></tr>
+          <tr><td class="id">BR-5</td><td>Hạn mức từ mới còn lại = "Từ mới mỗi ngày" + học thêm hôm nay − số từ có đánh giá đầu tiên hôm nay; hạn mức ôn còn lại = "Lượt ôn tối đa mỗi ngày" + ôn thêm hôm nay − số từ có tiến độ từ trước được đánh giá hôm nay; không âm; đặt lại lúc 00:00 giờ Việt Nam.</td><td><span class="chip ac">AC-14.5</span> <span class="chip ac">AC-14.7</span> <span class="chip ac">AC-15.4</span></td></tr>
+          <tr><td class="id">BR-6</td><td>"Ôn hôm nay: {n} từ" = từ "Quên" hôm nay chưa đánh giá lại + min(từ đến hạn khác chưa ôn hôm nay, hạn mức ôn còn lại).</td><td><span class="chip ac">AC-14.4</span> <span class="chip ac">AC-2.2</span></td></tr>
+          <tr><td class="id">BR-7</td><td>"Nguồn từ mới" = cấp / cấp + chủ đề / bộ từ bắt đầu học gần nhất (không phải "Từ khó"); bị bỏ khi bộ bị xóa.</td><td><span class="chip ac">AC-11.3</span> <span class="chip ac">AC-11.9</span></td></tr>
+          <tr><td class="id">BR-8</td><td>Từ khó chỉ do người dùng đánh dấu; không đổi n, I, E, D; chỉ ảnh hưởng thứ tự, luyện thêm và nguồn "Từ khó".</td><td><span class="chip ac">AC-7.5</span> <span class="chip ac">AC-7.6</span></td></tr>
+          <tr><td class="id">BR-9</td><td>Luyện thêm: tối đa 20 từ đã học của nguồn, từ khó trước; không đổi tiến độ hay số liệu ngày.</td><td><span class="chip ac">AC-11.8</span> <span class="chip ac">AC-16.7</span></td></tr>
+          <tr><td class="id">BR-10</td><td>Giới hạn: 50 bộ / người dùng; 1.000 từ / bộ; tên bộ 1–60 ký tự, duy nhất (không phân biệt hoa thường); 2.000 từ tự thêm / người dùng.</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.4</span> <span class="chip ac">AC-8.5</span> <span class="chip ac">AC-9.5</span> <span class="chip ac">AC-10.7</span></td></tr>
+          <tr><td class="id">BR-11</td><td>Xóa bộ hoặc bỏ từ khỏi bộ không xóa tiến độ, dấu khó hay từ tự thêm; chỉ "Xóa từ" của từ tự thêm và "Đặt lại tiến độ" xóa tiến độ.</td><td><span class="chip ac">AC-8.7</span> <span class="chip ac">AC-9.4</span> <span class="chip ac">AC-10.6</span> <span class="chip ac">AC-17.3</span></td></tr>
+          <tr><td class="id">BR-12</td><td>Tìm kiếm: 1–50 ký tự; có chữ Hán → chữ Hán chứa chuỗi; không có chữ Hán → pinyin bắt đầu bằng chuỗi (không dấu khớp mọi thanh, có dấu / số chỉ khớp đúng thanh) + nghĩa chứa chuỗi như từ trọn vẹn (không dấu khớp có dấu).</td><td><span class="chip ac">AC-4.1</span> <span class="chip ac">AC-4.2</span> <span class="chip ac">AC-4.3</span> <span class="chip ac">AC-4.4</span> <span class="chip ac">AC-4.5</span></td></tr>
+          <tr><td class="id">BR-13</td><td>Từ GV ngừng xuất bản (ẩn, lưu trữ): biến mất khỏi duyệt, tìm, từ mới của HV trong workspace; vẫn hiển thị và lên lịch cho người đã có trong bộ, từ khó hoặc tiến độ, với nội dung lần xuất bản cuối và nhãn "Không còn trong kho".</td><td><span class="chip ac">AC-19.3</span> <span class="chip ac">AC-19.4</span> <span class="chip ac">AC-19.5</span></td></tr>
+          <tr><td class="id">BR-14</td><td>Dữ liệu Tự học riêng tư tuyệt đối; không màn hình GV (kể cả T23–T27), không 008 / 009 / 011; từ của kho workspace khác như không tồn tại; tách biệt flashcard lớp 004; mọi trường hợp không xem được → A05 giống hệt nhau.</td><td><span class="chip ac">AC-20.1</span> <span class="chip ac">AC-20.2</span> <span class="chip ac">AC-20.3</span> <span class="chip ac">AC-20.4</span> <span class="chip ac">AC-5.6</span></td></tr>
+          <tr><td class="id">BR-15</td><td>Đánh giá không chờ lưu; ngoại tuyến giữ trên thiết bị, gửi lại theo thứ tự, mỗi đánh giá đúng một lần; nhiều thiết bị áp dụng theo thời điểm thực hiện.</td><td><span class="chip ac">AC-18.1</span> <span class="chip ac">AC-18.2</span> <span class="chip ac">AC-18.3</span> <span class="chip ac">AC-18.5</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h4>Kiểm tra dữ liệu nhập</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trường</th><th class="center">Bắt buộc</th><th>Quy tắc</th><th>Thông báo khi sai</th><th>AC</th></tr></thead>
+        <tbody>
+          <tr><td>Ô tìm kiếm</td><td class="center">—</td><td>1–50 ký tự sau khi bỏ khoảng trắng đầu cuối (dư thì dùng 50 ký tự đầu)</td><td>—</td><td><span class="chip ac">AC-4.1</span></td></tr>
+          <tr><td>Tên bộ từ</td><td class="center">Có</td><td>1–60 ký tự; không trùng tên bộ khác của chính người dùng (không phân biệt hoa thường)</td><td>"Tên bộ từ cần từ 1 đến 60 ký tự." / "Bạn đã có bộ từ tên này."</td><td><span class="chip ac">AC-8.3</span> <span class="chip ac">AC-8.4</span></td></tr>
+          <tr><td>Chữ Hán (từ tự thêm)</td><td class="center">Có</td><td>1–20 chữ Hán, không chữ cái, số, ký hiệu, khoảng trắng</td><td>"Chữ Hán cần 1–20 chữ Hán, không có chữ cái, số hay ký hiệu."</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Pinyin (từ tự thêm)</td><td class="center">Có</td><td>1–100 ký tự: chữ cái, dấu thanh, ü, số 1–5, khoảng trắng, dấu '</td><td>"Pinyin chỉ gồm chữ cái, dấu thanh, số thanh 1–5, khoảng trắng hoặc dấu ' (tối đa 100 ký tự)."</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Nghĩa tiếng Việt</td><td class="center">Có</td><td>1–200 ký tự</td><td>"Nghĩa tiếng Việt cần từ 1 đến 200 ký tự."</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Từ loại</td><td class="center">Không</td><td>Chọn từ danh sách từ loại của kho (016)</td><td>—</td><td><span class="chip ac">AC-10.1</span></td></tr>
+          <tr><td>Câu ví dụ</td><td class="center">Không*</td><td>≤ 100 ký tự, có chữ Hán; *bắt buộc khi pinyin hoặc nghĩa câu ví dụ có nội dung</td><td>"Câu ví dụ tối đa 100 ký tự và phải có chữ Hán."</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Pinyin / Nghĩa câu ví dụ</td><td class="center">Không</td><td>≤ 300 ký tự mỗi trường</td><td>"Tối đa 300 ký tự."</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Ghi chú</td><td class="center">Không</td><td>≤ 500 ký tự; hiển thị ở mục "Cách dùng"</td><td>"Tối đa 500 ký tự."</td><td><span class="chip ac">AC-10.2</span></td></tr>
+          <tr><td>Từ mới mỗi ngày</td><td class="center">Có</td><td>Số nguyên 0–50, mặc định 10</td><td>"Nhập số nguyên từ 0 đến 50."</td><td><span class="chip ac">AC-15.2</span></td></tr>
+          <tr><td>Lượt ôn tối đa mỗi ngày</td><td class="center">Có</td><td>Số nguyên 20–500, mặc định 200</td><td>"Nhập số nguyên từ 20 đến 500."</td><td><span class="chip ac">AC-15.2</span></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 7 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="states">
+      <h2>7. States <span class="vi">Trạng thái</span></h2>
+      <figure class="diagram">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> ChuaHoc: Từ có trong kho hoặc vừa tự thêm
+  ChuaHoc --> DangHoc: Đánh giá đầu tiên
+  DangHoc --> DangHoc: Đánh giá, I dưới 21 ngày
+  DangHoc --> DaThuoc: Đánh giá, I từ 21 ngày
+  DaThuoc --> DaThuoc: Khó, Nhớ, Dễ
+  DaThuoc --> DangHoc: Quên
+  DangHoc --> ChuaHoc: Đặt lại tiến độ
+  DaThuoc --> ChuaHoc: Đặt lại tiến độ
+</pre>
+        <figcaption>Hình S-1 — Nhãn trạng thái học của một từ với một người dùng (AC-3.5, AC-17.3)</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Trạng thái</th><th>Nhãn</th><th>Điều kiện</th></tr></thead>
+        <tbody>
+          <tr><td>ChuaHoc</td><td>"Chưa học"</td><td>Chưa có tiến độ ôn tập (hoặc vừa đặt lại)</td></tr>
+          <tr><td>DangHoc</td><td>"Đang học"</td><td>Có tiến độ, I &lt; 21 ngày (kể cả I = 0 sau "Quên")</td></tr>
+          <tr><td>DaThuoc</td><td>"Đã thuộc"</td><td>Có tiến độ, I ≥ 21 ngày</td></tr>
+          <tr><td>(thuộc tính)</td><td>"Không còn trong kho"</td><td>Từ của kho đã ngừng xuất bản, người dùng vẫn có trong bộ / từ khó / tiến độ</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 8 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="screens">
+      <h2>8. Screens <span class="vi">Màn hình liên quan</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">Màn hình</th><th>Tên</th><th>Người dùng</th><th>Thành phần chính &amp; hành vi</th><th>Luồng / REQ</th></tr></thead>
+        <tbody>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S13">S13</a></td><td>Tự học <em>(owner 012)</em></td><td><span class="pill hv">HV</span></td><td>Tiêu đề "Tự học", dòng "Học theo nhịp của bạn — không tính vào điểm lớp."; bốn thẻ "Từ vựng" (Ôn hôm nay, Từ mới hôm nay, Từ mới từ, "Ôn tập ngay"), "Luyện viết", "Luyện nghe &amp; nói", "Thi thử HSK". Không chuỗi ngày, không huy hiệu. HV: tab dưới; bố cục rộng khi HV dùng màn hình rộng. GV không dùng (A05).</td><td>F-1 · REQ-1, REQ-2, REQ-14</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S14">S14</a></td><td>Từ vựng <em>(owner 012)</em></td><td><span class="pill hv">HV</span></td><td>Ô tìm kiếm, "Cài đặt ôn tập", tab "Kho từ" (cấp HSK → danh sách 50 từ / lần, bộ lọc "Chủ đề", "Chọn nhiều", "Học HSK {c}"), "Bộ từ của tôi", "Từ khó (n)"; chi tiết từ (khung phải từ 1024 px khi HV dùng màn hình rộng, màn hình riêng trên điện thoại); biểu mẫu "Từ của tôi".</td><td>F-2, F-3, F-4 · REQ-3 – REQ-10, REQ-15, REQ-17</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S15">S15</a></td><td>Ôn tập <em>(owner 012)</em></td><td><span class="pill hv">HV</span></td><td>Phần đầu: tên nguồn, "Còn {r}", "Cài đặt ôn tập", "Kết thúc"; thẻ hai mặt; "Hiện đáp án"; "Quên" / "Khó" / "Nhớ" / "Dễ" kèm khoảng ôn; "Hoàn tác"; phím tắt; thông báo ngoại tuyến; màn "Kết quả phiên ôn".</td><td>F-1, F-2, F-5 · REQ-11 – REQ-18</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S16">S16</a></td><td>Luyện viết <em>(013)</em></td><td><span class="pill hv">HV</span></td><td>Đích của thẻ "Luyện viết".</td><td>REQ-2</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S17">S17</a></td><td>Luyện nghe &amp; nói <em>(014)</em></td><td><span class="pill hv">HV</span></td><td>Đích của thẻ "Luyện nghe &amp; nói" (014 dẫn tiếp tới S18).</td><td>REQ-2</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S19">S19</a></td><td>Thi thử HSK <em>(015)</em></td><td><span class="pill hv">HV</span></td><td>Đích của thẻ "Thi thử HSK" (015 dẫn tiếp tới S20).</td><td>REQ-2</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#S04">S04</a></td><td>Học flashcard trong bài <em>(004)</em></td><td><span class="pill hv">HV</span></td><td>Tách biệt; nhu cầu tùy chọn "Thêm vào bộ từ của tôi" ghi cho 004.</td><td>REQ-20</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A01">A01</a></td><td>Đăng nhập <em>(001)</em></td><td><span class="pill hv">HV</span> <span class="pill gv">GV</span></td><td>Chưa đăng nhập mở S13–S15 → A01, đăng nhập bằng tài khoản HV thì mở lại màn hình; tài khoản GV → A05.</td><td>REQ-1</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#A05">A05</a></td><td>Không tìm thấy nội dung <em>(001)</em></td><td><span class="pill hv">HV</span> <span class="pill gv">GV</span></td><td>Từ không xem được (kể cả từ của kho workspace khác), bộ từ hoặc từ tự thêm của người khác; GV mở S13–S15.</td><td>REQ-1, REQ-5, REQ-20</td></tr>
+          <tr><td><a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–T27</td><td>Kho nội dung tự học <em>(016)</em></td><td><span class="pill gv">GV</span></td><td>GV quản lý và xem trước mục từ của kho workspace (nạp sẵn bộ HSK mẫu): sửa, thêm, ẩn / lưu trữ, xuất bản lại → 012 phản ánh cho HV theo REQ-19. Không hiển thị dữ liệu Tự học của từng HV.</td><td>F-6 · REQ-19, REQ-20</td></tr>
+        </tbody>
+      </table></div>
+      <p><em>Màn hình đề xuất bổ sung (chưa có trong danh mục chung):</em> — không có — (chi tiết từ, biểu mẫu "Từ của tôi", "Cài đặt ôn tập" và màn "Kết quả phiên ôn" là khung / hộp thoại của S14, S15). Prototype chưa có S13–S15.</p>
+    </section>
+
+    <!-- 9 ─────────────────────────────────────────────────────────── -->
+    <section class="doc" id="nfr">
+      <h2>9. Non-Functional Requirements <span class="vi">Yêu cầu phi chức năng</span></h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th class="id">ID</th><th>Loại</th><th>Yêu cầu đo được</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Performance</td><td>sau khi người dùng chọn một mức đánh giá, thẻ kế tiếp hiển thị p95 ≤ 150 ms và lật thẻ hoàn tất p95 ≤ 100 ms trên điện thoại tầm trung (4 GB RAM, ra mắt từ 2021), như nhau khi trực tuyến và ngoại tuyến.</td></tr>
+          <tr><td class="id">NFR-2</td><td>Performance</td><td>S13 và 50 từ đầu tiên của S14 hiển thị đầy đủ p95 ≤ 2 giây trên mạng 4G (≥ 10 Mbps) ở chiều rộng 360 px với Kho nội dung tự học của workspace có 11.000 từ và HV có 13.000 từ đã có tiến độ; kết quả tìm kiếm hiển thị p95 ≤ 1 giây sau lần gõ phím cuối; thẻ đầu tiên của S15 hiển thị p95 ≤ 2 giây sau khi bắt đầu phiên.</td></tr>
+          <tr><td class="id">NFR-3</td><td>Performance</td><td>âm thanh của từ bắt đầu phát p95 ≤ 1 giây sau khi chạm ở lần phát đầu trên 4G (≥ 10 Mbps) và ≤ 300 ms ở lần phát lại; trên S15 âm thanh của 3 thẻ kế tiếp bắt đầu phát p95 ≤ 300 ms.</td></tr>
+          <tr><td class="id">NFR-4</td><td>Reliability</td><td>trong một lần mất kết nối kéo dài tới 60 phút, người dùng ôn tiếp được ít nhất 50 thẻ đã tải; 100% đánh giá thực hiện khi ngoại tuyến (tối đa 500 đánh giá) được lưu đúng một lần trong ≤ 30 giây sau khi có mạng, kể cả khi trình duyệt bị đóng rồi mở lại trên cùng thiết bị trong vòng 7 ngày.</td></tr>
+          <tr><td class="id">NFR-5</td><td>Capacity</td><td>Kho nội dung tự học của mỗi workspace ≥ 11.000 từ đang xuất bản (mỗi workspace một bản riêng); mỗi HV tới 13.000 từ có tiến độ, 50 bộ từ × 1.000 từ và 2.000 từ tự thêm; việc lưu đánh giá đạt p95 ≤ 500 ms với 1.000 HV ôn tập đồng thời trên toàn hệ thống (khoảng 100 đánh giá mỗi giây), trong đó tới 300 HV thuộc cùng một workspace.</td></tr>
+          <tr><td class="id">NFR-6</td><td>Accessibility</td><td>S13, S14, S15 đạt WCAG 2.1 AA (tương phản chữ ≥ 4,5:1); 100% thao tác dùng được bằng bàn phím với tiêu điểm nhìn thấy được; 100% nút đánh giá có tên đọc được gồm mức và khoảng ôn (ví dụ "Nhớ, ôn lại sau 3 ngày"); 100% chữ Hán và pinyin được trình đọc màn hình đọc bằng tiếng Trung; 100% phím tắt của AC-12.9 hoạt động trên 3 trình duyệt máy tính phổ biến nhất.</td></tr>
+          <tr><td class="id">NFR-7</td><td>Usability</td><td>S13, S14, S15 dùng được ở chiều rộng 360–430 px không có cuộn ngang với vùng chạm ≥ 44×44 px; bốn nút đánh giá nằm trong 40% dưới của màn hình S15 ở chiều cao ≥ 640 px; chữ Hán trên thẻ và trong chi tiết từ cỡ ≥ 48 px; với HV trên màn hình rộng, ở chiều rộng ≥ 1280 px S14 hiển thị danh sách và chi tiết từ cạnh nhau.</td></tr>
+          <tr><td class="id">NFR-8</td><td>Privacy</td><td>0 dữ liệu Tự học (bộ từ, từ tự thêm, dấu từ khó, tiến độ, cài đặt, số liệu ngày) của một HV được gửi tới thiết bị của HV khác hoặc của GV, hoặc hiển thị trên màn hình GV, kiểm chứng bằng kiểm thử tự động bao phủ 100% màn hình S13–S15, T01, T04, T11, T15, T23–T27, S10, S12 với ít nhất 2 HV có dữ liệu Tự học ở ít nhất 2 workspace; 100% lần GV mở S13–S15 trong kiểm thử nhận A05.</td></tr>
+          <tr><td class="id">NFR-9</td><td>Correctness</td><td>100% ô của bảng quy tắc SRS (REQ-13), hai ví dụ kiểm chứng (AC-13.5, AC-13.6) và các mốc 23:59:59 / 00:00:00 giờ Việt Nam được kiểm thử tự động với thiết bị đặt ở ít nhất 3 múi giờ (UTC−5, UTC+0, UTC+9).</td></tr>
+          <tr><td class="id">NFR-10</td><td>Observability</td><td>100% lần tạo, đổi tên, xóa bộ từ; tạo, sửa, xóa từ tự thêm; đặt lại tiến độ; lưu cài đặt; lưu đánh giá thất bại và mỗi lần đồng bộ đánh giá ngoại tuyến được ghi nhật ký có cấu trúc gồm thời điểm, mã HV, mã workspace, loại thao tác, số lượng và kết quả, không chứa tên bộ từ, nội dung từ tự thêm, email hay họ tên; truy vết được ≥ 90 ngày.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- 10 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="entities">
+      <h2>10. Key Entities <span class="vi">Thực thể nghiệp vụ</span></h2>
+      <ul>
+        <li><b>Mục từ của kho</b> (tham chiếu, do 016 sở hữu) — một từ HSK trong Kho nội dung tự học của <b>một workspace</b> (khởi tạo từ bộ nội dung HSK mẫu, sau đó GV của workspace sửa / thêm / ẩn): chữ Hán giản thể, pinyin có dấu thanh, từ loại, một hoặc nhiều nghĩa tiếng Việt, câu ví dụ (chữ Hán + pinyin + nghĩa, có thể kèm âm thanh), âm thanh bản xứ, cấp HSK, thẻ chủ đề, nội dung "Cách dùng" (tùy chọn), thứ tự trong kho, trạng thái xuất bản. Hai mục cùng chữ Hán khác pinyin (đa âm, ví dụ 行 xíng / háng) là hai từ riêng. Chỉ HV của cùng workspace thấy mục từ.</li>
+        <li><b>Từ tự thêm</b> — từ do một HV tạo (REQ-10): các trường của bảng REQ-10, thuộc đúng một HV, không có âm thanh, không có cấp HSK; không thuộc Kho nội dung tự học và GV không thấy.</li>
+        <li><b>Bộ từ</b> — danh sách từ có thứ tự do một người dùng tạo: tên (duy nhất trong các bộ của người đó), thời điểm tạo, các từ (mục từ của kho hoặc từ tự thêm, mỗi từ một lần, tối đa 1.000). Xóa bộ không xóa từ hay tiến độ.</li>
+        <li><b>Dấu từ khó</b> — quan hệ người dùng–từ kèm thời điểm đánh dấu. Không ảnh hưởng công thức lập lịch.</li>
+        <li><b>Tiến độ ôn tập</b> — một bản ghi cho mỗi cặp người dùng–từ đã được đánh giá ít nhất một lần: n, I, E, L, ngày đến hạn, ngày đánh giá đầu tiên, ngày đánh giá gần nhất. Suy ra nhãn "Chưa học" / "Đang học" / "Đã thuộc".</li>
+        <li><b>Lượt đánh giá</b> — một lần người dùng chọn "Quên" / "Khó" / "Nhớ" / "Dễ" cho một từ: thời điểm thực hiện, mức, giá trị trước và sau. Dùng cho hoàn tác, đồng bộ nhiều thiết bị và tổng kết phiên; không hiển thị dạng lịch sử trong MVP.</li>
+        <li><b>Cài đặt ôn tập</b> — theo người dùng: từ mới mỗi ngày, lượt ôn tối đa mỗi ngày, mặt trước thẻ, tự phát âm.</li>
+        <li><b>Số liệu ngày</b> — theo người dùng và ngày giờ Việt Nam: số từ mới đã học, số từ đã ôn, phần "Học thêm" / "Ôn thêm".</li>
+        <li><b>Nguồn từ mới</b> — nguồn (cấp, cấp + chủ đề, hoặc bộ từ) được dùng để lấy từ mới cho "Ôn hôm nay"; tối đa một.</li>
+        <li><b>Phiên ôn tập</b> — một lần mở S15: nguồn, chế độ (thường / luyện thêm), hàng đợi, các lượt đánh giá, thời lượng.</li>
+      </ul>
+    </section>
+
+    <!-- 11 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="edge-cases">
+      <h2>11. Edge Cases <span class="vi">Tình huống biên &amp; xử lý lỗi</span></h2>
+      <ul>
+        <li>Người dùng ôn lúc 23:59 rồi 00:01 giờ Việt Nam: hai đánh giá thuộc hai ngày khác nhau; hạn mức ngày mới bắt đầu từ 0 (AC-14.1, AC-14.7, AC-14.8).</li>
+        <li>Thiết bị đặt múi giờ UTC−5 hoặc UTC+9: "đến hạn", "hôm nay" và mọi ngày hiển thị vẫn theo giờ Việt Nam (AC-14.1).</li>
+        <li>Người dùng bỏ ôn 10 ngày: mọi từ quá hạn dồn lại, cũ nhất trước, mỗi ngày tối đa theo "Lượt ôn tối đa mỗi ngày", phần dư báo "Còn {m} từ quá hạn sẽ chuyển sang ngày sau."; từ ôn trễ được tính như đúng hạn (AC-14.2, AC-14.3, AC-14.6, AC-13.4).</li>
+        <li>"Từ mới mỗi ngày" = 0: phiên chỉ có từ đến hạn; nút học một cấp chưa học từ nào báo "Bạn đã học đủ 0 từ mới hôm nay." kèm "Học thêm 5 từ mới" (AC-11.5).</li>
+        <li>Chọn "Quên" ở thẻ cuối cùng: thẻ được đưa lại cuối hàng đợi và hiện ngay (AC-13.3).</li>
+        <li>Chọn "Quên" nhiều lần liên tiếp cho cùng một từ trong một phiên: chỉ lần đầu (khi n ≥ 1) giảm hệ số dễ và tăng số lần quên; các lần sau tính theo cột n = 0 (AC-13.1, AC-13.3).</li>
+        <li>Rời phiên khi một từ vừa chọn "Quên": từ vẫn đến hạn hôm nay và được tính trong "Ôn hôm nay" (AC-11.1, AC-14.4).</li>
+        <li>Hệ số dễ chạm 1,30 sau nhiều lần quên: không giảm thêm (AC-13.2).</li>
+        <li>Khoảng ôn tính ra lớn hơn 365: dùng 365 (AC-13.2, AC-13.6).</li>
+        <li>Một từ nằm trong 3 bộ từ, một cấp và tab "Từ khó": chỉ có một tiến độ; ôn ở bộ A rồi mở bộ B cùng ngày, từ không còn đến hạn (AC-13.7).</li>
+        <li>Hai mục đa âm (行 xíng và 行 háng): hai từ, hai tiến độ, tìm "行" ra cả hai (AC-4.2).</li>
+        <li>Tìm "lv" hoặc "lü": khớp lǜ; tìm "v" được coi như "ü" (AC-4.3).</li>
+        <li>Tìm chuỗi trộn chữ Hán và Latin ("你hao"): xử lý như chuỗi có chữ Hán (AC-4.2).</li>
+        <li>Tìm chuỗi 51 ký tự: chỉ 50 ký tự đầu được dùng (AC-4.1).</li>
+        <li>Đánh dấu khó cùng lúc trên điện thoại và máy tính: trạng thái cuối cùng là thao tác sau cùng (AC-7.1, AC-7.2).</li>
+        <li>Đổi tên bộ trên hai thiết bị cùng lúc thành hai tên khác nhau: tên lưu sau cùng thắng; trùng tên với bộ khác thì báo lỗi AC-8.4.</li>
+        <li>Xóa bộ đang mở trên thiết bị khác: thao tác tiếp theo báo "Bộ từ này không còn tồn tại." (AC-8.8).</li>
+        <li>Xóa bộ đang là "Nguồn từ mới": S13 trở về trạng thái AC-2.7 nếu không có từ đến hạn (AC-11.9).</li>
+        <li>Thêm 1.200 từ vào bộ trống bằng "Chọn nhiều": 1.000 từ được thêm, báo 200 từ chưa được thêm (AC-9.5).</li>
+        <li>Từ tự thêm trùng chữ Hán với kho: hỏi "Dùng từ trong kho" / "Vẫn tạo từ riêng" (AC-10.3).</li>
+        <li>Nội dung từ tự thêm chứa thẻ HTML hoặc đường dẫn: hiển thị nguyên văn, không chạy, không thành liên kết (AC-10.8).</li>
+        <li>Từ của kho bị ngừng xuất bản giữa phiên ôn: thẻ đã tải vẫn ôn được; từ vẫn được lên lịch vì đã có tiến độ (AC-19.4).</li>
+        <li>Từ bị ngừng xuất bản khi người dùng chưa từng học: biến mất khỏi danh sách; đường dẫn chi tiết → A05 (AC-19.3, AC-5.6).</li>
+        <li>Âm thanh của từ bị gỡ khỏi kho: nút phát âm biến mất ở lần tải kế tiếp (AC-6.3, AC-19.1).</li>
+        <li>Mất mạng giữa phiên và đóng trình duyệt: đánh giá được gửi khi mở lại trên cùng thiết bị (AC-18.2, AC-18.3).</li>
+        <li>Đánh giá ngoại tuyến trên điện thoại lúc 10:00 về một từ đã được ôn trên máy tính lúc 11:00: áp dụng theo thứ tự thời điểm 10:00 rồi 11:00 (AC-18.5).</li>
+        <li>Đăng xuất khi còn kết quả chưa lưu: cảnh báo, mặc định "Ở lại" (AC-18.6).</li>
+        <li>"Hoàn tác" sau khi đánh giá ngoại tuyến: khôi phục trên thiết bị; đánh giá bị hoàn tác không được gửi (AC-17.1, AC-18.3).</li>
+        <li>HV bị khóa tài khoản (001): không đăng nhập được; dữ liệu Tự học được giữ nguyên và dùng lại khi mở khóa (AC-20.5).</li>
+        <li>HV chưa từng thuộc lớp nào hoặc mọi lớp đã kết thúc: dùng Tự học đầy đủ (AC-1.2, AC-20.5).</li>
+        <li>GV mở S13, S14 hoặc S15 bằng đường dẫn trực tiếp, hoặc đăng nhập bằng tài khoản GV từ A01 sau khi mở đường dẫn S13: A05, không lộ nội dung hay số liệu (AC-1.3, AC-1.4). GV xem trước mục từ chỉ trong T23–T27 (016).</li>
+        <li>HV mở đường dẫn chi tiết của một từ thuộc kho của workspace khác: A05 giống hệt từ không tồn tại (AC-5.6).</li>
+        <li>GV sửa một từ trong bộ HSK mẫu đã nạp sẵn: chỉ HV của workspace đó thấy nội dung mới; HV của workspace khác không bị ảnh hưởng (AC-19.1).</li>
+        <li>GV ẩn mọi từ của một cấp HSK: cấp biến mất khỏi tab "Kho từ" (AC-3.2); từ đã có tiến độ vẫn được ôn với nhãn "Không còn trong kho" (AC-19.4).</li>
+        <li>Không tải được số liệu S13: thẻ "Từ vựng" báo lỗi, ba thẻ còn lại vẫn mở được (AC-2.8).</li>
+        <li>Thẻ có nghĩa rất dài (≥ 200 ký tự) hoặc câu ví dụ dài: thẻ cuộn bên trong, các nút đánh giá luôn hiển thị (NFR-7).</li>
+      </ul>
+    </section>
+
+    <!-- 12 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="dependencies">
+      <h2>12. Module Dependencies <span class="vi">Phụ thuộc giữa các module</span></h2>
+      <p>Quyết định của stakeholder được dùng: D1 (GV là quản trị viên workspace riêng), D4 / V4-6 (tài khoản HV do GV tạo, không tự đăng ký), V12-4 (giao diện "Mực &amp; giấy"), V14 (2026-10-22: Tự học không cần lớp, dữ liệu riêng tư, không tính xếp hạng, AI ở giai đoạn 2 — phần "mọi HV và GV" và "kho hệ thống do Quản trị nội dung duy trì" đã bị V15 thay thế), V15 (2026-10-22: chỉ hai vai trò GV và HV; Tự học chỉ dành cho HV; mỗi workspace có Kho nội dung tự học riêng nạp sẵn bộ HSK mẫu, GV sửa / thêm / ẩn tùy ý; GV chỉ quản lý, không dùng Tự học). Giả định chung: A4 (HV mobile-first 360–430 px, GV desktop), A5 (giao diện tiếng Việt, chữ Hán giản thể, pinyin có dấu thanh), A7 (giờ Việt Nam UTC+7). Giả định riêng của module ở §12.</p>
+      <p><b>Phụ thuộc module:</b></p>
+      <ul>
+        <li><b>016 — Kho nội dung tự học (GV, <a class="chip screen" href="../screen-flow-design.html#T23">T23</a>–T27)</b> (bắt buộc). Mỗi workspace một kho, khởi tạo từ bộ nội dung HSK mẫu rồi do GV sở hữu; GV xem trước mục từ ngay trong T23–T27. 012 dùng các trường của mục từ: định danh ổn định qua các lần sửa, chữ Hán giản thể, pinyin có dấu thanh, từ loại (danh sách giá trị cố định, dùng cả cho từ tự thêm), một hoặc nhiều nghĩa tiếng Việt có thứ tự, câu ví dụ có thứ tự (chữ Hán, pinyin, nghĩa, âm thanh tùy chọn), âm thanh bản xứ của từ, cấp HSK (1–9 — 016 quyết định cấp 7–9 là một hay ba cấp), thẻ chủ đề, thứ tự trong kho, trạng thái xuất bản. <b>Cần 016 bổ sung:</b> trường "Cách dùng" (văn bản, tùy chọn) cho mục từ (AC-5.3); giữ nội dung của lần xuất bản cuối của từ bị ngừng xuất bản và không xóa hẳn mục từ đã từng xuất bản, kể cả khi GV ẩn hoặc lưu trữ (AC-19.4); thông báo sửa / ngừng / xuất bản lại để 012 phản ánh ở lần tải kế tiếp (REQ-19); không hiển thị dữ liệu tự học của từng HV trên T23–T27 (AC-20.3).</li>
+        <li><b>001 — Tài khoản &amp; Xác thực.</b> <b>Cần 001 bổ sung:</b> mục "Tự học" trên thanh tab dưới của HV mở S13 (AC-1.1); S13–S20 chỉ thuộc quy tắc định tuyến của HV, kể cả mở lại màn hình sau đăng nhập (AC-1.3); tài khoản GV mở S13–S20 → A05 (AC-1.4); không có mục "Tự học" trên thanh bên của GV; hộp thoại "Đăng xuất" kiểm tra kết quả ôn chưa lưu (AC-18.6); khi xóa tài khoản HV thì xóa dữ liệu Tự học (AC-20.6, Q-1). Tài khoản bị khóa giữ nguyên dữ liệu Tự học.</li>
+        <li><b>013, 014, 015</b> — S13 dẫn tới S16 (013), S17 (014, từ đó tới S18) và S19 (015, từ đó tới S20). Các module này có thể bổ sung một dòng số liệu riêng trên thẻ của mình ở S13 (thuộc spec của họ); 012 chỉ sở hữu bố cục S13 và thẻ "Từ vựng".</li>
+        <li><b>004 — flashcard trong bài.</b> Tách biệt hoàn toàn (AC-20.4). <b>Nhu cầu tùy chọn cho 004 (giai đoạn sau):</b> nút "Thêm vào bộ từ của tôi" trên S04, thêm từ của kho cùng chữ Hán và pinyin, hoặc tạo từ tự thêm khi kho không có (dùng REQ-9, REQ-10).</li>
+        <li><b>008, 009, 011</b> — không thay đổi; xác nhận không đọc dữ liệu Tự học (AC-20.3).</li>
+        <li><b>docs/steering/product.md</b> — cần bổ sung thuật ngữ Tự học, Bộ từ, Từ khó, Tiến độ ôn tập, SRS vào Domain Glossary và mục 012 vào bảng Scope (thuộc người điều phối; không sửa trong lượt này).</li>
+      </ul>
+    </section>
+
+    <!-- 13 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="out-of-scope">
+      <h2>13. Out of Scope <span class="vi">Ngoài phạm vi</span></h2>
+      <ul>
+        <li>Mọi tính năng AI (giai đoạn 2): gợi ý từ cần học, tạo câu ví dụ, giải thích cách dùng, chấm phát âm khi đọc theo, tạo bộ từ từ văn bản hoặc từ bài học của lớp.</li>
+        <li>Chia sẻ bộ từ giữa người dùng, bộ từ công khai, sao chép bộ của người khác.</li>
+        <li>GV giao bộ từ hoặc mục tiêu ôn tập cho HV hay lớp; GV xem tiến độ Tự học của HV.</li>
+        <li>Tính dữ liệu Tự học vào Điểm xếp hạng (008), dashboard (009) hay hồ sơ (011).</li>
+        <li>Chuỗi ngày học (streak), mục tiêu ngày, huy hiệu, điểm thưởng, bảng xếp hạng Tự học.</li>
+        <li>Thống kê dài hạn (biểu đồ dự báo, lịch sử ôn theo ngày, heatmap).</li>
+        <li>Âm thanh hoặc giọng đọc máy cho từ tự thêm; tải lên âm thanh hay ảnh cho từ tự thêm.</li>
+        <li>Chế độ ngoại tuyến hoàn toàn (tải trước cả bộ để học không mạng nhiều ngày) ngoài phạm vi AC-18.2.</li>
+        <li>Các kiểu ôn khác ngoài lật thẻ tự đánh giá: gõ đáp án, trắc nghiệm, nghe chọn từ, viết chữ (viết chữ thuộc 013).</li>
+        <li>Chữ phồn thể, chú âm (bopomofo), dịch sang ngôn ngữ khác tiếng Việt.</li>
+        <li>Nhập / xuất bộ từ (Excel, CSV, Anki).</li>
+        <li>Tạm hoãn ("ẩn") một từ khỏi lịch ôn; đặt lại tiến độ hàng loạt theo cấp hoặc bộ.</li>
+        <li>Thêm trực tiếp từ flashcard của bài trong lớp (S04) vào bộ từ — nhu cầu đã ghi cho 004 (§10), chưa thuộc MVP của 012.</li>
+        <li>Đăng ký tài khoản công khai để dùng Tự học (V15: chỉ tài khoản HV do GV tạo).</li>
+        <li>GV dùng Tự học như một người học (ôn từ, bộ từ, từ khó của GV) — V15: GV chỉ quản lý và xem trước nội dung ở 016.</li>
+        <li>Kho từ dùng chung giữa các workspace; HV xem kho của workspace khác.</li>
+      </ul>
+      <h4>Removed (2026-10-22, V15)</h4>
+      <p>Không mã AC nào bị bỏ (AC-1.4 được viết lại tại chỗ); các hành vi sau không còn:</p>
+      <ul>
+        <li><b>GV dùng S13–S15</b> (AC-1.1, AC-1.2, AC-1.3 cũ; US-1, US-2 cũ "Là HV hoặc GV"): mục "Tự học" trên thanh bên của GV, bố cục máy tính kèm thanh bên của GV (AC-1.5 cũ), dữ liệu Tự học riêng của GV (bộ từ, từ khó, tiến độ, cài đặt) — nay GV mở S13–S15 thấy A05 (AC-1.4).</li>
+        <li><b>Vai trò "Quản trị nội dung"</b> và việc chuyển vai trò này về màn hình mặc định của 016 (AC-1.4 cũ); kho từ hệ thống dùng chung, không phụ thuộc workspace (AC-1.2 cũ) — nay mỗi workspace có Kho nội dung tự học riêng do GV quản lý.</li>
+      </ul>
+    </section>
+
+    <!-- 14 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="open-questions">
+      <h2>14. Open Questions <span class="vi">Câu hỏi mở</span></h2>
+      <p><strong>Q-1</strong> đã đóng 2026-10-22: xóa vĩnh viễn trong vòng 24 giờ, không giữ dạng ẩn danh (AC-20.6).</p>
+    </section>
+
+    <!-- 15 ────────────────────────────────────────────────────────── -->
+    <section class="doc" id="clarifications">
+      <h2>15. Clarifications Log <span class="vi">Nhật ký làm rõ</span></h2>
+      <h4>Session 2026-10-22 (V14 — Tự học toàn hệ thống)</h4>
+      <ul>
+        <li>Q: Yêu cầu gốc? → A: Nguyên văn: "với dự án hiện tại thì các feature đang là theo học viên trong 1 lớp để GV dễ tracking và quản lí theo giáo trình và bài học, giờ sẽ thêm các module feature global cho tất cả user để có thể dùng được và không phân biệt lớp: 3. Học từ vựng thông minh — Flashcard hai mặt: chữ Hán – Pinyin – nghĩa tiếng Việt. Nghe phát âm từng từ. Ví dụ câu và cách dùng từ. Ôn tập theo phương pháp lặp lại ngắt quãng (SRS). Đánh dấu từ khó và tự tạo bộ từ vựng cá nhân." <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Ai dùng được? → A: Mọi tài khoản HV và GV hiện có, không cần thuộc lớp; vẫn không có tự đăng ký công khai (AC-1.2, §9) <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Nội dung từ vựng lấy từ đâu? → A: Kho hệ thống do vai trò "Quản trị nội dung" duy trì ở 016: mục từ HSK 1–9 gồm chữ Hán, pinyin, từ loại, nghĩa, câu ví dụ kèm pinyin và nghĩa, âm thanh bản xứ, cấp, thẻ chủ đề (REQ-3, REQ-5, §10) <em>(source: stakeholder)</em></li>
+        <li>Q: Có cần AI? → A: Không cho module này; MVP một phần, AI ở giai đoạn 2 (§9) <em>(source: stakeholder)</em></li>
+        <li>Q: Dữ liệu tự học có hiển thị cho GV hay ảnh hưởng lớp? → A: Không — riêng tư từng người dùng, không hiển thị cho GV, không ảnh hưởng xếp hạng (008) hay dashboard (009) (REQ-20) <em>(source: stakeholder)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Lối vào? → A: Mục "Tự học" trên thanh điều hướng (tab dưới của HV, thanh bên của GV — 001) → S13 (AC-1.1) <em>(source: stakeholder)</em></li>
+        <li>Q: S13 có chuỗi ngày học / mục tiêu ngày? → A: Không trong MVP; S13 chỉ có "Ôn hôm nay", "Từ mới hôm nay" và bốn thẻ (AC-2.9) <em>(source: assumption — không được yêu cầu; chuỗi ngày thêm quy tắc múi giờ và áp lực không cần thiết; để giai đoạn sau)</em></li>
+        <li>[thay thế 2026-10-22 V15] Q: Vai trò "Quản trị nội dung" có dùng Tự học? → A: Không (AC-1.4) <em>(source: assumption — V14 nêu "mọi HV và GV"; vai trò này xem trước nội dung ở màn hình Q của 016)</em></li>
+        <li>Q: Có cho tự thêm từ không có trong kho? → A: Có, mức P2: từ tự thêm riêng tư, không âm thanh, tối đa 2.000 mỗi người dùng, cảnh báo khi trùng chữ Hán với kho (REQ-10) <em>(source: assumption — "tự tạo bộ từ vựng cá nhân" gợi ý người dùng cần cả từ ngoài HSK; giữ P2 để không chặn MVP)</em></li>
+        <li>Q: Bao nhiêu mức đánh giá và quy tắc lập lịch? → A: Bốn mức "Quên" / "Khó" / "Nhớ" / "Dễ" theo bảng kiểu SM-2 của REQ-13: E đầu 2,50, tối thiểu 1,30; khoảng 1/3 ngày cho hai lần nhớ đầu, sau đó I × E; "Khó" × 1,2 và E − 0,15; "Dễ" × E × 1,3 và E + 0,15; "Quên" về 0, lặp lại trong phiên, E − 0,20; khoảng tối đa 365 ngày; ôn trễ không thưởng không phạt <em>(source: assumption — SM-2/Anki là chuẩn phổ biến; bản rút gọn theo ngày dễ kiểm thử, không cần bước học tính theo phút)</em></li>
+        <li>Q: "Đến hạn" và ranh giới ngày? → A: Theo ngày giờ Việt Nam, ngày mới lúc 00:00:00 UTC+7 bất kể múi giờ thiết bị (AC-14.1) <em>(source: assumption — nhất quán với Hạn nộp 23:59 giờ Việt Nam của toàn sản phẩm)</em></li>
+        <li>Q: Ngày bị bỏ lỡ xử lý thế nào? → A: Từ đến hạn dồn lại, cũ nhất trước, giới hạn theo "Lượt ôn tối đa mỗi ngày", không tự đặt lại hay phạt (AC-14.2, AC-14.3, AC-14.6) <em>(source: assumption — tránh làm người dùng nản sau khi nghỉ; giới hạn ngày chống quá tải)</em></li>
+        <li>Q: Hạn mức mặc định? → A: 10 từ mới (0–50) và 200 lượt ôn (20–500) mỗi ngày; "Học thêm 5 từ mới" / "Ôn thêm 50 từ" cho riêng hôm nay (REQ-14, REQ-15) <em>(source: assumption — 10 từ mới/ngày ≈ 10–15 phút ôn khi ổn định, phù hợp HV bận)</em></li>
+        <li>Q: Từ mới của "Ôn hôm nay" lấy từ đâu? → A: Từ "Nguồn từ mới" = cấp, cấp + chủ đề hoặc bộ từ người dùng bắt đầu học gần nhất; chưa chọn thì chỉ ôn từ đến hạn (AC-11.1, AC-11.3, AC-2.7) <em>(source: assumption — một nút "Ôn tập ngay" đủ cho thói quen hằng ngày mà người dùng vẫn kiểm soát nguồn)</em></li>
+        <li>Q: Từ khó tương tác với SRS thế nào? → A: Chỉ do người dùng đánh dấu; không đổi công thức hay ngày đến hạn; từ khó được ưu tiên khi cùng ngày đến hạn, trong "Luyện thêm" và có nguồn "Từ khó" riêng (REQ-7) <em>(source: assumption — dễ hiểu, kiểm thử được, không tự sửa dữ liệu của người dùng)</em></li>
+        <li>Q: Đặt lại tiến độ một từ? → A: Có, trong chi tiết từ, có xác nhận; từ về "Chưa học", giữ dấu khó và các bộ (AC-17.3) <em>(source: assumption — cần khi người dùng muốn học lại từ đầu)</em></li>
+        <li>Q: Mặt trước thẻ? → A: Chữ Hán (mặc định), có thể đổi sang Nghĩa tiếng Việt hoặc Pinyin trong "Cài đặt ôn tập" (AC-12.2, AC-15.1) <em>(source: assumption — đáp ứng "flashcard hai mặt" và yêu cầu ôn theo cả hai chiều)</em></li>
+        <li>Q: Quan hệ với flashcard trong bài (004)? → A: Tách biệt hoàn toàn; nút "Thêm vào bộ từ của tôi" trên S04 là nhu cầu tùy chọn ghi cho 004 (AC-20.4, §10) <em>(source: assumption — giữ 004 đã duyệt nguyên vẹn; dữ liệu lớp và dữ liệu tự học không trộn)</em></li>
+        <li>Q: Khi 016 sửa hoặc ngừng xuất bản một từ? → A: Sửa: hiển thị nội dung mới, giữ tiến độ. Ngừng xuất bản: biến mất khỏi duyệt / tìm / từ mới, nhưng vẫn hiển thị và lên lịch cho người đã có trong bộ, từ khó hoặc tiến độ, với nội dung lần xuất bản cuối và nhãn "Không còn trong kho" (REQ-19) <em>(source: assumption — nguyên tắc sản phẩm "không bao giờ mất dữ liệu học")</em></li>
+        <li>Q: Chịu mất mạng tới đâu? → A: Ôn tiếp ≥ 50 thẻ đã tải, đánh giá lưu trên thiết bị và gửi lại đúng một lần, kể cả sau khi đóng trình duyệt (REQ-18, NFR-4); không có chế độ ngoại tuyến hoàn toàn (§9) <em>(source: assumption — HV ôn trên điện thoại ở nơi mạng chập chờn; nhất quán với 004 AC-16.6)</em></li>
+        <li>[thay thế 2026-10-22] Q: Xóa tài khoản thì dữ liệu Tự học ra sao? → A: Đang áp dụng tạm: xóa vĩnh viễn trong 30 ngày; chờ Q-1 (AC-20.6) <em>(source: assumption — tối thiểu dữ liệu cá nhân)</em></li>
+        <li>Q: Giới hạn bộ từ? → A: Tối đa 50 bộ mỗi người dùng, 1.000 từ mỗi bộ, tên 1–60 ký tự duy nhất trong các bộ của người dùng (REQ-8, REQ-9) <em>(source: assumption — đủ cho mọi nhu cầu thực tế, chặn lạm dụng)</em></li>
+        <li>Q: Thời hạn xóa dữ liệu Tự học khi xóa tài khoản? → A: Xóa vĩnh viễn trong vòng 24 giờ, không giữ dạng ẩn danh — thống nhất 012–015 và 001, theo tiền lệ 011 (xóa ảnh trong 24 giờ). (source: assumption — điều phối 2026-10-22, tối thiểu dữ liệu cá nhân)</li>
+      </ul>
+      <h4>Session 2026-10-22 (V15 — Tự học chỉ cho HV)</h4>
+      <ul>
+        <li>Q: Yêu cầu gốc? → A: Nguyên văn: "Hệ thống hiện tại chỉ có 2 role là GV và học viên, và phần quản lí các nội dung tự học sẽ làm chung phần quản lí của GV luôn, và GV chỉ quản lí thôi, chức năng tự học chỉ dành cho user học viên. Gom quản lí hệ thống vào cho GV." <em>(source: stakeholder)</em></li>
+        <li>Q: Nội dung tự học lấy từ đâu khi không còn "Quản trị nội dung"? → A: Mỗi GV có kho tự học riêng trong workspace của mình ("Kho nội dung tự học", 016, T23–T27), nạp sẵn một bộ nội dung HSK mẫu mà GV sửa / thêm / ẩn tùy ý; HV dùng kho của workspace mình (AC-1.2, AC-3.2, REQ-19, §7, §10) <em>(source: stakeholder)</em></li>
+        <li>Q: Ai dùng S13–S15? → A: Chỉ HV: mọi HV đã kích hoạt, không bị khóa của workspace, không phân biệt lớp. GV không dùng Tự học, không có lối vào, không có dữ liệu tự học riêng (AC-1.1, AC-1.2, AC-1.3, §9 Removed) <em>(source: stakeholder)</em></li>
+        <li>Q: GV mở S13–S15 bằng đường dẫn trực tiếp thì sao? → A: A05 "Không tìm thấy nội dung bạn yêu cầu.", không lộ nội dung hay số liệu; GV xem trước mục từ chỉ trong T23–T27 (AC-1.4 viết lại tại chỗ thay cho AC chặn vai trò "Quản trị nội dung") <em>(source: assumption — nhất quán với quy tắc A05 cho nội dung không xem được của sản phẩm; không tiết lộ màn hình tồn tại)</em></li>
+        <li>Q: Bố cục máy tính của S13–S15 còn không? → A: Còn, chỉ như "HV trên màn hình rộng" (≥ 1024 px, không có thanh bên của GV); phím tắt S15 giữ cho HV dùng bàn phím (AC-1.5, AC-5.5, AC-12.9, NFR-7) <em>(source: assumption — spec đã mô tả bố cục rộng; HV vẫn có thể học trên máy tính)</em></li>
+        <li>Q: GV sửa / ẩn từ thì dữ liệu học của HV ra sao? → A: Giữ nguyên các quy tắc REQ-19 (sửa: nội dung mới, giữ tiến độ; ngừng xuất bản gồm ẩn và lưu trữ: biến mất khỏi duyệt / tìm / từ mới, vẫn ôn được với nhãn "Không còn trong kho"), nay do GV kích hoạt và chỉ ảnh hưởng HV của workspace đó (AC-19.1, AC-19.3) <em>(source: assumption — chia sẻ với 013–016; nguyên tắc "không bao giờ mất dữ liệu học")</em></li>
+        <li>Q: Riêng tư thay đổi gì? → A: Không đổi: dữ liệu tự học của HV riêng tư, không hiển thị cho GV từng HV (kể cả trên T23–T27), không vào xếp hạng / dashboard; xóa trong 24 giờ khi xóa tài khoản HV (AC-20.3, AC-20.6, NFR-8) <em>(source: stakeholder — V15 không đổi điều kiện riêng tư của V14)</em></li>
+        <li>Q: Đường dẫn tới từ của kho workspace khác? → A: A05 giống hệt từ không tồn tại (AC-5.6) <em>(source: assumption — quy tắc cách ly workspace A05 của sản phẩm)</em></li>
+        <li>Q: Khối lượng dữ liệu? → A: Tính theo workspace: kho ≥ 11.000 từ mỗi workspace; 1.000 HV ôn đồng thời trên toàn hệ thống, tới 300 HV cùng một workspace (NFR-2, NFR-5) <em>(source: assumption — GV cá nhân hiếm khi có hơn vài trăm HV hoạt động cùng lúc; giữ tổng tải như trước)</em></li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+<div class="footer">Nguồn sự thật cho pipeline: <code>spec.md</code>. Trang này là bản trình bày; khi lệch nhau, sửa <code>spec.md</code> trước.</div>
+</body>
+</html>

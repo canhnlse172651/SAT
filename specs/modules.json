@@ -1,0 +1,312 @@
+{
+  "$comment": "Module registry = project scope. Edited by humans / orchestrator when scope changes. Progress is NOT stored here: it is generated into specs/NNN-slug/state.json by `node scripts/sync-state.mjs`.",
+  "project": {
+    "name": "SAT",
+    "tagline": "Nền tảng cho giáo viên dạy tiếng Trung (HSK1–HSK9)",
+    "vision": "Giáo viên soạn giáo trình gồm nhiều bài (thủ công hoặc AI từ PDF/Word), mở lớp, kích hoạt học viên bằng email, đặt hạn nộp bài tập và theo dõi ai đã làm / chưa làm. Học viên học bài, làm mỗi bộ bài tập một lần, xem lại đáp án và leo bảng xếp hạng của lớp.",
+    "decisionsUpTo": "V11 (2026-10-22)"
+  },
+  "waves": [
+    {
+      "wave": 1,
+      "label": "Nền tảng tài khoản"
+    },
+    {
+      "wave": 2,
+      "label": "Giáo trình & bài"
+    },
+    {
+      "wave": 3,
+      "label": "Lớp học (lõi)"
+    },
+    {
+      "wave": 4,
+      "label": "Nội dung bài học & bài tập"
+    },
+    {
+      "wave": 5,
+      "label": "Bài thi, xếp hạng & AI"
+    },
+    {
+      "wave": 6,
+      "label": "Dashboard"
+    },
+    {
+      "wave": 7,
+      "label": "Hồ sơ học viên"
+    },
+    {
+      "wave": 8,
+      "label": "Kho tự học (GV)"
+    },
+    {
+      "wave": 9,
+      "label": "Tự học (toàn hệ thống)"
+    }
+  ],
+  "modules": [
+    {
+      "id": "001",
+      "name": "Tài khoản & Xác thực",
+      "wave": 1,
+      "deps": [],
+      "mvp": true,
+      "summary": "GV đăng ký / đăng nhập / quên mật khẩu; GV thêm HV bằng email (từng người, Excel) → Kích hoạt → hệ thống gửi mật khẩu ngẫu nhiên; khóa tài khoản; tách biệt workspace.",
+      "screens": [
+        "A01",
+        "A02",
+        "A03",
+        "A05",
+        "T11",
+        "T12",
+        "T17"
+      ]
+    },
+    {
+      "id": "002",
+      "name": "Giáo trình & Bài",
+      "wave": 2,
+      "deps": [
+        "001"
+      ],
+      "mvp": true,
+      "summary": "Giáo trình theo cấp HSK → Bài → 2 phần; màn hình Soạn bài (T18) và khung trình soạn thủ công T07; xuất bản, nhân bản, lưu trữ; Xem như học viên (T21) từ danh sách bài.",
+      "screens": [
+        "T05",
+        "T06",
+        "T18",
+        "T21"
+      ]
+    },
+    {
+      "id": "003",
+      "name": "Lớp học",
+      "wave": 3,
+      "deps": [
+        "001",
+        "002"
+      ],
+      "mvp": true,
+      "summary": "Tạo lớp, thành viên, ẩn/hiện phần theo lớp, hạn nộp từng bộ bài tập theo lớp, email nhắc 08:00 ngày hạn nộp; phía HV: Lớp của tôi, trang lớp, trang bài.",
+      "note": "REQ-21…26 (hạn nộp, email nhắc) cần bộ bài tập của 005 → làm sau wave 4.",
+      "screens": [
+        "T02",
+        "T03",
+        "T04",
+        "S01",
+        "S02",
+        "S11"
+      ]
+    },
+    {
+      "id": "004",
+      "name": "Phần Bài học & Flashcard",
+      "wave": 4,
+      "deps": [
+        "002",
+        "003"
+      ],
+      "mvp": true,
+      "summary": "Bước học gồm các khối (từ vựng, ngữ pháp, hội thoại, văn bản, flashcard, tài liệu, video, ảnh, âm thanh); tab Bài học của T07; HV xem bài (không theo dõi), học flashcard.",
+      "screens": [
+        "T07",
+        "T08",
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "id": "005",
+      "name": "Phần Bài tập",
+      "wave": 4,
+      "deps": [
+        "002",
+        "003"
+      ],
+      "mvp": true,
+      "summary": "6 dạng câu hỏi tự chấm; tab Bài tập của T07; mỗi bộ làm 1 lần, xem lại đáp án + giải thích; Nộp muộn / Quá hạn; chấm lại khi sửa đáp án; GV xem bài nộp (T14).",
+      "screens": [
+        "T09",
+        "T14",
+        "S05",
+        "S06"
+      ]
+    },
+    {
+      "id": "006",
+      "name": "Bài thi",
+      "wave": 5,
+      "deps": [
+        "001",
+        "003",
+        "005"
+      ],
+      "mvp": true,
+      "summary": "Bài thi độc lập trong workspace (mục Bài thi): GV soạn tay bằng các dạng câu tự chấm của 005, giao cho một hoặc nhiều lớp, một lịch (giờ mở, thời lượng, giờ đóng); HV làm một lần có đồng hồ, tự lưu, nộp tự động lúc min(bắt đầu + thời lượng, giờ đóng); điểm 0–100 ngay, đáp án + giải thích sau giờ đóng; GV xem kết quả theo lớp (T16, T14).",
+      "note": "Mô hình mới 2026-10-22 (không còn là section của Bài). Cung cấp điểm bài thi theo HV × lớp cho 008 (70 % điểm xếp hạng). T14 dùng lại của 005. Q-5 (sửa đáp án khi đề đã khóa) còn mở.",
+      "screens": [
+        "T10",
+        "T22",
+        "T16",
+        "S07",
+        "S08"
+      ]
+    },
+    {
+      "id": "008",
+      "name": "Điểm & Xếp hạng",
+      "wave": 5,
+      "deps": [
+        "005",
+        "006"
+      ],
+      "mvp": true,
+      "summary": "Điểm xếp hạng theo lớp = trung bình điểm bộ bài tập (0–100) × 30 % + trung bình điểm bài thi (0–100, 006) × 70 %; đồng hạng; top 10 + vị trí của tôi; Điểm của tôi.",
+      "screens": [
+        "S09",
+        "T04"
+      ]
+    },
+    {
+      "id": "010",
+      "name": "Tạo bài bằng AI",
+      "wave": 5,
+      "deps": [
+        "002",
+        "004",
+        "005"
+      ],
+      "mvp": true,
+      "summary": "Panel AI trong T18: tải PDF/Word + mô tả ngắn → AI tạo bài học + bài tập (≥ 80% kiến thức tài liệu) → review T20 (Xem trước / Chỉnh sửa) → Duyệt = xuất bản + thay thế.",
+      "screens": [
+        "T18",
+        "T20"
+      ]
+    },
+    {
+      "id": "009",
+      "name": "Dashboard giáo viên",
+      "wave": 6,
+      "deps": [
+        "003",
+        "005",
+        "008",
+        "010"
+      ],
+      "mvp": true,
+      "summary": "Danh sách lớp (Đang hoạt động / Đã kết thúc, lọc ngày tạo), KPI, chọn bộ bài tập → Đã làm / Chưa làm, top 3; tab Tiến độ của lớp; hồ sơ học tập T15.",
+      "screens": [
+        "T01",
+        "T04",
+        "T15"
+      ]
+    },
+    {
+      "id": "011",
+      "name": "Hồ sơ học viên",
+      "wave": 7,
+      "deps": [
+        "001",
+        "003",
+        "008",
+        "009"
+      ],
+      "mvp": true,
+      "summary": "Hồ sơ của tôi (ảnh đại diện, ảnh bìa, mật khẩu, lớp + tiến độ + hạng); xem hồ sơ bạn cùng lớp (chỉ lớp học chung).",
+      "screens": [
+        "S10",
+        "S12"
+      ]
+    },
+    {
+      "id": "007",
+      "name": "Chấm bài tự luận",
+      "wave": null,
+      "deps": [],
+      "mvp": false,
+      "summary": "Hoãn — ngoài MVP (2026-10-19). Không lên plan, không implement."
+    },
+    {
+      "id": "016",
+      "name": "Kho nội dung tự học (GV)",
+      "wave": 8,
+      "deps": [
+        "001"
+      ],
+      "mvp": true,
+      "summary": "GV quản lý kho tự học riêng của workspace (nạp sẵn bộ nội dung HSK mẫu, sửa / thêm / ẩn tùy ý): từ vựng + âm thanh, chữ Hán + dữ liệu nét / bộ thủ, bài nghe, kịch bản đóng vai, đề thi thử. HV của GV dùng ở khu Tự học.",
+      "screens": [
+        "T23",
+        "T24",
+        "T25",
+        "T26",
+        "T27"
+      ],
+      "note": "V15: không còn vai trò Quản trị nội dung; mỗi workspace một kho."
+    },
+    {
+      "id": "012",
+      "name": "Từ vựng thông minh",
+      "wave": 9,
+      "deps": [
+        "001",
+        "016"
+      ],
+      "mvp": true,
+      "summary": "Trang Tự học; flashcard 2 mặt (chữ Hán · pinyin · nghĩa), phát âm, ví dụ; ôn tập lặp lại ngắt quãng (SRS); đánh dấu từ khó; bộ từ vựng cá nhân.",
+      "screens": [
+        "S13",
+        "S14",
+        "S15"
+      ],
+      "note": "Tự học (V15): chỉ dành cho HV, không phụ thuộc lớp; nội dung lấy từ kho tự học của GV (workspace của HV); không tính vào xếp hạng lớp. Phần AI ở giai đoạn 2."
+    },
+    {
+      "id": "013",
+      "name": "Luyện viết chữ Hán",
+      "wave": 9,
+      "deps": [
+        "001",
+        "016"
+      ],
+      "mvp": true,
+      "summary": "Thứ tự nét (minh họa), khung luyện viết trên màn hình có kiểm từng nét theo nét mẫu, bộ thủ và cấu tạo chữ. Nhận diện chữ viết tự do: giai đoạn 2.",
+      "screens": [
+        "S16"
+      ],
+      "note": "Tự học (V15): chỉ dành cho HV, không phụ thuộc lớp; nội dung lấy từ kho tự học của GV (workspace của HV); không tính vào xếp hạng lớp. Phần AI ở giai đoạn 2."
+    },
+    {
+      "id": "014",
+      "name": "Luyện nghe & nói",
+      "wave": 9,
+      "deps": [
+        "001",
+        "016"
+      ],
+      "mvp": true,
+      "summary": "Nghe bản xứ đọc từ / câu, nghe hội thoại rồi chọn đáp án, thu âm và nghe lại, đóng vai theo kịch bản. Chấm phát âm / thanh điệu và đóng vai AI: giai đoạn 2.",
+      "screens": [
+        "S17",
+        "S18"
+      ],
+      "note": "Tự học (V15): chỉ dành cho HV, không phụ thuộc lớp; nội dung lấy từ kho tự học của GV (workspace của HV); không tính vào xếp hạng lớp. Phần AI ở giai đoạn 2."
+    },
+    {
+      "id": "015",
+      "name": "Thi thử HSK",
+      "wave": 9,
+      "deps": [
+        "001",
+        "016"
+      ],
+      "mvp": true,
+      "summary": "Đề luyện và đề thi thử HSK theo cấp (từ vựng, ngữ pháp, nghe, đọc hiểu, sắp xếp câu), tự chấm, giải thích đáp án, thống kê lỗi sai.",
+      "screens": [
+        "S19",
+        "S20"
+      ],
+      "note": "Tự học (V15): chỉ dành cho HV, không phụ thuộc lớp; nội dung lấy từ kho tự học của GV (workspace của HV); không tính vào xếp hạng lớp. Phần AI ở giai đoạn 2."
+    }
+  ]
+}

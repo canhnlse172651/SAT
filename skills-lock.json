@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "skills": {
+    "api-designer": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/api-designer/SKILL.md",
+      "computedHash": "b9d0ef61ede97ff8b78bed7c97c98fd4461c39cfa80d544813e6790c18db1fc3"
+    },
+    "architecture-designer": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/architecture-designer/SKILL.md",
+      "computedHash": "15ba13db2799f0ed2545e26c373bfc5fea5892a3bb1311a71bacb2f3864a2ad5"
+    },
+    "frontend-design": {
+      "source": "nexu-io/open-design",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "08b0dc8042c4b85a9c57d80e8580bc958da1375824ec2a6a1289dd004a780abb"
+    },
+    "nestjs-expert": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/nestjs-expert/SKILL.md",
+      "computedHash": "19552bd4fea6e65a40d80f86174cb3b3c86bd87d0468fdbdd5a6e36301146467"
+    },
+    "playwright-expert": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-expert/SKILL.md",
+      "computedHash": "d16773d7328eb46dd38d7299109f12da5d7c2bbd0703708aec0fc014cc171497"
+    },
+    "react-expert": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-expert/SKILL.md",
+      "computedHash": "a4bdf3a28fd33de493950e29d8390efe7e9bae57e35751f8ffa920c7509cb5c5"
+    },
+    "test-master": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/test-master/SKILL.md",
+      "computedHash": "c01e86694830811642583df6a4760ec7930ec7986e1a3faccd2fa2e7c4c2b991"
+    },
+    "typescript-pro": {
+      "source": "Jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/typescript-pro/SKILL.md",
+      "computedHash": "09f6e0722c8aa2167cedaeb4eb6dde4093e22f64d0ed290e4d8895f2bbe980fb"
+    }
+  }
+}
