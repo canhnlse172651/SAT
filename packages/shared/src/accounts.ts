@@ -247,6 +247,8 @@ export const studentSchema = z.object({
   note: z.string().nullable(),
   status: studentStatusSchema,
   failReason: z.enum(MAIL_FAIL_REASONS).nullable(),
+  /** Kind of the last password e-mail (what "Gửi lại" re-sends). */
+  mailKind: z.enum(['activation', 'new_password']).nullable(),
   classCount: z.number().int(),
   lastLoginAt: z.string().nullable(),
   createdAt: z.string(),
