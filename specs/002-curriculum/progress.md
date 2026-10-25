@@ -45,3 +45,22 @@
   - Tooling: `test:modules -- 002 TC-a TC-b` with several ids runs 0 tests on Windows (filters joined with `|`); dev faults are server-wide,
     so parallel replays can let another duplicate consume them.
 - Verify with: `node .sdd/scripts/sdd.mjs run test:modules -- 002 TC-018` (and `TC-059`) — both red until fixed.
+
+## Handoff 2026-10-25 23:30 — /module 002 (fix mode)
+- Status: 002-curriculum implementing   Branch: feat/002-curriculum (worktree `../sat-002-qa`)
+- Done this session: reproduced and fixed the two QA failures of run 2026-10-23-2227.
+  - TC-018 (AC-5.1) — `LessonNameDialog`: the pre-filled "Bài N" now follows the latest Bài count until the GV types
+    (T06 can open the dialog while it still shows cached data). Commit "fix(002): TC-018 …".
+  - TC-059 (AC-15.5) — `CurriculumFormDialog`: module errors answered with 5xx (503 `COPY_FAILED`) keep the API wording
+    "Nhân bản không thành công. Vui lòng thử lại." instead of the connection message. Commit "fix(002): TC-059 …".
+  - test-cases.md: rows TC-026 and TC-063 had a raw "|" in their expected result, which shifted QA's Script/status into the wrong
+    columns (state.json counted 71 Pass / 2 not run). Escaped the pipe and put QA's recorded values back in place — no wording,
+    expectation or status changed.
+- Checks (Node 24.22.1): lint ✔, typecheck ✔, `run test` 58 files / 296 passed, build ✔. Replays: `test:modules -- 002 TC-018` Pass,
+  `TC-059` Pass; full replay 73/76 — TC-038 (S11, known block), TC-058 + TC-059 red only because the parallel TC-058 consumed
+  TC-059's server-wide injected fault (TC-058 got the 503); each passes when replayed alone.
+- In progress: none.
+- Next: `/test-module 002` — chạy lại TC-018, TC-059 (và TC-058 riêng); TC-038 khi 002 chạy cùng 003 (S11).
+- Blockers / questions: TC-038 still needs S11 (003). The `feat/003-classes` and `feat/004-lessons-flashcards` branches were cut from
+  002 before these fixes and the QA commit — merge `feat/002-curriculum` into them (or rebase) to carry the fixes.
+- Verify with: `node .sdd/scripts/sdd.mjs run test:modules -- 002 TC-018` and `… -- 002 TC-059` (one id per call on Windows).
