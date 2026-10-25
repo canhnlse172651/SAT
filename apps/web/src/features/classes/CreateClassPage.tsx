@@ -46,6 +46,7 @@ export function CreateClassPage() {
   const [stepError, setStepError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const leaving = useRef(false);
+  const creating = useRef(false);
 
   // A fresh wizard every time T03 opens: nothing is kept or restored (AC-1.6, spec §9).
   useEffect(() => {
@@ -73,9 +74,15 @@ export function CreateClassPage() {
     return () => window.removeEventListener('beforeunload', onUnload);
   }, [dirty]);
 
+  /**
+   * The wizard's history is always [step 1 … current step]: "Tiếp tục" pushes the next step, every move back ("Quay lại",
+   * the progress bar, "Sửa", re-validation) goes back through that history. So the browser's Back on steps 2–4 always
+   * lands on the step before (AC-1.3) and never on a step the GV came back from.
+   */
   const goTo = (n: WizardStep) => {
     setStepError(null);
-    setParams({ buoc: String(n) });
+    if (n < step) void navigate(n - step);
+    else if (n > step) setParams({ buoc: String(n) });
   };
 
   const next = async () => {
@@ -104,7 +111,9 @@ export function CreateClassPage() {
   };
 
   const create = async () => {
-    if (busy || !curriculum || !info.startDate) return;
+    // A ref, not the `busy` state: clicks in a row arrive before React re-renders (AC-5.6).
+    if (creating.current || leaving.current || !curriculum || !info.startDate) return;
+    creating.current = true;
     setBusy(true);
     setStepError(null);
     try {
@@ -121,6 +130,7 @@ export function CreateClassPage() {
       push(createdMessage(created.name), 'success');
       navigate(classPath(created.id), { replace: true });
     } catch (err) {
+      if (leaving.current) return; // the class exists and T04 is open: a late failure changes nothing
       // AC-5.4: back to the earliest step that is no longer valid, keeping the rest.
       if (hasCode(err, 'CLASS_NAME_TAKEN')) {
         setErrors({ name: M.nameTaken });
@@ -137,6 +147,7 @@ export function CreateClassPage() {
         setStepError(err instanceof ApiError && err.status < 500 ? err.message : M.createFailed);
       }
     } finally {
+      creating.current = false;
       setBusy(false);
     }
   };

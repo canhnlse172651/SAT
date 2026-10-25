@@ -209,12 +209,18 @@ export class ClassesService {
     input: z.output<typeof createClassBodySchema>,
   ): Promise<ClassDetail> {
     const scope = scoped(this.classes, p.workspaceId);
-    const existing = await scope.findOne({ createKey: input.createKey }).lean<ClassDoc>();
+    // The class this wizard run already created (an earlier or a concurrent "Tạo lớp" with the same key) is the answer.
+    const sameRun = () => scope.findOne({ createKey: input.createKey }).lean<ClassDoc>();
+    const existing = await sameRun();
     if (existing) return this.detailOf(p, existing);
     await this.faults.apply('create');
     this.assertStartInRange(input.startDate);
 
-    if (!(await this.nameAvailable(p, input.name))) throw nameTaken();
+    if (!(await this.nameAvailable(p, input.name))) {
+      const created = await sameRun();
+      if (created) return this.detailOf(p, created);
+      throw nameTaken();
+    }
     const ids = [...new Set(input.studentIds)];
     const found = await this.students.byIds(p.workspaceId, ids);
     if (found.length < ids.length) {
@@ -260,12 +266,10 @@ export class ClassesService {
       });
     } catch (err) {
       await memberScope.deleteMany({ classId });
-      if (isDuplicateKey(err, 'createKey')) {
-        const again = await scope.findOne({ createKey: input.createKey }).lean<ClassDoc>();
-        if (again) return this.detailOf(p, again);
-      }
-      if (isDuplicateKey(err)) throw nameTaken();
-      throw err;
+      if (!isDuplicateKey(err)) throw err;
+      const again = await sameRun();
+      if (again) return this.detailOf(p, again);
+      throw nameTaken();
     }
     const doc = await scope.findById(classId).lean<ClassDoc>();
     if (!doc) throw notFound();

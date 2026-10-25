@@ -35,3 +35,23 @@
   - Playwright MCP browser was held by the 002 QA session; this run used the Playwright library in an isolated browser.
   - Thủ công TC-089 … TC-092 need a person / a real mail provider (instructions in the report).
 - Verify with: PORT=4183 SAT_E2E_PORT=4183 node .sdd/scripts/sdd.mjs run test:modules -- 003 TC-002   (server: PORT=4183 node tests/e2e/server.mjs)
+
+## Handoff 2026-10-25 23:40 — /module 003 (fix mode)
+- Status: 003-classes implementing · 28/28 tasks   Branch: feat/003-classes (worktree ../sat-003-qa)
+- Done this session: TC-002 (AC-1.3) fixed — every move back in T03 ("Quay lại", progress bar, "Sửa", re-validation after "Tạo lớp")
+  goes back through the browser history, so the wizard's history is always [bước 1 … bước hiện tại] and Back lands on the step before.
+  The fix exposed a race on AC-5.6 (3 quick "Tạo lớp": a late duplicate got "Tên lớp đã tồn tại" and sent the GV back into the wizard):
+  the API now answers the class the same `createKey` created instead of a name conflict, and T03 sends one create at a time (ref guard)
+  and ignores late failures once T04 is open. Replay `testing/runs/2026-10-25-2337-replay/` (TC-002 Pass); full replay of the 88
+  scripts (one worker, port 4183): 86 Pass — TC-007 and TC-070 failed, see below. lint ✔, `run test` 60 files / 308 passed (a first run
+  during the replay had 1 failure that did not repeat), build ✔.
+- In progress: —
+- Next: `/test-module 003` — chạy lại TC-002 (và TC-018 … TC-020: tạo lớp), sửa script TC-070, xem TC-007.
+- Blockers / questions (for the QA agent — saved scripts are not edited in fix mode):
+  - **TC-070 script is date-dependent and breaks typecheck:** `run typecheck` reports `TC-070.spec.ts(55,…): 'fd' is possibly
+    'undefined'` (scripts are type-checked with the repo); and the step "mở lại → hôm nay có aria-current" assumes today is in the month the
+    popup opens on. Its deadline is today + 7, so from 25/10 the popup opens on November and today (25/10) is not on screen — the app
+    behaves per AC-21.2 (the popup opens on the selected day's month; today is marked when shown).
+  - **TC-007** timed out before its first step in the full replay (waiting for "Tên lớp" on T03), passed twice alone right after — the
+    dev sign-in + `goto` opening looks racy under load.
+- Verify with: PORT=4183 SAT_E2E_PORT=4183 node .sdd/scripts/sdd.mjs run test:modules -- 003 TC-002   (server: PORT=4183 node tests/e2e/server.mjs)
