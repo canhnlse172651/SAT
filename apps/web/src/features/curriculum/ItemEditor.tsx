@@ -5,8 +5,11 @@ import {
   type SetContent,
   type StepContent,
   itemNotReadyReason,
+  newBlock,
+  richTextPlain,
   setContentSchema,
   stepContentSchema,
+  textToHtml,
 } from '@sat/shared';
 import { useEffect, useRef } from 'react';
 import { Button, Icon, IconButton, StatusChip, Textarea } from '../../components';
@@ -36,7 +39,7 @@ const LETTERS = 'ABCDEF';
 
 const stepOf = (c: unknown): StepContent => {
   const p = stepContentSchema.safeParse(c);
-  return p.success ? p.data : { blocks: [] };
+  return p.success ? p.data : { goal: '', blocks: [] };
 };
 const setOf = (c: unknown): SetContent => {
   const p = setContentSchema.safeParse(c);
@@ -53,7 +56,7 @@ function StepFields({
   content: StepContent;
   onChange: (c: StepContent) => void;
 }) {
-  const set = (blocks: StepContent['blocks']) => onChange({ blocks });
+  const set = (blocks: StepContent['blocks']) => onChange({ ...content, blocks });
   return (
     <div className="cur-blocks">
       {content.blocks.map((b, k) => (
@@ -74,9 +77,13 @@ function StepFields({
           <Textarea
             label={`Nội dung khối ${k + 1}`}
             rows={3}
-            value={b.text}
+            value={b.type === 'text' ? richTextPlain(b.html) : ''}
             onChange={(e) =>
-              set(content.blocks.map((x, i) => (i === k ? { ...x, text: e.target.value } : x)))
+              set(
+                content.blocks.map((x, i) =>
+                  i === k ? { id: x.id, type: 'text', html: textToHtml(e.target.value) } : x,
+                ),
+              )
             }
           />
         </div>
@@ -84,7 +91,7 @@ function StepFields({
       <Button
         size="sm"
         variant="ghost"
-        onClick={() => set([...content.blocks, { type: 'text', text: '' }])}
+        onClick={() => set([...content.blocks, newBlock('text')])}
         disabled={content.blocks.length >= 50}
       >
         <Icon name="plus" size={15} />

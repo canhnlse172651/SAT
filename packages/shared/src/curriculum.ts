@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import { type HskLevel, hskLevelSchema } from './hsk.js';
 import { objectId } from './ids.js';
+import {
+  type StepContent,
+  newStepContent,
+  stepContentSchema,
+  stepNotReadyReason,
+} from './steps.js';
 import { normalizeSpaces } from './text.js';
 
 /* Module 002 contracts: curricula, Bài, items (steps / sets), the HV view and user-facing wording. */
@@ -136,11 +142,7 @@ export function copyName(original: string, n = 1): string {
   );
 }
 
-/* ---------- interim item content (owned by 004 / 005; replaced when they ship) ---------- */
-
-export const textBlockSchema = z.object({ type: z.literal('text'), text: z.string().max(20000) });
-export const stepContentSchema = z.object({ blocks: z.array(textBlockSchema).max(50) });
-export type StepContent = z.infer<typeof stepContentSchema>;
+/* ---------- item content (steps: 004 `steps.ts`; sets: interim until 005 ships) ---------- */
 
 export const mcqSchema = z.object({
   type: z.literal('mcq'),
@@ -154,10 +156,10 @@ export type SetContent = z.infer<typeof setContentSchema>;
 
 export type ItemContent = StepContent | SetContent;
 
-/** A new step: one empty text block; a new set: one sample multiple-choice question (AC-7.6). */
+/** A new step: one empty text block (004); a new set: one sample multiple-choice question (AC-7.6). */
 export function newItemContent(section: Section): ItemContent {
   return section === 'lesson'
-    ? { blocks: [{ type: 'text', text: '' }] }
+    ? newStepContent()
     : { questions: [{ type: 'mcq', prompt: '', options: ['', '', '', ''], answer: null }] };
 }
 
@@ -172,14 +174,7 @@ export function itemNotReadyReason(
   title: string,
   content: unknown,
 ): string | null {
-  if (section === 'lesson') {
-    const parsed = stepContentSchema.safeParse(content);
-    const blocks = parsed.success ? parsed.data.blocks : [];
-    if (!blocks.length) return 'mục trống';
-    const empty = blocks.findIndex((b) => blank(b.text));
-    if (empty >= 0) return `Khối ${empty + 1} (Văn bản) đang trống`;
-    return blank(title) ? 'Chưa có tên bước học' : null;
-  }
+  if (section === 'lesson') return stepNotReadyReason(title, content);
   const parsed = setContentSchema.safeParse(content);
   const questions = parsed.success ? parsed.data.questions : [];
   if (!questions.length) return 'mục trống';

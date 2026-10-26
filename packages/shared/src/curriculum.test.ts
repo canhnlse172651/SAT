@@ -51,13 +51,14 @@ describe('copyName (AC-14.1, AC-15.1)', () => {
 
 describe('itemNotReadyReason (AC-9.2)', () => {
   it('treats new items as not ready', () => {
-    expect(itemNotReadyReason('lesson', '', newItemContent('lesson'))).toBe(
-      'Khối 1 (Văn bản) đang trống',
+    expect(itemNotReadyReason('lesson', '', newItemContent('lesson'))).toBe('chưa có tên bước học');
+    expect(itemNotReadyReason('lesson', 'Chào', newItemContent('lesson'))).toBe(
+      'Khối 1 · Văn bản: chưa có chữ',
     );
     expect(itemNotReadyReason('exercise', '', newItemContent('exercise'))).toBe(
       'Câu 1: chưa có nội dung câu hỏi',
     );
-    expect(itemNotReadyReason('lesson', 'x', { blocks: [] })).toBe('mục trống');
+    expect(itemNotReadyReason('lesson', 'x', { blocks: [] })).toBe('chưa có khối nào');
   });
   it('checks questions and titles', () => {
     const q = { type: 'mcq', prompt: 'Hỏi', options: ['A', ''], answer: 0 };

@@ -4,6 +4,7 @@ import {
   SECTION_TITLES,
   type Section,
   setContentSchema,
+  richTextPlain,
   stepContentSchema,
 } from '@sat/shared';
 import { useCallback, useEffect, useState } from 'react';
@@ -39,7 +40,7 @@ function StepView({ item }: { item: Item }) {
     <>
       {(content.success ? content.data.blocks : []).map((b, k) => (
         <p key={k} className="pv-text">
-          {b.text}
+          {b.type === 'text' ? richTextPlain(b.html) : ''}
         </p>
       ))}
     </>
