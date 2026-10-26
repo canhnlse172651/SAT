@@ -2,12 +2,12 @@
 id: 004
 slug: lessons-flashcards
 title: Lessons and Flashcards
-status: clarified
+status: tasked
 branch: feat/004-lessons-flashcards
 created: 2026-10-18
-updated: 2026-10-23
-approved_by:
-approved_at:
+updated: 2026-10-26
+approved_by: canh
+approved_at: 2026-10-26
 ---
 
 # Lessons and Flashcards
