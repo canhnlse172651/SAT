@@ -15,7 +15,14 @@ export interface HttpOptions {
 export function configureApp(app: NestExpressApplication, { webDistDir }: HttpOptions = {}): void {
   app.useLogger(app.get(Logger));
   app.disable('x-powered-by');
-  app.use(helmet());
+  // 004 AC-18.1: lesson videos may be YouTube embeds (privacy-enhanced domain only).
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: { 'frame-src': ["'self'", 'https://www.youtube-nocookie.com'] },
+      },
+    }),
+  );
   app.useBodyParser('json', { limit: '100kb' });
   // Feature modules are registered in AppModule; their controllers are served under /api/<resource>.
   app.setGlobalPrefix('api');

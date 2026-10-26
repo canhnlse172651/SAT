@@ -124,6 +124,18 @@ describe('MemoryStorage', () => {
     const { id } = await storage.put({ ...input, stream: Readable.from([Buffer.from('ok')]) });
     expect(await read((await storage.get(id))!.stream)).toBe('ok');
   });
+
+  it('[004:AC-14.2] reads a byte range (video seeking)', async () => {
+    const storage = new MemoryStorage();
+    const { id } = await storage.put({
+      workspaceId: 'w1',
+      ownerId: 'u1',
+      filename: 'a.txt',
+      contentType: 'text/plain',
+      bytes: Buffer.from('0123456789'),
+    });
+    expect(await read((await storage.get(id, { start: 2, end: 5 }))!.stream)).toBe('2345');
+  });
 });
 
 describe('ManualScheduler', () => {
@@ -257,6 +269,7 @@ describe('PortsModule dev mode (MongoDB + disk)', () => {
     const got = await storage.get(meta.id);
     expect(got?.metadata).toMatchObject({ workspaceId: 'w1', filename: 'a.txt' });
     expect(await read(got!.stream)).toBe('hello');
+    expect(await read((await storage.get(meta.id, { start: 1, end: 3 }))!.stream)).toBe('ell');
 
     for (const filename of ['../evil.txt', 'a/b.txt', 'a\\b.txt', '..', '']) {
       await expect(

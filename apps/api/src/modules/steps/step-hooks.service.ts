@@ -1,8 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { type StepContent, stepContentSchema, stepFileIds } from '@sat/shared';
+import {
+  type Block,
+  type FileRef,
+  STEP_ERROR_CODES,
+  type StepContent,
+  sanitizeRichText,
+  saveBlockedMessage,
+  stepContentSchema,
+  stepFileIds,
+} from '@sat/shared';
 import { type Model, Types } from 'mongoose';
 import { scoped } from '../../common/tenancy/scoped.js';
+import { AppError } from '../../errors.js';
 import { ClassAccess } from '../classes/class-access.js';
 import type { ItemDoc } from '../curriculum/curriculum.model.js';
 import type { StepHooks } from '../curriculum/curriculum.ports.js';
@@ -27,6 +37,52 @@ export class StepHooksService implements StepHooks {
     private readonly files: StepFilesService,
     private readonly access: ClassAccess,
   ) {}
+
+  /** Rich text sanitised (AC-3.7, NFR-6); every file must be a registered file of the workspace (NFR-6). */
+  async prepare(workspaceId: string, raw: unknown): Promise<StepContent> {
+    const content = stepContentSchema.parse(raw);
+    const refs = new Map<string, FileRef>();
+    for (const id of new Set(stepFileIds(content))) {
+      const row = await this.files.find(workspaceId, id);
+      if (!row || (row.kind !== 'block' && row.kind !== 'card')) {
+        throw new AppError(
+          422,
+          STEP_ERROR_CODES.INVALID_CONTENT,
+          saveBlockedMessage('Tệp không hợp lệ'),
+        );
+      }
+      refs.set(id, {
+        id,
+        name: row.name,
+        size: row.size,
+        contentType: row.contentType,
+        pages: row.preview ? row.preview.length : null,
+      });
+    }
+    const ref = (r: FileRef | null) => (r ? (refs.get(r.id) ?? null) : null);
+    const block = (b: Block): Block => {
+      switch (b.type) {
+        case 'text':
+          return { ...b, html: sanitizeRichText(b.html) };
+        case 'grammar':
+          return { ...b, explanation: sanitizeRichText(b.explanation) };
+        case 'deck':
+          return {
+            ...b,
+            cards: b.cards.map((c) => ({ ...c, image: ref(c.image), audio: ref(c.audio) })),
+          };
+        case 'video':
+          return { ...b, file: b.youtube ? null : ref(b.file) };
+        case 'document':
+        case 'image':
+        case 'audio':
+          return { ...b, file: ref(b.file) };
+        default:
+          return b;
+      }
+    };
+    return { ...content, blocks: content.blocks.map(block) };
+  }
 
   /** AC-3.3, AC-17.5: marks of cards no longer in the step go; files no longer used are released (AC-5.5). */
   async saved(workspaceId: string, before: ItemDoc, after: ItemDoc): Promise<void> {

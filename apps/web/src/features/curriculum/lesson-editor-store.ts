@@ -31,6 +31,12 @@ interface EditorState {
   addItem: (section: Section, afterItemId?: string) => Promise<string>;
   move: (itemId: string, direction: 'up' | 'down') => Promise<{ position: number; total: number }>;
   save: (itemId: string) => Promise<void>;
+  /** AC-2.3 "Ghi đè bằng bản của tôi": saves the working copy over the version saved elsewhere. */
+  overwrite: (itemId: string, currentVersion: number) => Promise<void>;
+  /** AC-2.3 "Tải lại bản mới nhất": the latest saved item replaces this item's working copy only. */
+  reloadItem: (itemId: string) => Promise<void>;
+  /** AC-19.5: drops the unsaved edits of one section (its items were replaced). */
+  discardSection: (section: Section) => void;
   publish: (itemId: string) => Promise<void>;
   setArchived: (itemId: string, archived: boolean) => Promise<void>;
   remove: (itemId: string) => Promise<void>;
@@ -143,6 +149,24 @@ export const useLessonEditorStore = create<EditorState>()((set, get) => {
       return { position: res.position, total: res.total };
     },
     save: (itemId) => call(`/items/${itemId}`, json('PUT', bodyOf(itemId)), itemId),
+    overwrite: (itemId, currentVersion) =>
+      call(
+        `/items/${itemId}`,
+        json('PUT', { ...bodyOf(itemId), expectedVersion: currentVersion }),
+        itemId,
+      ),
+    reloadItem: async (itemId) => {
+      const id = get().lesson?.id;
+      apply(lessonSchema.parse(await apiRequest<unknown>(`/lessons/${id}`)), itemId);
+    },
+    discardSection: (section) =>
+      set((s) => ({
+        drafts: Object.fromEntries(
+          Object.entries(s.drafts).filter(
+            ([id]) => s.lesson?.items.find((i) => i.id === id)?.section !== section,
+          ),
+        ),
+      })),
     publish: (itemId) => call(`/items/${itemId}/publish`, json('POST', bodyOf(itemId)), itemId),
     setArchived: (itemId, archived) =>
       call(

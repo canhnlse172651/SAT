@@ -1,9 +1,22 @@
-import { type DynamicModule, Global, Module } from '@nestjs/common';
+import {
+  type DynamicModule,
+  Global,
+  type MiddlewareConsumer,
+  Module,
+  type NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+import { STEP_LIMITS } from '@sat/shared';
+import express from 'express';
 import { MongooseModule } from '@nestjs/mongoose';
 import { STEP_HOOKS } from '../curriculum/curriculum.ports.js';
+import { ExcelService } from './excel.service.js';
+import { LearnStepsController } from './learn-steps.controller.js';
+import { LearnStepsService } from './learn-steps.service.js';
 import { StepFilesService } from './step-files.service.js';
 import { StepHooksService } from './step-hooks.service.js';
 import { StepsDevController } from './steps-dev.controller.js';
+import { StepsController } from './steps.controller.js';
 import {
   CARD_MARK_MODEL,
   LESSON_FILE_MODEL,
@@ -11,6 +24,7 @@ import {
   lessonFileSchema,
 } from './steps.model.js';
 import { DevStepPractice, STEP_PRACTICE } from './steps.ports.js';
+import { StepsService } from './steps.service.js';
 
 export interface StepsModuleOptions {
   /** The curriculum module (002) instance: steps live in its Bài. */
@@ -25,7 +39,7 @@ export interface StepsModuleOptions {
  */
 @Global()
 @Module({})
-export class StepsModule {
+export class StepsModule implements NestModule {
   static forRoot(options: StepsModuleOptions): DynamicModule {
     return {
       module: StepsModule,
@@ -36,7 +50,11 @@ export class StepsModule {
           { name: CARD_MARK_MODEL, schema: cardMarkSchema },
         ]),
       ],
-      controllers: [...(options.devHelpers ? [StepsDevController] : [])],
+      controllers: [
+        StepsController,
+        LearnStepsController,
+        ...(options.devHelpers ? [StepsDevController] : []),
+      ],
       providers: [
         // 005 re-binds `STEP_PRACTICE` when it exists (steps.ports.ts).
         DevStepPractice,
@@ -44,8 +62,18 @@ export class StepsModule {
         StepFilesService,
         StepHooksService,
         { provide: STEP_HOOKS, useExisting: StepHooksService },
+        StepsService,
+        ExcelService,
+        LearnStepsService,
       ],
       exports: [STEP_HOOKS, StepFilesService],
     };
+  }
+
+  /** The Excel import is the raw .xlsx (≤ 5 MB is checked by the service; larger bodies are 413). */
+  configure(consumer: MiddlewareConsumer): void {
+    consumer
+      .apply(express.raw({ type: () => true, limit: STEP_LIMITS.excelMaxBytes + 512 * 1024 }))
+      .forRoutes({ path: 'steps/import', method: RequestMethod.POST });
   }
 }

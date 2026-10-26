@@ -2,7 +2,7 @@
 id: 004
 slug: lessons-flashcards
 title: Lessons and Flashcards
-status: tasked
+status: implementing
 branch: feat/004-lessons-flashcards
 created: 2026-10-18
 updated: 2026-10-26

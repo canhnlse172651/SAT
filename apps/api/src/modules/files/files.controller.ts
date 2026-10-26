@@ -22,7 +22,7 @@ export class FilesController {
     @CurrentUser() principal: AuthPrincipal,
     @Res({ passthrough: true }) res: Response,
   ): Promise<StreamableFile> {
-    const { stream, metadata } = await this.files.open(id, principal.workspaceId);
+    const { stream, metadata } = await this.files.open(id, principal.workspaceId, principal.role);
     res.setHeader('Cache-Control', 'private');
     return new StreamableFile(stream, {
       type: metadata.contentType,

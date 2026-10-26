@@ -44,6 +44,14 @@ export const ICON_PATHS = {
   archive: 'M3 4h18v4H3zM5 8v12h14V8M10 12h4',
   image: 'M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15.5 9.5h.01',
   text: 'M4 6h16M4 10h16M4 14h10M4 18h12',
+  // 004: content blocks and the step viewer.
+  file: 'M6 3h8l5 5v13H6zM14 3v5h5',
+  video: 'M3 6h12v12H3zM15 10l6-3v10l-6-3',
+  audio: 'M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12',
+  cards: 'M8 3h12v14H8zM4 7v14h12',
+  pen: 'M4 20l4-1L20 7l-3-3L5 16zM14 6l3 3',
+  list: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
+  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
 } as const;
 
 export type IconName = keyof typeof ICON_PATHS;

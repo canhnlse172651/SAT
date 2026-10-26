@@ -79,6 +79,8 @@ export interface LessonDoc {
   sectionUpdatedAt: { lesson: Date | null; exercise: Date | null };
   /** A duplicate of this Bài is running (AC-15.6). */
   copyLockAt?: Date | null;
+  /** When approved AI steps last replaced the Bài học section (004 AC-19.5). */
+  sectionReplacedAt?: { lesson?: Date | null } | null;
   /** Name and status only; items carry their own version. */
   version: number;
   /** Bumped on every write of `items`: the compare-and-swap guard of read-modify-write updates. */
@@ -112,6 +114,7 @@ export const lessonSchema = new Schema<LessonDoc>(
       exercise: { type: Date, default: null },
     },
     copyLockAt: { type: Date, default: null },
+    sectionReplacedAt: { lesson: { type: Date, default: null } },
     version: versionField,
     rev: { type: Number, required: true, default: 1 },
   },

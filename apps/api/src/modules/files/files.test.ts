@@ -1,4 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { getConnectionToken } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import request from 'supertest';
 import { FILE_STORAGE, type FileStorage } from '../../common/ports/storage.js';
 import { createTestApp, loginAs, makeGv, type TestApp } from '../../test/index.js';
@@ -74,6 +76,24 @@ describe('GET /api/files/:id', () => {
       .set('Cookie', cookie);
     expect(res.status).toBe(404);
     expect(res.body.error.code).toBe('NOT_FOUND');
+  });
+
+  it('[004:NFR-6] lesson media are refused to an HV by id (only signed step links serve them)', async () => {
+    const gv = await makeGv(kit.app);
+    const file = await upload(gv.workspaceId, 'image/png', 'bài.png');
+    const plain = await upload(gv.workspaceId, 'image/png', 'bìa.png');
+    await kit.app
+      .get(getConnectionToken())
+      .collection('lesson_files')
+      .insertOne({
+        workspaceId: new Types.ObjectId(gv.workspaceId),
+        fileId: file.id,
+        kind: 'block',
+      });
+    const { cookie } = await loginAs(kit.app, 'HV', { workspaceId: gv.workspaceId });
+    const http = request(kit.app.getHttpServer());
+    expect((await http.get(`/api/files/${file.id}`).set('Cookie', cookie)).status).toBe(404);
+    expect((await http.get(`/api/files/${plain.id}`).set('Cookie', cookie)).status).toBe(200);
   });
 
   it('[000:AC-files] requires a session', async () => {

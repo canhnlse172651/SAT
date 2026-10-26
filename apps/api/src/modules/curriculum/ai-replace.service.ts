@@ -10,7 +10,11 @@ import {
   approveLimitMessage,
   approveWarning,
   contentSchemaFor,
+  issueLine,
   itemNotReadyReason,
+  replaceConfirmation,
+  stepContentSchema,
+  stepIssues,
 } from '@sat/shared';
 import { type Model, Types } from 'mongoose';
 import type { AuthPrincipal } from '../../common/auth/auth.types.js';
@@ -40,6 +44,8 @@ export interface ReplacementPreview {
   warning: string | null;
   /** Fingerprint of the section as previewed; a different one at confirmation means it changed (AC-19.5). */
   token: string;
+  /** Bài học section: the confirmation 004 prescribes (004 AC-19.1 – AC-19.3). */
+  confirm: { title: string; lines: string[] } | null;
 }
 
 /**
@@ -61,6 +67,23 @@ export class AiReplaceService {
   private check(section: Section, items: readonly ApprovedItem[]): unknown[] {
     if (items.length > CURRICULUM_LIMITS.itemsPerSection) {
       throw new AppError(422, E.TOO_MANY_ITEMS, approveLimitMessage(section));
+    }
+    if (section === 'lesson') {
+      // 004 AC-9.3: every issue of every step and block, nothing stored when there is one.
+      const lines: string[] = [];
+      const contents = items.map((it, i) => {
+        const parsed = stepContentSchema.safeParse(it.content);
+        if (!parsed.success) {
+          lines.push(`Bước ${i + 1} · nội dung không hợp lệ`);
+          return null;
+        }
+        for (const issue of stepIssues(it.title, parsed.data)) lines.push(issueLine(i + 1, issue));
+        return parsed.data;
+      });
+      if (lines.length) {
+        throw new AppError(422, E.NOT_READY, `Không thể duyệt: ${lines[0]}`, { issues: lines });
+      }
+      return contents;
     }
     return items.map((it) => {
       const parsed = contentSchemaFor(section).safeParse(it.content);
@@ -102,6 +125,37 @@ export class AiReplaceService {
       )
       .digest('base64url')
       .slice(0, 22);
+    let confirm: ReplacementPreview['confirm'] = null;
+    if (section === 'lesson') {
+      const count = (status: ItemDoc['status']) => old.filter((i) => i.status === status).length;
+      const decks = old.reduce((n, i) => {
+        const parsed = stepContentSchema.safeParse(i.content);
+        return (
+          n + (parsed.success ? parsed.data.blocks.filter((b) => b.type === 'deck').length : 0)
+        );
+      }, 0);
+      const [audience, linkedSets] = await Promise.all([
+        this.hooks?.audience(p.workspaceId, String(lesson.curriculumId), String(lesson._id)) ?? 0,
+        this.hooks?.linkedSets(
+          p.workspaceId,
+          old.map((i) => String(i._id)),
+        ) ?? 0,
+      ]);
+      confirm = replaceConfirmation({
+        lessonName: lesson.name,
+        lessonPublished: lesson.status === 'published',
+        newCount,
+        old: {
+          published: count('published'),
+          draft: count('draft'),
+          archived: count('archived'),
+          titles: old.map((i) => i.title.trim() || '(chưa có tên)'),
+        },
+        audience,
+        decks,
+        linkedSets,
+      });
+    }
     const preview: ReplacementPreview = {
       newCount,
       deleted: dropped.map((i) => i.title),
@@ -109,6 +163,7 @@ export class AiReplaceService {
       note: kept.length ? M.keptScores : null,
       warning: usedBy ? approveWarning(usedBy) : null,
       token,
+      confirm,
     };
     return { preview, kept, dropped };
   }
@@ -132,7 +187,12 @@ export class AiReplaceService {
     items: ApprovedItem[],
     token: string,
   ): Promise<Lesson> {
-    const contents = this.check(section, items);
+    const checked = this.check(section, items);
+    // 004: AI text is sanitised like any step content (NFR-6).
+    const contents =
+      section === 'lesson' && this.hooks
+        ? await Promise.all(checked.map((c) => this.hooks?.prepare(p.workspaceId, c)))
+        : checked;
     for (let attempt = 0; attempt < 5; attempt++) {
       const { lesson } = await this.lessonsService.load(p, lessonId);
       const { preview, kept, dropped } = await this.plan(p, lesson, section, items.length);
@@ -159,7 +219,14 @@ export class AiReplaceService {
       const updated = await scoped(this.lessons, p.workspaceId)
         .findOneAndUpdate(
           { _id: lesson._id, rev: lesson.rev },
-          { $set: { items: next, [`sectionUpdatedAt.${section}`]: now }, $inc: { rev: 1 } },
+          {
+            $set: {
+              items: next,
+              [`sectionUpdatedAt.${section}`]: now,
+              ...(section === 'lesson' ? { 'sectionReplacedAt.lesson': now } : {}),
+            },
+            $inc: { rev: 1 },
+          },
           { returnDocument: 'after' },
         )
         .lean<LessonDoc>();
@@ -173,6 +240,11 @@ export class AiReplaceService {
         section,
         newCount: fresh.length,
         deletedCount: dropped.length,
+        deletedByStatus: {
+          published: dropped.filter((i) => i.status === 'published').length,
+          draft: dropped.filter((i) => i.status === 'draft').length,
+          archived: dropped.filter((i) => i.status === 'archived').length,
+        },
         archivedCount: kept.filter((i) => i.status !== 'archived').length,
       });
       return this.lessonsService.dto(p, updated);

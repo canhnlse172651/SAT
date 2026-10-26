@@ -1,11 +1,28 @@
+import { Readable, Transform } from 'node:stream';
 import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { STORAGE_QUOTA_BYTES, type Storage } from '@sat/shared';
+import {
+  FILE_RULES,
+  type FileKind,
+  type FileRef,
+  STEP_ERROR_CODES as E,
+  STORAGE_QUOTA_BYTES,
+  type Storage,
+  contentTypeFor,
+  corruptFileMessage,
+  fileExtension,
+  STEP_MESSAGES as SM,
+  storageFullMessage,
+  tooLargeMessage,
+  unsupportedFormatMessage,
+} from '@sat/shared';
 import { type Connection, type Model, Types } from 'mongoose';
 import { CLOCK, type Clock } from '../../common/ports/clock.js';
 import { JOB_SCHEDULER, type JobScheduler } from '../../common/ports/scheduler.js';
 import { FILE_STORAGE, type FileStorage } from '../../common/ports/storage.js';
 import { scoped } from '../../common/tenancy/scoped.js';
+import { AppError } from '../../errors.js';
+import { UnprocessableFileError, checkPdf, docxPages, pptxPages, sniffMatches } from './sniff.js';
 import { logStep } from './steps.log.js';
 import { LESSON_FILE_MODEL, type LessonFileDoc } from './steps.model.js';
 
@@ -104,6 +121,132 @@ export class StepFilesService implements OnModuleInit {
   private async sweepAll(): Promise<void> {
     const workspaces = await this.files.distinct('workspaceId');
     for (const ws of workspaces) await this.sweep(String(ws));
+  }
+
+  /**
+   * REQ-5 / REQ-6: one upload (the request stream). Refused before reading when the format, the declared size or the
+   * storage forbids it; after storing when the bytes do not match the format (AC-5.4), the document cannot be read
+   * (AC-6.6) or a parallel upload used the remaining storage first (AC-5.6, §8). A cancelled upload stores nothing.
+   */
+  async upload(
+    workspaceId: string,
+    ownerId: string,
+    kind: FileKind,
+    rawName: string,
+    declared: number,
+    body: Readable,
+  ): Promise<FileRef> {
+    // Path separators out; control characters are refused by the storage port's filename check.
+    const name = rawName.replace(/[\\/]/g, '_').trim().slice(0, 255) || 'tep';
+    const contentType = contentTypeFor(kind, name);
+    const refuse = (status: number, code: string, message: string) => {
+      body.resume();
+      logStep({ action: 'file.upload', result: 'denied', workspaceId, kind, code });
+      return new AppError(status, code, message);
+    };
+    if (!contentType) throw refuse(415, E.UNSUPPORTED_FORMAT, unsupportedFormatMessage(kind));
+    const max = FILE_RULES[kind].maxBytes;
+    if (declared > max) throw refuse(413, E.FILE_TOO_LARGE, tooLargeMessage(kind, name, declared));
+    const used = await this.usedBytes(workspaceId);
+    if (used + declared > STORAGE_QUOTA_BYTES)
+      throw refuse(409, E.STORAGE_FULL, storageFullMessage(STORAGE_QUOTA_BYTES - used));
+
+    let seen = 0;
+    const limit = new Transform({
+      transform(chunk: Buffer, _enc, done) {
+        seen += chunk.length;
+        if (seen > max)
+          done(new AppError(413, E.FILE_TOO_LARGE, tooLargeMessage(kind, name, seen)));
+        else done(null, chunk);
+      },
+    });
+    body.on('error', (err) => limit.destroy(err));
+    let stored: { id: string; size: number };
+    try {
+      stored = await this.store.put({
+        workspaceId,
+        ownerId,
+        filename: name,
+        contentType,
+        stream: body.pipe(limit),
+      });
+    } catch (err) {
+      logStep({
+        action: 'file.upload',
+        result: 'failed',
+        workspaceId,
+        kind,
+        code: 'UPLOAD_FAILED',
+      });
+      throw err instanceof AppError ? err : new AppError(400, 'UPLOAD_FAILED', 'Tải lên thất bại');
+    }
+    const fail = async (status: number, code: string, message: string) => {
+      await this.store.delete(stored.id).catch(() => undefined);
+      logStep({ action: 'file.upload', result: 'failed', workspaceId, kind, code });
+      return new AppError(status, code, message);
+    };
+
+    const ext = fileExtension(name);
+    const bytes = await this.read(stored.id, ext === 'pdf' || ext === 'docx' || ext === 'pptx');
+    if (!stored.size || !sniffMatches(ext, bytes))
+      throw await fail(422, E.CORRUPT_FILE, corruptFileMessage(kind));
+    let preview: string[][] | null = null;
+    try {
+      if (ext === 'docx') preview = docxPages(bytes);
+      else if (ext === 'pptx') preview = pptxPages(bytes);
+      else if (ext === 'pdf') checkPdf(bytes);
+    } catch (err) {
+      if (err instanceof UnprocessableFileError)
+        throw await fail(422, E.PROCESS_FAILED, SM.processFailed);
+      throw err;
+    }
+
+    const row = await scoped(this.files, workspaceId).create({
+      fileId: stored.id,
+      kind: kind === 'cardImage' || kind === 'cardAudio' ? 'card' : 'block',
+      size: stored.size,
+      name,
+      contentType,
+      ownerId,
+      preview,
+    });
+    // A parallel upload finished first and took the remaining storage (§8): this one is refused.
+    const before = await this.usedBytes(workspaceId, row._id);
+    if (before + stored.size > STORAGE_QUOTA_BYTES) {
+      await scoped(this.files, workspaceId).deleteOne({ _id: row._id });
+      throw await fail(409, E.STORAGE_FULL, storageFullMessage(STORAGE_QUOTA_BYTES - before));
+    }
+    logStep({ action: 'file.upload', workspaceId, kind, size: stored.size });
+    return {
+      id: stored.id,
+      name,
+      size: stored.size,
+      contentType,
+      pages: preview ? preview.length : null,
+    };
+  }
+
+  /** The stored bytes: all of them (documents) or the first 64 KB (magic bytes). */
+  private async read(fileId: string, all: boolean): Promise<Uint8Array> {
+    const found = await this.store.get(fileId);
+    if (!found) return new Uint8Array();
+    const chunks: Buffer[] = [];
+    let size = 0;
+    for await (const chunk of found.stream) {
+      const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array);
+      chunks.push(buf);
+      size += buf.length;
+      if (!all && size >= 64 * 1024) {
+        found.stream.destroy();
+        break;
+      }
+    }
+    return new Uint8Array(Buffer.concat(chunks));
+  }
+
+  /** The text pages of a DOCX / PPTX of the workspace (AC-14.5), or null. */
+  async preview(workspaceId: string, fileId: string): Promise<string[][] | null> {
+    return (await this.find(workspaceId, fileId))?.preview ?? null;
   }
 
   /** Dev/test: the filler that stands for already used storage (AC-5.5 – AC-5.7 without uploading gigabytes). */

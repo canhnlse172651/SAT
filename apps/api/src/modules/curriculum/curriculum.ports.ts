@@ -167,6 +167,11 @@ export class CurriculumFaults {
  * confirmation of the Bài học section needs (004 AC-19.1). Bound by `StepsModule` (global); absent in tests without it.
  */
 export interface StepHooks {
+  /**
+   * Before a step's content is stored: rich text sanitised, file references checked against the workspace's registered
+   * files (and their metadata taken from there). Throws an `AppError` for a foreign or unknown file.
+   */
+  prepare(workspaceId: string, content: unknown): Promise<unknown>;
   /** A step's content was saved (files no longer used are released, marks of removed cards dropped). */
   saved(workspaceId: string, before: ItemDoc, after: ItemDoc): Promise<void>;
   /** Steps were deleted or replaced: their marks, files and practice links go (AC-8.1, AC-9.5). */

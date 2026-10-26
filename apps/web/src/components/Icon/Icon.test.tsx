@@ -27,4 +27,11 @@ describe('Icon', () => {
       expect(container.querySelector('path')?.getAttribute('d')).toBe(ICON_PATHS[name]);
     }
   });
+
+  it('has the step block icons of the prototype (004: file, video, audio, cards, pen, list, clock)', () => {
+    for (const name of ['file', 'video', 'audio', 'cards', 'pen', 'list', 'clock'] as const) {
+      const { container } = render(<Icon name={name} />);
+      expect(container.querySelector('path')?.getAttribute('d')).toBe(ICON_PATHS[name]);
+    }
+  });
 });

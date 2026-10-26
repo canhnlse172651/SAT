@@ -10,7 +10,21 @@ import {
   itemNotReadyReason,
   leaveQuestion,
   notReadyMessage,
+  STEP_ERROR_CODES,
+  STEP_MESSAGES as SM,
+  deckMarksWarning,
+  firstInvalidMessage,
+  formatVnTime as hhmm,
+  publishedNotice,
+  sectionReplacedAt,
+  stepIssues,
+  stepVisibleWarning,
 } from '@sat/shared';
+import { ApiError } from '../../lib/api-client';
+import { stepOf } from '../steps/step-content';
+import { isUploading, useStepEditorStore } from '../steps/step-editor-store';
+import { type StepNotice, StepNoticeView } from '../steps/StepNotices';
+import { StorageMeter } from '../steps/StorageMeter';
 import { useCallback, useEffect, useState } from 'react';
 import { useBlocker, useNavigate, useParams } from 'react-router';
 import {
@@ -60,6 +74,14 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const setArchived = useLessonEditorStore((s) => s.setArchived);
   const remove = useLessonEditorStore((s) => s.remove);
   const publishLesson = useCurriculumStore((s) => s.publishLesson);
+  const overwrite = useLessonEditorStore((s) => s.overwrite);
+  const reloadItem = useLessonEditorStore((s) => s.reloadItem);
+  const discardSection = useLessonEditorStore((s) => s.discardSection);
+  const loadInfo = useStepEditorStore((s) => s.loadInfo);
+  const info = useStepEditorStore((s) => s.info);
+  const uploads = useStepEditorStore((s) => s.uploads);
+  const cancelAll = useStepEditorStore((s) => s.cancelAll);
+  const [notices, setNotices] = useState<Record<string, StepNotice>>({});
 
   const [tab, setTab] = useState<Section>(initialTab);
   const [missingId, setMissingId] = useState<string | null>(null);
@@ -75,7 +97,8 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
     load(lessonId).catch((err: unknown) => {
       if (isNotFound(err)) setMissingId(lessonId);
     });
-  }, [load, lessonId]);
+    void loadInfo(lessonId);
+  }, [load, loadInfo, lessonId]);
 
   useEffect(() => {
     refresh();
@@ -83,24 +106,46 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const missing = missingId === lessonId;
 
   const unsaved = lesson?.id === lessonId ? unsavedIds({ drafts, lesson }) : [];
+  const uploading = Object.values(uploads).some((u) => u.phase !== 'failed');
 
   // AC-7.13: leaving T07 with unsaved items asks first; switching tabs is not leaving.
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
-      unsaved.length > 0 && currentLocation.pathname !== nextLocation.pathname,
+      (unsaved.length > 0 || uploading) && currentLocation.pathname !== nextLocation.pathname,
   );
   useEffect(() => {
-    if (!unsaved.length) return;
+    if (!unsaved.length && !uploading) return;
     const onUnload = (e: BeforeUnloadEvent) => e.preventDefault();
     window.addEventListener('beforeunload', onUnload);
     return () => window.removeEventListener('beforeunload', onUnload);
-  }, [unsaved.length]);
+  }, [unsaved.length, uploading]);
+  // Uploads belong to this screen: leaving it (or opening another Bài) cancels them (AC-2.2).
+  useEffect(() => () => cancelAll(), [cancelAll, lessonId]);
 
   if (missing || (lesson && lesson.id === lessonId && lesson.curriculumId !== curriculumId)) {
     return <NotFoundPage />;
   }
   if (status === 'error' && !lesson) return <ErrorState title="Không tải được bài." />;
   if (!lesson || lesson.id !== lessonId) return <Skeleton height={320} />;
+
+  const setNotice = (itemId: string, notice: StepNotice | null) =>
+    setNotices((n) => {
+      const next = { ...n };
+      if (notice) next[itemId] = notice;
+      else delete next[itemId];
+      return next;
+    });
+
+  /** AC-19.5: the Bài học section was replaced by approved AI steps since this screen loaded it. */
+  const replaced = (err: unknown): boolean => {
+    if (!(err instanceof ApiError) || err.code !== STEP_ERROR_CODES.SECTION_REPLACED) return false;
+    const at = (err.details as { at?: string } | undefined)?.at;
+    push(sectionReplacedAt(at ? hhmm(new Date(at)) : nowHm()), 'warn');
+    discardSection('lesson');
+    setNotices({});
+    refresh();
+    return true;
+  };
 
   /** Runs an immediate action; a conflict reloads the latest data and keeps unsaved edits (AC-17.4). */
   const run = async (fn: () => Promise<void>) => {
@@ -109,6 +154,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
     try {
       await fn();
     } catch (err) {
+      if (replaced(err)) return;
       if (isConflict(err)) {
         push(M.changedElsewhere, 'warn');
         refresh();
@@ -160,15 +206,91 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       }
     });
 
-  const onSave = (item: Item) =>
-    run(async () => {
+  /**
+   * REQ-2 / REQ-7 for a step: invalid values and (published / archived, or publishing) readiness are checked first; a
+   * conflict, a failure, a refusal or the issue list stays on the step.
+   */
+  const saveStep = (item: Item, mode: 'save' | 'publish', version?: number) => {
+    const w = workingItem(item, drafts);
+    const content = stepOf(w.content);
+    const invalid = firstInvalidMessage(w.title, content);
+    if (invalid) {
+      setNotice(item.id, { kind: 'blocked', message: invalid });
+      return;
+    }
+    if (mode === 'publish' || item.status !== 'draft') {
+      const issues = stepIssues(w.title, content);
+      if (issues.length) {
+        setNotice(item.id, { kind: 'issues', issues });
+        return;
+      }
+    }
+    if (busy) return;
+    setBusy(true);
+    const task =
+      version !== undefined
+        ? overwrite(item.id, version)
+        : mode === 'publish'
+          ? publish(item.id)
+          : save(item.id);
+    task
+      .then(() => {
+        setNotice(item.id, null);
+        const at = nowHm();
+        setSavedAt(at);
+        push(mode === 'publish' ? `Đã xuất bản · Đã lưu lúc ${at}` : `Đã lưu lúc ${at}`, 'success');
+        void loadInfo(lessonId);
+      })
+      .catch((err: unknown) => {
+        if (replaced(err)) return;
+        const details = err instanceof ApiError ? (err.details as Record<string, unknown>) : null;
+        const current = details?.['currentVersion'];
+        if (isConflict(err) && typeof current === 'number') {
+          setNotice(item.id, {
+            kind: 'conflict',
+            at: hhmm(new Date(String(details?.['updatedAt'] ?? new Date().toISOString()))),
+            currentVersion: current,
+          });
+        } else if (isNotFound(err) || isConflict(err)) {
+          push(M.changedElsewhere, 'warn');
+          refresh();
+        } else if (err instanceof ApiError && err.code === STEP_ERROR_CODES.INVALID_CONTENT) {
+          setNotice(item.id, {
+            kind: 'blocked',
+            message: err.message.replace(/^Chưa lưu được: /, ''),
+          });
+        } else if (err instanceof ApiError && err.code === 'NOT_READY' && details?.['issues']) {
+          setNotice(item.id, {
+            kind: 'issues',
+            issues: details['issues'] as { block: number | null; text: string }[],
+          });
+        } else if (err instanceof ApiError && err.status > 0 && err.status < 500) {
+          push(messageOf(err), 'warn');
+        } else {
+          setNotice(item.id, { kind: 'failed', retry: mode });
+        }
+      })
+      .finally(() => setBusy(false));
+  };
+
+  const onSave = (item: Item) => {
+    if (item.section === 'lesson') {
+      saveStep(item, 'save');
+      return;
+    }
+    void run(async () => {
       await save(item.id);
       const at = nowHm();
       setSavedAt(at);
       push(`Đã lưu lúc ${at}`, 'success');
     });
+  };
 
   const onPublish = (item: Item) => {
+    if (item.section === 'lesson') {
+      saveStep(item, 'publish');
+      return;
+    }
     const w = workingItem(item, drafts);
     const reason = itemNotReadyReason(item.section, w.title, w.content);
     if (reason) {
@@ -199,7 +321,31 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       await remove(item.id);
       setSavedAt(nowHm());
       push(M.deleted, 'success');
+      setNotice(item.id, null);
+      void loadInfo(lessonId);
     });
+  };
+
+  /** AC-8.1: the warnings of the delete confirmation of a step. */
+  const deleteWarnings = (item: Item) => {
+    if (item.section !== 'lesson') return [];
+    const lines: string[] = [];
+    const audience = info?.audience ?? 0;
+    if (item.status === 'published' && lesson.status === 'published' && audience >= 1)
+      lines.push(stepVisibleWarning(audience));
+    const decks = stepOf(item.content).blocks.filter((b) => b.type === 'deck').length;
+    if (decks >= 1) lines.push(deckMarksWarning(decks));
+    return lines;
+  };
+
+  /** "Mở bộ bài tập" (AC-10.1): the Bài tập tab at that set, nothing saved or dropped. */
+  const openSet = (setId: string) => {
+    setTab('exercise');
+    window.setTimeout(() => {
+      document
+        .querySelector(`[data-item="${setId}"]`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
 
   const back = () => navigate(lessonPath(curriculumId, lessonId), { state: { fromEditor: true } });
@@ -226,6 +372,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
             </>
           )}
           <span className="grow" />
+          {section === 'lesson' && <StorageMeter />}
           <span className="small muted" aria-live="polite">
             {unsaved.length
               ? `${unsaved.length} mục chưa lưu`
@@ -244,6 +391,19 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
             </Button>
           )}
         </div>
+        {section === 'lesson' && lesson.status === 'draft' && (
+          <p className="st-banner st-banner--warn" role="note">
+            {SM.draftLesson}
+          </p>
+        )}
+        {section === 'lesson' &&
+          lesson.status === 'published' &&
+          counts.published > 0 &&
+          (info?.audience ?? 0) > 0 && (
+            <p className="st-banner" role="note">
+              {publishedNotice(info?.audience ?? 0)}
+            </p>
+          )}
         <p className="field__hint cur-why">
           Sửa trực tiếp; mỗi bước / bộ có nút lưu riêng. Sắp xếp, thêm, xóa, lưu trữ, xuất bản có
           hiệu lực ngay. Đổi tab không mất thay đổi chưa lưu.
@@ -287,6 +447,28 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
                 onMove={(d) => void onMove(item, d)}
                 onAddAfter={() => void onAdd(item.id)}
                 onDelete={() => onDelete(item)}
+                blockedReason={
+                  item.section === 'lesson' && isUploading(uploads, item.id) ? SM.uploading : null
+                }
+                onOpenSet={openSet}
+                notice={
+                  notices[item.id] ? (
+                    <StepNoticeView
+                      itemId={item.id}
+                      stepNo={all.indexOf(item) + 1}
+                      notice={notices[item.id] as StepNotice}
+                      onReload={() => void reloadItem(item.id).then(() => setNotice(item.id, null))}
+                      onOverwrite={() => {
+                        const n = notices[item.id];
+                        if (n?.kind === 'conflict') saveStep(item, 'save', n.currentVersion);
+                      }}
+                      onRetry={() => {
+                        const n = notices[item.id];
+                        saveStep(item, n?.kind === 'failed' ? n.retry : 'save');
+                      }}
+                    />
+                  ) : null
+                }
               />
             );
           })
@@ -346,7 +528,17 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       <ConfirmDialog
         open={!!deleting}
         title={`Xóa “${deleting?.title.trim() || 'mục chưa có tên'}”?`}
-        message="Thao tác có hiệu lực ngay và không hoàn tác được."
+        message={
+          <>
+            <span>Thao tác có hiệu lực ngay và không hoàn tác được.</span>
+            {deleting &&
+              deleteWarnings(deleting).map((w) => (
+                <span key={w} className="st-warn-line">
+                  {w}
+                </span>
+              ))}
+          </>
+        }
         confirmLabel="Xóa"
         tone="danger"
         onConfirm={confirmDelete}
@@ -361,6 +553,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
         tone="danger"
         onConfirm={() => {
           discardAll();
+          cancelAll();
           blocker.proceed?.();
         }}
         onCancel={() => blocker.reset?.()}

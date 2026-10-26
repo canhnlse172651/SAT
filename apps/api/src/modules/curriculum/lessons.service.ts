@@ -12,6 +12,13 @@ import {
   itemNotReadyReason,
   newItemContent,
   notReadyMessage,
+  STEP_ERROR_CODES,
+  type StepContent,
+  firstInvalidMessage,
+  saveBlockedMessage,
+  sectionReplacedAt,
+  stepIssues,
+  formatVnTime,
 } from '@sat/shared';
 import { type Model, Types } from 'mongoose';
 import type { AuthPrincipal } from '../../common/auth/auth.types.js';
@@ -38,6 +45,24 @@ const setHasData = () => new AppError(409, E.HAS_LEARNING_DATA, M.setHasData);
 const wrongSection = () => new AppError(409, E.WRONG_SECTION, M.wrongSection);
 const notReady = (reason: string) =>
   new AppError(422, E.NOT_READY, notReadyMessage(reason), { reason });
+
+/**
+ * 004 REQ-2 / REQ-7 for a step: an invalid value blocks every save (AC-2.8); a published or archived step — or one being
+ * published — must meet the publish conditions (AC-7.1, AC-7.3), with the issue list per block (AC-7.2).
+ */
+function checkStep(title: string, content: StepContent, needsReady: boolean): void {
+  const invalid = firstInvalidMessage(title, content);
+  if (invalid) {
+    throw new AppError(422, STEP_ERROR_CODES.INVALID_CONTENT, saveBlockedMessage(invalid));
+  }
+  if (!needsReady) return;
+  const issues = stepIssues(title, content);
+  const first = issues[0];
+  if (first) {
+    const reason = first.block ? `Khối ${first.block} · ${first.text}` : first.text;
+    throw new AppError(422, E.NOT_READY, notReadyMessage(reason), { reason, issues });
+  }
+}
 
 /** What a `mutate` step returns: the new items (and optionally other fields) to store. */
 interface Change {
@@ -140,8 +165,30 @@ export class LessonsService {
 
   private findItem(lesson: LessonDoc, itemId: string): ItemDoc {
     const item = lesson.items.find((i) => String(i._id) === itemId);
-    if (!item) throw notFound();
-    return item;
+    if (item) return item;
+    // 004 AC-19.5: a step created before the Bài học section was replaced by approved AI steps.
+    const replacedAt = lesson.sectionReplacedAt?.lesson;
+    if (
+      replacedAt &&
+      Types.ObjectId.isValid(itemId) &&
+      new Types.ObjectId(itemId).getTimestamp().getTime() <= replacedAt.getTime()
+    ) {
+      throw new AppError(
+        409,
+        STEP_ERROR_CODES.SECTION_REPLACED,
+        sectionReplacedAt(formatVnTime(replacedAt)),
+        { at: replacedAt.toISOString() },
+      );
+    }
+    throw notFound();
+  }
+
+  /** 004: the step content as it will be stored (sanitised, files checked), or the raw content of a set. */
+  private async prepared(p: AuthPrincipal, id: string, itemId: string, raw: unknown) {
+    const { lesson } = await this.load(p, id);
+    const item = this.findItem(lesson, itemId);
+    if (item.section !== 'lesson' || !this.hooks) return raw;
+    return this.hooks.prepare(p.workspaceId, this.content('lesson', raw));
   }
 
   /* ---------- Bài (REQ-5, REQ-9, REQ-12, REQ-14) ---------- */
@@ -414,7 +461,12 @@ export class LessonsService {
   ): Promise<LessonDoc> {
     return this.mutate(p, id, (lesson) => {
       const item = this.findItem(lesson, itemId);
-      if (item.version !== expectedVersion) throw changedElsewhere();
+      if (item.version !== expectedVersion) {
+        throw changedElsewhere({
+          currentVersion: item.version,
+          updatedAt: item.updatedAt.toISOString(),
+        });
+      }
       const next = {
         ...item,
         ...apply(item),
@@ -433,9 +485,14 @@ export class LessonsService {
     body: { expectedVersion: number; title: string; content: unknown },
   ): Promise<Lesson> {
     let before: ItemDoc | undefined;
+    const raw = await this.prepared(p, id, itemId, body.content);
     const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
       before = item;
-      return { title: body.title, content: this.content(item.section, body.content) };
+      const content = this.content(item.section, raw);
+      if (item.section === 'lesson') {
+        checkStep(body.title, content as StepContent, item.status !== 'draft');
+      }
+      return { title: body.title, content };
     });
     await this.afterSave(p, before, updated);
     logAction({ action: 'item.update', actorId: p.userId, lessonId: id, itemId });
@@ -450,10 +507,12 @@ export class LessonsService {
     body: { expectedVersion: number; title: string; content: unknown },
   ): Promise<Lesson> {
     let before: ItemDoc | undefined;
+    const raw = await this.prepared(p, id, itemId, body.content);
     const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
       before = item;
       if (item.status !== 'draft') throw changedElsewhere();
-      const content = this.content(item.section, body.content);
+      const content = this.content(item.section, raw);
+      if (item.section === 'lesson') checkStep(body.title, content as StepContent, true);
       const reason = itemNotReadyReason(item.section, body.title, content);
       if (reason) throw notReady(reason);
       return { title: body.title, content, status: 'published' };

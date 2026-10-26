@@ -29,10 +29,19 @@ export interface StoredFileMeta extends FileMeta {
   filename: string;
 }
 
+/** Inclusive byte range of a read (HTTP Range: video / audio seeking). */
+export interface ByteRange {
+  start: number;
+  end: number;
+}
+
 export interface FileStorage {
   put(input: PutFileInput): Promise<FileMeta>;
   /** Returns null when the id is unknown. Authorisation (workspace check) is the caller's job. */
-  get(id: string): Promise<{ stream: Readable; metadata: StoredFileMeta } | null>;
+  get(
+    id: string,
+    range?: ByteRange,
+  ): Promise<{ stream: Readable; metadata: StoredFileMeta } | null>;
   delete(id: string): Promise<void>;
 }
 
@@ -139,11 +148,14 @@ export class LocalDiskStorage implements FileStorage {
     return { id: doc._id.toString(), size: bytes.length, contentType: input.contentType };
   }
 
-  async get(id: string): Promise<{ stream: Readable; metadata: StoredFileMeta } | null> {
+  async get(
+    id: string,
+    range?: ByteRange,
+  ): Promise<{ stream: Readable; metadata: StoredFileMeta } | null> {
     const doc = await this.findDoc(id);
     if (!doc) return null;
     return {
-      stream: createReadStream(path.join(this.root, doc.storageKey)),
+      stream: createReadStream(path.join(this.root, doc.storageKey), range),
       metadata: {
         id,
         workspaceId: doc.workspaceId,
@@ -191,9 +203,15 @@ export class MemoryStorage implements FileStorage {
     return { id, size: bytes.length, contentType: input.contentType };
   }
 
-  get(id: string): Promise<{ stream: Readable; metadata: StoredFileMeta } | null> {
+  get(
+    id: string,
+    range?: ByteRange,
+  ): Promise<{ stream: Readable; metadata: StoredFileMeta } | null> {
     const f = this.files.get(id);
-    return Promise.resolve(f ? { stream: Readable.from([f.bytes]), metadata: f.meta } : null);
+    const bytes = f && range ? f.bytes.subarray(range.start, range.end + 1) : f?.bytes;
+    return Promise.resolve(
+      f && bytes ? { stream: Readable.from([bytes]), metadata: f.meta } : null,
+    );
   }
 
   delete(id: string): Promise<void> {

@@ -3,16 +3,14 @@ import {
   type Item,
   type McqQuestion,
   type SetContent,
-  type StepContent,
   itemNotReadyReason,
-  newBlock,
-  richTextPlain,
   setContentSchema,
-  stepContentSchema,
-  textToHtml,
+  stepProblems,
 } from '@sat/shared';
-import { useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useId, useRef } from 'react';
 import { Button, Icon, IconButton, StatusChip, Textarea } from '../../components';
+import { StepBody } from '../steps/StepBody';
+import { problemText, stepOf } from '../steps/step-content';
 import type { WorkingCopy } from './lesson-editor-store';
 
 export interface ItemEditorProps {
@@ -33,73 +31,20 @@ export interface ItemEditorProps {
   onMove: (direction: 'up' | 'down') => void;
   onAddAfter: () => void;
   onDelete: () => void;
+  /** Steps (004): why save / publish are blocked right now (a file is uploading — AC-6.4). */
+  blockedReason?: string | null;
+  /** Steps (004): conflict, failure, refusal or issue list of the last save (REQ-2, AC-7.2). */
+  notice?: ReactNode;
+  /** Steps (004): "Mở bộ bài tập" of a linked set (AC-10.1). */
+  onOpenSet?: (setId: string) => void;
 }
 
 const LETTERS = 'ABCDEF';
 
-const stepOf = (c: unknown): StepContent => {
-  const p = stepContentSchema.safeParse(c);
-  return p.success ? p.data : { goal: '', blocks: [] };
-};
 const setOf = (c: unknown): SetContent => {
   const p = setContentSchema.safeParse(c);
   return p.success ? p.data : { questions: [] };
 };
-
-/** Interim content of a step: text blocks (004 replaces it with the full block editor). */
-function StepFields({
-  base,
-  content,
-  onChange,
-}: {
-  base: string;
-  content: StepContent;
-  onChange: (c: StepContent) => void;
-}) {
-  const set = (blocks: StepContent['blocks']) => onChange({ ...content, blocks });
-  return (
-    <div className="cur-blocks">
-      {content.blocks.map((b, k) => (
-        <div key={`${base}-b${k}`} className="cur-block">
-          <div className="cur-block__head">
-            <Icon name="text" size={16} />
-            <span className="small strong">Khối {k + 1} · Văn bản</span>
-            <span className="grow" />
-            {content.blocks.length > 1 && (
-              <IconButton
-                size="sm"
-                aria-label={`Xóa khối ${k + 1}`}
-                icon={<Icon name="trash" size={16} />}
-                onClick={() => set(content.blocks.filter((_, i) => i !== k))}
-              />
-            )}
-          </div>
-          <Textarea
-            label={`Nội dung khối ${k + 1}`}
-            rows={3}
-            value={b.type === 'text' ? richTextPlain(b.html) : ''}
-            onChange={(e) =>
-              set(
-                content.blocks.map((x, i) =>
-                  i === k ? { id: x.id, type: 'text', html: textToHtml(e.target.value) } : x,
-                ),
-              )
-            }
-          />
-        </div>
-      ))}
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => set([...content.blocks, newBlock('text')])}
-        disabled={content.blocks.length >= 50}
-      >
-        <Icon name="plus" size={15} />
-        Thêm khối Văn bản
-      </Button>
-    </div>
-  );
-}
 
 /** Interim content of a set: multiple-choice questions (005 replaces it with the six question types). */
 function SetFields({
@@ -194,6 +139,12 @@ export function ItemEditor(props: ItemEditorProps) {
   const isStep = item.section === 'lesson';
   const noun = isStep ? 'Bước học' : 'Bộ bài tập';
   const incomplete = itemNotReadyReason(item.section, working.title, working.content);
+  const hintId = useId();
+  const content = isStep ? stepOf(working.content) : null;
+  const problems = content ? stepProblems(working.title, content) : [];
+  const titleError = problemText(problems.find((p) => p.path === 'title'));
+  const blocked = props.blockedReason ?? null;
+  const saveDisabled = busy || !!blocked;
 
   useEffect(() => {
     if (focusTitle) {
@@ -217,10 +168,21 @@ export function ItemEditor(props: ItemEditorProps) {
         <span className="grow" />
         {item.status === 'draft' && (
           <>
-            <Button size="sm" variant="outline" onClick={props.onSave} disabled={busy}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={props.onSave}
+              disabled={saveDisabled}
+              aria-describedby={blocked ? hintId : undefined}
+            >
               Lưu nháp
             </Button>
-            <Button size="sm" onClick={props.onPublish} disabled={busy}>
+            <Button
+              size="sm"
+              onClick={props.onPublish}
+              disabled={saveDisabled}
+              aria-describedby={blocked ? hintId : undefined}
+            >
               <Icon name="check" size={15} />
               Xuất bản
             </Button>
@@ -231,10 +193,16 @@ export function ItemEditor(props: ItemEditorProps) {
             size="sm"
             variant={item.status === 'published' ? 'primary' : 'outline'}
             onClick={props.onSave}
-            disabled={busy}
+            disabled={saveDisabled}
+            aria-describedby={blocked ? hintId : undefined}
           >
             Lưu thay đổi
           </Button>
+        )}
+        {blocked && (
+          <span id={hintId} className="field__hint">
+            {blocked}
+          </span>
         )}
       </div>
       <div className="cur-item__bar">
@@ -292,9 +260,10 @@ export function ItemEditor(props: ItemEditorProps) {
           </span>
         )}
       </div>
+      {props.notice}
       <div className="field">
         <label className="field__label" htmlFor={`${item.id}-title`}>
-          Tên
+          {isStep ? 'Tên bước học' : 'Tên'}
         </label>
         <input
           ref={title}
@@ -302,15 +271,25 @@ export function ItemEditor(props: ItemEditorProps) {
           className="input cur-item__title"
           value={working.title}
           maxLength={200}
-          placeholder={isStep ? 'Tên bước học' : 'Tên bộ bài tập'}
+          placeholder={isStep ? 'Tên bước học (bắt buộc, tối đa 100 ký tự)' : 'Tên bộ bài tập'}
+          aria-invalid={titleError ? true : undefined}
+          aria-describedby={titleError ? `${item.id}-title-err` : undefined}
           onChange={(e) => props.onEdit({ ...working, title: e.target.value })}
         />
+        {titleError && (
+          <p id={`${item.id}-title-err`} className="field__error">
+            {titleError}
+          </p>
+        )}
       </div>
-      {isStep ? (
-        <StepFields
-          base={item.id}
-          content={stepOf(working.content)}
-          onChange={(content) => props.onEdit({ ...working, content })}
+      {content ? (
+        <StepBody
+          item={item}
+          title={working.title}
+          content={content}
+          problems={problems}
+          onChange={(c) => props.onEdit({ ...working, content: c })}
+          onOpenSet={(setId) => props.onOpenSet?.(setId)}
         />
       ) : (
         <SetFields
