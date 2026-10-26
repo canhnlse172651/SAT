@@ -53,6 +53,34 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
   → nội dung hộp xác nhận (`confirm.title`, `confirm.lines[]`, `token`…); `POST /api/dev/curriculum/ai-approve` cùng thân + `"token"`.
 - **Trang HV:** S11 `/hv/lop/<lớp>/bai/<bài>`, S03 `/hv/lop/<lớp>/buoc/<bước>`, S04 `/hv/lop/<lớp>/buoc/<bước>/the-tu?khoi=<id khối>`.
 - **Mỗi test dùng tên giáo trình riêng** (tên là duy nhất trong workspace).
+- **Nhãn giao diện đã dựng (2026-10-26, dùng để tìm phần tử):**
+  - *Bước (T07, khung của 002):* nút di chuyển bước có tên "Lên trên" / "Xuống dưới" (AC-1.5 gọi là "Lên"/"Xuống"); ô "Tên bước học",
+    "Mục tiêu bước học"; nút "Lưu nháp", "Xuất bản", "Lưu thay đổi", "Lưu trữ", "Khôi phục", "Thêm sau", "Xóa"; nhãn "Chưa lưu",
+    "Chưa hoàn chỉnh", "AI tạo". Thông báo tại bước: xung đột, "Chưa lưu được…" + "Thử lại", danh sách vấn đề (mỗi dòng "Bước x · Khối k ·
+    …" là nút cuộn tới khối). Thanh phần: "Đã dùng {x} GB / 10 GB" và cảnh báo % ở bên phải.
+  - *Khối:* tiêu đề "Khối {n} · {loại}"; nút "Lên (khối n)", "Xuống (khối n)", "Xóa khối n" (hàng trong khối: "Lên (từ n)", "Xóa từ n",
+    "Xóa dòng n", "Xóa ví dụ n", "Xóa thẻ n"); nút "Thêm khối" mở nhóm 9 nút loại khối. Ô có tên truy cập theo hàng: "Chữ Hán của từ n",
+    "Pinyin của từ n", "Loại từ của từ n", "Nghĩa của từ n", "Ví dụ của từ n"; "Câu ví dụ n", "Pinyin ví dụ n", "Nghĩa ví dụ n"; "Người nói
+    lời n", "Chữ Hán lời n", "Pinyin lời n", "Bản dịch lời n"; công cụ văn bản "Đậm", "Nghiêng", "Gạch chân", "Tiêu đề 1", "Tiêu đề 2",
+    "Danh sách gạch đầu dòng", "Danh sách đánh số", "Màu chữ: {tên}" (8 màu), "Chèn liên kết" → ô "Địa chỉ liên kết" + "Chèn".
+  - *Tệp:* "Chọn tệp" / "Thay tệp", trong lúc tải: tên tệp, thanh tiến độ "Tải lên {tên}", phần trăm, "Hủy"; sau 100%: "Đang xử lý…";
+    lỗi: thông báo + "Thử lại" (mất kết nối) / "Chọn tệp khác". Video: "Dán liên kết YouTube" → ô "Liên kết YouTube" + "Dùng liên kết";
+    "Bỏ liên kết YouTube". Ô "Chú thích".
+  - *Khối Từ vựng / T08:* "Tạo bộ thẻ từ danh sách này", "Nhập từ Excel", "Tải file mẫu" (tệp `mau-tu-vung.xlsx`), bản xem trước
+    "{N} dòng hợp lệ · {e} dòng lỗi · {d} dòng trùng", nút "Thêm {N} từ hợp lệ". Khối Bộ thẻ: "Soạn bộ thẻ"; hộp thoại "Bộ thẻ · {tên bước}"
+    có "Thêm thẻ", ảnh/âm thanh của thẻ ("Hình ảnh", "Âm thanh", "Gỡ … của thẻ") và chỉ nút "Xong".
+  - *S03:* liên kết quay lại "Về trang bài" (mũi tên), "{Bài} · Bước x/y", công tắc "Pinyin" / "Bản dịch" trên mỗi khối Hội thoại,
+    trình phát có chọn "Tốc độ phát", ảnh "Xem ảnh toàn màn hình" → "Phóng to" / "Thu nhỏ" / "Đóng"; tài liệu "Trang trước", "Trang sau",
+    "Trang x/y", "Phóng to", "Thu nhỏ", "Tải về"; DOCX: một trang = đoạn giữa hai ngắt trang của tệp (không có ngắt trang: khoảng 3 000
+    ký tự); PPTX: một trang = một slide. Cuối trang "‹ Trước {tên}", "Tiếp › {tên}" hoặc "Về trang bài".
+  - *S04:* `…/the-tu?khoi=<id khối>`; "Thẻ x/y", nhãn đánh dấu, "Trộn thẻ", "Chỉ học thẻ chưa thuộc", thẻ là nút ("Mặt trước: …"),
+    "Lật thẻ", "Thẻ trước" / "Thẻ sau", "Phát âm {chữ}", "Chưa thuộc", "Đã thuộc"; tổng kết "Tổng kết bộ thẻ".
+  - *T21:* mỗi bước "Bước x/y", nhãn "Nháp — học viên chưa thấy" cho bước Nháp (khi bật "Gồm cả mục Nháp"); "Học flashcard" mở hộp thoại
+    tên bộ thẻ.
+  - *Duyệt AI (dev):* `ai-approve/preview` trả `confirm.title` + `confirm.lines[]` (phần Bài học); lỗi bản duyệt: 422 với
+    `error.details.issues[]` (chuỗi "Bước x · Khối k · …").
+  - *Nhật ký (TC-103):* dòng `msg: "steps"` (tải lên, giải phóng tệp, nhập Excel) và `msg: "curriculum"` (lưu / xuất bản / lưu trữ /
+    khôi phục / xóa bước, `section.replace` có `deletedByStatus`).
 
 ## Danh sách test case
 
@@ -65,8 +93,8 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 | TC-005 | AC-1.2 | E2E | GV | Bài có 30 bước không Lưu trữ (tạo qua API) | 1. Bấm "Thêm bước học". 2. Lưu trữ 1 bước (qua API), tải lại, bấm "Thêm bước học". | Bước 1: nút bấm được, không có bước mới, hiện "Mỗi bài có tối đa 30 bước học."; bước 2: bước mới được tạo (chỉ tính bước không Lưu trữ) | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
 | TC-006 | AC-1.4, AC-2.1 | E2E | GV | Bước Nháp có tên "Từ mới" | 1. Xóa hết tên (hoặc chỉ gõ khoảng trắng). 2. Bấm "Lưu nháp". 3. Bấm "Xuất bản". | Dưới ô hiện "Chưa hoàn chỉnh: Vui lòng nhập tên bước học"; bước có nhãn "Chưa hoàn chỉnh"; "Lưu nháp" lưu được ("Đã lưu lúc HH:mm", hết "Chưa lưu", vẫn Nháp); "Xuất bản" bị từ chối với "Không thể xuất bản — Chưa hoàn chỉnh: …tên bước học" | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
 | TC-007 | AC-1.4, AC-2.8 | E2E | GV | Bước Nháp | 1. Nhập tên 101 ký tự. 2. Bấm "Lưu nháp". | Dưới ô "Tên bước học tối đa 100 ký tự"; bước không được lưu, hiện "Chưa lưu được: Tên bước học tối đa 100 ký tự" | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
-| TC-008 | AC-1.5 | E2E | GV | Bài có 3 bước "A","B","C" | 1. Bấm "Xuống" trên bước A. 2. Mở T18 và S11 của HV (lớp dùng giáo trình). | Thông báo "Đã chuyển tới vị trí 2/3 · Đã lưu"; thứ tự B, A, C trên T07, T18 và tab Bài học của S11 | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
-| TC-009 | AC-1.5 | E2E | GV | Bài có 2 bước; bước 2 có thay đổi chưa lưu | 1. Bấm "Lên" trên bước 2. | Thứ tự đổi và được lưu; bước (nay là Bước 1) vẫn mang "Chưa lưu" với nội dung đang sửa | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
+| TC-008 | AC-1.5 | E2E | GV | Bài có 3 bước "A","B","C" | 1. Bấm "Xuống" ("Xuống dưới") trên bước A. 2. Mở T18 và S11 của HV (lớp dùng giáo trình). | Thông báo "Đã chuyển tới vị trí 2/3 · Đã lưu"; thứ tự B, A, C trên T07, T18 và tab Bài học của S11 | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
+| TC-009 | AC-1.5 | E2E | GV | Bài có 2 bước; bước 2 có thay đổi chưa lưu | 1. Bấm "Lên" ("Lên trên") trên bước 2. | Thứ tự đổi và được lưu; bước (nay là Bước 1) vẫn mang "Chưa lưu" với nội dung đang sửa | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
 | TC-010 | AC-1.6 | E2E | GV | Bài Nháp có 1 bước Đã xuất bản | 1. Mở T07 tab Bài học. | Phần đầu tab hiện "Bài chưa xuất bản — học viên chưa thấy bước học nào của Bài này, kể cả bước đã xuất bản." | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
 | TC-011 | AC-1.7 | E2E | GV | Bài có 3 bước (1 "AI tạo" qua duyệt AI dev), 1 bước chưa hoàn chỉnh | 1. Mở tab Bài học. 2. Sửa tên bước 2 và một khối của bước 3 mà không lưu. | Mọi bước hiện liền nhau với ô sửa; mỗi bước có nhãn trạng thái, "Chưa hoàn chỉnh" (bước thiếu), "AI tạo" (bước AI), "Chưa lưu" (bước 2, 3), "Lên"/"Xuống", "Thêm sau", "Xóa", nút lưu; không có "Bỏ thay đổi" | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
 | TC-012 | AC-2.1, AC-2.5 | E2E | GV | 3 bước Nháp đều có thay đổi chưa lưu, tab Bài tập không có mục chưa lưu | 1. Bấm "Lưu nháp" ở bước 2. | Chỉ bước 2 được lưu ("Đã lưu lúc HH:mm"); bước 1 và 3 vẫn "Chưa lưu"; thanh phần hiện "2 mục chưa lưu"; khi mọi bước đã lưu thanh phần hiện "Đã lưu lúc HH:mm" | [T07](../screen-flow-design.html#T07) | | Chưa chạy |
