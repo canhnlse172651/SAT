@@ -45,7 +45,8 @@ export interface ClassesModuleOptions {
 
 /**
  * Module 003 — classes, members, per-class visibility and deadlines, reminders. Global because it binds ports other
- * modules read: `CURRICULUM_CLASSES` (002) and `STUDENT_LINKS` (001); it exports `ClassAccess` for 004 / 005.
+ * modules read: `CURRICULUM_CLASSES` (002) and `STUDENT_LINKS` (001); it exports `ClassAccess` and
+ * `LearnClassesService` for 004 / 005.
  */
 @Global()
 @Module({})
@@ -91,7 +92,7 @@ export class ClassesModule {
         LearnClassesService,
         ReminderService,
       ],
-      exports: [CURRICULUM_CLASSES, STUDENT_LINKS, ClassAccess],
+      exports: [CURRICULUM_CLASSES, STUDENT_LINKS, ClassAccess, LearnClassesService],
     };
   }
 }

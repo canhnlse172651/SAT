@@ -27,10 +27,10 @@ describe('loadConfig auth settings', () => {
 });
 
 describe('loadConfig upload settings', () => {
-  it('defaults to var/uploads and 20 MiB, and parses overrides', () => {
+  it('defaults to var/uploads and 500 MiB, and parses overrides', () => {
     expect(loadConfig({})).toMatchObject({
       UPLOADS_DIR: 'var/uploads',
-      UPLOAD_MAX_BYTES: 20971520,
+      UPLOAD_MAX_BYTES: 524288000,
     });
     expect(loadConfig({ UPLOADS_DIR: '/data/u', UPLOAD_MAX_BYTES: '1024' })).toMatchObject({
       UPLOADS_DIR: '/data/u',

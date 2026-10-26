@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   CURRICULUM_ERROR_CODES as E,
@@ -20,6 +20,7 @@ import { AppError } from '../../errors.js';
 import { CurriculumContext } from './curriculum.context.js';
 import { logAction, sectionItems } from './curriculum.mappers.js';
 import { type ItemDoc, LESSON_MODEL, type LessonDoc } from './curriculum.model.js';
+import { STEP_HOOKS, type StepHooks } from './curriculum.ports.js';
 import { CurriculumService } from './curriculum.service.js';
 import { LessonsService } from './lessons.service.js';
 
@@ -53,6 +54,7 @@ export class AiReplaceService {
     private readonly ctx: CurriculumContext,
     private readonly lessonsService: LessonsService,
     private readonly curriculumService: CurriculumService,
+    @Optional() @Inject(STEP_HOOKS) private readonly hooks?: StepHooks,
   ) {}
 
   /** AC-11.6, AC-19.4: limit and readiness of the approved items, before anything is shown or stored. */
@@ -162,6 +164,7 @@ export class AiReplaceService {
         )
         .lean<LessonDoc>();
       if (!updated) continue;
+      await this.hooks?.removed(p.workspaceId, dropped);
       await this.curriculumService.touch(p.workspaceId, lesson.curriculumId);
       logAction({
         action: 'section.replace',

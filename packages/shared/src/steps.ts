@@ -533,6 +533,14 @@ function upgrade(raw: unknown): unknown {
       ) {
         return { id, type: 'text', html: textToHtml(block['text']) };
       }
+      if (block['type'] === 'deck' && Array.isArray(block['cards'])) {
+        const cards = block['cards'].map((c: unknown, j: number) =>
+          c && typeof c === 'object' && typeof (c as { id?: unknown }).id !== 'string'
+            ? { ...c, id: `${id}c${j}` }
+            : c,
+        );
+        return { ...block, id, cards };
+      }
       return { ...block, id };
     }),
   };

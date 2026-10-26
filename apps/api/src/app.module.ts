@@ -14,6 +14,7 @@ import { CurriculumModule } from './modules/curriculum/curriculum.module.js';
 import { FilesModule } from './modules/files/files.module.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { SessionModule } from './modules/session/session.module.js';
+import { StepsModule } from './modules/steps/steps.module.js';
 
 export type AppConfig = Pick<
   Config,
@@ -51,6 +52,7 @@ export class AppModule {
         AccountsModule.forRoot({ appOrigin: config.APP_ORIGIN }),
         curriculum,
         ClassesModule.forRoot({ curriculum, appOrigin: config.APP_ORIGIN, devHelpers }),
+        StepsModule.forRoot({ curriculum, devHelpers }),
         HealthModule,
         SessionModule,
         FilesModule,

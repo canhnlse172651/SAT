@@ -13,6 +13,8 @@ export const SCREEN_PAGES: Record<string, () => Promise<ComponentType>> = {
   // T07 and T09 are the two tabs of one editor (002 AC-7.12); 004 / 005 fill the tabs.
   T07: async () => (await import('../features/curriculum/ManualEditorPage')).LessonTabPage,
   T09: async () => (await import('../features/curriculum/ManualEditorPage')).ExerciseTabPage,
+  // T08 (004) is the deck dialog over T07's Bài học tab; its own path opens that tab.
+  T08: async () => (await import('../features/curriculum/ManualEditorPage')).LessonTabPage,
   T18: async () => (await import('../features/curriculum/LessonPage')).LessonPage,
   T21: async () => (await import('../features/curriculum/PreviewPage')).PreviewPage,
   T11: async () => (await import('../features/students/StudentsPage')).StudentsPage,

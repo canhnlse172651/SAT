@@ -15,7 +15,8 @@ import { CurriculumReader } from '../curriculum/curriculum-reader.js';
 import type { ItemDoc, LessonDoc } from '../curriculum/curriculum.model.js';
 import { HV_PATHS } from './class-common.js';
 import { statusOf, todayOf } from './class-status.js';
-import { effectiveDeadline, type VisibleUnit, visibleUnit } from './class-visibility.js';
+import { CURRICULUM_CLASSES, type CurriculumClasses } from '../curriculum/curriculum.ports.js';
+import { effectiveDeadline, isHidden, type VisibleUnit, visibleUnit } from './class-visibility.js';
 import { CLASS_MODEL, type ClassDoc, MEMBER_MODEL, type MemberDoc } from './classes.model.js';
 import { CLASS_LEARNING, type ClassLearning } from './classes.ports.js';
 
@@ -55,8 +56,30 @@ export class ClassAccess {
     @InjectModel(MEMBER_MODEL) private readonly members: Model<MemberDoc>,
     @Inject(CLOCK) private readonly clock: Clock,
     @Inject(CLASS_LEARNING) private readonly learning: ClassLearning,
+    @Inject(CURRICULUM_CLASSES) private readonly usage: CurriculumClasses,
     private readonly curricula: CurriculumReader,
   ) {}
+
+  /**
+   * 004 AC-7.4: classes that are not ended, use the curriculum and do not hide the Bài học section of the Bài — real
+   * classes plus 002's dev stand-in classes (which have no hidden sections).
+   */
+  async stepsAudience(
+    workspaceId: string,
+    curriculumId: string,
+    lessonId: string,
+  ): Promise<number> {
+    const using = (await this.usage.usage(workspaceId, [curriculumId])).get(curriculumId) ?? [];
+    const open = using.filter((u) => u.status !== 'ended');
+    if (!open.length) return 0;
+    const real = await scoped(this.classes, workspaceId)
+      .find({ _id: { $in: open.map((u) => u.id).filter((id) => Types.ObjectId.isValid(id)) } })
+      .lean<ClassDoc[]>();
+    const hidden = new Set(
+      real.filter((c) => isHidden(c, lessonId, 'lesson')).map((c) => String(c._id)),
+    );
+    return open.filter((u) => !hidden.has(u.id)).length;
+  }
 
   /** The class of an active membership of the caller, else `notMember` (malformed ids included). */
   async view(p: AuthPrincipal, classId: string): Promise<ClassView> {

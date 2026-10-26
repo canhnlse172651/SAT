@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   CURRICULUM_ERROR_CODES as E,
@@ -28,7 +28,7 @@ import {
   LESSON_MODEL,
   type LessonDoc,
 } from './curriculum.model.js';
-import { CurriculumFaults } from './curriculum.ports.js';
+import { CurriculumFaults, STEP_HOOKS, type StepHooks } from './curriculum.ports.js';
 import { CurriculumService, copyInProgress, copyItems } from './curriculum.service.js';
 
 const STALE_MS = 10 * 60_000;
@@ -56,7 +56,14 @@ export class LessonsService {
     private readonly ctx: CurriculumContext,
     private readonly curriculumService: CurriculumService,
     private readonly faults: CurriculumFaults,
+    @Optional() @Inject(STEP_HOOKS) private readonly hooks?: StepHooks,
   ) {}
+
+  /** 004 reacts to a saved step (released files, marks of removed cards). */
+  private async afterSave(p: AuthPrincipal, before: ItemDoc | undefined, lesson: LessonDoc) {
+    const after = before && lesson.items.find((i) => i._id.equals(before._id));
+    if (before && after) await this.hooks?.saved(p.workspaceId, before, after);
+  }
 
   /* ---------- loading ---------- */
 
@@ -425,10 +432,12 @@ export class LessonsService {
     itemId: string,
     body: { expectedVersion: number; title: string; content: unknown },
   ): Promise<Lesson> {
-    const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => ({
-      title: body.title,
-      content: this.content(item.section, body.content),
-    }));
+    let before: ItemDoc | undefined;
+    const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
+      before = item;
+      return { title: body.title, content: this.content(item.section, body.content) };
+    });
+    await this.afterSave(p, before, updated);
     logAction({ action: 'item.update', actorId: p.userId, lessonId: id, itemId });
     return this.dto(p, updated);
   }
@@ -440,13 +449,16 @@ export class LessonsService {
     itemId: string,
     body: { expectedVersion: number; title: string; content: unknown },
   ): Promise<Lesson> {
+    let before: ItemDoc | undefined;
     const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
+      before = item;
       if (item.status !== 'draft') throw changedElsewhere();
       const content = this.content(item.section, body.content);
       const reason = itemNotReadyReason(item.section, body.title, content);
       if (reason) throw notReady(reason);
       return { title: body.title, content, status: 'published' };
     });
+    await this.afterSave(p, before, updated);
     logAction({ action: 'item.publish', actorId: p.userId, lessonId: id, itemId });
     return this.dto(p, updated);
   }
@@ -474,8 +486,10 @@ export class LessonsService {
 
   /** AC-12.2, AC-12.3, AC-12.6: a set with learning data is never deleted (checked at confirmation). */
   async deleteItem(p: AuthPrincipal, id: string, itemId: string): Promise<Lesson> {
+    let removed: ItemDoc | undefined;
     const updated = await this.mutate(p, id, async (lesson) => {
       const item = this.findItem(lesson, itemId);
+      removed = item;
       if (
         item.section === 'exercise' &&
         (await this.ctx.learningData(p.workspaceId, [{ ...lesson, items: [item] }])).size
@@ -491,6 +505,7 @@ export class LessonsService {
       }
       return { items: lesson.items.filter((i) => i !== item), sections: [item.section] };
     });
+    if (removed) await this.hooks?.removed(p.workspaceId, [removed]);
     logAction({ action: 'item.delete', actorId: p.userId, lessonId: id, itemId });
     return this.dto(p, updated);
   }

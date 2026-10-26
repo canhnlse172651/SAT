@@ -13,12 +13,12 @@ const EnvSchema = z.object({
   SESSION_TTL_HV_DAYS: z.coerce.number().int().positive().default(30),
   // Dev FileStorage root (relative to the process cwd).
   UPLOADS_DIR: z.string().min(1).default('var/uploads'),
-  // Max bytes per stored file (default 20 MiB).
+  // Max bytes per stored file (default 500 MiB: the largest lesson video, 004 AC-5.1; smaller limits are per use).
   UPLOAD_MAX_BYTES: z.coerce
     .number()
     .int()
     .positive()
-    .default(20 * 1024 * 1024),
+    .default(500 * 1024 * 1024),
   // Dev e-mail outbox: how long a simulated send takes, so "Đang gửi email" is visible (0 in API tests).
   DEV_EMAIL_DELAY_MS: z.coerce.number().int().min(0).max(60_000).default(1_500),
   // Overrides cookie `Secure` outside production only (hermetic e2e over http).

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import type { AiLabel, UsingClass } from '@sat/shared';
 import { type Connection, Types } from 'mongoose';
+import type { ItemDoc } from './curriculum.model.js';
 
 /*
  * What 002 needs from modules that do not exist yet. Each module re-binds its token when it ships:
@@ -160,3 +161,20 @@ export class CurriculumFaults {
     if (fault.fail) throw new Error(`injected ${op} failure`);
   }
 }
+
+/**
+ * 004 (step content) reacts to step changes made through 002's item lifecycle and supplies the facts the AI approval
+ * confirmation of the Bài học section needs (004 AC-19.1). Bound by `StepsModule` (global); absent in tests without it.
+ */
+export interface StepHooks {
+  /** A step's content was saved (files no longer used are released, marks of removed cards dropped). */
+  saved(workspaceId: string, before: ItemDoc, after: ItemDoc): Promise<void>;
+  /** Steps were deleted or replaced: their marks, files and practice links go (AC-8.1, AC-9.5). */
+  removed(workspaceId: string, items: readonly ItemDoc[]): Promise<void>;
+  /** Classes not ended that use the curriculum and show the Bài học section of the Bài (AC-7.4). */
+  audience(workspaceId: string, curriculumId: string, lessonId: string): Promise<number>;
+  /** Exercise sets linked to any of the steps (005). */
+  linkedSets(workspaceId: string, stepIds: readonly string[]): Promise<number>;
+}
+
+export const STEP_HOOKS = Symbol('STEP_HOOKS');
