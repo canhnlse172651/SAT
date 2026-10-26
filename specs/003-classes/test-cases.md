@@ -1,7 +1,7 @@
 ---
 feature: 003
 generated: 2026-10-23
-last_run: 2026-10-23 23:11
+last_run: 2026-10-26 08:59
 ---
 
 # Test cases — 003 Lớp học
@@ -16,7 +16,7 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 
 | Tổng | Pass | Fail | Bị chặn | Chưa chạy | Thủ công | Lần chạy cuối |
 |------|------|------|---------|-----------|----------|---------------|
-| 92 | 87 | 1 | 0 | 0 | 4 | 2026-10-23 23:11 |
+| 92 | 88 | 0 | 0 | 0 | 4 | 2026-10-26 08:59 |
 
 ## Dữ liệu và tài khoản dùng chung
 
@@ -90,7 +90,7 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 | TC | AC / NFR | Loại | Vai trò | Tiền điều kiện | Các bước | Kết quả mong đợi | Màn hình | Script | Trạng thái |
 |----|----------|------|---------|----------------|----------|------------------|----------|--------|------------|
 | TC-001 | AC-1.1, AC-1.2 | E2E | GV | Đăng nhập GV | 1. T02 bấm "Tạo lớp". 2. Bấm "Tiếp tục" khi chưa nhập gì. 3. Nhập tên, chọn ngày, "Tiếp tục". | B1: T03 "Tạo lớp mới", thanh tiến trình 4 bước "Thông tin lớp", "Thêm học viên", "Chọn giáo trình", "Xác nhận", bước 1 được đánh dấu, dòng "Bước 1/4 · Thông tin lớp". B2: ở lại bước 1, lỗi ngay dưới từng trường sai. B3: "Bước 2/4 · Thêm học viên". | [T03](../screen-flow-design.html#T03) | [TC-001.spec.ts](testing/e2e/TC-001.spec.ts) | Pass |
-| TC-002 | AC-1.3, AC-1.4 | E2E | GV | Có 2 HV, 1 giáo trình | 1. Bước 1 nhập dữ liệu → bước 2 chọn 2 HV → bước 3 chọn giáo trình → bước 4. 2. "Quay lại" về bước 3, rồi Back của trình duyệt về bước 2. 3. Bấm bước "Xác nhận" trên thanh tiến trình. 4. Bấm bước "Thông tin lớp". | B2: về bước liền trước mỗi lần, mọi dữ liệu đã nhập/chọn còn nguyên. B3: không chuyển. B4: về bước 1, dữ liệu còn nguyên. | [T03](../screen-flow-design.html#T03) | [TC-002.spec.ts](testing/e2e/TC-002.spec.ts) | Fail |
+| TC-002 | AC-1.3, AC-1.4 | E2E | GV | Có 2 HV, 1 giáo trình | 1. Bước 1 nhập dữ liệu → bước 2 chọn 2 HV → bước 3 chọn giáo trình → bước 4. 2. "Quay lại" về bước 3, rồi Back của trình duyệt về bước 2. 3. Bấm bước "Xác nhận" trên thanh tiến trình. 4. Bấm bước "Thông tin lớp". | B2: về bước liền trước mỗi lần, mọi dữ liệu đã nhập/chọn còn nguyên. B3: không chuyển. B4: về bước 1, dữ liệu còn nguyên. | [T03](../screen-flow-design.html#T03) | [TC-002.spec.ts](testing/e2e/TC-002.spec.ts) | Pass |
 | TC-003 | AC-1.5 | E2E | GV | — | 1. T03 nhập "Tên lớp". 2. Bấm "Hủy" → "Ở lại". 3. Bấm "Lớp học" ở menu bên → "Bỏ". 4. Mở T03, nhập tên, Back của trình duyệt ở bước 1 → "Bỏ". | B2: hỏi "Bỏ tạo lớp? Thông tin bạn đã nhập sẽ không được lưu.", "Ở lại" giữ dữ liệu. B3: về T02, không có lớp mới. B4: rời T03, không có lớp mới. | [T03](../screen-flow-design.html#T03) | [TC-003.spec.ts](testing/e2e/TC-003.spec.ts) | Pass |
 | TC-004 | AC-1.6 | E2E | GV | — | 1. T03 nhập "Tên lớp". 2. Tải lại trang (chấp nhận hộp rời trang). 3. Mở lại T03. | B2: trình duyệt hiện hộp xác nhận rời trang. B3: biểu mẫu trống, không có lớp nào được tạo. | [T03](../screen-flow-design.html#T03) | [TC-004.spec.ts](testing/e2e/TC-004.spec.ts) | Pass |
 | TC-005 | AC-2.1 | E2E | GV | — | 1. Xem bước 1. 2. Dán 600 ký tự vào "Mô tả", 250 ký tự vào "Lịch học". | B1: "Tên lớp" (bắt buộc), "Ngày bắt đầu" (lịch, dd/mm/yyyy, trống), "Mô tả", "Lịch học" có bộ đếm. B2: chỉ nhận 500 / 200 ký tự, bộ đếm "500/500", "200/200". | [T03](../screen-flow-design.html#T03) | [TC-005.spec.ts](testing/e2e/TC-005.spec.ts) | Pass |
@@ -177,15 +177,21 @@ Một test case có thể kiểm nhiều AC liên quan; mỗi AC có ít nhất 
 | TC-086 | AC-25.4 | E2E | HV | Email 1 bộ (lớp A) và email 2 bộ (lớp B) | 1. Đã đăng nhập: mở liên kết "Làm bài ngay" của email 1. 2. Của email 2. 3. Đăng xuất, mở liên kết email 1, đăng nhập. 4. Bị gỡ khỏi lớp B rồi mở liên kết email 2. | B1: S05 của bộ (005 — màn hình hiện có). B2: S02 lớp B. B3: A01 rồi thẳng tới S05 của bộ. B4: "Bạn không thuộc lớp này hoặc lớp không còn tồn tại", về S01. | [S02](../screen-flow-design.html#S02) | [TC-086.spec.ts](testing/e2e/TC-086.spec.ts) | Pass |
 | TC-087 | AC-26.1, AC-26.2 | API | GV, HV | Hai HV Đã kích hoạt trong lớp, sau đó đổi Email (T11 "Sửa") sang `reject@x.invalid` (bị từ chối) và `bounce@x.invalid` (không nhận thư) mà trạng thái vẫn "Đã kích hoạt"; GV vừa dùng hết giới hạn thư mật khẩu của 001 | 1. Chạy lượt nhắc. 2. Chạy lại. 3. Xem T11, log máy chủ. | Các HV khác vẫn nhận email (giới hạn 001 không chặn); 2 email thất bại không được gửi lại; trạng thái tài khoản không đổi; log ghi lần gửi thất bại kèm lý do. | — | [TC-087.spec.ts](testing/e2e/TC-087.spec.ts) | Pass |
 | TC-088 | AC-26.3 | API | GV | Sau lượt nhắc của TC-080 | 1. `GET /api/classes/<id>/reminders` (thông tin cho 009). 2. Xem tab Nội dung. 3. Đổi hạn X, gọi lại. | B1: X, Y có thời điểm gửi và số HV (X: 1, Y: 2). B2: ô hạn không hiển thị thông tin này. B3: X không còn thông tin đã gửi. | [T04](../screen-flow-design.html#T04) | [TC-088.spec.ts](testing/e2e/TC-088.spec.ts) | Pass |
-| TC-089 | NFR-5 | Thủ công | GV | 5 GV lần đầu dùng; 10 HV, 1 giáo trình | 1. Tạo lớp 10 HV. 2. Ẩn phần Bài tập của mọi Bài. | ≥ 80% xong ≤ 3 phút và ≤ 30 giây, không hướng dẫn. | [T03](../screen-flow-design.html#T03) | | Thủ công |
-| TC-090 | NFR-6 | Thủ công | GV, HV | Dữ liệu như TC-051, TC-063 | 1. Chỉ bàn phím + trình đọc màn hình trên T03, tab Nội dung (kể cả popup hạn), S01, S02, S11. 2. axe; đo tương phản; S01/S02/S11 ở 360–430 px, T02–T04 ở 1024 px. | Mọi thao tác làm được bằng bàn phím, có nhãn; "Hiển thị"/"Đang ẩn" và nhãn hạn bằng chữ; tương phản ≥ 4.5:1; không cuộn ngang. | [T04](../screen-flow-design.html#T04) | | Thủ công |
-| TC-091 | NFR-8 | Thủ công | GV | `npm run dev` | 1. Tạo, sửa, đổi giáo trình, thêm/gỡ HV, kết thúc, mở lại, xóa lớp, ẩn/hiện (đơn và hàng loạt), đặt/xóa hạn (đơn và hàng loạt); chạy lượt nhắc. 2. Xem log. | Mỗi thao tác một dòng log có cấu trúc (người thực hiện, lớp, loại, thời điểm, kết quả, số phần/bộ thay đổi); lượt nhắc: ngày, bắt đầu, kết thúc, số email đã chuyển, số thất bại + lý do; không có mật khẩu, email, họ tên HV. | — | | Thủ công |
-| TC-092 | NFR-9 | Thủ công | — | Môi trường có dịch vụ gửi thư thật (chưa có — ADR) | 1. 20.000 email nhắc trong một lượt. | 100% chuyển cho dịch vụ trước 08:15; ≥ 95% được nhận trước 08:30. | — | | Thủ công |
+| TC-089 | NFR-5 | Thủ công | GV | 5 GV lần đầu dùng; 10 HV, 1 giáo trình | 1. Tạo lớp 10 HV. 2. Ẩn phần Bài tập của mọi Bài. | ≥ 80% xong ≤ 3 phút và ≤ 30 giây, không hướng dẫn. | [T03](../screen-flow-design.html#T03) |  | Thủ công |
+| TC-090 | NFR-6 | Thủ công | GV, HV | Dữ liệu như TC-051, TC-063 | 1. Chỉ bàn phím + trình đọc màn hình trên T03, tab Nội dung (kể cả popup hạn), S01, S02, S11. 2. axe; đo tương phản; S01/S02/S11 ở 360–430 px, T02–T04 ở 1024 px. | Mọi thao tác làm được bằng bàn phím, có nhãn; "Hiển thị"/"Đang ẩn" và nhãn hạn bằng chữ; tương phản ≥ 4.5:1; không cuộn ngang. | [T04](../screen-flow-design.html#T04) |  | Thủ công |
+| TC-091 | NFR-8 | Thủ công | GV | `npm run dev` | 1. Tạo, sửa, đổi giáo trình, thêm/gỡ HV, kết thúc, mở lại, xóa lớp, ẩn/hiện (đơn và hàng loạt), đặt/xóa hạn (đơn và hàng loạt); chạy lượt nhắc. 2. Xem log. | Mỗi thao tác một dòng log có cấu trúc (người thực hiện, lớp, loại, thời điểm, kết quả, số phần/bộ thay đổi); lượt nhắc: ngày, bắt đầu, kết thúc, số email đã chuyển, số thất bại + lý do; không có mật khẩu, email, họ tên HV. | — |  | Thủ công |
+| TC-092 | NFR-9 | Thủ công | — | Môi trường có dịch vụ gửi thư thật (chưa có — ADR) | 1. 20.000 email nhắc trong một lượt. | 100% chuyển cho dịch vụ trước 08:15; ≥ 95% được nhận trước 08:30. | — |  | Thủ công |
 
 ## Ghi chú lần chạy
 
 <!-- Mới nhất ở trên: thời điểm, người chạy (/test-module), báo cáo testing/runs/<thời điểm>/report.md, tóm tắt
      x/y Pass, các lỗi tìm thấy (TC, hiện tượng, mong đợi, ảnh chụp). -->
+
+- **2026-10-26 08:59** — `/test-module 003` (QA, chạy lại sau sửa), commit `1a9c93a`, báo cáo
+  [testing/runs/2026-10-26-0859/report.md](testing/runs/2026-10-26-0859/report.md). **88/88 E2E/API Pass**, 4 Thủ công (hướng dẫn trong báo
+  cáo). TC-002 (AC-1.3) Fail → Pass, đi lại bằng tay trong trình duyệt Playwright MCP ([ảnh](testing/runs/2026-10-26-0859/screenshots/TC-002-mcp-T04.png))
+  rồi chạy toàn bộ script; sửa script TC-070 (phụ thuộc ngày), TC-018 / TC-053 (kiểm tra "không có" trước khi màn hình tải xong), hàm
+  `signIn`. Máy chủ hermetic cổng 4183, một worker.
 
 - **2026-10-23 23:11** — `/test-module 003` (QA), commit `dfbe561`, báo cáo [testing/runs/2026-10-23-2311/report.md](testing/runs/2026-10-23-2311/report.md).
   **87/88 E2E/API Pass**, 4 Thủ công (hướng dẫn trong báo cáo). Lỗi: **TC-002** (AC-1.3) — sau "Quay lại"

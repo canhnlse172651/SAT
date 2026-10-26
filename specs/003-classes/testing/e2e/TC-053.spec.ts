@@ -59,6 +59,8 @@ test('[003:AC-16.1] [003:AC-16.2] [003:AC-17.4] [003:AC-17.6] TC-053 ẩn / hi�
   await expect(bai2).not.toContainText('bộ bài tập');
   await expect(hvPage.locator('.hv-card')).not.toContainText('1/');
   await hvPage.goto(`/hv/lop/${a.id}/bai/${cur.lessons[1]!.id}`);
+  // S11 loaded (its Bài học tab is there) — then no Bài tập tab.
+  await expect(hvPage.getByRole('tab', { name: /Bài học/ })).toBeVisible();
   await expect(hvPage.getByRole('tab', { name: /Bài tập/ })).toHaveCount(0);
   await expect(hvPage.getByText(/Đã hoàn thành/)).toHaveCount(0);
   // S06 (005) reads the set through 003: not visible → A05.

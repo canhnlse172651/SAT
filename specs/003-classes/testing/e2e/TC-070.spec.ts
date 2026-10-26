@@ -41,16 +41,26 @@ test('[003:AC-21.2] [003:NFR-6] TC-070 lịch popup: bàn phím, hôm nay, ngày
 
   await field.click();
   await expect(pop).toBeVisible();
-  const [ty, tm, td] = today.split('-').map(Number);
-  await expect(pop.getByRole('button', { name: `${td} tháng ${tm} năm ${ty}`, exact: true })).toHaveAttribute('aria-current', 'date');
+  // The popup opens on the month of the selected day; go to today's month (it may be another month) and find today marked.
+  const toMonth = async (y: number, m: number) => {
+    for (let i = 0; i < 14; i++) {
+      const cap = await pop.getByText(/^Tháng \d+ năm \d+$/).textContent();
+      const [, cm, cy] = /Tháng (\d+) năm (\d+)/.exec(cap ?? '')!.map(Number) as [number, number, number];
+      const diff = (y - cy) * 12 + (m - cm);
+      if (diff === 0) return;
+      await pop.getByRole('button', { name: diff > 0 ? 'Tháng sau' : 'Tháng trước' }).click();
+    }
+  };
+  const [ty, tm, td] = today.split('-').map(Number) as [number, number, number];
+  await toMonth(ty, tm);
+  await expect(pop.getByRole('button', { name: `${td} tháng ${tm} năm ${ty}`, exact: true })).toHaveAttribute(
+    'aria-current',
+    'date',
+  );
   // 365 days back: the first allowed day is enabled, the day before is disabled.
   const first = addDays(today, -365);
-  const [fy, fm, fd] = first.split('-').map(Number);
-  for (let i = 0; i < 14; i++) {
-    const cap = await pop.getByText(/^Tháng \d+ năm \d+$/).textContent();
-    if (cap === `Tháng ${fm} năm ${fy}`) break;
-    await pop.getByRole('button', { name: 'Tháng trước' }).click();
-  }
+  const [fy, fm, fd] = first.split('-').map(Number) as [number, number, number];
+  await toMonth(fy, fm);
   await expect(pop.getByRole('button', { name: `${fd} tháng ${fm} năm ${fy}`, exact: true })).toBeEnabled();
   if (fd > 1) await expect(pop.getByRole('button', { name: `${fd - 1} tháng ${fm} năm ${fy}`, exact: true })).toBeDisabled();
   await expect(pop.getByRole('button', { name: 'Tháng trước' })).toBeDisabled();

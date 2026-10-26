@@ -73,12 +73,16 @@ export async function newWorkspaceGv(): Promise<Api> {
 
 /** Signs `page`'s browser in (the session cookie of its context), as the dev sign-in precondition. */
 export async function signIn(page: Page, role: 'GV' | 'HV', userId?: string): Promise<void> {
+  // Let the signed-out app settle first (it redirects to A01), so that redirect cannot land after the next navigation.
   await page.goto('/');
+  await page.waitForLoadState('networkidle');
   const res = await page.request.post('/api/dev/session', {
     data: { role, ...(userId ? { userId } : {}) },
     headers: { Origin: ORIGIN },
   });
   if (res.status() !== 201) throw new Error(`sign-in ${role} → ${res.status()}`);
+  const check = await page.request.get('/api/session');
+  if (check.status() !== 200) throw new Error(`sign-in ${role}: session → ${check.status()}`);
 }
 
 /** Signs the page in as the same user as an API client (dev sign-in by user id). */

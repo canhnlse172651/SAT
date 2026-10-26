@@ -55,3 +55,14 @@
   - **TC-007** timed out before its first step in the full replay (waiting for "Tên lớp" on T03), passed twice alone right after — the
     dev sign-in + `goto` opening looks racy under load.
 - Verify with: PORT=4183 SAT_E2E_PORT=4183 node .sdd/scripts/sdd.mjs run test:modules -- 003 TC-002   (server: PORT=4183 node tests/e2e/server.mjs)
+
+## Handoff 2026-10-26 09:15 — /test-module 003 (QA, re-run)
+- Status: 003-classes verified · 28/28 tasks · QA 88/88 E2E/API Pass   Branch: feat/003-classes (worktree ../sat-003-qa)
+- Done this session: QA re-run 2026-10-26-0859 — TC-002 walked by hand in the Playwright MCP browser, full pass of all saved scripts
+  on a clean server (one worker): 88/88. Scripts maintained: TC-070 (date-independent, type-checks), TC-018 / TC-053 (wait for the screen
+  before "absent" checks; exact "Đang ẩn"), shared `signIn` (waits, confirms the session). verification.md Verdict PASS.
+- In progress: —
+- Next: review / ship (`/sdd-verify` or `/sdd-ship` per the pipeline); Thủ công TC-089 … TC-092 need a person / a real mail provider.
+- Blockers / questions: tooling only — Playwright configs hard-code port 4173 (an uncommitted `SAT_E2E_PORT` override stays in the
+  worktree, not committed); `replay-module-tests.mjs` breaks on Windows with ≥ 2 TC ids; 003 replays need `--workers=1`.
+- Verify with: PORT=4183 SAT_E2E_PORT=4183 npx playwright test -c playwright.modules.config.ts --workers=1 (with SAT_MODULE_TEST_DIR / SAT_MODULE_RUN_DIR, server: PORT=4183 node tests/e2e/server.mjs)

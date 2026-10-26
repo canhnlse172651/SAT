@@ -57,8 +57,10 @@ test('[003:AC-5.3] [003:AC-5.6] [003:NFR-1] TC-018 tạo lớp: đúng một l�
   await expect(page.getByRole('row').filter({ hasText: name })).toContainText('3/100');
 
   await page.goto(`/gv/lop-hoc/${classId}?tab=noi-dung`);
-  await expect(page.getByText('Đang ẩn')).toHaveCount(0);
+  // Wait for the tab's cells, then check that no section is hidden (exact: the summary line says "… phần đang ẩn …").
   await expect(page.getByText('Hiển thị', { exact: true })).toHaveCount(2);
+  await expect(page.getByText('Đang ẩn', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('1 bài · 0 phần đang ẩn với lớp này', { exact: true })).toBeVisible();
   await page.goto(`/gv/lop-hoc/${classId}?tab=hoc-vien`);
   await expect(page.getByRole('row').filter({ hasText: 'Học viên Một' })).toContainText(ddmmyyyy(vnDay()));
 
