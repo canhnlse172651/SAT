@@ -4,8 +4,6 @@ import {
   SECTION_TITLES,
   type Section,
   setContentSchema,
-  richTextPlain,
-  stepContentSchema,
 } from '@sat/shared';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -22,6 +20,8 @@ import {
 import { useDocumentTitle } from '../../lib/use-document-title';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Notice } from '../auth/Notice';
+import { useStepEditorStore } from '../steps/step-editor-store';
+import { StepPreview } from '../steps/StepPreview';
 import { Crumbs } from './Crumbs';
 import { useCurriculumStore } from './curriculum-store';
 import { isNotFound } from './errors';
@@ -32,20 +32,6 @@ import './curriculum.css';
 export type Viewport = 'web' | 'mobile';
 /** Shared with the "Xem trước" mode of T20 (010) — AC-16.8. */
 export const VIEWPORT_PREF = 'preview.viewport';
-
-/** A step as S03 shows it (interim: text blocks — 004 AC-7.6 rendering replaces it). */
-function StepView({ item }: { item: Item }) {
-  const content = stepContentSchema.safeParse(item.content);
-  return (
-    <>
-      {(content.success ? content.data.blocks : []).map((b, k) => (
-        <p key={k} className="pv-text">
-          {b.type === 'text' ? richTextPlain(b.html) : ''}
-        </p>
-      ))}
-    </>
-  );
-}
 
 /** A set as S05 shows it: every question, answers can be tried, nothing submitted or graded (AC-16.3 … AC-16.5). */
 function SetView({
@@ -107,11 +93,13 @@ export function PreviewPage() {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   useDocumentTitle('Xem như học viên');
 
+  const loadInfo = useStepEditorStore((s) => s.loadInfo);
   const refresh = useCallback(() => {
     loadLesson(lessonId).catch((err: unknown) => {
       if (isNotFound(err)) setMissingId(lessonId);
     });
-  }, [loadLesson, lessonId]);
+    void loadInfo(lessonId);
+  }, [loadLesson, loadInfo, lessonId]);
   useEffect(() => {
     refresh();
   }, [refresh]);
@@ -163,18 +151,20 @@ export function PreviewPage() {
                   className="pv-item"
                   aria-label={item.title || `Mục ${k + 1}`}
                 >
-                  <header className="pv-item__head">
-                    <h2>{item.title}</h2>
-                    {item.status === 'draft' && <StatusChip status="draft" />}
-                  </header>
                   {section === 'lesson' ? (
-                    <StepView item={item} />
+                    <StepPreview item={item} position={k + 1} total={list.length} />
                   ) : (
-                    <SetView
-                      item={item}
-                      answers={answers}
-                      onAnswer={(key, o) => setAnswers((a) => ({ ...a, [key]: o }))}
-                    />
+                    <>
+                      <header className="pv-item__head">
+                        <h2>{item.title}</h2>
+                        {item.status === 'draft' && <StatusChip status="draft" />}
+                      </header>
+                      <SetView
+                        item={item}
+                        answers={answers}
+                        onAnswer={(key, o) => setAnswers((a) => ({ ...a, [key]: o }))}
+                      />
+                    </>
                   )}
                 </article>
               ))
