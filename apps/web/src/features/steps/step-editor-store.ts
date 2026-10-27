@@ -201,9 +201,18 @@ export const useStepEditorStore = create<StepEditorState>()((set, get) => {
   };
 });
 
-/** AC-6.4: a step with a file still uploading (block or card) cannot be saved or published. */
-export const isUploading = (uploads: Record<string, Upload>, itemId: string): boolean =>
-  Object.values(uploads).some((u) => u.itemId === itemId && u.phase !== 'failed');
+/**
+ * Where the files of a step stand: 'uploading' while one is still being sent (AC-6.4: no save, no publish),
+ * 'processing' once all are sent but one is not ready yet (AC-6.5: "Lưu nháp" allowed, no publish), else null.
+ */
+export function uploadPhase(
+  uploads: Record<string, Upload>,
+  itemId: string,
+): 'uploading' | 'processing' | null {
+  const mine = Object.values(uploads).filter((u) => u.itemId === itemId && u.phase !== 'failed');
+  if (mine.some((u) => u.phase === 'uploading')) return 'uploading';
+  return mine.length ? 'processing' : null;
+}
 
 /**
  * A file chosen for a block or card: refused at once when its format, size or the workspace storage forbids it

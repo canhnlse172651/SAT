@@ -22,7 +22,7 @@ import {
 } from '@sat/shared';
 import { ApiError } from '../../lib/api-client';
 import { stepOf } from '../steps/step-content';
-import { isUploading, useStepEditorStore } from '../steps/step-editor-store';
+import { uploadPhase, useStepEditorStore } from '../steps/step-editor-store';
 import { type StepNotice, StepNoticeView } from '../steps/StepNotices';
 import { StorageMeter } from '../steps/StorageMeter';
 import { useCallback, useEffect, useState } from 'react';
@@ -82,6 +82,12 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const uploads = useStepEditorStore((s) => s.uploads);
   const cancelAll = useStepEditorStore((s) => s.cancelAll);
   const [notices, setNotices] = useState<Record<string, StepNotice>>({});
+  /** AC-6.4 / AC-6.5: a step's files still uploading (or processing) block its save / publish. */
+  const blockedReason = (item: Item): string | null => {
+    if (item.section !== 'lesson') return null;
+    const phase = uploadPhase(uploads, item.id);
+    return phase === 'uploading' ? SM.uploading : phase === 'processing' ? SM.processing : null;
+  };
 
   const [tab, setTab] = useState<Section>(initialTab);
   const [missingId, setMissingId] = useState<string | null>(null);
@@ -447,8 +453,9 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
                 onMove={(d) => void onMove(item, d)}
                 onAddAfter={() => void onAdd(item.id)}
                 onDelete={() => onDelete(item)}
-                blockedReason={
-                  item.section === 'lesson' && isUploading(uploads, item.id) ? SM.uploading : null
+                blockedReason={blockedReason(item)}
+                draftSaveAllowed={
+                  item.section === 'lesson' && uploadPhase(uploads, item.id) === 'processing'
                 }
                 onOpenSet={openSet}
                 notice={

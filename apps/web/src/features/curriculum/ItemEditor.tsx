@@ -33,6 +33,8 @@ export interface ItemEditorProps {
   onDelete: () => void;
   /** Steps (004): why save / publish are blocked right now (a file is uploading — AC-6.4). */
   blockedReason?: string | null;
+  /** Steps (004): "Lưu nháp" stays enabled despite `blockedReason` (a file is processing — AC-6.5). */
+  draftSaveAllowed?: boolean;
   /** Steps (004): conflict, failure, refusal or issue list of the last save (REQ-2, AC-7.2). */
   notice?: ReactNode;
   /** Steps (004): "Mở bộ bài tập" of a linked set (AC-10.1). */
@@ -172,7 +174,7 @@ export function ItemEditor(props: ItemEditorProps) {
               size="sm"
               variant="outline"
               onClick={props.onSave}
-              disabled={saveDisabled}
+              disabled={busy || (!!blocked && !props.draftSaveAllowed)}
               aria-describedby={blocked ? hintId : undefined}
             >
               Lưu nháp
