@@ -203,6 +203,25 @@ describe('sanitizeRichText (AC-3.5, AC-3.7, NFR-6)', () => {
     expect(sanitizeRichText('<span style="color:#123456;background:red">r</span>')).toBe('r');
   });
 
+  it('turns styled spans (editor, pasted documents) into bold, italic, underline and palette colours', () => {
+    expect(sanitizeRichText('<span style="font-weight: bold;">Đậm</span>')).toBe('<b>Đậm</b>');
+    expect(sanitizeRichText('<span style="font-weight:700">x</span>')).toBe('<b>x</b>');
+    expect(sanitizeRichText('<span style="font-weight:400">x</span>')).toBe('x');
+    expect(sanitizeRichText('<span style="font-style: italic;">n</span>')).toBe('<i>n</i>');
+    expect(sanitizeRichText('<span style="text-decoration: underline;">g</span>')).toBe('<u>g</u>');
+    expect(sanitizeRichText('<span style="text-decoration-line: underline">g</span>')).toBe(
+      '<u>g</u>',
+    );
+    expect(
+      sanitizeRichText(
+        '<p>a<span style="font-weight: bold; color: rgb(220, 38, 38);">đỏ</span>b</p>',
+      ),
+    ).toBe('<p>a<b><span style="color:#dc2626">đỏ</span></b>b</p>');
+    expect(
+      sanitizeRichText('<span style="font-size:20px;font-style:italic;color:#123456">x</span>'),
+    ).toBe('<i>x</i>');
+  });
+
   it('escapes text and closes open tags', () => {
     expect(sanitizeRichText('<b>a "&lt;x&gt;" 你好 nǐ hǎo')).toBe(
       '<b>a "&lt;x&gt;" 你好 nǐ hǎo</b>',

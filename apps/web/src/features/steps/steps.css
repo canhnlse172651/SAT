@@ -147,6 +147,10 @@
   padding: 4px;
   border-bottom: 1px solid var(--border);
 }
+/* Same height as the toolbar until it is built (RichTextEditor, NFR-3). */
+.st-rte__bar--later {
+  min-height: 39px;
+}
 .st-rte__btn {
   min-width: 30px;
   height: 30px;

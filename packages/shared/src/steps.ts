@@ -320,12 +320,35 @@ function paletteColor(value: string | undefined): string | null {
   return PALETTE.has(v) ? v : null;
 }
 
-/** The colour of a span / font, when it is the only style and one of the palette's. */
-function colorOf(tag: string, attrs: Record<string, string>): string | null {
-  if (tag === 'font') return paletteColor(attrs['color']);
-  const style = (attrs['style'] ?? '').trim().replace(/;\s*$/, '');
-  const m = /^color\s*:\s*([^;]+)$/i.exec(style);
-  return m ? paletteColor(m[1]) : null;
+/**
+ * The allowed formats a span / font carries as inline style (the browser editor and pasted documents write bold as
+ * `font-weight`, …): bold, italic, underline and a palette colour, as tags to open in this order. Other styles are dropped.
+ */
+function formatsOf(tag: string, attrs: Record<string, string>): string[] {
+  if (tag === 'font') {
+    const color = paletteColor(attrs['color']);
+    return color ? [`span style="color:${color}"`] : [];
+  }
+  const style: Record<string, string> = {};
+  for (const decl of (attrs['style'] ?? '').split(';')) {
+    const at = decl.indexOf(':');
+    if (at > 0)
+      style[decl.slice(0, at).trim().toLowerCase()] = decl
+        .slice(at + 1)
+        .trim()
+        .toLowerCase();
+  }
+  const out: string[] = [];
+  const weight = style['font-weight'] ?? '';
+  if (weight === 'bold' || weight === 'bolder' || Number(weight) >= 600) out.push('b');
+  if (/^(italic|oblique)\b/.test(style['font-style'] ?? '')) out.push('i');
+  if (
+    /\bunderline\b/.test(`${style['text-decoration'] ?? ''} ${style['text-decoration-line'] ?? ''}`)
+  )
+    out.push('u');
+  const color = paletteColor(style['color']);
+  if (color) out.push(`span style="color:${color}"`);
+  return out;
 }
 
 /**
@@ -335,7 +358,8 @@ function colorOf(tag: string, attrs: Record<string, string>): string | null {
  */
 export function sanitizeRichText(html: string): string {
   let out = '';
-  const stack: { tag: string; emit: boolean }[] = [];
+  /** Each open source tag and the markup that closes what it emitted. */
+  const stack: { tag: string; close: string }[] = [];
   let skip: string | null = null;
   const token =
     /<!--[\s\S]*?-->|<\/?([a-zA-Z][a-zA-Z0-9]*)\b((?:[^>"']|"[^"]*"|'[^']*')*)>|<[^>]*>?/g;
@@ -364,32 +388,30 @@ export function sanitizeRichText(html: string): string {
     if (closing) {
       const at = stack.map((s) => s.tag).lastIndexOf(tag);
       if (at < 0) continue;
-      while (stack.length > at) {
-        const top = stack.pop();
-        if (top?.emit) out += `</${top.tag}>`;
-      }
+      while (stack.length > at) out += stack.pop()?.close ?? '';
       continue;
     }
     const attrs = attributes(m[2] ?? '');
     let open = `<${tag}>`;
-    let emit = true;
+    let close = `</${tag}>`;
     if (tag === 'a') {
       const href = attrs['href'] ?? '';
-      emit = /^https?:\/\/[^\s"'<>]+$/i.test(href);
-      open = `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">`;
+      const ok = /^https?:\/\/[^\s"'<>]+$/i.test(href);
+      open = ok ? `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">` : '';
+      close = ok ? close : '';
     } else if (tag === 'span') {
-      const color = colorOf(name, attrs);
-      emit = !!color;
-      open = `<span style="color:${color}">`;
+      const formats = formatsOf(name, attrs);
+      open = formats.map((f) => `<${f}>`).join('');
+      close = formats
+        .map((f) => `</${f.split(' ')[0]}>`)
+        .reverse()
+        .join('');
     }
-    if (emit) out += open;
-    stack.push({ tag, emit });
+    out += open;
+    stack.push({ tag, close });
   }
   if (!skip) out += escapeText(decodeEntities(html.slice(last)));
-  while (stack.length) {
-    const top = stack.pop();
-    if (top?.emit) out += `</${top.tag}>`;
-  }
+  while (stack.length) out += stack.pop()?.close ?? '';
   return out;
 }
 
