@@ -2,8 +2,11 @@ import {
   CURRICULUM_MESSAGES as M,
   type Item,
   type McqQuestion,
+  QUESTION_KIND_LABELS,
   type SetContent,
   itemNotReadyReason,
+  newMcq,
+  questionKind,
   setContentSchema,
   stepProblems,
 } from '@sat/shared';
@@ -45,10 +48,10 @@ const LETTERS = 'ABCDEF';
 
 const setOf = (c: unknown): SetContent => {
   const p = setContentSchema.safeParse(c);
-  return p.success ? p.data : { questions: [] };
+  return p.success ? p.data : { instructions: '', stepId: null, questions: [] };
 };
 
-/** Interim content of a set: multiple-choice questions (005 replaces it with the six question types). */
+/** Interim set fields: multiple-choice questions only (005 T010/T011 replace them with the full set editor). */
 function SetFields({
   base,
   content,
@@ -59,73 +62,81 @@ function SetFields({
   onChange: (c: SetContent) => void;
 }) {
   const setQ = (k: number, q: McqQuestion) =>
-    onChange({ questions: content.questions.map((x, i) => (i === k ? q : x)) });
+    onChange({ ...content, questions: content.questions.map((x, i) => (i === k ? q : x)) });
   return (
     <div className="cur-blocks">
-      {content.questions.map((q, k) => (
-        <fieldset key={`${base}-q${k}`} className="cur-block">
-          <legend className="small strong">Câu {k + 1} · Trắc nghiệm</legend>
-          <div className="cur-block__head">
-            <span className="grow" />
-            {content.questions.length > 1 && (
-              <IconButton
-                size="sm"
-                aria-label={`Xóa câu ${k + 1}`}
-                icon={<Icon name="trash" size={16} />}
-                onClick={() => onChange({ questions: content.questions.filter((_, i) => i !== k) })}
-              />
-            )}
-          </div>
-          <Textarea
-            label={`Nội dung câu ${k + 1}`}
-            rows={2}
-            value={q.prompt}
-            onChange={(e) => setQ(k, { ...q, prompt: e.target.value })}
-          />
-          <div
-            className="cur-options"
-            role="radiogroup"
-            aria-label={`Đáp án đúng của câu ${k + 1}`}
-          >
-            {q.options.map((opt, o) => (
-              <div key={o} className="cur-option">
-                <input
-                  type="radio"
-                  name={`${base}-q${k}-answer`}
-                  aria-label={`Phương án ${LETTERS[o]} là đáp án đúng`}
-                  checked={q.answer === o}
-                  onChange={() => setQ(k, { ...q, answer: o })}
-                />
-                <input
-                  className="input"
-                  aria-label={`Câu ${k + 1} · Phương án ${LETTERS[o]}`}
-                  placeholder={`Phương án ${LETTERS[o]}`}
-                  value={opt}
-                  maxLength={500}
-                  onChange={(e) =>
-                    setQ(k, {
-                      ...q,
-                      options: q.options.map((x, i) => (i === o ? e.target.value : x)),
-                    })
+      {content.questions.map((q, k) =>
+        q.type !== 'mcq' ? (
+          <p key={q.id} className="small muted">
+            Câu {k + 1} · {QUESTION_KIND_LABELS[questionKind(q)]}
+          </p>
+        ) : (
+          <fieldset key={q.id} className="cur-block">
+            <legend className="small strong">Câu {k + 1} · Trắc nghiệm</legend>
+            <div className="cur-block__head">
+              <span className="grow" />
+              {content.questions.length > 1 && (
+                <IconButton
+                  size="sm"
+                  aria-label={`Xóa câu ${k + 1}`}
+                  icon={<Icon name="trash" size={16} />}
+                  onClick={() =>
+                    onChange({ ...content, questions: content.questions.filter((_, i) => i !== k) })
                   }
                 />
-              </div>
-            ))}
-          </div>
-        </fieldset>
-      ))}
+              )}
+            </div>
+            <Textarea
+              label={`Nội dung câu ${k + 1}`}
+              rows={2}
+              value={q.prompt}
+              onChange={(e) => setQ(k, { ...q, prompt: e.target.value })}
+            />
+            <div
+              className="cur-options"
+              role="radiogroup"
+              aria-label={`Đáp án đúng của câu ${k + 1}`}
+            >
+              {q.options.map((opt, o) => (
+                <div key={opt.id} className="cur-option">
+                  <input
+                    type="radio"
+                    name={`${base}-q${k}-answer`}
+                    aria-label={`Phương án ${LETTERS[o]} là đáp án đúng`}
+                    checked={opt.correct}
+                    onChange={() =>
+                      setQ(k, {
+                        ...q,
+                        options: q.options.map((x, i) => ({ ...x, correct: i === o })),
+                      })
+                    }
+                  />
+                  <input
+                    className="input"
+                    aria-label={`Câu ${k + 1} · Phương án ${LETTERS[o]}`}
+                    placeholder={`Phương án ${LETTERS[o]}`}
+                    value={opt.text}
+                    maxLength={200}
+                    onChange={(e) =>
+                      setQ(k, {
+                        ...q,
+                        options: q.options.map((x, i) =>
+                          i === o ? { ...x, text: e.target.value } : x,
+                        ),
+                      })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        ),
+      )}
       <Button
         size="sm"
         variant="ghost"
         disabled={content.questions.length >= 100}
-        onClick={() =>
-          onChange({
-            questions: [
-              ...content.questions,
-              { type: 'mcq', prompt: '', options: ['', '', '', ''], answer: null },
-            ],
-          })
-        }
+        onClick={() => onChange({ ...content, questions: [...content.questions, newMcq()] })}
       >
         <Icon name="plus" size={15} />
         Thêm câu trắc nghiệm

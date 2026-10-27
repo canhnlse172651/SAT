@@ -16,7 +16,7 @@ for (const [plain, marked] of Object.entries(TONE_MARKS)) {
 }
 
 /** Index of the vowel that carries the tone mark: a/e first, 'ou' -> o, otherwise the last vowel. */
-function toneIndex(syllable: string): number {
+export function toneVowelIndex(syllable: string): number {
   const lower = syllable.toLowerCase();
   let i = lower.search(/[ae]/);
   if (i >= 0) return i;
@@ -31,7 +31,7 @@ function toneIndex(syllable: string): number {
 function markSyllable(letters: string, tone: number): string {
   const text = letters.replace(/v/g, 'ü').replace(/V/g, 'Ü');
   if (tone < 1 || tone > 4) return text; // 0 / 5 = neutral tone: no mark
-  const idx = toneIndex(text);
+  const idx = toneVowelIndex(text);
   if (idx < 0) return text;
   const ch = text.charAt(idx);
   const lower = ch.toLowerCase();

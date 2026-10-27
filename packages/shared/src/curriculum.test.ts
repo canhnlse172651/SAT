@@ -56,22 +56,30 @@ describe('itemNotReadyReason (AC-9.2)', () => {
       'Khối 1 · Văn bản: chưa có chữ',
     );
     expect(itemNotReadyReason('exercise', '', newItemContent('exercise'))).toBe(
-      'Câu 1: chưa có nội dung câu hỏi',
+      'Tiêu đề bắt buộc, tối đa 150 ký tự',
+    );
+    expect(itemNotReadyReason('exercise', 'Bộ 1', newItemContent('exercise'))).toBe(
+      'Câu 1: Câu hỏi cần có đề bài (chữ hoặc hình ảnh)',
     );
     expect(itemNotReadyReason('lesson', 'x', { blocks: [] })).toBe('chưa có khối nào');
   });
-  it('checks questions and titles', () => {
+  it('checks sets with the 005 rules (legacy multiple choice upgraded)', () => {
     const q = { type: 'mcq', prompt: 'Hỏi', options: ['A', ''], answer: 0 };
     expect(itemNotReadyReason('exercise', 'Bộ 1', { questions: [q] })).toBe(
-      'Câu 1: cần ít nhất 2 phương án',
+      'Câu 1: Phương án B đang trống',
     );
     const q2 = { ...q, options: ['A', 'B'], answer: null };
     expect(itemNotReadyReason('exercise', 'Bộ 1', { questions: [q2] })).toBe(
-      'Câu 1: chưa chọn đáp án đúng',
+      'Câu 1: Hãy chọn đúng 1 đáp án đúng',
     );
     const ok = { ...q, options: ['A', 'B'], answer: 1 };
-    expect(itemNotReadyReason('exercise', ' ', { questions: [ok] })).toBe('Chưa có tên bộ bài tập');
+    expect(itemNotReadyReason('exercise', ' ', { questions: [ok] })).toBe(
+      'Tiêu đề bắt buộc, tối đa 150 ký tự',
+    );
     expect(itemNotReadyReason('exercise', 'Bộ 1', { questions: [ok] })).toBeNull();
+    expect(itemNotReadyReason('exercise', 'Bộ 1', { questions: [] })).toBe(
+      'Bộ bài tập cần ít nhất 1 câu hỏi để xuất bản',
+    );
     expect(
       itemNotReadyReason('lesson', 'Chào', { blocks: [{ type: 'text', text: '你好' }] }),
     ).toBeNull();

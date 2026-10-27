@@ -2,7 +2,7 @@
 id: 005
 slug: exercises
 title: Exercises and Auto Grading
-status: tasked
+status: implementing
 branch: feat/005-exercises
 created: 2026-10-18
 updated: 2026-10-27

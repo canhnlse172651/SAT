@@ -8,7 +8,7 @@ import type {
   LessonRow,
   Section,
 } from '@sat/shared';
-import { itemNotReadyReason } from '@sat/shared';
+import { itemNotReadyReason, learnQuestion, setContentSchema } from '@sat/shared';
 import { Logger } from '@nestjs/common';
 import type { CurriculumDoc, ItemDoc, LessonDoc } from './curriculum.model.js';
 
@@ -127,9 +127,9 @@ export function lessonDto(
 /** What an HV gets: never the AI mark (AC-11.7) nor the correct answers. */
 export function learnItemDto(it: ItemDoc): LearnItem {
   let content = it.content;
-  if (it.section === 'exercise' && content && typeof content === 'object') {
-    const questions = (content as { questions?: Record<string, unknown>[] }).questions ?? [];
-    content = { questions: questions.map(({ answer: _answer, ...q }) => q) };
+  if (it.section === 'exercise') {
+    const set = setContentSchema.safeParse(content);
+    content = { questions: set.success ? set.data.questions.map((q) => learnQuestion(q)) : [] };
   }
   return { id: String(it._id), section: it.section, title: it.title, content };
 }

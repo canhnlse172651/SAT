@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import {
+  type ExerciseSetContent,
+  exerciseSetContentSchema,
+  newSetContent,
+  setNotReadyReason,
+} from './exercises.js';
 import { type HskLevel, hskLevelSchema } from './hsk.js';
 import { objectId } from './ids.js';
 import {
@@ -142,50 +148,30 @@ export function copyName(original: string, n = 1): string {
   );
 }
 
-/* ---------- item content (steps: 004 `steps.ts`; sets: interim until 005 ships) ---------- */
+/* ---------- item content (steps: 004 `steps.ts`; sets: 005 `exercises.ts`) ---------- */
 
-export const mcqSchema = z.object({
-  type: z.literal('mcq'),
-  prompt: z.string().max(2000),
-  options: z.array(z.string().max(500)).min(2).max(6),
-  answer: z.number().int().min(0).max(5).nullable(),
-});
-export type McqQuestion = z.infer<typeof mcqSchema>;
-export const setContentSchema = z.object({ questions: z.array(mcqSchema).max(100) });
-export type SetContent = z.infer<typeof setContentSchema>;
+export const setContentSchema = exerciseSetContentSchema;
+export type SetContent = ExerciseSetContent;
 
 export type ItemContent = StepContent | SetContent;
 
-/** A new step: one empty text block (004); a new set: one sample multiple-choice question (AC-7.6). */
+/** A new step: one empty text block (004); a new set: one sample multiple-choice question (005 AC-1.1). */
 export function newItemContent(section: Section): ItemContent {
-  return section === 'lesson'
-    ? newStepContent()
-    : { questions: [{ type: 'mcq', prompt: '', options: ['', '', '', ''], answer: null }] };
+  return section === 'lesson' ? newStepContent() : newSetContent();
 }
 
 export const contentSchemaFor = (section: Section) =>
   section === 'lesson' ? stepContentSchema : setContentSchema;
 
-const blank = (s: string) => s.trim() === '';
-
-/** Why an item cannot be published yet (AC-9.2), or null when it is ready. Content is checked before the title. */
+/** Why an item cannot be published yet (AC-9.2; sets: 005 AC-12.3), or null when it is ready. */
 export function itemNotReadyReason(
   section: Section,
   title: string,
   content: unknown,
 ): string | null {
-  if (section === 'lesson') return stepNotReadyReason(title, content);
-  const parsed = setContentSchema.safeParse(content);
-  const questions = parsed.success ? parsed.data.questions : [];
-  if (!questions.length) return 'mục trống';
-  for (const [i, q] of questions.entries()) {
-    const n = i + 1;
-    if (blank(q.prompt)) return `Câu ${n}: chưa có nội dung câu hỏi`;
-    if (q.options.filter((o) => !blank(o)).length < 2) return `Câu ${n}: cần ít nhất 2 phương án`;
-    if (q.answer === null || blank(q.options[q.answer] ?? ''))
-      return `Câu ${n}: chưa chọn đáp án đúng`;
-  }
-  return blank(title) ? 'Chưa có tên bộ bài tập' : null;
+  return section === 'lesson'
+    ? stepNotReadyReason(title, content)
+    : setNotReadyReason(title, content);
 }
 
 /* ---------- field rules ---------- */

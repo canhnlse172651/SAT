@@ -48,22 +48,24 @@ function SetView({
     <ol className="pv-questions">
       {(content.success ? content.data.questions : []).map((q, k) => {
         const key = `${item.id}-${k}`;
+        // Interim: multiple choice only (005 T022 renders every kind with QuestionView).
+        const options = q.type === 'mcq' || q.type === 'vocab' ? q.options : [];
         return (
           <li key={key} className="pv-question">
             <fieldset>
               <legend>
                 Câu {k + 1}. {q.prompt}
               </legend>
-              {q.options.map((opt, o) =>
-                opt.trim() ? (
-                  <label key={o} className="pv-option">
+              {options.map((opt, o) =>
+                opt.text.trim() ? (
+                  <label key={opt.id} className="pv-option">
                     <input
                       type="radio"
                       name={key}
                       checked={answers[key] === o}
                       onChange={() => onAnswer(key, o)}
                     />
-                    <span>{opt}</span>
+                    <span>{opt.text}</span>
                   </label>
                 ) : null,
               )}
