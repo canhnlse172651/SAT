@@ -30,7 +30,7 @@ the 10 GB quota, "counted once" and release-when-unreferenced come from 004 (`FI
 | REQ-1 | 002 `addItem` (new set = 1 sample MCQ), `move`; `GET exercises/lessons/:id/sets` (submission counts, regrade state); set `content.stepId` | `SetEditor` in `ItemEditor`: Tiêu đề, Hướng dẫn, "Bước học liên kết", counts bar, empty state, archived toggle (002) |
 | REQ-2 | 002 `saveItem` → `SET_HOOKS.prepare`: invalid field → 422 `INVALID_CONTENT` "Chưa lưu được: …" | question list (Lên trên / Xuống dưới / Xóa câu), "Thêm câu hỏi" menu, total points, field errors on blur |
 | REQ-3 | `POST steps/files?kind=questionImage` (004 endpoint, quota pre/post check) | stem text + image (+ zoom on S05), upload retry, "Giải thích" |
-| REQ-4 … REQ-11 | shared schemas, completeness, grading | `QuestionEditors` (one per kind) and `QuestionView` (S05 / T21) per kind, tap + keyboard + drag |
+| REQ-4, REQ-5, REQ-6, REQ-7, REQ-8, REQ-9, REQ-10, REQ-11 | shared schemas, completeness, grading (REQ-7: normalisation + pinyin validator) | `QuestionEditors` (one per kind) and `QuestionView` (S05 / T21) per kind, tap + keyboard + drag |
 | REQ-12 | 002 `saveItem` / `publishItem` + shared `setIssues` (422 `NOT_READY` `details.issues`) | "Lưu nháp" / "Lưu thay đổi" / "Xuất bản", issue list on the set, scroll to first, "Chưa lưu" |
 | REQ-13 | 002 `AiReplaceService` exercise branch: AC-12.3 per set, AC-13.4 rejects, `ai` on questions, step link kept if present, confirmation lines (AC-13.11) | (T20 is 010's — dev API) |
 | REQ-14 | `GET/POST learn/classes/:classId/sets/:setId(/start)`, `PUT …/attempt` (per-question last write wins), gate = 003 `ClassAccess` + 005 rules | `ExercisePage` (S05): intro, board, Câu trước/sau, autosave queue with offline retry, leave warning |
