@@ -34,3 +34,17 @@
     high findings in Nest / multer / undici (not from pdfjs-dist).
   - The dev `LocalDiskStorage` buffers an upload in memory before writing it (fine for QA; a production storage adapter must stream).
 - Verify with: node .sdd/scripts/sdd.mjs run test && node .sdd/scripts/sdd.mjs run test:e2e
+
+## Handoff 2026-10-27 09:50 — /test-module 004 (QA)
+- Status: 004-lessons-flashcards implementing · 22/22 tasks   Branch: feat/004-lessons-flashcards @ 37ad27c (code under test)
+- Done this session: QA run 2026-10-27-0932 — 101 replayable scripts (`testing/e2e/TC-###.spec.ts` + `helpers.ts`), 94/101 E2E/API Pass,
+  4 manual cases with instructions; report `testing/runs/2026-10-27-0932/report.md`; `verification.md` (QA section, Verdict FAIL);
+  `sdd trace 004`: no gaps. This QA ran in the same session as the implementation (not an independent QA session).
+- In progress: —
+- Next: `/module 004` — sửa TC-024, TC-028 (B1: giữ đậm/nghiêng/gạch chân — bỏ `styleWithCSS` hoặc nhận các span định dạng trong
+  `sanitizeRichText`), TC-045 (B2: pha "Đang xử lý…" không khóa "Lưu nháp"), TC-067 (B3: T08 chỉ có "Xong"), TC-080 (B5: thao tác tiếp theo
+  kiểm tra bước đang xem còn mở không), TC-099 (B6: hiệu năng mở T07 30 bước); TC-077 (B4) chờ agent spec thống nhất 004 AC-13.4 với 003 AC-14.5.
+  Sau khi sửa: `/test-module 004` — chạy lại TC-024 TC-028 TC-045 TC-067 TC-077 TC-080 TC-099.
+- Blockers / questions: B4 là xung đột spec (004 AC-13.4 vs 003 AC-14.5). `scripts/replay-module-tests.mjs` không lọc được nhiều TC trên Windows
+  (`|` qua `shell: true`) — chạy cả module hoặc từng TC.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 004
