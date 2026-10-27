@@ -2,12 +2,12 @@
 id: 005
 slug: exercises
 title: Exercises and Auto Grading
-status: clarified
+status: approved
 branch: feat/005-exercises
 created: 2026-10-18
 updated: 2026-10-27
-approved_by:
-approved_at:
+approved_by: canh
+approved_at: 2026-10-27
 ---
 
 # Exercises and Auto Grading
