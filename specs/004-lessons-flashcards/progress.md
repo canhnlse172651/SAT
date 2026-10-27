@@ -48,3 +48,28 @@
 - Blockers / questions: B4 là xung đột spec (004 AC-13.4 vs 003 AC-14.5). `scripts/replay-module-tests.mjs` không lọc được nhiều TC trên Windows
   (`|` qua `shell: true`) — chạy cả module hoặc từng TC.
 - Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 004
+
+## Handoff 2026-10-27 11:00 — /module 004 (fix mode)
+- Status: 004-lessons-flashcards implementing · 22/22 tasks   Branch: feat/004-lessons-flashcards @ afee525
+- Done this session (fixes for QA run 2026-10-27-0932, application code only; scripts and expected results untouched):
+  - B1 TC-024, TC-028 (5bb376c): the editor writes `<b>/<i>/<u>/<font>` (no `styleWithCSS`); `sanitizeRichText` also turns
+    `font-weight` / `font-style` / `text-decoration` / palette-colour spans (editor, pasted Word / Docs) into b / i / u / colour (+ tests);
+    Enter starts a plain line (the browser carried bold into the next line).
+  - B2 TC-045 (a160e40): `uploadPhase()` — "Đang xử lý…" keeps "Lưu nháp" enabled, "Xuất bản" / "Lưu thay đổi" stay blocked.
+  - B3 TC-067 (fbd8e15): `Dialog`/`Overlay` option `closeButton` (+ test); T08 has only "Xong".
+  - B5 TC-080 (68844df): "Trước" / "Tiếp" send `from=<viewed step>`; the API checks it first → "Bước học này hiện không còn khả dụng." + S11.
+  - B6 TC-099 (afee525 + toolbar part of 5bb376c): steps off screen skip layout (`content-visibility`), text-editor toolbars built near the
+    screen only (DOM 21 k → 16 k elements), web fonts loaded after the page (`lib/fonts.ts`, + tests; index.html no longer blocks on
+    Google Fonts), session asked at start, `/assets` scripts and styles sent gzip-compressed (`node:zlib` in `app.ts`, no new
+    dependency, + test). T07 30 steps: 1,1–1,6 s (was 2,5 s); S03 cold 4G + CPU 4×: 2,3–2,8 s (was 2,9–3,1 s).
+  - Checks (portable Node 24): lint ✔, typecheck ✔, `run test` 62 files / 339 passed, build ✔, `run test:e2e` 10 passed. Full serial replay
+    of the 101 scripts: 99 pass; TC-077 fails (B4, below); TC-072 failed once in the full run (download timing) and passes alone.
+- In progress: —
+- Next: `/test-module 004` — chạy lại TC-024 TC-028 TC-045 TC-067 TC-080 TC-098 TC-099 (và TC-072, TC-077); nên chạy lại cả module.
+- Blockers / questions:
+  - B4 TC-077 not fixed — spec conflict for the spec agent: 004 AC-13.4 wants A05 "Không tìm thấy nội dung bạn yêu cầu." for an HV
+    outside the class; 003 AC-14.5 answers "Bạn không thuộc lớp này hoặc lớp không còn tồn tại" (404 `CLASS_NOT_MEMBER`). Needs one rule.
+  - TC-098 (NFR-1) passes now but its p95 of 5 cold loads stays within ~0,2–0,7 s of 3 s on the simulated phone; further gains would need
+    smaller bundles or a CDN/brotli in hosting (ADR-0003 pending).
+  - Web fonts now arrive after the page has loaded (fallback font shown briefly on the first visit) — design owner to confirm.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 004
