@@ -111,6 +111,7 @@ export function DeckDialog({
       open={open}
       onClose={onClose}
       size="xl"
+      closeButton={false}
       title={`Bộ thẻ · ${stepTitle.trim() || 'Bước chưa có tên'}`}
       description={<StorageMeter />}
       footer={<Button onClick={onClose}>Xong</Button>}

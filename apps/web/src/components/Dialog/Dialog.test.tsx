@@ -33,6 +33,23 @@ describe('Dialog', () => {
     expect(dialog).toHaveAttribute('aria-modal', 'true');
   });
 
+  it('can leave out the header close button when the footer has the only way out', () => {
+    render(
+      <Dialog
+        open
+        onClose={() => {}}
+        title="Bộ thẻ"
+        closeButton={false}
+        footer={<button>Xong</button>}
+      >
+        <input aria-label="Mặt trước" />
+      </Dialog>,
+    );
+    expect(screen.queryByRole('button', { name: 'Đóng' })).not.toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Bộ thẻ' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Mặt trước')).toHaveFocus();
+  });
+
   it('moves focus inside, traps Tab and wraps around', async () => {
     render(<Harness />);
     await userEvent.click(screen.getByRole('button', { name: 'Mở' }));

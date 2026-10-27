@@ -22,6 +22,8 @@ export interface OverlayProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   /** `confirm`: the prototype's confirmation card — question, impact, actions; no header bar or close button. */
   layout?: 'standard' | 'confirm';
+  /** The header's "Đóng" (X) button (default true); leave it out when the footer has the only way out. Esc still closes. */
+  closeButton?: boolean;
   className?: string;
 }
 
@@ -45,6 +47,7 @@ function OverlayPanel({
   closeOnScrim = true,
   size = 'md',
   layout = 'standard',
+  closeButton = true,
   className,
 }: PanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -119,7 +122,9 @@ function OverlayPanel({
             <h2 id={titleId} className="overlay__title">
               {title}
             </h2>
-            <IconButton aria-label="Đóng" icon={<CloseIcon />} size="sm" onClick={onClose} />
+            {closeButton && (
+              <IconButton aria-label="Đóng" icon={<CloseIcon />} size="sm" onClick={onClose} />
+            )}
           </header>
         )}
         {description && (
