@@ -1,5 +1,5 @@
 // Walking-skeleton tests: infrastructure only, so they cite no acceptance criterion.
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { type DynamicModule, Global, Module } from '@nestjs/common';
@@ -109,5 +109,40 @@ describe('SPA hosting', () => {
     const res = await request(await server(() => true, dist)).get('/api/nope');
     expect(res.status).toBe(404);
     expect(res.body.error.code).toBe('NOT_FOUND');
+  });
+
+  it('sends scripts and styles gzip-compressed to browsers that accept it (004 NFR-1: phones on 4G)', async () => {
+    const dist = mkdtempSync(join(tmpdir(), 'web-dist-'));
+    writeFileSync(join(dist, 'index.html'), '<!doctype html><div id="root"></div>');
+    mkdirSync(join(dist, 'assets'));
+    const js = `export const a = "${'x'.repeat(5000)}";`;
+    writeFileSync(join(dist, 'assets', 'index-abc.js'), js);
+    writeFileSync(join(dist, 'assets', 'logo-abc.png'), 'png');
+    const http = await server(() => true, dist);
+
+    const packed = await request(http)
+      .get('/assets/index-abc.js')
+      .set('accept-encoding', 'gzip, deflate, br');
+    expect(packed.status).toBe(200);
+    expect(packed.headers['content-encoding']).toBe('gzip');
+    expect(packed.headers['vary']).toMatch(/Accept-Encoding/i);
+    expect(packed.headers['content-type']).toMatch(/javascript/);
+    expect(packed.headers['cache-control']).toBe('public, max-age=31536000, immutable');
+    expect(Number(packed.headers['content-length'])).toBeLessThan(js.length / 10);
+    expect(packed.text).toBe(js); // supertest unzips; the length above is what was sent
+
+    const plain = await request(http)
+      .get('/assets/index-abc.js')
+      .set('accept-encoding', 'identity');
+    expect(plain.headers['content-encoding']).toBeUndefined();
+    expect(plain.text).toBe(js);
+    const image = await request(http).get('/assets/logo-abc.png').set('accept-encoding', 'gzip');
+    expect(image.headers['content-encoding']).toBeUndefined();
+    const missing = await request(http).get('/assets/nope.js').set('accept-encoding', 'gzip');
+    expect(missing.headers['content-encoding']).toBeUndefined();
+    const outside = await request(http)
+      .get('/assets/..%2Findex.html')
+      .set('accept-encoding', 'gzip');
+    expect(outside.headers['content-encoding']).toBeUndefined();
   });
 });

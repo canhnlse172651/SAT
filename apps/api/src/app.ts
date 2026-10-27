@@ -1,5 +1,6 @@
-import { existsSync } from 'node:fs';
-import { join, resolve, sep } from 'node:path';
+import { existsSync, readFileSync, statSync } from 'node:fs';
+import { extname, join, resolve, sep } from 'node:path';
+import { gzipSync } from 'node:zlib';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
@@ -33,14 +34,57 @@ export function configureApp(app: NestExpressApplication, { webDistDir }: HttpOp
   }
 }
 
+/** Text assets sent gzip-compressed (images, fonts and video are compressed already). */
+const PACKED_TYPES: Record<string, string> = {
+  '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.json': 'application/json; charset=utf-8',
+};
+const IMMUTABLE = 'public, max-age=31536000, immutable';
+
+/**
+ * Fingerprinted scripts and styles gzip-compressed once, then kept in memory: the app's first load on a phone network
+ * carries a third of the bytes (004 NFR-1). Anything else — or a client without gzip — goes to `express.static`.
+ */
+function packedAssets(root: string) {
+  const assets = join(root, 'assets');
+  const packed = new Map<string, Buffer>();
+  return (req: Request, res: Response, next: NextFunction) => {
+    const type = PACKED_TYPES[extname(req.path)];
+    const accepts = /\bgzip\b/.test(String(req.headers['accept-encoding'] ?? ''));
+    if ((req.method !== 'GET' && req.method !== 'HEAD') || !type || !accepts) return next();
+    let file: string;
+    try {
+      file = resolve(assets, `.${decodeURIComponent(req.path)}`);
+    } catch {
+      return next();
+    }
+    if (!file.startsWith(assets + sep)) return next();
+    let body = packed.get(file);
+    if (!body) {
+      if (!existsSync(file) || !statSync(file).isFile()) return next();
+      body = gzipSync(readFileSync(file), { level: 9 });
+      packed.set(file, body);
+    }
+    res.setHeader('Content-Type', type);
+    res.setHeader('Content-Encoding', 'gzip');
+    res.setHeader('Vary', 'Accept-Encoding');
+    res.setHeader('Cache-Control', IMMUTABLE);
+    res.setHeader('Content-Length', body.length);
+    res.end(req.method === 'HEAD' ? undefined : body);
+  };
+}
+
 function serveSpa(app: NestExpressApplication, root: string): void {
+  app.use('/assets', packedAssets(root));
   app.use(
     express.static(root, {
       index: false,
       setHeaders: (res, path) => {
         // Vite fingerprints everything under assets/, so it can be cached forever.
         if (path.includes(`${sep}assets${sep}`)) {
-          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          res.setHeader('Cache-Control', IMMUTABLE);
         }
       },
     }),

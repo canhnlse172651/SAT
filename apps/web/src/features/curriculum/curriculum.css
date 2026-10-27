@@ -508,6 +508,9 @@
   padding: var(--sp-4);
 }
 .cur-item {
+  /* NFR-3 (004): a Bài of 30 steps / 300 blocks — steps off screen skip layout and paint until scrolled to. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 480px;
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
