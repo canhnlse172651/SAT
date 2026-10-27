@@ -73,3 +73,16 @@
     smaller bundles or a CDN/brotli in hosting (ADR-0003 pending).
   - Web fonts now arrive after the page has loaded (fallback font shown briefly on the first visit) — design owner to confirm.
 - Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 004
+
+## Handoff 2026-10-27 11:10 — /test-module 004 (QA)
+- Status: 004-lessons-flashcards implementing · 22/22 tasks   Branch: feat/004-lessons-flashcards @ a04568f (code under test)
+- Done this session: QA run 2026-10-27-1057 — all 101 saved scripts (unchanged), serial: 100/101 E2E/API Pass, 4 manual cases with
+  instructions; TC-024 and TC-067 also walked by hand with Playwright MCP. B1, B2, B3, B5, B6 fixed (T07 30 steps 1 145 ms; S03 p95 2 667 ms).
+  Report `testing/runs/2026-10-27-1057/report.md`; `verification.md` Verdict FAIL (only TC-077); `sdd trace 004`: no gaps. Same session as the
+  fixes (not an independent QA session).
+- In progress: —
+- Next: agent spec — thống nhất 004 AC-13.4 với 003 AC-14.5 (HV ngoài lớp: A05 hay "Bạn không thuộc lớp này…"); sau đó `/module 004` — sửa
+  TC-077 nếu spec giữ A05 (hoặc cập nhật test case theo spec mới), rồi `/test-module 004` — chạy lại TC-077.
+- Blockers / questions: B4 là xung đột spec, không sửa được bằng code khi chưa có quyết định. Font web nay tải sau khi trang tải xong (chủ thiết kế
+  xác nhận).
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 004 TC-077

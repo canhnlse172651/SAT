@@ -1,0 +1,4932 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\CanhLN\\AppData\\Local\\Temp\\claude\\c--Users-CanhLN-Desktop-SAT\\c88634d9-3426-4ceb-9363-1005759f9beb\\scratchpad\\node-v24.22.1-win-x64\\node.exe",
+      "C:\\Users\\CanhLN\\Desktop\\SAT\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "-c",
+      "playwright.modules.config.ts",
+      "--workers=1"
+    ],
+    "configFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\playwright.modules.config.ts",
+    "rootDir": "C:/Users/CanhLN/Desktop/SAT/specs/004-lessons-flashcards/testing/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/CanhLN/Desktop/SAT/specs/004-lessons-flashcards/testing/runs/2026-10-27-1057/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/CanhLN/Desktop/SAT/specs/004-lessons-flashcards/testing/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e",
+        "snapshotDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:/Users/CanhLN/Desktop/SAT/specs/004-lessons-flashcards/testing/runs/2026-10-27-1057/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run build && node tests/e2e/server.mjs",
+      "url": "http://127.0.0.1:4173/api/ready",
+      "reuseExistingServer": true,
+      "timeout": 240000,
+      "env": {
+        "PORT": "4173"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "TC-001.spec.ts",
+      "file": "TC-001.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.1] [004:AC-1.8] [004:AC-7.7] TC-001 Bài học tab of T07 from T18",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1083,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:36.991Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "577687e59bef6f4b4ce3-82bb8a4f66b89fbe9079",
+          "file": "TC-001.spec.ts",
+          "line": 14,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-002.spec.ts",
+      "file": "TC-002.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.1] TC-002 empty Bài học section",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 480,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:38.301Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bfc1d44aad53a9e876a9-daa21d5198b14fb9daaf",
+          "file": "TC-002.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-003.spec.ts",
+      "file": "TC-003.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.2] [004:AC-1.3] TC-003 add a step at the end",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 849,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:38.816Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "92d5083d9b78aba49eb2-6d2eb725c1f1912d925a",
+          "file": "TC-003.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-004.spec.ts",
+      "file": "TC-004.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.2] [004:AC-1.3] TC-004 add after a step keeps unsaved edits elsewhere",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 846,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:39.706Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e48783768359d1219d03-0048c129a0fdfc34dc25",
+          "file": "TC-004.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-005.spec.ts",
+      "file": "TC-005.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.2] TC-005 at most 30 steps not archived",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2700,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:40.604Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "19d53905058c42a34022-7f86d7d417e4c1071aca",
+          "file": "TC-005.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-006.spec.ts",
+      "file": "TC-006.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.4] [004:AC-2.1] TC-006 empty step name: incomplete, draft save allowed, publish refused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1242,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:43.366Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c5494511e34622abe317-d86b0675ade003e931b7",
+          "file": "TC-006.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-007.spec.ts",
+      "file": "TC-007.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.4] [004:AC-2.8] TC-007 name over 100 characters blocks the save",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 669,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:44.660Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ca7b40687a645774213e-31af481fb189384c30b0",
+          "file": "TC-007.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-008.spec.ts",
+      "file": "TC-008.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.5] TC-008 moving a step down is saved and shared by T18 and S11",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1975,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:45.387Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b953b07c8b8e6d4118b0-ab43fb6e401dc3253290",
+          "file": "TC-008.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-009.spec.ts",
+      "file": "TC-009.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.5] TC-009 moving keeps the unsaved edits of the step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 864,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:47.446Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04b207b27998ef992328-77508a9b99eea5c531db",
+          "file": "TC-009.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-010.spec.ts",
+      "file": "TC-010.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.6] TC-010 notice of a draft Bài",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 824,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:48.376Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2348bd1f618b8b14c73-18bb46877e93dccf3b55",
+          "file": "TC-010.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-011.spec.ts",
+      "file": "TC-011.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-1.7] TC-011 every step editable in one frame with its labels and actions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1289,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:49.329Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a7ed6a0c0473529cd3ae-0ef8f76d928bb2a02e09",
+          "file": "TC-011.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-012.spec.ts",
+      "file": "TC-012.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.1] [004:AC-2.5] TC-012 saving one step saves only that step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:50.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "26b4aca73d23ae606561-d47475241da97a2c9e60",
+          "file": "TC-012.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-013.spec.ts",
+      "file": "TC-013.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.2] TC-013 leaving T07 with unsaved edits asks first",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1661,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:52.168Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c313cfca5c06473f6c04-71c0bd901e9e6a889b9f",
+          "file": "TC-013.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-014.spec.ts",
+      "file": "TC-014.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.2] [004:AC-2.6] TC-014 T08, tab switch and reload with unsaved edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1460,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:53.958Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc69a875a65632d3101e-8601177a4b53807d218e",
+          "file": "TC-014.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-015.spec.ts",
+      "file": "TC-015.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.3] TC-015 a step saved elsewhere: reload or overwrite",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2154,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:55.559Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "308797960fde6fcc0a36-da654daa8cbd9dbc7e2e",
+          "file": "TC-015.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-016.spec.ts",
+      "file": "TC-016.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.3] TC-016 another step saved elsewhere does not block",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1648,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:57.830Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2d7497a6bd903db4f99a-7386c9eaaaa6f1167152",
+          "file": "TC-016.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-017.spec.ts",
+      "file": "TC-017.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.4] TC-017 a save that fails keeps the edits and offers \"Thử lại\"",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1007,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T03:59:59.606Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2be6daf7d59534d6e90f-d30bc3bdca6d66e4e280",
+          "file": "TC-017.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-018.spec.ts",
+      "file": "TC-018.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.8] [004:AC-4.4] TC-018 an invalid value blocks only its own step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 914,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:00.746Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "022dd72be9cecda5c34d-f64edd167afdea84ee0e",
+          "file": "TC-018.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-019.spec.ts",
+      "file": "TC-019.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-2.8] TC-019 the API refuses an invalid value",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 225,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:01.752Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "154979ee6cdf344cf689-d3305814736b81bb84d7",
+          "file": "TC-019.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-020.spec.ts",
+      "file": "TC-020.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.1] TC-020 add a block: nine types, at the end, 50 at most",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1732,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:02.126Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b26856616beb29245e9-6c23f3e11f340990ff68",
+          "file": "TC-020.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-021.spec.ts",
+      "file": "TC-021.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.2] TC-021 reorder blocks with \"Xuống\" and drag-and-drop",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1312,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:03.998Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de421ffcb2b42a200dfc-109c2494c0e24b00f480",
+          "file": "TC-021.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-022.spec.ts",
+      "file": "TC-022.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.3] TC-022 delete a block without confirmation, effective on save",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 893,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:05.461Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b73285d337e7df95ae95-7e4db7d87e3eb43bcdad",
+          "file": "TC-022.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-023.spec.ts",
+      "file": "TC-023.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.4] TC-023 caption of a file block, shown under the content",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:06.506Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc34993dfd501704b399-8acd7f2539538f28e6a5",
+          "file": "TC-023.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-024.spec.ts",
+      "file": "TC-024.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.5] TC-024 text formats, 8 colours, http(s) links only",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3445,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:08.724Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "120c5a8272fb8a75bde6-95f918529016700c40f2",
+          "file": "TC-024.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-025.spec.ts",
+      "file": "TC-025.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.6] [004:NFR-5] TC-025 Hanzi, tone marks and Vietnamese kept everywhere",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1490,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:12.316Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f724f3f65608cb9e977a-1b1d629e38295b192325",
+          "file": "TC-025.spec.ts",
+          "line": 23,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-026.spec.ts",
+      "file": "TC-026.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-3.7] [004:NFR-6] TC-026 pasted content keeps only allowed formats; no script runs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2021,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:13.967Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97ea5c49a5cb0b05d26-acf28a11bf5677d2c9a9",
+          "file": "TC-026.spec.ts",
+          "line": 22,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-027.spec.ts",
+      "file": "TC-027.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.1] TC-027 vocabulary block: fields, word classes, order, limit 100",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3656,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:16.264Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f25cce21bc501249b882-baaa62cbd9ae233e5be3",
+          "file": "TC-027.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-028.spec.ts",
+      "file": "TC-028.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.2] TC-028 grammar block fields and the 20 examples limit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1589,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:20.142Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a478bcbb19262b2a35b3-33132ff33493286fb1a1",
+          "file": "TC-028.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-029.spec.ts",
+      "file": "TC-029.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.3] TC-029 dialogue / passage block and the 100 lines limit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2637,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:21.892Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1154854a8ccd4797161f-35d776f748340a7724aa",
+          "file": "TC-029.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-030.spec.ts",
+      "file": "TC-030.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.4] TC-030 incomplete fields allow a draft save; invalid values block it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1604,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:24.744Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b2b97c203906bf13eae9-32d7f0e413a7003ca987",
+          "file": "TC-030.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-031.spec.ts",
+      "file": "TC-031.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.5] TC-031 tone numbers become tone marks when leaving a pinyin field",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:26.511Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "52f605ce1815b90e7f3c-d7418c179c446225b0da",
+          "file": "TC-031.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-032.spec.ts",
+      "file": "TC-032.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.6] TC-032 a deck made from the vocabulary list",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1457,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:28.770Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8f15c3bdefec52d9949a-67262ffd0ca64191ee3d",
+          "file": "TC-032.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-033.spec.ts",
+      "file": "TC-033.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-4.7] TC-033 a deck cannot be made from an empty, invalid or full step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1679,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:30.469Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8958525cff07b4bb9d40-50af8c759cc775ce9858",
+          "file": "TC-033.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-034.spec.ts",
+      "file": "TC-034.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.1] [004:AC-5.2] TC-034 formats accepted per block, others refused before upload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3142,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:32.331Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d510935597c5b3b6f33b-ca390b1f85b50f233fc2",
+          "file": "TC-034.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-035.spec.ts",
+      "file": "TC-035.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.3] TC-035 files over the limit of their block are refused before upload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2973,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:35.690Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "622ad55cee311f009da6-f0b516bcea5bb7f34fc9",
+          "file": "TC-035.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-036.spec.ts",
+      "file": "TC-036.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.4] TC-036 a renamed executable is refused as a corrupt document",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1035,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:38.842Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0639b046532b78992ff8-3d54720de68a4ca17412",
+          "file": "TC-036.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-037.spec.ts",
+      "file": "TC-037.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.5] TC-037 used storage shown on T07 and T08, updated on upload and on release",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7315,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:40.163Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "deade9a142574823c9de-0c5381ff350fd5c8860c",
+          "file": "TC-037.spec.ts",
+          "line": 20,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-038.spec.ts",
+      "file": "TC-038.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.5] [004:AC-18.1] TC-038 YouTube videos do not count; a file used twice counts once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 649,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:47.734Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "429a5d5d6cf3084aef0e-26df0760f31a10e0f2da",
+          "file": "TC-038.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-039.spec.ts",
+      "file": "TC-039.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.6] TC-039 a file that would exceed 10 GB is refused; exactly 10 GB is accepted",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2869,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:48.633Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d78ed10af7a4c7c15e91-d6677ce8160032b402c7",
+          "file": "TC-039.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-040.spec.ts",
+      "file": "TC-040.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.6] TC-040 two parallel uploads: the one that finishes second is refused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 411,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:51.750Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49e9fdce764baa083c07-dc1258ed4173c3f1a3e3",
+          "file": "TC-040.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-041.spec.ts",
+      "file": "TC-041.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-5.7] TC-041 the 80 % warning on T07 and T08",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2005,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:52.408Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "20eeec4cf46ed29903f1-73bb3d3ba64384b98503",
+          "file": "TC-041.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-042.spec.ts",
+      "file": "TC-042.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-6.1] [004:AC-6.2] TC-042 upload progress, editing meanwhile, cancel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7315,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:00:55.043Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e95fde93c6b3f5ea31bc-d0a2c39b034263396015",
+          "file": "TC-042.spec.ts",
+          "line": 20,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-043.spec.ts",
+      "file": "TC-043.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-6.3] TC-043 an interrupted upload offers \"Thử lại\" and \"Chọn tệp khác\"",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5396,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:02.620Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0ee1af92df4d5c94b6c4-5fb2fbbdb5ae33b51b24",
+          "file": "TC-043.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-044.spec.ts",
+      "file": "TC-044.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-6.4] TC-044 a step with a file uploading cannot be saved; other steps can",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8169,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:08.291Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b5e550db1b34e1205eb-2e9690c56f24054a61c2",
+          "file": "TC-044.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-045.spec.ts",
+      "file": "TC-045.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-6.5] TC-045 \"Đang xử lý…\" after 100 %: draft save allowed, publish not",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8277,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:16.776Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a9503f3203afb20be6d4-b44251fbc57a9269a0bb",
+          "file": "TC-045.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-046.spec.ts",
+      "file": "TC-046.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-6.6] TC-046 a broken DOCX cannot be processed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1003,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:25.256Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f9ca26e8fbe6db89d84e-fe966b8d4f60c4eee040",
+          "file": "TC-046.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-047.spec.ts",
+      "file": "TC-047.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-6.7] TC-047 replacing a file keeps the old one until the new one is ready",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7314,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:26.736Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c352ed077be94d31b92b-0dbb60df520750db6fb0",
+          "file": "TC-047.spec.ts",
+          "line": 19,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-048.spec.ts",
+      "file": "TC-048.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.1] TC-048 a complete draft step is published",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1437,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:34.609Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "56e86a122f282d690757-ef2ef3867eeb2541c575",
+          "file": "TC-048.spec.ts",
+          "line": 19,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-049.spec.ts",
+      "file": "TC-049.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.1] [004:AC-7.2] TC-049 publishing refused with the issue list; an issue scrolls to its block",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1787,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:36.312Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "273ceb7c7ff83cb7aa51-611b92ed77614d373972",
+          "file": "TC-049.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-050.spec.ts",
+      "file": "TC-050.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.1] TC-050 the API refuses to publish a deck without cards or a grammar point without examples",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 830,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:38.390Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bd027748bf0162325275-c7873b93ceac4436558a",
+          "file": "TC-050.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-051.spec.ts",
+      "file": "TC-051.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.3] TC-051 a published step is saved only when it stays publishable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:39.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7904efd58f91bb28d6c4-597f83c5557d442fb9f1",
+          "file": "TC-051.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-052.spec.ts",
+      "file": "TC-052.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.4] TC-052 notice with the number of classes seeing the published steps",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1656,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:41.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddf7d9945dd287a749ff-1ff280647440fe75a7d3",
+          "file": "TC-052.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-053.spec.ts",
+      "file": "TC-053.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.6] TC-053 T21 shows the Bài học section as the HV sees it, nothing recorded",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2939,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:44.198Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ebd7b683a342f98e8f73-dd7e4d4df83671212acc",
+          "file": "TC-053.spec.ts",
+          "line": 21,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-054.spec.ts",
+      "file": "TC-054.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.7] TC-054 T07 and T08 in web layout only, at 1280 and 1024 px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1903,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:47.446Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "373e626296c0c794b633-d3476873d259e8897e22",
+          "file": "TC-054.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-055.spec.ts",
+      "file": "TC-055.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-7.8] TC-055 archived steps are hidden by default, shown in place with the toggle, editable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3644,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:49.669Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5b1629b9f7ece439d44a-607afafad49a33a067c3",
+          "file": "TC-055.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-056.spec.ts",
+      "file": "TC-056.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-8.1] [004:AC-8.2] TC-056 delete a step seen and marked by HV: warnings, cleanup",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3276,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:53.562Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7e783b3f76505b52c09c-49c6db0c94134654fa6f",
+          "file": "TC-056.spec.ts",
+          "line": 28,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-057.spec.ts",
+      "file": "TC-057.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-8.3] [004:AC-8.5] TC-057 archive: blocked while unsaved, then at once without asking",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2997,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:01:57.180Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ba0d3acd412059367fe6-cb1ecb5ccf9751f0d4e8",
+          "file": "TC-057.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-058.spec.ts",
+      "file": "TC-058.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-8.4] TC-058 restore: at once, same place, unsaved edits kept, HV marks back",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2417,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:00.558Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "81c2ef41dbc2414b90c9-c2d69d1b989bb4de108f",
+          "file": "TC-058.spec.ts",
+          "line": 19,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-059.spec.ts",
+      "file": "TC-059.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-9.1] [004:AC-9.4] TC-059 approved AI steps replace the section; only \"AI tạo\" ever",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2010,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:03.305Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "85e6ff5550aa0af3dbea-42a494ffecafaeeb57eb",
+          "file": "TC-059.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-060.spec.ts",
+      "file": "TC-060.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-9.2] TC-060 AI content not approved shows nowhere",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1918,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:06.675Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "955c0f1a98c89e8d6e84-ec5af705a10258bcbe21",
+          "file": "TC-060.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-061.spec.ts",
+      "file": "TC-061.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-9.3] TC-061 an approval over 30 steps or with an unready step stores nothing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 856,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:09.014Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "31f347639c3ea4d5269c-1c2634dc95005ef54a2b",
+          "file": "TC-061.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-062.spec.ts",
+      "file": "TC-062.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-9.5] TC-062 replaced steps are deleted with their files, marks and practice links",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1321,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:10.679Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "016017034ffac9dbb6e5-2e2e66edb14e685b40b8",
+          "file": "TC-062.spec.ts",
+          "line": 24,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-063.spec.ts",
+      "file": "TC-063.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-9.6] TC-063 the HV never sees \"AI tạo\"",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1528,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:12.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7fe63bddc80054b667f7-6589f94d66ecd5236b1e",
+          "file": "TC-063.spec.ts",
+          "line": 21,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-064.spec.ts",
+      "file": "TC-064.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-10.1] TC-064 practice sets of a step, read only, \"Mở bộ bài tập\" switches tab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1970,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:14.865Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fd61355de7f0f69c7a37-f0472cde9d9b76fcde18",
+          "file": "TC-064.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-065.spec.ts",
+      "file": "TC-065.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-10.2] TC-065 an unlinked set leaves the step unchanged",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1190,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:17.465Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "79c77eaa5f7a7186a3c1-85a1dc827ab25361dfa0",
+          "file": "TC-065.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-066.spec.ts",
+      "file": "TC-066.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-10.3] TC-066 practice buttons on S03 follow the set state in the class",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2101,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:19.215Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e7a39291a9b6ac7777a7-2435c3635ae2d650323b",
+          "file": "TC-066.spec.ts",
+          "line": 22,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-067.spec.ts",
+      "file": "TC-067.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-11.1] [004:AC-11.9] TC-067 a new deck block and the T08 dialog over T07",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1566,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:21.992Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "22f6ac181b9f409d23fb-2e7552eb7dcfc2daef2f",
+          "file": "TC-067.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-068.spec.ts",
+      "file": "TC-068.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-11.3] TC-068 deck name, card fields and card files with their limits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3770,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:24.149Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "13325dc1707d9e9eae39-a2316b9d7d1502626d80",
+          "file": "TC-068.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-069.spec.ts",
+      "file": "TC-069.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-11.4] TC-069 card field rules in T08",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1215,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:28.675Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "491ce03e95faa413766c-3466143f99b632da0de3",
+          "file": "TC-069.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-070.spec.ts",
+      "file": "TC-070.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-11.5] TC-070 add, order and delete cards; at most 200",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3941,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:30.412Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4003aab5d496dbca0e0b-2878fbfc3333e1a1dd42",
+          "file": "TC-070.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-071.spec.ts",
+      "file": "TC-071.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-11.6] [004:AC-11.7] TC-071 \"Xong\" keeps the deck in the step; saved with the step",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3105,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:35.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d59637bf3d0d4e4f376c-f2bfc356557b0b16bef0",
+          "file": "TC-071.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-072.spec.ts",
+      "file": "TC-072.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-12.1] TC-072 the Excel template from T08 and from a vocabulary block",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1909,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:38.790Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82f9fb66faa8c4822a15-4384055b896c838dbfd8",
+          "file": "TC-072.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-073.spec.ts",
+      "file": "TC-073.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-12.2] TC-073 an import file that is not the template is refused whole",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2612,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:41.312Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e37a4437d922ac46a29c-beac1d4cf6d6bd701388",
+          "file": "TC-073.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-074.spec.ts",
+      "file": "TC-074.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-12.3] [004:AC-12.4] TC-074 import preview, then the valid rows are added",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4145,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:44.438Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c9401195a13b9355151d-358d7e19b4988fc62888",
+          "file": "TC-074.spec.ts",
+          "line": 19,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-075.spec.ts",
+      "file": "TC-075.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-12.5] [004:AC-12.6] TC-075 capacity of the deck; a file without valid rows",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5130,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:49.005Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "86045fe2eb196a4631c6-7b2b15780411aed70662",
+          "file": "TC-075.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-076.spec.ts",
+      "file": "TC-076.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.1] TC-076 another GV gets A05 for T07 / T08 of a Bài that is not theirs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2374,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:56.770Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "76b9b43e478800d17916-cf4eace6330365e27d2b",
+          "file": "TC-076.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-077.spec.ts",
+      "file": "TC-077.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.2] [004:AC-13.4] [004:NFR-6] TC-077 only an HV meeting every condition gets the step and its files",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 4752,
+                  "error": {
+                    "message": "Error: /api/learn/classes/6ae022748ce66d594ce97bab/steps/6ae022748ce66d594ce97b9f\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"\u001b[7mK\u001b[27mhông t\u001b[7mìm thấy nội dung bạn yêu cầu.\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBạn k\u001b[27mhông t\u001b[7mhuộc lớp này hoặc lớp không còn tồn tại\u001b[27m\"\u001b[39m",
+                    "stack": "Error: /api/learn/classes/6ae022748ce66d594ce97bab/steps/6ae022748ce66d594ce97b9f\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"\u001b[7mK\u001b[27mhông t\u001b[7mìm thấy nội dung bạn yêu cầu.\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBạn k\u001b[27mhông t\u001b[7mhuộc lớp này hoặc lớp không còn tồn tại\u001b[27m\"\u001b[39m\n    at refused (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts:50:57)\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts:57:3",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts",
+                      "column": 57,
+                      "line": 50
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 48 |\u001b[39m     \u001b[36mconst\u001b[39m res \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mrequest\u001b[33m.\u001b[39m\u001b[36mget\u001b[39m(path)\u001b[33m;\u001b[39m\n \u001b[90m 49 |\u001b[39m     expect(res\u001b[33m.\u001b[39mstatus()\u001b[33m,\u001b[39m path)\u001b[33m.\u001b[39mtoBe(\u001b[35m404\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 50 |\u001b[39m     expect\u001b[33m.\u001b[39msoft((\u001b[36mawait\u001b[39m res\u001b[33m.\u001b[39mjson())\u001b[33m.\u001b[39merror\u001b[33m.\u001b[39mmessage\u001b[33m,\u001b[39m path)\u001b[33m.\u001b[39mtoBe(\u001b[33mNOT_FOUND\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 51 |\u001b[39m   }\u001b[33m;\u001b[39m\n \u001b[90m 52 |\u001b[39m   \u001b[36mawait\u001b[39m refused(member\u001b[33m.\u001b[39mpage\u001b[33m,\u001b[39m \u001b[32m`/api/learn/classes/${cls.id}/steps/${draftStep}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 53 |\u001b[39m   \u001b[36mawait\u001b[39m refused(member\u001b[33m.\u001b[39mpage\u001b[33m,\u001b[39m \u001b[32m`/api/learn/classes/${cls.id}/steps/${inDraftLesson}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts",
+                        "column": 57,
+                        "line": 50
+                      },
+                      "message": "Error: /api/learn/classes/6ae022748ce66d594ce97bab/steps/6ae022748ce66d594ce97b9f\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"\u001b[7mK\u001b[27mhông t\u001b[7mìm thấy nội dung bạn yêu cầu.\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBạn k\u001b[27mhông t\u001b[7mhuộc lớp này hoặc lớp không còn tồn tại\u001b[27m\"\u001b[39m\n\n  48 |     const res = await page.request.get(path);\n  49 |     expect(res.status(), path).toBe(404);\n> 50 |     expect.soft((await res.json()).error.message, path).toBe(NOT_FOUND);\n     |                                                         ^\n  51 |   };\n  52 |   await refused(member.page, `/api/learn/classes/${cls.id}/steps/${draftStep}`);\n  53 |   await refused(member.page, `/api/learn/classes/${cls.id}/steps/${inDraftLesson}`);\n    at refused (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts:50:57)\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts:57:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:02:59.758Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-21.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-23.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-25.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-20.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-19.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-24.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-28.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-27.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-26.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-30.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-31.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-32.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-34.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-33.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-35.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-36.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-37.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-38.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-39.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-40.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-86.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-48.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-42.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-41.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-46.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-50.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-44.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-49.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-43.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-52.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-53.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-51.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-58.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-59.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-55.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-56.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-29.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-54.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-60.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-61.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-63.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-62.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-64.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-78.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-79.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-82.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-84.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-80.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-85.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-83.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-5.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-7.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-4.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-6.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-12.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-17.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-11.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-13.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-10.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-8.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-15.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-9.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-14.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-18.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-16.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-87.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-89.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-88.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-91.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-90.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-92.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-94.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-66.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-71.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-65.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-67.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-68.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-69.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-72.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-73.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-70.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-22.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-57.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-45.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-47.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-75.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-74.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-76.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-77.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-81.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-97.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-93.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-98.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-95.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-99.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-96.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\test-failed-100.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\runs\\2026-10-27-1057\\artifacts\\TC-077--004-AC-13-2-004-AC-7d432-gets-the-step-and-its-files-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\004-lessons-flashcards\\testing\\e2e\\TC-077.spec.ts",
+                    "column": 57,
+                    "line": 50
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "de01617b63aafd7cde9d-c35fc2c17f0c5138bc9b",
+          "file": "TC-077.spec.ts",
+          "line": 24,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-078.spec.ts",
+      "file": "TC-078.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.3] TC-078 a class that has not started yet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 933,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:17.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fa3175cf661bfaefb8aa-662c1b1076f9bc22c652",
+          "file": "TC-078.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-079.spec.ts",
+      "file": "TC-079.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.4] [004:AC-13.7] TC-079 a hidden Bài học section: A05, then back with the marks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2166,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:18.537Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1991fcddba1b74add834-4f219686ba0463ef3a7f",
+          "file": "TC-079.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-080.spec.ts",
+      "file": "TC-080.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.5] TC-080 the next action after the step became unavailable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1882,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:20.791Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "da4ac247b94adedf9507-63df2af55580ac0309ce",
+          "file": "TC-080.spec.ts",
+          "line": 21,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-081.spec.ts",
+      "file": "TC-081.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.6] TC-081 the HV keeps the version open; the new one at the next opening",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3866,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:23.459Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2493579e505a8c79d71-dea2fa406d46a3699ead",
+          "file": "TC-081.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-082.spec.ts",
+      "file": "TC-082.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-13.8] TC-082 every step opens at once, in any order",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1178,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:27.498Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "610a484b14633bb9274e-5425a7b348e7231cd4fd",
+          "file": "TC-082.spec.ts",
+          "line": 19,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-083.spec.ts",
+      "file": "TC-083.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-14.1] [004:AC-14.7] [004:AC-14.8] TC-083 S03 header, Trước / Tiếp over visible steps, nothing tracked",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1230,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:28.775Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "52ffab463c88869a27c7-809043c25b22b9bd1f0a",
+          "file": "TC-083.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-084.spec.ts",
+      "file": "TC-084.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-14.2] [004:AC-14.3] TC-084 video and audio players: controls, speeds, one at a time",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10369,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:30.239Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2c3663933eeeb6d5d313-b4b8ad6615206339072b",
+          "file": "TC-084.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-085.spec.ts",
+      "file": "TC-085.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-14.4] TC-085 an image full screen with zoom up to 4×",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1570,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:40.857Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f059a76185225dfffc6d-43871bfa126fa9791849",
+          "file": "TC-085.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-086.spec.ts",
+      "file": "TC-086.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-14.5] TC-086 PDF, DOCX and PPTX read inside S03; download the original",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2456,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:42.598Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04f8999f3e593f988de7-0e6016653d950b54a9f9",
+          "file": "TC-086.spec.ts",
+          "line": 20,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-087.spec.ts",
+      "file": "TC-087.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-14.6] TC-087 a block that cannot load shows its error; the others stay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:45.218Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3a343533aa3450699183-881ceb89df287a9b4187",
+          "file": "TC-087.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-088.spec.ts",
+      "file": "TC-088.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-15.1] [004:AC-15.2] [004:AC-15.3] [004:AC-15.4] TC-088 vocabulary, grammar and dialogue views; switches remembered",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1559,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:46.358Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8cd144f0d8e12ed1944e-f096dec14dfa5a7a8b59",
+          "file": "TC-088.spec.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-089.spec.ts",
+      "file": "TC-089.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-16.1] [004:AC-16.2] [004:AC-16.3] [004:AC-16.4] TC-089 deck summary, card faces, flip and audio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1821,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:48.071Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "54aa233f7f1e08328db1-d589f8001d61492605ab",
+          "file": "TC-089.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-090.spec.ts",
+      "file": "TC-090.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-16.5] [004:AC-16.7] [004:AC-17.1] [004:AC-17.2] [004:AC-17.3] [004:AC-17.4] [004:NFR-6] TC-090 marks, summary, study options; marks are the HV's own",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2779,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:50.014Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "44c2e8c6b24f76b2ad41-52d31054fa2ae3a74c03",
+          "file": "TC-090.spec.ts",
+          "line": 20,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-091.spec.ts",
+      "file": "TC-091.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-16.6] [004:AC-17.5] TC-091 marking offline is retried; marks after the GV edits the deck",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1962,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:52.972Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7074d108c682b88dc432-0198e5261ff3074c85f2",
+          "file": "TC-091.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-092.spec.ts",
+      "file": "TC-092.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-18.1] [004:AC-18.2] [004:AC-18.3] TC-092 a YouTube video instead of a file",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:55.184Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fcec3af52cab53842ff4-4e9b68702e857a0344b2",
+          "file": "TC-092.spec.ts",
+          "line": 23,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-093.spec.ts",
+      "file": "TC-093.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-19.1] [004:AC-19.3] TC-093 confirmation of replacing a published Bài học section",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 439,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:03:59.596Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1bff995ef6f521b0e799-ae7ff5d718304e56359c",
+          "file": "TC-093.spec.ts",
+          "line": 22,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-094.spec.ts",
+      "file": "TC-094.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-19.2] [004:AC-19.3] TC-094 confirmation for an empty Bài học section of a draft Bài",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 327,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:00.168Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "299f854e81bf7c68d858-dcf189fbcac1a24bf5c4",
+          "file": "TC-094.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-095.spec.ts",
+      "file": "TC-095.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-19.4] [004:NFR-4] TC-095 cancelled, stale or refused approvals leave the section untouched",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 827,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:00.708Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8cf482f79b3ad7b33af8-d4eecea49bb258d141fa",
+          "file": "TC-095.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-096.spec.ts",
+      "file": "TC-096.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-19.5] TC-096 a write to a step replaced meanwhile is refused and the tab reloads",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1358,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:01.902Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "55224e166a48203afb28-e3605bdb45e8fc0a2deb",
+          "file": "TC-096.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-097.spec.ts",
+      "file": "TC-097.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:AC-19.6] TC-097 AI content enters only by approving the whole section",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 236,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:03.630Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e554d7ce6f92844ae389-cd3cebf5c6a536bbb297",
+          "file": "TC-097.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-098.spec.ts",
+      "file": "TC-098.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:NFR-1] [004:NFR-2] TC-098 S03 / S04 response times on a simulated 4G phone",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [
+                {
+                  "type": "measurements",
+                  "description": "{\"open\":2667,\"next\":620,\"toggle\":24.399999976158142,\"playStart\":10.799999952316284,\"flip\":9,\"markSaved\":219}"
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18489,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "NFR-1/2 p95 (ms) {\"open\":2667,\"next\":620,\"toggle\":24.399999976158142,\"playStart\":10.799999952316284,\"flip\":9,\"markSaved\":219}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:04.050Z",
+                  "annotations": [
+                    {
+                      "type": "measurements",
+                      "description": "{\"open\":2667,\"next\":620,\"toggle\":24.399999976158142,\"playStart\":10.799999952316284,\"flip\":9,\"markSaved\":219}"
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "17d93a79d94c750adfff-ca87b44008cf3bec467c",
+          "file": "TC-098.spec.ts",
+          "line": 34,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-099.spec.ts",
+      "file": "TC-099.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:NFR-3] TC-099 T07 with 30 steps / 300 blocks, Excel 200 rows, approving 15 over 30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [
+                {
+                  "type": "measurements",
+                  "description": "{\"openMs\":1145,\"tabMs\":649,\"typing\":40,\"excelMs\":563,\"approveMs\":32}"
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6043,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "NFR-3 (ms) {\"openMs\":1145,\"tabMs\":649,\"typing\":40,\"excelMs\":563,\"approveMs\":32}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:22.806Z",
+                  "annotations": [
+                    {
+                      "type": "measurements",
+                      "description": "{\"openMs\":1145,\"tabMs\":649,\"typing\":40,\"excelMs\":563,\"approveMs\":32}"
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cbedfea50fee34ab5d0c-bfcb3d4d32b987a8929a",
+          "file": "TC-099.spec.ts",
+          "line": 19,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-100.spec.ts",
+      "file": "TC-100.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:NFR-7] TC-100 keyboard use of S04 and T07, labelled controls and switch states",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2781,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:29.023Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6e0a3f7bca5365a19ef7-f1291d395ca44caeb518",
+          "file": "TC-100.spec.ts",
+          "line": 21,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-104.spec.ts",
+      "file": "TC-104.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[004:NFR-6] TC-104 a copied file link: no use without sign-in, by another HV or after 60 minutes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 670,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T04:04:32.053Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d250315885236e0fd76f-cf86c7d7301d37a990ed",
+          "file": "TC-104.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T03:59:34.890Z",
+    "duration": 300009.232,
+    "expected": 100,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
