@@ -27,13 +27,12 @@ const signedQuery = z.object({
   sig: z.string().min(10).max(100),
   download: z.enum(['1']).optional(),
 });
+const hexId = z.string().regex(/^[a-f0-9]{24}$/i);
 const hintQuery = z.object({
   continue: z.enum(['1']).optional(),
-  lesson: z
-    .string()
-    .regex(/^[a-f0-9]{24}$/i)
-    .optional(),
+  lesson: hexId.optional(),
 });
+const stepQuery = hintQuery.extend({ from: hexId.optional() });
 
 /** "bytes=start-end" of a Range header within `size`, or null (whole file). */
 function rangeOf(header: string | undefined, size: number): { start: number; end: number } | null {
@@ -56,7 +55,10 @@ export class LearnStepsController {
     @Inject(FILE_STORAGE) private readonly storage: FileStorage,
   ) {}
 
-  /** `?continue=1` = the next action of an open S03 / S04 (AC-13.5); `lesson` = the Bài that screen showed. */
+  /**
+   * `?continue=1` = the next action of an open S03 / S04 (AC-13.5); `lesson` = the Bài that screen showed; `from` = the
+   * step S03 showed when the HV pressed "Trước" / "Tiếp" (it must still be open).
+   */
   @Get('classes/:classId/steps/:stepId')
   step(
     @CurrentUser() p: AuthPrincipal,
@@ -64,8 +66,8 @@ export class LearnStepsController {
     @Param('stepId') stepId: string,
     @Query() query: unknown,
   ): Promise<LearnStep> {
-    const q = parse(hintQuery, query);
-    return this.learn.view(p, classId, stepId, q.continue === '1', q.lesson);
+    const q = parse(stepQuery, query);
+    return this.learn.view(p, classId, stepId, q.continue === '1', q.lesson, q.from);
   }
 
   @Put('marks')

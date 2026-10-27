@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { Button, EmptyState, ErrorState, Icon, Skeleton } from '../../components';
 import type { ApiError } from '../../lib/api-client';
@@ -27,6 +27,8 @@ export function StepViewPage() {
   const error = useLearnStore((s) => s.error);
   const load = useLearnStore((s) => s.load);
   const nav = (location.state ?? {}) as StepNavState;
+  /** The step left by "Trước" / "Tiếp", checked once by the next load (not kept in history: a reload opens anew). */
+  const from = useRef<string | null>(null);
   useDocumentTitle(data?.step.title || 'Xem bài học');
   useHvRefusal(error);
 
@@ -43,7 +45,11 @@ export function StepViewPage() {
   );
 
   useEffect(() => {
-    load(classId, stepId, { continuing: !!nav.continuing, lesson: nav.lesson }).catch(leave);
+    const left = from.current ?? undefined;
+    from.current = null;
+    load(classId, stepId, { continuing: !!nav.continuing, lesson: nav.lesson, from: left }).catch(
+      leave,
+    );
   }, [classId, stepId, load, nav.continuing, nav.lesson, leave]);
 
   const current = data?.step.id === stepId ? data : null;
@@ -58,11 +64,13 @@ export function StepViewPage() {
     return <Skeleton height={320} />;
   }
 
-  const go = (id: string) =>
-    navigate(stepPath(classId, id), {
+  const go = (id: string) => {
+    from.current = stepId;
+    void navigate(stepPath(classId, id), {
       replace: true,
       state: { continuing: true, lesson: current.lesson.id } satisfies StepNavState,
     });
+  };
   /** A block failed to load (expired link, network): check the step is still open, then reload it (AC-14.6). */
   const retry = () =>
     void load(classId, stepId, { continuing: true, lesson: current.lesson.id }).catch(leave);

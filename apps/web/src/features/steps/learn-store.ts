@@ -31,21 +31,25 @@ interface LearnState {
   offline: boolean;
 
   /** `continuing` = an action of an open screen (AC-13.5); `lesson` = the Bài it showed. */
-  load: (
-    classId: string,
-    stepId: string,
-    opts?: { continuing?: boolean; lesson?: string | undefined },
-  ) => Promise<void>;
+  load: (classId: string, stepId: string, opts?: LoadOptions) => Promise<void>;
   /** Saves a mark; offline it is queued and retried. Resolves with an unavailability to act on, if any. */
   mark: (body: MarkBody) => Promise<Unavailable | null>;
   /** Sends the queued marks again (connection back). */
   flush: () => Promise<Unavailable | null>;
 }
 
-const query = (opts?: { continuing?: boolean; lesson?: string | undefined }) => {
+/** `from` = the step S03 showed when "Trước" / "Tiếp" was pressed (checked first, AC-13.5). */
+interface LoadOptions {
+  continuing?: boolean;
+  lesson?: string | undefined;
+  from?: string | undefined;
+}
+
+const query = (opts?: LoadOptions) => {
   const q = new URLSearchParams();
   if (opts?.continuing) q.set('continue', '1');
   if (opts?.lesson) q.set('lesson', opts.lesson);
+  if (opts?.from) q.set('from', opts.from);
   const s = q.toString();
   return s ? `?${s}` : '';
 };

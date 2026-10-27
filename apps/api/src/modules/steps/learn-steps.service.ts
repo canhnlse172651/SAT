@@ -144,7 +144,10 @@ export class LearnStepsService {
     stepId: string,
     continuing: boolean,
     lessonHint?: string,
+    from?: string,
   ): Promise<LearnStep> {
+    // "Trước" / "Tiếp" is an action on the step being viewed: it is refused once that step is no longer open (AC-13.5).
+    if (from && from !== stepId) await this.open(p, classId, from, true, lessonHint);
     const found = await this.open(p, classId, stepId, continuing, lessonHint);
     const steps = found.unit?.steps ?? [];
     const at = steps.findIndex((s) => s._id.equals(found.item._id));
