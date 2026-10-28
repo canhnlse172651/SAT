@@ -15,6 +15,7 @@ export const SCREEN_PAGES: Record<string, () => Promise<ComponentType>> = {
   T09: async () => (await import('../features/curriculum/ManualEditorPage')).ExerciseTabPage,
   // T08 (004) is the deck dialog over T07's Bài học tab; its own path opens that tab.
   T08: async () => (await import('../features/curriculum/ManualEditorPage')).LessonTabPage,
+  T14: async () => (await import('../features/exercises/SubmissionPage')).SubmissionPage,
   T18: async () => (await import('../features/curriculum/LessonPage')).LessonPage,
   T21: async () => (await import('../features/curriculum/PreviewPage')).PreviewPage,
   T11: async () => (await import('../features/students/StudentsPage')).StudentsPage,

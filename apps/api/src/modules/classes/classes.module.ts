@@ -46,17 +46,16 @@ export interface ClassesModuleOptions {
 @Module({})
 export class ClassesModule {
   static forRoot(options: ClassesModuleOptions): DynamicModule {
+    // Exported: 005's T14 reads a class's rules (hidden sections, deadlines).
+    const models = MongooseModule.forFeature([
+      { name: CLASS_MODEL, schema: classSchema },
+      { name: MEMBER_MODEL, schema: memberSchema },
+      { name: REMINDER_MODEL, schema: reminderSchema },
+      { name: REMINDER_RUN_MODEL, schema: reminderRunSchema },
+    ]);
     return {
       module: ClassesModule,
-      imports: [
-        options.curriculum,
-        MongooseModule.forFeature([
-          { name: CLASS_MODEL, schema: classSchema },
-          { name: MEMBER_MODEL, schema: memberSchema },
-          { name: REMINDER_MODEL, schema: reminderSchema },
-          { name: REMINDER_RUN_MODEL, schema: reminderRunSchema },
-        ]),
-      ],
+      imports: [options.curriculum, models],
       controllers: [
         ClassesController,
         LearnClassesController,
@@ -85,7 +84,7 @@ export class ClassesModule {
         LearnClassesService,
         ReminderService,
       ],
-      exports: [CURRICULUM_CLASSES, STUDENT_LINKS, ClassAccess, LearnClassesService],
+      exports: [models, CURRICULUM_CLASSES, STUDENT_LINKS, ClassAccess, LearnClassesService],
     };
   }
 }

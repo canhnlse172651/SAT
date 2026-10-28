@@ -54,7 +54,7 @@ export function ReviewRowView({
       {row.kind !== 'reading' && (
         <>
           <p>
-            <span className="muted">Bạn trả lời: </span>
+            <span className="muted">{withPrompt ? 'Câu trả lời: ' : 'Bạn trả lời: '}</span>
             <span lang="zh-Hans">{row.answer}</span>
           </p>
           <p>

@@ -105,3 +105,34 @@ export const reviewSchema = z.object({
   rows: z.array(reviewRowSchema),
 });
 export type Review = z.infer<typeof reviewSchema>;
+
+/** T14 query: `/gv/bai-nop?lop=<classId>&hv=<studentId>&bo=<setId>`. */
+export const submissionQuerySchema = z.object({
+  classId: z.string().max(40),
+  studentId: z.string().max(40),
+  setId: z.string().max(40),
+});
+
+export const SUBMISSION_NOTES = {
+  hidden: 'Section Bài tập đang ẩn với lớp này',
+  archived: 'Bộ bài tập đang lưu trữ',
+} as const;
+
+/** T14 "Xem bài nộp" (AC-20.1 … AC-20.6): read-only, the same rows as S06 with the question text. */
+export const submissionSchema = z.object({
+  student: z.object({ id: z.string(), name: z.string() }),
+  class: z.object({ id: z.string(), name: z.string() }),
+  lesson: z.object({ id: z.string(), name: z.string() }),
+  set: z.object({ id: z.string(), title: z.string() }),
+  submittedAt: isoDate,
+  late: z.boolean(),
+  deadline: z.string().nullable(),
+  score: z.number(),
+  maxScore: z.number(),
+  percent: z.number(),
+  regrade: z.object({ at: isoDate, from: z.number(), to: z.number() }).nullable(),
+  /** AC-20.6 labels. */
+  notes: z.array(z.string()),
+  rows: z.array(reviewRowSchema),
+});
+export type Submission = z.infer<typeof submissionSchema>;

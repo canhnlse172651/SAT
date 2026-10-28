@@ -15,9 +15,11 @@ import {
   mergedStepPractice,
 } from './exercise-links.js';
 import { ATTEMPT_MODEL, attemptSchema } from './exercises.model.js';
+import { ExercisesController } from './exercises.controller.js';
 import { LearnExercisesController } from './learn-exercises.controller.js';
 import { LearnExercisesService } from './learn-exercises.service.js';
 import { SetHooksService } from './set-hooks.service.js';
+import { SubmissionsService } from './submissions.service.js';
 
 export interface ExercisesModuleOptions {
   /** The curriculum module (002) instance: sets live in its Bài. */
@@ -45,9 +47,10 @@ export class ExercisesModule {
         options.curriculum,
         MongooseModule.forFeature([{ name: ATTEMPT_MODEL, schema: attemptSchema }]),
       ],
-      controllers: [LearnExercisesController],
+      controllers: [ExercisesController, LearnExercisesController],
       providers: [
         LearnExercisesService,
+        SubmissionsService,
         ExerciseLinks,
         DevCurriculumLinks,
         DevClassLearning,

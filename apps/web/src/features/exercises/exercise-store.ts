@@ -3,9 +3,11 @@ import {
   type Answers,
   type ExerciseView,
   type Review,
+  type Submission,
   exerciseViewSchema,
   newBlockId,
   reviewSchema,
+  submissionSchema,
 } from '@sat/shared';
 import { create } from 'zustand';
 import { ApiError, apiRequest } from '../../lib/api-client';
@@ -39,6 +41,8 @@ interface ExerciseState {
   submitKey: string;
   review: Review | null;
   reviewStatus: Status;
+  submission: Submission | null;
+  submissionStatus: Status;
 
   load: (classId: string, setId: string) => Promise<void>;
   start: () => Promise<void>;
@@ -47,6 +51,8 @@ interface ExerciseState {
   flush: () => Promise<void>;
   submit: () => Promise<boolean>;
   loadReview: (classId: string, setId: string) => Promise<void>;
+  /** T14 (GV). */
+  loadSubmission: (q: { classId: string; studentId: string; setId: string }) => Promise<void>;
 }
 
 let timer: ReturnType<typeof setTimeout> | null = null;
@@ -86,6 +92,8 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
     submitKey: newBlockId(),
     review: null,
     reviewStatus: 'idle',
+    submission: null,
+    submissionStatus: 'idle',
 
     async load(classId, setId) {
       if (timer) clearTimeout(timer);
@@ -180,6 +188,19 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
         if (isNetwork(err)) set({ submitting: false, submitOffline: true });
         else set({ submitting: false, refusal: err as ApiError });
         return false;
+      }
+    },
+
+    async loadSubmission(q) {
+      set({ submissionStatus: 'loading', submission: null, error: null });
+      try {
+        const query = new URLSearchParams(q).toString();
+        const submission = submissionSchema.parse(
+          await apiRequest(`/exercises/submissions?${query}`),
+        );
+        set({ submission, submissionStatus: 'ok' });
+      } catch (err) {
+        set({ submissionStatus: 'error', error: err instanceof ApiError ? err : null });
       }
     },
 
