@@ -8,6 +8,7 @@ import {
 } from '@sat/shared';
 import { type DragEvent, type KeyboardEvent, useState } from 'react';
 import { Button, Dialog } from '../../components';
+import { fileUrl } from '../steps/step-dom';
 import './question-view.css';
 
 export interface QuestionViewProps {
@@ -23,7 +24,8 @@ export interface QuestionViewProps {
 /** AC-3.4: tap an image to zoom it, close it again; answers are kept. */
 function Picture({ image, alt }: { image: FileRef | null; alt: string }) {
   const [open, setOpen] = useState(false);
-  if (!image?.url) return null;
+  if (!image) return null;
+  const src = fileUrl(image);
   return (
     <>
       <button
@@ -32,11 +34,11 @@ function Picture({ image, alt }: { image: FileRef | null; alt: string }) {
         aria-label={`Phóng to ${alt}`}
         onClick={() => setOpen(true)}
       >
-        <img src={image.url} alt={alt} />
+        <img src={src} alt={alt} />
       </button>
       {open && (
         <Dialog open title={alt} onClose={() => setOpen(false)}>
-          <img className="qv-img__zoom" src={image.url} alt={alt} />
+          <img className="qv-img__zoom" src={src} alt={alt} />
         </Dialog>
       )}
     </>

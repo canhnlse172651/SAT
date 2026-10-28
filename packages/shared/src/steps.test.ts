@@ -269,6 +269,13 @@ describe('files and storage (AC-5.1 – AC-5.7)', () => {
     );
   });
 
+  it('refuses question images with one wording (005 AC-3.2)', () => {
+    const msg = 'Ảnh phải là JPG, PNG, WebP hoặc GIF, tối đa 5 MB';
+    expect(checkFileChoice('questionImage', 'a.bmp', MB)).toBe(msg);
+    expect(checkFileChoice('questionImage', 'a.webp', 5 * MB + 1)).toBe(msg);
+    expect(checkFileChoice('questionImage', 'a.GIF', 5 * MB)).toBeNull();
+  });
+
   it('formats sizes and the storage meter', () => {
     expect(formatSize(612.4 * MB)).toBe('612,4 MB');
     expect(formatSize(1.5 * GB)).toBe('1,5 GB');

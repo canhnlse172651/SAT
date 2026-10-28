@@ -64,8 +64,9 @@ export function SetBody({
       error: (path: string) =>
         touched.has(path) || touched.has('*') ? invalid.get(path) : undefined,
       locked,
+      itemId,
     }),
-    [touched, invalid, locked],
+    [touched, invalid, locked, itemId],
   );
   const questions = content.questions;
   const setQuestions = (qs: Question[]) => onChange({ ...content, questions: qs });

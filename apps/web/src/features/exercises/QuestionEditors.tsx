@@ -12,6 +12,7 @@ import {
 import { SegmentedControl } from '../../components';
 import { replaceAt } from '../steps/step-content';
 import { AddButton, PointsField, QField, RowButtons, Rows } from './editor-fields';
+import { ImageField } from './ImageField';
 import { useSetEditing } from './set-editing';
 import { ClozeEditor, MatchEditor, OrderEditor, ReadingEditor } from './QuestionEditors2';
 
@@ -24,22 +25,26 @@ export interface EditorProps<Q> {
   onChange: (q: Q) => void;
 }
 
-/** AC-3.1: the text of the stem (the image is added by `StemImage`). */
+/** AC-3.1: the stem — text and at most one image. */
 export function StemText({
   q,
   path,
+  n,
   onChange,
   label = 'Đề bài',
 }: EditorProps<Question | SubQuestion> & { label?: string }) {
   return (
-    <QField
-      path={`${path}.prompt`}
-      label={label}
-      value={q.prompt}
-      max={L.promptMax}
-      multiline
-      onChange={(prompt) => onChange({ ...q, prompt })}
-    />
+    <>
+      <QField
+        path={`${path}.prompt`}
+        label={label}
+        value={q.prompt}
+        max={L.promptMax}
+        multiline
+        onChange={(prompt) => onChange({ ...q, prompt })}
+      />
+      <ImageField target={{ ownerId: q.id }} label={`đề câu ${n}`} image={q.image} />
+    </>
   );
 }
 
@@ -99,6 +104,13 @@ function Options<Q extends McqQuestion | VocabQuestion>({ q, path, n, onChange }
               pinyin={pinyin}
               onChange={(text) => setOptions(replaceAt(q.options, k, { ...o, text }))}
             />
+            {q.type === 'mcq' && (
+              <ImageField
+                target={{ ownerId: q.id, optionId: o.id }}
+                label={`phương án ${label} của câu ${n}`}
+                image={o.image}
+              />
+            )}
             <RowButtons
               noun={`phương án ${label}`}
               index={k}

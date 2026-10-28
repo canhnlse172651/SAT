@@ -133,3 +133,22 @@
 .ex-menu__item:focus-visible {
   background: var(--surface-2);
 }
+
+/* AC-3.1: one image on a stem or an option */
+.ex-image {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.ex-image__img {
+  max-width: 160px;
+  max-height: 120px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+}
+.ex-option .ex-image__img {
+  max-width: 64px;
+  max-height: 48px;
+}

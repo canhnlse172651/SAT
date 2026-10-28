@@ -116,6 +116,8 @@ interface FileRule {
   formats: string;
   types: Record<string, string>;
   maxBytes: number;
+  /** One wording for every format / size refusal, when the kind's spec gives one (005 AC-3.2). */
+  refusal?: string;
 }
 
 const IMAGE_TYPES = {
@@ -163,6 +165,7 @@ export const FILE_RULES: Record<FileKind, FileRule> = {
     formats: 'JPG/JPEG, PNG, WebP, GIF',
     types: IMAGE_TYPES,
     maxBytes: 5 * MB,
+    refusal: 'Ảnh phải là JPG, PNG, WebP hoặc GIF, tối đa 5 MB',
   },
 };
 
@@ -185,8 +188,10 @@ export function formatSize(bytes: number): string {
 }
 
 export const unsupportedFormatMessage = (kind: FileKind): string =>
+  FILE_RULES[kind].refusal ??
   `Định dạng không được hỗ trợ. Khối ${FILE_RULES[kind].label} chỉ nhận: ${FILE_RULES[kind].formats}.`;
 export const tooLargeMessage = (kind: FileKind, name: string, size: number): string =>
+  FILE_RULES[kind].refusal ??
   `Tệp ${name} (${formatSize(size)}) vượt quá giới hạn ${formatSize(FILE_RULES[kind].maxBytes)} của khối ${FILE_RULES[kind].label}.`;
 export const corruptFileMessage = (kind: FileKind): string =>
   `Tệp bị hỏng hoặc không đúng định dạng ${FILE_RULES[kind].label}.`;

@@ -1,13 +1,18 @@
 import {
   type ExerciseProblem,
   type ExerciseSetContent,
+  type FileRef,
   type Question,
+  type SubQuestion,
   setContentSchema,
 } from '@sat/shared';
 import { createContext, useContext } from 'react';
+import { useLessonEditorStore, workingItem } from '../curriculum/lesson-editor-store';
 
 /** What every question editor of one set needs: field errors (after the GV left the field) and the lock (AC-18.1). */
 export interface SetEditing {
+  /** The set (item) being edited — uploads are keyed and patched by it. */
+  itemId: string;
   /** The message of an invalid field the GV has left (AC-2.4, AC-2.6), or undefined. */
   error: (path: string) => string | undefined;
   /** Structure locked by submissions: no add / remove / reorder / points / kind changes (AC-18.1). */
@@ -15,6 +20,7 @@ export interface SetEditing {
 }
 
 export const SetEditingContext = createContext<SetEditing>({
+  itemId: '',
   error: () => undefined,
   locked: false,
 });
@@ -58,3 +64,34 @@ export function scrollToQuestion(itemId: string, n: string): void {
 }
 
 export type QuestionPatch = (q: Question) => Question;
+
+/** Where an image goes: the stem of a question or sub-question (`ownerId`), or one of its options (AC-3.1). */
+export interface ImageTarget {
+  ownerId: string;
+  optionId?: string;
+}
+
+/**
+ * Puts `image` at `target` in the set's *current* working copy — an upload finishing later must not overwrite edits made
+ * in the meantime (AC-3.3). Nothing happens when the set or the target is gone.
+ */
+export function patchSetImage(itemId: string, target: ImageTarget, image: FileRef | null): void {
+  const { lesson, drafts, edit } = useLessonEditorStore.getState();
+  const item = lesson?.items.find((i) => i.id === itemId);
+  if (!item) return;
+  const w = workingItem(item, drafts);
+  const content = setOf(w.content);
+  const put = <Q extends Question | SubQuestion>(q: Q): Q => {
+    if (q.id !== target.ownerId) return q;
+    if (!target.optionId) return { ...q, image };
+    if (q.type !== 'mcq' && q.type !== 'vocab') return q;
+    return {
+      ...q,
+      options: q.options.map((o) => (o.id === target.optionId ? { ...o, image } : o)),
+    };
+  };
+  const questions = content.questions.map((q) =>
+    q.type === 'reading' ? put({ ...q, subs: q.subs.map(put) }) : put(q),
+  );
+  edit(itemId, { title: w.title, content: { ...content, questions } });
+}

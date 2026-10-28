@@ -99,7 +99,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const [reveal, setReveal] = useState<{ id: string; path: string } | null>(null);
   /** AC-6.4 / AC-6.5: a step's files still uploading (or processing) block its save / publish. */
   const blockedReason = (item: Item): string | null => {
-    if (item.section !== 'lesson') return null;
+    // Steps (004 AC-6.4) and set images (005 AC-3.3): nothing is saved while a file of the item is on its way.
     const phase = uploadPhase(uploads, item.id);
     return phase === 'uploading' ? SM.uploading : phase === 'processing' ? SM.processing : null;
   };
