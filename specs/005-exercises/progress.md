@@ -138,3 +138,17 @@
   the exam variant (006) — not built, TC-102 waits for 006. (3) AC-13.4 "không nhận câu hỏi" happens at generation (010);
   here the approval refuses with per-question reasons. (4) 31 web Vitest files still cannot start a worker on this machine.
 - Verify with: node .sdd/scripts/sdd.mjs run test -- packages/shared
+
+## Handoff 2026-10-28 16:12 — /test-module 005 (QA)
+- Status: 005-exercises implementing · 25/25 done   Branch: feat/005-exercises
+- Done this session: QA run 2026-10-28-1452 on commit 25e2d28 — 124 replayable scripts in `testing/e2e/` (+ `helpers.ts`), report
+  `testing/runs/2026-10-28-1452/report.md`, `results.json`, screenshots; test-cases.md (Script / status columns, summary), verification.md.
+  Result: 104/125 automated Pass, 20 Fail (B1–B16), 1 Bị chặn (TC-102, waits for 006), 4 Thủ công. Verdict FAIL.
+- In progress: —
+- Next: `/module 005` — sửa TC-019, TC-029, TC-038, TC-042, TC-051, TC-075, TC-080, TC-082, TC-083, TC-095, TC-117, TC-119, TC-120,
+  TC-123, TC-124 (B3–B9, B11–B16, report.md has steps / expected / actual). Spec decision first (agent spec): B1 (TC-012, TC-100: HV on
+  T09 / T14 → S01 vs A05), B2 (TC-103, TC-105: 003 non-member refusal vs AC-21.3 / AC-21.6), B10 (TC-088: "Đang làm" before any answer).
+  Then `/test-module 005` again (ideally with Playwright MCP).
+- Blockers / questions: Playwright MCP unusable this session (profile `mcp-chrome-7c84bcd` held by the Chrome of the earlier /module
+  session; closing it was not permitted) — scripts ran on real Chromium instead. AC-20.7 has no script until 006 exists.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 005

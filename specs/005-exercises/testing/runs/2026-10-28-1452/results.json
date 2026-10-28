@@ -1,0 +1,3404 @@
+[
+  {
+    "tc": "TC-001",
+    "acs": [
+      "AC-1.1",
+      "AC-1.8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1662,
+    "steps": [
+      {
+        "action": "Mở T07, chọn tab \"Bài tập\".",
+        "target": "GV"
+      },
+      {
+        "action": "Bấm \"Thêm bộ bài tập\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-001-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-002",
+    "acs": [
+      "AC-1.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 997,
+    "steps": [
+      {
+        "action": "Bấm \"Thêm sau\" trên B.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-002-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-003",
+    "acs": [
+      "AC-1.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3611,
+    "steps": [
+      {
+        "action": "Bấm \"Thêm bộ bài tập\".",
+        "target": "GV"
+      },
+      {
+        "action": "Bấm \"Thêm sau\" trên một bộ.",
+        "target": "GV"
+      },
+      {
+        "action": "Bấm \"Nhân bản\" trên một bộ đã lưu.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-003-1.png",
+      "screenshots/TC-003-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-004",
+    "acs": [
+      "AC-1.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1522,
+    "steps": [
+      {
+        "action": "Mở ô \"Bước học liên kết\" của bộ 1, chọn bước",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Bộ 2 chọn cùng bước",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Lưu cả hai.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-004-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-005",
+    "acs": [
+      "AC-1.4"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 884,
+    "steps": [
+      {
+        "action": "Xóa bước S (`DELETE /api/lessons/<bài>/items/<S>`).",
+        "target": "GV"
+      },
+      {
+        "action": "`GET /api/lessons/<bài>`.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-005-1.png"
+    ],
+    "errors": [],
+    "note": "Xóa bước học trả 200 (không phải 204); `content.stepId` về null đúng."
+  },
+  {
+    "tc": "TC-006",
+    "acs": [
+      "AC-1.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1522,
+    "steps": [
+      {
+        "action": "Mở S05 của X.",
+        "target": "HV"
+      },
+      {
+        "action": "Bấm \"Luyện tập cho: <tên S>\".",
+        "target": "HV"
+      },
+      {
+        "action": "Mở S05 của Y.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-006-1.png",
+      "screenshots/TC-006-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-007",
+    "acs": [
+      "AC-1.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4770,
+    "steps": [
+      {
+        "action": "Bấm \"Về Soạn bài\".",
+        "target": "GV"
+      },
+      {
+        "action": "\"Ở lại\".",
+        "target": "GV"
+      },
+      {
+        "action": "Lặp lại, \"Rời đi\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-007-1.png",
+      "screenshots/TC-007-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-008",
+    "acs": [
+      "AC-1.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1936,
+    "steps": [
+      {
+        "action": "Tab 1 sửa A, \"Lưu nháp\".",
+        "target": "GV"
+      },
+      {
+        "action": "Tab 2 sửa A và bộ B, \"Lưu nháp\" A rồi B.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-008-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-009",
+    "acs": [
+      "AC-1.9",
+      "AC-1.12"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1204,
+    "steps": [
+      {
+        "action": "Mở tab Bài tập Bài mới.",
+        "target": "GV"
+      },
+      {
+        "action": "Mở tab Bài tập Bài kia, bật \"Hiện mục lưu trữ (1)\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-009-1.png",
+      "screenshots/TC-009-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-010",
+    "acs": [
+      "AC-1.10"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1837,
+    "steps": [
+      {
+        "action": "Bấm \"Xuống\" trên A.",
+        "target": "GV"
+      },
+      {
+        "action": "Tải lại.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-010-1.png",
+      "screenshots/TC-010-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-011",
+    "acs": [
+      "AC-1.11"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1943,
+    "steps": [
+      {
+        "action": "Tab 1 thêm một bộ.",
+        "target": "GV"
+      },
+      {
+        "action": "Tab 2 bấm \"Xuống\" trên bộ đầu.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-011-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-012",
+    "acs": [
+      "AC-1.13",
+      "AC-21.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 8459,
+    "steps": [
+      {
+        "action": "Mở trực tiếp `/gv/giao-trinh/<gt>/bai/<bài>/thu-cong`.",
+        "target": "GV"
+      },
+      {
+        "action": "Mở cùng dạng đường dẫn tới Bài của workspace khác.",
+        "target": "GV"
+      },
+      {
+        "action": "HV mở đường dẫn của Bài 1.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-012-1.png",
+      "screenshots/TC-012-2.png",
+      "screenshots/TC-012-3.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed  Locator: getByText('Không tìm thấy nội dung') Expected: visible Timeout: 5000ms Error: element(s) not found"
+    ],
+    "note": "B1 — HV mở đường dẫn T09 bị chuyển về S01 \"Lớp của tôi\" thay vì A05 (không lộ nội dung). (1), (2) đạt."
+  },
+  {
+    "tc": "TC-013",
+    "acs": [
+      "AC-1.14",
+      "AC-12.10"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1688,
+    "steps": [
+      {
+        "action": "Chuyển sang tab \"Bài học\".",
+        "target": "GV"
+      },
+      {
+        "action": "Quay lại tab \"Bài tập\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-013-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-014",
+    "acs": [
+      "AC-1.15"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1433,
+    "steps": [
+      {
+        "action": "Mở tab \"Bài tập\" ở 1280 px.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-014-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-015",
+    "acs": [
+      "AC-1.8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1419,
+    "steps": [
+      {
+        "action": "Ở tab Bài học bấm \"Mở bộ bài tập\" của X.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-015-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-016",
+    "acs": [
+      "AC-2.1",
+      "AC-2.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1437,
+    "steps": [
+      {
+        "action": "Bấm \"Thêm câu hỏi\", xem danh sách dạng.",
+        "target": "GV"
+      },
+      {
+        "action": "Thêm lần lượt Nối cặp, Điền chỗ trống.",
+        "target": "GV"
+      },
+      {
+        "action": "Đổi điểm câu 1 thành 2.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-016-1.png",
+      "screenshots/TC-016-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-017",
+    "acs": [
+      "AC-2.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1349,
+    "steps": [
+      {
+        "action": "\"Xuống dưới\" câu",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "\"Xóa câu\" câu",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Ở bộ 1 câu bấm \"Xóa câu\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-017-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-018",
+    "acs": [
+      "AC-2.4",
+      "AC-2.6",
+      "AC-12.14"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1520,
+    "steps": [
+      {
+        "action": "Nhập điểm câu 1 = 0,3, rời ô.",
+        "target": "GV"
+      },
+      {
+        "action": "Bấm \"Lưu nháp\".",
+        "target": "GV"
+      },
+      {
+        "action": "Bộ khác sửa rồi \"Lưu nháp\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-018-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-019",
+    "acs": [
+      "AC-2.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 2235,
+    "steps": [
+      {
+        "action": "Mở T09, bấm \"Thêm câu hỏi\".",
+        "target": "GV"
+      },
+      {
+        "action": "Gửi PUT với 101 câu.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-019-1.png"
+    ],
+    "errors": [
+      "Error: {\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"Invalid request\",\"details\":[{\"origin\":\"array\",\"code\":\"too_big\",\"maximum\":100,\"inclusive\":true,\"path\":[\"questions\"],\"message\":\"Too big: expected array to have <=100 items\"}],\"requestId\":\"4e0b0e1d-cf5c-4b2f-b66c-aefa693a2aff\"}}  expect(received).toBe(expected) // Object.is equality  Expected: 422 Received: 400"
+    ],
+    "note": "B3 — API từ chối 101 câu bằng 400 VALIDATION_ERROR, test case ghi 422. Phần T09 đạt."
+  },
+  {
+    "tc": "TC-020",
+    "acs": [
+      "AC-2.6",
+      "AC-12.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1673,
+    "steps": [
+      {
+        "action": "Bấm \"Lưu nháp\".",
+        "target": "GV"
+      },
+      {
+        "action": "Nhập tiêu đề 151 ký tự, rời ô.",
+        "target": "GV"
+      },
+      {
+        "action": "Nhập tiêu đề hợp lệ, \"Lưu nháp\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-020-1.png",
+      "screenshots/TC-020-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-021",
+    "acs": [
+      "AC-2.6",
+      "AC-10.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 911,
+    "steps": [
+      {
+        "action": "Nhập Pinyin đề \"hǎu\", rời ô.",
+        "target": "GV"
+      },
+      {
+        "action": "Bấm \"Lưu nháp\" và \"Xuất bản\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-021-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-022",
+    "acs": [
+      "AC-2.7",
+      "AC-12.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1116,
+    "steps": [
+      {
+        "action": "Xem câu.",
+        "target": "GV"
+      },
+      {
+        "action": "\"Lưu nháp\".",
+        "target": "GV"
+      },
+      {
+        "action": "Chọn đáp án đúng.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-022-1.png",
+      "screenshots/TC-022-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-023",
+    "acs": [
+      "AC-3.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1497,
+    "steps": [
+      {
+        "action": "Nhập đề \"你好 nǐ hǎo là gì?\" (2000 ký tự tối đa), Giải thích.",
+        "target": "GV"
+      },
+      {
+        "action": "Tìm nút gắn âm thanh ở đề và phương án.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-023-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-024",
+    "acs": [
+      "AC-3.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2009,
+    "steps": [
+      {
+        "action": "Chọn ảnh BMP cho đề.",
+        "target": "GV"
+      },
+      {
+        "action": "Chọn PNG 6 MB.",
+        "target": "GV"
+      },
+      {
+        "action": "Chọn PNG 1 MB.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-024-1.png",
+      "screenshots/TC-024-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-025",
+    "acs": [
+      "AC-3.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1256,
+    "steps": [
+      {
+        "action": "Chọn ảnh, cắt mạng khi đang tải.",
+        "target": "GV"
+      },
+      {
+        "action": "Bật mạng, bấm \"Thử lại\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-025-1.png",
+      "screenshots/TC-025-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-026",
+    "acs": [
+      "AC-3.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1804,
+    "steps": [
+      {
+        "action": "Chạm ảnh của đề, đóng.",
+        "target": "HV"
+      },
+      {
+        "action": "Chạm ảnh phương án, đóng.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-026-1.png",
+      "screenshots/TC-026-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-027",
+    "acs": [
+      "AC-3.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1136,
+    "steps": [
+      {
+        "action": "Tải ảnh 1 MB, gắn vào câu của bộ A, lưu.",
+        "target": "GV"
+      },
+      {
+        "action": "Gắn cùng ảnh vào câu khác và bộ B, lưu.",
+        "target": "GV"
+      },
+      {
+        "action": "\"Nhân bản\" A.",
+        "target": "GV"
+      },
+      {
+        "action": "Gỡ ảnh khỏi A, B và xóa bản sao, lưu.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-027-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-028",
+    "acs": [
+      "AC-3.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2599,
+    "steps": [
+      {
+        "action": "Chọn ảnh 4 MB cho một phương án.",
+        "target": "GV"
+      },
+      {
+        "action": "Chọn ảnh đúng 3 MB.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-028-1.png",
+      "screenshots/TC-028-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-029",
+    "acs": [
+      "AC-4.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 2308,
+    "steps": [
+      {
+        "action": "Thêm phương án tới 6 (A–F), thử thêm thứ",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Xóa xuống 2, thử xóa tiếp.",
+        "target": "GV"
+      },
+      {
+        "action": "Phương án C có ảnh, D có chữ + ảnh.",
+        "target": "GV"
+      },
+      {
+        "action": "Đổi chế độ \"Nhiều đáp án đúng\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-029-1.png",
+      "screenshots/TC-029-2.png"
+    ],
+    "errors": [
+      "Error: \"Câu trắc nghiệm cần từ 2 đến 6 phương án\" when a 7th option is refused  expect(received).toBe(expected) // Object.is equality  Expected: true Received: false"
+    ],
+    "note": "B4 — Ở 6 phương án, \"Thêm phương án\" bị vô hiệu nhưng không có \"Câu trắc nghiệm cần từ 2 đến 6 phương án\". Xóa ở 2 phương án có lý do (title). Các phần khác đạt."
+  },
+  {
+    "tc": "TC-030",
+    "acs": [
+      "AC-4.2",
+      "AC-4.3",
+      "AC-4.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1447,
+    "steps": [
+      {
+        "action": "Đề trống.",
+        "target": "GV"
+      },
+      {
+        "action": "Chế độ một đáp án, đánh 2 đúng.",
+        "target": "GV"
+      },
+      {
+        "action": "Chế độ nhiều, bỏ hết.",
+        "target": "GV"
+      },
+      {
+        "action": "Phương án C trống.",
+        "target": "GV"
+      },
+      {
+        "action": "A và B cùng \"你好 \" / \"你好\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-030-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-031",
+    "acs": [
+      "AC-4.5",
+      "AC-4.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2270,
+    "steps": [
+      {
+        "action": "Chạm A rồi B.",
+        "target": "HV"
+      },
+      {
+        "action": "Dùng Tab, mũi tên, Space để chọn C.",
+        "target": "HV"
+      },
+      {
+        "action": "Chọn B, nộp.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-031-1.png",
+      "screenshots/TC-031-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-032",
+    "acs": [
+      "AC-4.6",
+      "AC-4.8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1997,
+    "steps": [
+      {
+        "action": "Xem câu.",
+        "target": "HV"
+      },
+      {
+        "action": "Chọn A, C, D rồi bỏ D bằng bàn phím.",
+        "target": "HV"
+      },
+      {
+        "action": "Nộp.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-032-1.png",
+      "screenshots/TC-032-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-033",
+    "acs": [
+      "AC-5.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2588,
+    "steps": [
+      {
+        "action": "Thêm lần lượt Chọn nghĩa, Chọn chữ Hán, Chọn pinyin.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-033-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-034",
+    "acs": [
+      "AC-5.2",
+      "AC-5.3",
+      "AC-5.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 965,
+    "steps": [
+      {
+        "action": "Chọn nghĩa không có Từ.",
+        "target": "GV"
+      },
+      {
+        "action": "Chọn chữ Hán không có Pinyin lẫn Nghĩa.",
+        "target": "GV"
+      },
+      {
+        "action": "Từ \"ni好\".",
+        "target": "GV"
+      },
+      {
+        "action": "Phương án Chọn chữ Hán \"abc\".",
+        "target": "GV"
+      },
+      {
+        "action": "Phương án Chọn pinyin \"hǎu\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-034-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-035",
+    "acs": [
+      "AC-5.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1885,
+    "steps": [
+      {
+        "action": "Mở câu ở 390 px.",
+        "target": "HV"
+      },
+      {
+        "action": "Chọn đúng, nộp.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-035-1.png",
+      "screenshots/TC-035-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-036",
+    "acs": [
+      "AC-6.1",
+      "AC-6.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2687,
+    "steps": [
+      {
+        "action": "Gõ \"我是越南人\", bôi đen \"是\", bấm \"Đánh dấu chỗ trống\".",
+        "target": "GV"
+      },
+      {
+        "action": "Bôi đen \"越南\", đánh dấu.",
+        "target": "GV"
+      },
+      {
+        "action": "Thêm đáp án \"shì\" cho ô 1, điểm ô 2 = 2.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-036-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-037",
+    "acs": [
+      "AC-6.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 900,
+    "steps": [
+      {
+        "action": "Đoạn văn không có ô.",
+        "target": "GV"
+      },
+      {
+        "action": "21 ô.",
+        "target": "GV"
+      },
+      {
+        "action": "3001 ký tự.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-037-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-038",
+    "acs": [
+      "AC-6.4",
+      "AC-6.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 7342,
+    "steps": [
+      {
+        "action": "Gõ ô 1, Tab sang ô 2, … (thử 51 ký tự).",
+        "target": "HV"
+      },
+      {
+        "action": "Nộp với ô 1 đúng, ô 2 sai, ô 3 trống.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-038-1.png",
+      "screenshots/TC-038-2.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toContainText(expected) failed  Locator: locator('li.ex-review__row').first() Expected pattern: /(chỗ trống 2|\\(2\\))[^;]*Sai/i Received string:  \"Câu 1 · Điền chỗ trốngĐúng một phần1,0 / 3,0 điểmBạn trả lời: (1) 是; (2) 中国; (3) —Đáp án đúng: (1) 是; (2) 越南; (3) 人\" Timeout: 5000ms"
+    ],
+    "note": "B5 — S06 không có kết quả theo từng chỗ trống (AC-16.3): chỉ \"Đúng một phần\" của câu + \"(2) 中国; (3) —\". Phần làm bài, chấm điểm đạt."
+  },
+  {
+    "tc": "TC-039",
+    "acs": [
+      "AC-7.1",
+      "AC-7.2",
+      "AC-7.3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 792,
+    "steps": [
+      {
+        "action": "Nộp với \"  ni3 hao3\", \"lv4\", \"ma5\", \"ａｂｃ\", \"你 好\", \"mà\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "note": "Chấm theo từng ô kiểm bằng điểm 1, 2, 4, 8, 16, 32 (API không trả kết quả từng ô — xem B5)."
+  },
+  {
+    "tc": "TC-040",
+    "acs": [
+      "AC-7.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1339,
+    "steps": [
+      {
+        "action": "Lần lượt nhập Pinyin đề \"Nǐ hǎo\", \"xi'an\", \"huār\", \"ni3hao3\", \"hǎu\", \"nǐ3\", \"xyz\", rời ô.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-040-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-041",
+    "acs": [
+      "AC-7.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1034,
+    "steps": [
+      {
+        "action": "Mở các câu trên S05.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-041-1.png",
+      "screenshots/TC-041-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-042",
+    "acs": [
+      "AC-8.1",
+      "AC-8.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 2694,
+    "steps": [
+      {
+        "action": "Xem mặc định.",
+        "target": "GV"
+      },
+      {
+        "action": "Thêm tới 8 cặp, thử thứ 9; 4 mục nhiễu, thử thứ",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Để trống mục B cặp 2; mục nhiễu 1 trống; hai mục A \"你好\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-042-1.png",
+      "screenshots/TC-042-2.png"
+    ],
+    "errors": [
+      "Error: \"Câu nối cặp cần từ 2 đến 8 cặp\" when a 9th pair is refused  expect(received).toBe(expected) // Object.is equality  Expected: true Received: false"
+    ],
+    "note": "B4 — Ở 8 cặp, \"Thêm cặp\" bị vô hiệu nhưng không có \"Câu nối cặp cần từ 2 đến 8 cặp\". Các lỗi khác đạt."
+  },
+  {
+    "tc": "TC-043",
+    "acs": [
+      "AC-8.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1045,
+    "steps": [
+      {
+        "action": "\"Hoán đổi\" Cột B cặp 1 với cặp",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Hoán đổi Cột B cặp 3 với mục nhiễu.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-043-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-044",
+    "acs": [
+      "AC-8.4",
+      "AC-14.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3146,
+    "steps": [
+      {
+        "action": "Bắt đầu, ghi thứ tự Cột B.",
+        "target": "HV"
+      },
+      {
+        "action": "Nối 2 cặp, đóng trình duyệt.",
+        "target": "HV"
+      },
+      {
+        "action": "Đăng nhập ở thiết bị khác (context mới), \"Tiếp tục làm\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-044-1.png",
+      "screenshots/TC-044-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-045",
+    "acs": [
+      "AC-8.5",
+      "AC-8.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1449,
+    "steps": [
+      {
+        "action": "Chạm A1 rồi B3.",
+        "target": "HV"
+      },
+      {
+        "action": "Chạm A2 rồi B3.",
+        "target": "HV"
+      },
+      {
+        "action": "Chạm B3.",
+        "target": "HV"
+      },
+      {
+        "action": "Lặp nối/gỡ bằng Tab + Enter/Space.",
+        "target": "HV"
+      },
+      {
+        "action": "Kéo A1 thả lên B2 (máy tính).",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-045-1.png",
+      "screenshots/TC-045-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-046",
+    "acs": [
+      "AC-8.7"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 432,
+    "steps": [
+      {
+        "action": "Nộp với 2 cặp đúng, 1 sai, 1 nối vào mục nhiễu.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-047",
+    "acs": [
+      "AC-9.1",
+      "AC-9.2",
+      "AC-9.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2852,
+    "steps": [
+      {
+        "action": "Nhập \"我/是/越南/人\".",
+        "target": "GV"
+      },
+      {
+        "action": "Sửa, thêm, xóa, sắp xếp mảnh; thêm thứ tự khác.",
+        "target": "GV"
+      },
+      {
+        "action": "1 mảnh; 13 mảnh; mảnh 21 ký tự.",
+        "target": "GV"
+      },
+      {
+        "action": "Thứ tự khác giống câu đúng.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-047-1.png",
+      "screenshots/TC-047-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-048",
+    "acs": [
+      "AC-9.4",
+      "AC-9.5",
+      "AC-9.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2813,
+    "steps": [
+      {
+        "action": "Bắt đầu, xem ngân hàng mảnh.",
+        "target": "HV"
+      },
+      {
+        "action": "Chạm mảnh để xếp, chạm mảnh trên dòng để trả về, \"Xếp lại từ đầu\".",
+        "target": "HV"
+      },
+      {
+        "action": "Lặp bằng Tab + Enter/Space; kéo thả (máy tính).",
+        "target": "HV"
+      },
+      {
+        "action": "Tải lại.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-048-1.png",
+      "screenshots/TC-048-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-049",
+    "acs": [
+      "AC-9.7"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 855,
+    "steps": [
+      {
+        "action": "Nộp với hai mảnh \"的\" đổi chỗ.",
+        "target": "HV"
+      },
+      {
+        "action": "Bài khác chưa đặt hết mảnh.",
+        "target": "HV"
+      },
+      {
+        "action": "Bài khác sai thứ tự.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-050",
+    "acs": [
+      "AC-10.1",
+      "AC-10.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1467,
+    "steps": [
+      {
+        "action": "Nhập Pinyin đề, Nghĩa gợi ý, 5 đáp án (thử thứ 6).",
+        "target": "GV"
+      },
+      {
+        "action": "Đáp án 2 = \"ni好\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-050-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-051",
+    "acs": [
+      "AC-10.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 6138,
+    "steps": [
+      {
+        "action": "Mở câu ở 390 px.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-051-1.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed  Locator: getByRole('region', { name: 'Câu 1', exact: true }).getByText('Nghĩa gợi ý: xin chào', { exact: true }) Expected: visible Timeout: 5000ms Error: element(s) not found"
+    ],
+    "note": "B6 — S05 hiện \"Nghĩa: xin chào\", test case/AC-10.4: \"Nghĩa gợi ý: xin chào\". Phần còn lại đạt."
+  },
+  {
+    "tc": "TC-052",
+    "acs": [
+      "AC-10.5"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 793,
+    "steps": [
+      {
+        "action": "Nộp \"她！\".",
+        "target": "HV"
+      },
+      {
+        "action": "Bài khác \"ta1\".",
+        "target": "HV"
+      },
+      {
+        "action": "\"它\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-053",
+    "acs": [
+      "AC-11.1",
+      "AC-11.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2099,
+    "steps": [
+      {
+        "action": "Xem câu mới.",
+        "target": "GV"
+      },
+      {
+        "action": "Thêm đoạn đọc, pinyin, 2 câu con (Trắc nghiệm, Điền chỗ trống) điểm 1 và",
+        "target": "GV"
+      },
+      {
+        "action": "",
+        "target": "GV"
+      },
+      {
+        "action": "Xóa đoạn đọc.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-053-1.png",
+      "screenshots/TC-053-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-054",
+    "acs": [
+      "AC-11.3",
+      "AC-11.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1469,
+    "steps": [
+      {
+        "action": "Mở câu 2, trả lời 2.1, mở lại đoạn đọc, bấm \"Hiện pinyin\", \"Ẩn pinyin\".",
+        "target": "HV"
+      },
+      {
+        "action": "Mở câu 3.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-054-1.png",
+      "screenshots/TC-054-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-055",
+    "acs": [
+      "AC-11.5"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 462,
+    "steps": [
+      {
+        "action": "Nộp câu con 1 đúng, câu con 2 sai.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-056",
+    "acs": [
+      "AC-12.3",
+      "AC-12.4",
+      "AC-12.8"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 1640,
+    "steps": [
+      {
+        "action": "HV xem S11: không có bộ.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "GV bấm \"Xuất bản\" trên khối bộ.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV tải lại S11.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-056-1.png",
+      "screenshots/TC-056-2.png",
+      "screenshots/TC-056-3.png"
+    ],
+    "errors": [],
+    "note": "Hạn nộp chỉ đặt được cho bộ đã xuất bản (003): đặt hạn sau bước 2."
+  },
+  {
+    "tc": "TC-057",
+    "acs": [
+      "AC-12.5",
+      "AC-12.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1741,
+    "steps": [
+      {
+        "action": "Bấm \"Xuất bản\" trên khối.",
+        "target": "GV"
+      },
+      {
+        "action": "Xóa hết câu (qua API), \"Xuất bản\" qua \"Xuất bản…\" của Bài.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-057-1.png",
+      "screenshots/TC-057-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-058",
+    "acs": [
+      "AC-12.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1502,
+    "steps": [
+      {
+        "action": "Xóa đáp án đúng của một câu, \"Lưu thay đổi\" (mỗi bộ).",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-058-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-059",
+    "acs": [
+      "AC-12.9"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1723,
+    "steps": [
+      {
+        "action": "Bấm \"Lưu nháp\" trên A.",
+        "target": "GV"
+      },
+      {
+        "action": "Bật/tắt \"Hiện mục lưu trữ\", chuyển tab, \"Lên\"/\"Xuống\".",
+        "target": "GV"
+      },
+      {
+        "action": "Đọc Bài qua API.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-059-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-060",
+    "acs": [
+      "AC-12.11"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 806,
+    "steps": [
+      {
+        "action": "Xem \"Nhân bản\" và \"Lưu trữ\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-060-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-061",
+    "acs": [
+      "AC-13.1",
+      "AC-13.8",
+      "AC-13.10"
+    ],
+    "type": "API",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 2322,
+    "steps": [
+      {
+        "action": "Gọi ai-approve/preview rồi ai-approve với 2 bộ hợp lệ (1 bộ có `stepId` của bước đang có, 1 bộ bước không tồn tại).",
+        "target": "GV + HV"
+      },
+      {
+        "action": "`GET /api/lessons/<bài>`.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV mở S11.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-061-1.png",
+      "screenshots/TC-061-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-062",
+    "acs": [
+      "AC-13.2",
+      "AC-13.3"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 937,
+    "steps": [
+      {
+        "action": "Preview 3 bộ hợp lệ.",
+        "target": "GV"
+      },
+      {
+        "action": "Preview 31 bộ.",
+        "target": "GV"
+      },
+      {
+        "action": "Preview 2 bộ, câu 3 của bộ 2 có 2 đáp án đúng ở chế độ một.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-063",
+    "acs": [
+      "AC-13.4"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 194,
+    "steps": [
+      {
+        "action": "`POST /api/dev/curriculum/ai-approve/preview` (section `exercise`) với bộ có câu `\"type\":\"speak\"` và câu Trắc nghiệm 7 phương án.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-064",
+    "acs": [
+      "AC-13.5"
+    ],
+    "type": "API",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 2803,
+    "steps": [
+      {
+        "action": "Gọi preview 2 bộ (không duyệt).",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Thêm bộ bằng tay.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV xem S11.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-064-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-065",
+    "acs": [
+      "AC-13.6",
+      "AC-13.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1361,
+    "steps": [
+      {
+        "action": "Sửa câu, \"Lưu thay đổi\".",
+        "target": "GV"
+      },
+      {
+        "action": "\"Nhân bản\", xuất bản bản sao.",
+        "target": "GV"
+      },
+      {
+        "action": "Tìm thao tác tạo lại bằng AI cho bộ / câu.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-065-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-066",
+    "acs": [
+      "AC-13.9",
+      "AC-13.11"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1536,
+    "steps": [
+      {
+        "action": "Preview 2 bộ mới (5 câu).",
+        "target": "GV"
+      },
+      {
+        "action": "Duyệt.",
+        "target": "GV"
+      },
+      {
+        "action": "Bài trống: preview.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-067",
+    "acs": [
+      "AC-13.12"
+    ],
+    "type": "API",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 443,
+    "steps": [
+      {
+        "action": "Preview (B \"Sẽ bị xóa\"), lấy token.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV bắt đầu làm B.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Duyệt với token cũ.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-068",
+    "acs": [
+      "AC-14.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2798,
+    "steps": [
+      {
+        "action": "Mở X từ S11.",
+        "target": "HV"
+      },
+      {
+        "action": "Từ nút \"Luyện tập: X\" trên S03.",
+        "target": "HV"
+      },
+      {
+        "action": "Bắt đầu, trả lời 1 câu, quay lại S05 (thấy \"Tiếp tục làm\").",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-068-1.png",
+      "screenshots/TC-068-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-069",
+    "acs": [
+      "AC-14.2",
+      "AC-14.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1966,
+    "steps": [
+      {
+        "action": "Bắt đầu.",
+        "target": "HV"
+      },
+      {
+        "action": "Trả lời đầy đủ câu 1, một phần câu 3 (1/2 ô), \"Câu sau\", bảng số câu nhảy tới câu 6.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-069-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-070",
+    "acs": [
+      "AC-14.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2385,
+    "steps": [
+      {
+        "action": "Chọn đáp án, quan sát trạng thái lưu.",
+        "target": "HV"
+      },
+      {
+        "action": "Gọi `GET …/start` ở tab khác.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-070-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-071",
+    "acs": [
+      "AC-14.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 6378,
+    "steps": [
+      {
+        "action": "Tắt mạng, trả lời 1 câu.",
+        "target": "HV"
+      },
+      {
+        "action": "Bật mạng.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-071-1.png",
+      "screenshots/TC-071-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-072",
+    "acs": [
+      "AC-14.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5258,
+    "steps": [
+      {
+        "action": "Bấm thoát / quay lại.",
+        "target": "HV"
+      },
+      {
+        "action": "Tải lại trang.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-072-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-073",
+    "acs": [
+      "AC-14.7",
+      "NFR-3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4042,
+    "steps": [
+      {
+        "action": "Trả lời 2/5 (có nối 2 cặp, xếp mảnh), đứng ở câu 4, đóng trình duyệt.",
+        "target": "HV"
+      },
+      {
+        "action": "Đăng nhập lại ở context mới, mở S05, \"Tiếp tục làm\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-073-1.png",
+      "screenshots/TC-073-2.png"
+    ],
+    "errors": [
+      "Error: expect(received).toEqual(expected) // deep equality  - Expected  - 1 + Received  + 5  - Array []"
+    ],
+    "note": "Lần chạy chính thức đỏ do script đọc Cột B trước khi hiển thị (lỗi script, đã sửa: chờ 3 mục); chạy lại 1 lần: Pass."
+  },
+  {
+    "tc": "TC-074",
+    "acs": [
+      "AC-14.8",
+      "NFR-3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 794,
+    "steps": [
+      {
+        "action": "Gửi đồng thời 2 `POST …/start` (2 context).",
+        "target": "HV"
+      },
+      {
+        "action": "Lưu câu 1 ở context 1, câu 2 ở context 2.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-075",
+    "acs": [
+      "AC-14.9",
+      "AC-17.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 10658,
+    "steps": [
+      {
+        "action": "Tab A nộp.",
+        "target": "HV"
+      },
+      {
+        "action": "Tab B trả lời một câu / bấm \"Nộp bài\".",
+        "target": "HV"
+      },
+      {
+        "action": "Tab C còn màn hình bắt đầu \"Tiếp tục làm\", bấm nút.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-075-1.png",
+      "screenshots/TC-075-2.png"
+    ],
+    "errors": [
+      "Error: tab C after \"Tiếp tục làm\"  expect(locator).toBeVisible() failed  Locator: getByRole('alert').filter({ hasText: 'Bài đã nộp — mỗi bộ bài tập chỉ làm một lần' }) Expected: visible"
+    ],
+    "note": "B7 — Tab C còn \"Tiếp tục làm\": bấm vào thì vào lại lượt làm cũ, không hiện \"Bài đã nộp — mỗi bộ bài tập chỉ làm một lần\" (AC-17.7). Tab B: lưu bị từ chối đúng thông điệp + \"Xem lại bài làm\"; \"Nộp bài\" bị vô hiệu."
+  },
+  {
+    "tc": "TC-076",
+    "acs": [
+      "AC-15.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1966,
+    "steps": [
+      {
+        "action": "Bấm \"Nộp bài\".",
+        "target": "HV"
+      },
+      {
+        "action": "\"Làm tiếp\".",
+        "target": "HV"
+      },
+      {
+        "action": "Trả lời đủ, \"Nộp bài\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-076-1.png",
+      "screenshots/TC-076-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-077",
+    "acs": [
+      "AC-15.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1040,
+    "steps": [
+      {
+        "action": "Bấm \"Nộp bài\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-077-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-078",
+    "acs": [
+      "AC-15.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1480,
+    "steps": [
+      {
+        "action": "Nộp và xác nhận.",
+        "target": "HV"
+      },
+      {
+        "action": "Gửi `PUT …/attempt` với câu trả lời khác.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-078-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-079",
+    "acs": [
+      "AC-15.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2198,
+    "steps": [
+      {
+        "action": "Tắt mạng, nộp và xác nhận.",
+        "target": "HV"
+      },
+      {
+        "action": "Bật mạng, \"Thử lại\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-079-1.png",
+      "screenshots/TC-079-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-080",
+    "acs": [
+      "AC-15.5",
+      "NFR-3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 636,
+    "steps": [
+      {
+        "action": "Gửi `POST …/submit` cùng `submitKey` 3 lần (song song).",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: [{\"status\":200,\"body\":{\"submitted\":true}},{\"status\":409,\"body\":{\"error\":{\"code\":\"ALREADY_SUBMITTED\",\"message\":\"Bài đã nộp — mỗi bộ bài tập chỉ làm một lần\",\"details\":{\"review\":\"/hv/lop/6ae1b92001751f9874322b34/bai-tap/6ae1b92001751f9874322b30/ket-qua\"},\"requestId\":\"bc4e4cbc-0e82-44d4-b67e-76005c77d8f2\"}}},{\"status\":409,\"body\":{\"error\":{\"code\":\"ALREADY_SUBMITTED\",\"message\":\"Bài đã nộp — mỗi bộ bài tập chỉ làm một lần\",\"details\":{\"review\":\"/hv/lop/6ae1b92001751f9874322b34/bai-tap/6ae1b92001751f9874322b30/ket-qua\"},\"requestId\":\"ce3060b5-506d-48b4-887a-74cdee4c4b82\"}}}]  expect(received).to"
+    ],
+    "note": "B8 — 3 lần nộp song song cùng submitKey: 1 × 200, 2 × 409 ALREADY_SUBMITTED. Đúng 1 bài nộp được ghi nhận."
+  },
+  {
+    "tc": "TC-081",
+    "acs": [
+      "AC-16.1",
+      "AC-17.6"
+    ],
+    "type": "API",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 1009,
+    "steps": [
+      {
+        "action": "HV nộp.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Đọc `GET /api/exercises/classes/<lớp>/sets/<bộ>/submissions` (dữ liệu cho 008/009).",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-081-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-082",
+    "acs": [
+      "AC-16.2",
+      "AC-16.3",
+      "AC-16.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 6403,
+    "steps": [
+      {
+        "action": "Xem S06 sau khi nộp.",
+        "target": "HV"
+      },
+      {
+        "action": "Mở lại từ \"Xem lại bài làm\" trên S05.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-082-1.png",
+      "screenshots/TC-082-2.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed  Locator: getByText('7 / 12 điểm (58%)', { exact: true }) Expected: visible Timeout: 5000ms Error: element(s) not found"
+    ],
+    "note": "B9 — Điểm hiện \"7,0 / 12,0 điểm (58%)\" thay vì \"7 / 12 điểm (58%)\". Mọi phần khác của S06 đạt."
+  },
+  {
+    "tc": "TC-083",
+    "acs": [
+      "AC-16.2"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 11289,
+    "steps": [
+      {
+        "action": "Xem S06 từng bài.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-083-1.png",
+      "screenshots/TC-083-2.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed  Locator: getByText('0,5 / 3 điểm (17%)', { exact: true }) Expected: visible Timeout: 5000ms Error: element(s) not found",
+      "Error: expect(locator).toBeVisible() failed  Locator: getByText('5 / 8 điểm (63%)', { exact: true }) Expected: visible Timeout: 5000ms Error: element(s) not found"
+    ],
+    "note": "B9 — \"0,5 / 3,0 điểm (17%)\" và \"5,0 / 8,0 điểm (63%)\": phần trăm đúng, định dạng điểm sai."
+  },
+  {
+    "tc": "TC-084",
+    "acs": [
+      "AC-16.5",
+      "NFR-9"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 913,
+    "steps": [
+      {
+        "action": "Đọc phản hồi `GET …/sets/<X>`, `POST …/start`, `GET /api/my-classes/<lớp>/items/<X>`, `GET /api/learn/lessons/<bài>`.",
+        "target": "HV"
+      },
+      {
+        "action": "Mở S06 của X bằng đường dẫn.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-084-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-085",
+    "acs": [
+      "AC-16.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2608,
+    "steps": [
+      {
+        "action": "Duyệt mọi điều khiển của khối bộ trên T09.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-085-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-086",
+    "acs": [
+      "AC-17.1",
+      "AC-17.2"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 611,
+    "steps": [
+      {
+        "action": "`POST …/start` lại.",
+        "target": "HV"
+      },
+      {
+        "action": "`PUT …/attempt`.",
+        "target": "HV"
+      },
+      {
+        "action": "`POST …/submit` key mới.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-087",
+    "acs": [
+      "AC-17.3",
+      "AC-17.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2128,
+    "steps": [
+      {
+        "action": "Mở S05 từng bộ (bộ \"Chưa mở\" bằng đường dẫn).",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-087-1.png",
+      "screenshots/TC-087-2.png",
+      "screenshots/TC-087-3.png",
+      "screenshots/TC-087-4.png",
+      "screenshots/TC-087-5.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-088",
+    "acs": [
+      "AC-17.6"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 904,
+    "steps": [
+      {
+        "action": "Sau mỗi sự kiện đọc `GET /api/exercises/classes/<lớp>/sets/<bộ>/submissions` và S11 của HV.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: state after \"Bắt đầu làm\" (no answer yet)  expect(received).toBe(expected) // Object.is equality  Expected: \"doing\" Received: \"todo\"",
+      "Error: S05 state  expect(received).toBe(expected) // Object.is equality  Expected: \"doing\" Received: \"todo\""
+    ],
+    "note": "B10 — Sau \"Bắt đầu làm\" (chưa trả lời) trạng thái S05 và S11 vẫn \"Chưa làm\" (máy chủ chỉ tính \"Đang làm\" khi đã có câu trả lời). Nộp, chấm lại, đổi hạn: đạt."
+  },
+  {
+    "tc": "TC-089",
+    "acs": [
+      "AC-18.1",
+      "AC-18.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3400,
+    "steps": [
+      {
+        "action": "Mở T09.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-089-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-090",
+    "acs": [
+      "AC-18.3"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 1720,
+    "steps": [
+      {
+        "action": "GV sửa chữ B thành \"您好\" (không đổi đáp án), lưu.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV mở S06, GV mở T14.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-090-1.png",
+      "screenshots/TC-090-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-091",
+    "acs": [
+      "AC-18.4"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 984,
+    "steps": [
+      {
+        "action": "GV xóa câu 2 và đổi dạng... (thêm câu mới thay câu 3), lưu.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV \"Tiếp tục làm\".",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-091-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-092",
+    "acs": [
+      "AC-18.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1442,
+    "steps": [
+      {
+        "action": "Bấm \"Nhân bản\" trên X.",
+        "target": "GV"
+      },
+      {
+        "action": "Nhân bản bộ tiêu đề 148 ký tự.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-092-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-093",
+    "acs": [
+      "AC-18.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1288,
+    "steps": [
+      {
+        "action": "Trên T06 bấm \"Xem như học viên\" (T21), tab Bài tập.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-093-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-094",
+    "acs": [
+      "AC-18.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1773,
+    "steps": [
+      {
+        "action": "Sửa tại chỗ từng bộ không bấm nút chuyển chế độ.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-094-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-095",
+    "acs": [
+      "AC-19.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 7137,
+    "steps": [
+      {
+        "action": "Thêm đáp án chấp nhận \"shì\" cho ô 1, \"Lưu thay đổi\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-095-1.png",
+      "screenshots/TC-095-2.png"
+    ],
+    "errors": [
+      "Error: \"Thêm đáp án\" of a blank on a set with submissions  expect(locator).toBeEnabled() failed  Locator:  getByRole('region', { name: 'Bộ bài tập 1', exact: true }).getByRole('group', { name: 'Chỗ trống 1' }).getByRole('button', { name: 'Thêm đáp án' }) Expected: enabled"
+    ],
+    "note": "B11 — Bộ có bài nộp: \"Thêm đáp án\" của chỗ trống bị vô hiệu (khóa cấu trúc) nên GV không thêm được \"shì\" trên T09. Qua API: lưu được, không hỏi chấm lại, S06 không ghi chú."
+  },
+  {
+    "tc": "TC-096",
+    "acs": [
+      "AC-19.2",
+      "AC-19.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2370,
+    "steps": [
+      {
+        "action": "\"Lưu thay đổi\".",
+        "target": "GV"
+      },
+      {
+        "action": "\"Hủy\".",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-096-1.png",
+      "screenshots/TC-096-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-097",
+    "acs": [
+      "AC-19.4",
+      "AC-19.5"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 2988,
+    "steps": [
+      {
+        "action": "Đổi đáp án, \"Chấm lại và lưu\".",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV xem S06, GV xem T14.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-097-1.png",
+      "screenshots/TC-097-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-098",
+    "acs": [
+      "AC-19.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 8492,
+    "steps": [
+      {
+        "action": "Đổi đáp án, \"Chấm lại và lưu\", quan sát khối bộ.",
+        "target": "GV"
+      },
+      {
+        "action": "Trong lúc chấm, HV nộp bài mới.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-098-1.png"
+    ],
+    "errors": [],
+    "note": "Khối bộ hiện \"Đang chấm lại 0/201 bài nộp…\" (x không tăng — chấm lại trong cùng request, theo plan.md); bài nộp mới được chấm theo đáp án mới."
+  },
+  {
+    "tc": "TC-099",
+    "acs": [
+      "AC-20.1",
+      "AC-20.2",
+      "AC-20.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1628,
+    "steps": [
+      {
+        "action": "Ở T04 tab Nội dung, cột Bài tập, bấm \"Bài nộp\" ở dòng của bộ (ngăn \"Bài nộp\": Học viên, Nộp lúc, Điểm, nhãn \"Nộp muộn\").",
+        "target": "GV"
+      },
+      {
+        "action": "Bấm \"Xem bài nộp\" ở dòng HV A.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-099-1.png",
+      "screenshots/TC-099-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-100",
+    "acs": [
+      "AC-20.5",
+      "NFR-9"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 8969,
+    "steps": [
+      {
+        "action": "GV thứ hai mở cùng đường dẫn T14.",
+        "target": "GV"
+      },
+      {
+        "action": "HV A mở đường dẫn.",
+        "target": "GV"
+      },
+      {
+        "action": "Đường dẫn với `hv` không có bài nộp.",
+        "target": "GV"
+      },
+      {
+        "action": "Chưa đăng nhập.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-100-1.png",
+      "screenshots/TC-100-2.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeVisible() failed  Locator: getByText('Không tìm thấy nội dung') Expected: visible Timeout: 5000ms Error: element(s) not found"
+    ],
+    "note": "B1 — HV mở đường dẫn T14 bị chuyển về S01 thay vì A05. GV khác, HV không có bài nộp: A05; chưa đăng nhập: A01."
+  },
+  {
+    "tc": "TC-101",
+    "acs": [
+      "AC-20.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1372,
+    "steps": [
+      {
+        "action": "Mở T14 từng bài nộp.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-101-1.png",
+      "screenshots/TC-101-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-102",
+    "acs": [
+      "AC-20.7"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Bị chặn",
+    "durationMs": 0,
+    "steps": [
+      {
+        "action": "Khi 006 có: mở bài nộp bài thi từ T16.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "note": "006 (Bài thi, T16) chưa được xây — không có bài nộp bài thi để mở T14."
+  },
+  {
+    "tc": "TC-103",
+    "acs": [
+      "AC-21.1",
+      "AC-21.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 13900,
+    "steps": [
+      {
+        "action": "Mở S05 / S06 bằng đường dẫn mỗi trường hợp.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-103-1.png",
+      "screenshots/TC-103-2.png",
+      "screenshots/TC-103-3.png",
+      "screenshots/TC-103-4.png"
+    ],
+    "errors": [
+      "Error: A05 for an HV outside the class (/hv/lop/6ae1b97301751f9874322f09/bai-tap/6ae1b97301751f9874322f03)  expect(locator).toBeVisible() failed  Locator: getByText('Không tìm thấy nội dung') Expected: visible",
+      "Error: A05 for an HV outside the class (/hv/lop/6ae1b97301751f9874322f09/bai-tap/6ae1b97301751f9874322f03/ket-qua)  expect(locator).toBeVisible() failed  Locator: getByText('Không tìm thấy nội dung') Expected: visible"
+    ],
+    "note": "B2 — HV ngoài lớp mở S05 / S06: chuyển về S01 + \"Bạn không thuộc lớp này…\" (hành vi 003) thay vì A05. Bài Nháp: A05; lớp chưa bắt đầu: thông báo 003. Không lộ nội dung."
+  },
+  {
+    "tc": "TC-104",
+    "acs": [
+      "AC-21.4",
+      "AC-21.5",
+      "AC-21.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2226,
+    "steps": [
+      {
+        "action": "GV ẩn section Bài tập Bài 1 ở lớp A.",
+        "target": "HV"
+      },
+      {
+        "action": "HV lớp A mở S11, đường dẫn S05 X, S06 Y.",
+        "target": "HV"
+      },
+      {
+        "action": "HV lớp B mở.",
+        "target": "HV"
+      },
+      {
+        "action": "GV hiện lại.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-104-1.png",
+      "screenshots/TC-104-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-105",
+    "acs": [
+      "AC-21.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 15599,
+    "steps": [
+      {
+        "action": "GV ẩn section / lưu trữ X / gỡ HV / kết thúc lớp (mỗi lần một).",
+        "target": "HV"
+      },
+      {
+        "action": "HV trả lời câu 2 hoặc nộp.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-105-1.png",
+      "screenshots/TC-105-2.png",
+      "screenshots/TC-105-3.png",
+      "screenshots/TC-105-4.png"
+    ],
+    "errors": [
+      "Error: gỡ HV  expect(locator).toBeVisible() failed  Locator: getByRole('alert').filter({ hasText: 'Bài tập này hiện không khả dụng. Câu trả lời đã lưu của bạn được giữ lại.' }) Expected: visible"
+    ],
+    "note": "B2 — Gỡ HV khỏi lớp: \"Bạn không thuộc lớp này hoặc lớp không còn tồn tại\" thay vì thông điệp AC-21.6. Ẩn phần, lưu trữ, kết thúc lớp: đạt; câu 1 còn nguyên khi khôi phục."
+  },
+  {
+    "tc": "TC-106",
+    "acs": [
+      "AC-21.8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1539,
+    "steps": [
+      {
+        "action": "Mở S05 X, \"Xem lại bài làm\".",
+        "target": "HV"
+      },
+      {
+        "action": "Mở S05 Y.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-106-1.png",
+      "screenshots/TC-106-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-107",
+    "acs": [
+      "AC-22.1",
+      "AC-22.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1940,
+    "steps": [
+      {
+        "action": "\"Xóa\" trên A, xác nhận.",
+        "target": "GV"
+      },
+      {
+        "action": "\"Xóa\" trên B.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-107-1.png",
+      "screenshots/TC-107-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-108",
+    "acs": [
+      "AC-22.3",
+      "AC-22.4",
+      "AC-22.5",
+      "AC-22.6"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 2943,
+    "steps": [
+      {
+        "action": "\"Lưu trữ\" B.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "HV xem S11, S06 của B.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "GV bật \"Hiện mục lưu trữ\", sửa B, \"Lưu thay đổi\".",
+        "target": "GV + HV"
+      },
+      {
+        "action": "\"Khôi phục\".",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-108-1.png",
+      "screenshots/TC-108-2.png",
+      "screenshots/TC-108-3.png",
+      "screenshots/TC-108-4.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-109",
+    "acs": [
+      "AC-23.1",
+      "AC-23.2"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1253,
+    "steps": [
+      {
+        "action": "Đặt đồng hồ 21/10 23:59:59 VN, HV1 nộp.",
+        "target": "HV"
+      },
+      {
+        "action": "22/10 00:00:00, HV2 nộp.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-109-1.png"
+    ],
+    "errors": [],
+    "note": "Đồng hồ máy chủ dời qua /api/dev/clock (đặt lại sau ca)."
+  },
+  {
+    "tc": "TC-110",
+    "acs": [
+      "AC-23.3",
+      "AC-23.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1314,
+    "steps": [
+      {
+        "action": "Ngày 20/10 mở S05.",
+        "target": "HV"
+      },
+      {
+        "action": "Ngày 21/10.",
+        "target": "HV"
+      },
+      {
+        "action": "Ngày 22/10 00:00:00 VN (không tải lại → tải lại).",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-110-1.png",
+      "screenshots/TC-110-2.png",
+      "screenshots/TC-110-3.png"
+    ],
+    "errors": [],
+    "note": "Trình duyệt múi giờ America/Bogota (UTC−5); đồng hồ máy chủ dời qua /api/dev/clock."
+  },
+  {
+    "tc": "TC-111",
+    "acs": [
+      "AC-23.5"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 1769,
+    "steps": [
+      {
+        "action": "GV đổi hạn sang 25/10.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Đổi về 20/10.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Xóa hạn.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-111-1.png",
+      "screenshots/TC-111-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-112",
+    "acs": [
+      "AC-23.7",
+      "AC-23.8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1529,
+    "steps": [
+      {
+        "action": "Mở S05 X.",
+        "target": "HV"
+      },
+      {
+        "action": "Mở S05 Y bằng đường dẫn.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-112-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-113",
+    "acs": [
+      "AC-23.9",
+      "AC-23.11"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2657,
+    "steps": [
+      {
+        "action": "GV xóa hạn Y.",
+        "target": "HV"
+      },
+      {
+        "action": "HV trả lời câu 3 / bấm nộp.",
+        "target": "HV"
+      },
+      {
+        "action": "Gửi `POST …/start` của bộ \"Chưa mở\" khác.",
+        "target": "HV"
+      },
+      {
+        "action": "HV đã nộp mở S06.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-113-1.png",
+      "screenshots/TC-113-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-114",
+    "acs": [
+      "AC-23.10"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1203,
+    "steps": [
+      {
+        "action": "GV đặt hạn Y.",
+        "target": "HV"
+      },
+      {
+        "action": "HV tải lại S05, \"Tiếp tục làm\".",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-114-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-115",
+    "acs": [
+      "NFR-1"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 11676,
+    "steps": [
+      {
+        "action": "100 HV nộp trong 1 phút, đo thời gian `submit` + `review`.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "output": "TC-115: 100 submissions in 2067 ms; submit+review p95 272 ms, max 320 ms",
+    "note": "Workspace riêng, 100 HV kích hoạt qua API 001."
+  },
+  {
+    "tc": "TC-116",
+    "acs": [
+      "NFR-2"
+    ],
+    "type": "E2E",
+    "role": "HV + GV",
+    "status": "Pass",
+    "durationMs": 12684,
+    "steps": [
+      {
+        "action": "HV mở S05, \"Bắt đầu làm\", đo tới câu đầu.",
+        "target": "HV + GV"
+      },
+      {
+        "action": "GV mở T14 bài nộp 100 câu.",
+        "target": "HV + GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-116-1.png",
+      "screenshots/TC-116-2.png"
+    ],
+    "errors": [],
+    "output": "TC-116: S05 1322, 1101, 1073, 1112, 1160 ms (p95 1322); T14 1090, 672, 710, 674, 686 ms (p95 1090)"
+  },
+  {
+    "tc": "TC-117",
+    "acs": [
+      "NFR-4"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 3126,
+    "steps": [
+      {
+        "action": "Chạy bộ kiểm thử của quy tắc chấm.",
+        "target": "HV"
+      },
+      {
+        "action": "Lấy mẫu 20 ca qua API nộp bài.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: cases in the reference set of the grading rules (≥ 400)  expect(received).toBeGreaterThanOrEqual(expected)  Expected: >= 400 Received:    72"
+    ],
+    "output": "TC-117 reference run:  Test Files  1 passed (1) |       Tests  72 passed (72)",
+    "note": "B12 — Bộ ca chuẩn chỉ có 72 ca (Vitest), NFR-4 cần ≥ 400 ca chấm (≥ 150 ca pinyin). 72/72 và 20/20 mẫu qua API đúng."
+  },
+  {
+    "tc": "TC-118",
+    "acs": [
+      "NFR-5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 190263,
+    "steps": [
+      {
+        "action": "Đổi đáp án, \"Chấm lại và lưu\", đo.",
+        "target": "GV"
+      },
+      {
+        "action": "Trong lúc chấm, 20 HV nộp.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: apiRequestContext.fetch: read ECONNRESET Call log:   - → POST http://127.0.0.1:4173/api/learn/classes/6ae1ba8201751f9874325c75/sets/6ae1b9cc01751f987432375c/start     - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36     - accept: */*     - accept-encoding: gzip,deflate,br"
+    ],
+    "note": "Chấm lại 5 000 bài nộp: 2 101–2 412 ms. Lần chạy chính thức đứt kết nối (ECONNRESET, máy chủ in-memory sau ~120 ca) lúc tạo dữ liệu; chạy lại 1 lần: Pass."
+  },
+  {
+    "tc": "TC-119",
+    "acs": [
+      "NFR-6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 3114,
+    "steps": [
+      {
+        "action": "Làm và xem S06 ở 360 và 430 px.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-119-1.png",
+      "screenshots/TC-119-2.png",
+      "screenshots/TC-119-3.png",
+      "screenshots/TC-119-4.png",
+      "screenshots/TC-119-5.png",
+      "screenshots/TC-119-6.png"
+    ],
+    "errors": [
+      "Error: S06 · 360: Hanzi under 18 px  expect(received).toEqual(expected) // deep equality  - Expected  - 1 + Received  + 5",
+      "Error: S06 · 430: Hanzi under 18 px  expect(received).toEqual(expected) // deep equality  - Expected  - 1 + Received  + 5"
+    ],
+    "note": "B13 — S06 ở 360 và 430 px: chữ Hán 15 px (< 18 px) trong \"Bạn trả lời\" / \"Đáp án đúng\". S05: đạt; không cuộn ngang."
+  },
+  {
+    "tc": "TC-120",
+    "acs": [
+      "NFR-7"
+    ],
+    "type": "E2E",
+    "role": "GV + HV",
+    "status": "Fail",
+    "durationMs": 11299,
+    "steps": [
+      {
+        "action": "Làm toàn bộ bằng bàn phím trên S05 và T21.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Thao tác T09 bằng bàn phím.",
+        "target": "GV + HV"
+      },
+      {
+        "action": "Chạy kiểm tra axe trên S05, S06, T09, T14.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-120-1.png",
+      "screenshots/TC-120-2.png"
+    ],
+    "errors": [
+      "Error: expect(received).toEqual(expected) // deep equality  - Expected  - 1 + Received  + 3    Object {"
+    ],
+    "output": "TC-120 axe: {\"S05\":[],\"S06\":[],\"T09\":[],\"T14\":[\"scrollable-region-focusable ×1 (main)\"]}",
+    "note": "B14 — axe: T14 `scrollable-region-focusable` (main). S05, S06, T09: 0 lỗi; mọi thao tác bằng bàn phím được. axe-core 4.10.2 nạp từ cdnjs, context bỏ qua CSP."
+  },
+  {
+    "tc": "TC-121",
+    "acs": [
+      "NFR-9"
+    ],
+    "type": "API",
+    "role": "HV / GV",
+    "status": "Pass",
+    "durationMs": 1986,
+    "steps": [
+      {
+        "action": "Gọi mọi endpoint bộ / lượt làm / bài nộp / review / T14.",
+        "target": "HV / GV"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "output": "TC-121 refusals not as expected:"
+  },
+  {
+    "tc": "TC-122",
+    "acs": [
+      "NFR-10"
+    ],
+    "type": "API",
+    "role": "GV + HV",
+    "status": "Pass",
+    "durationMs": 1274,
+    "steps": [
+      {
+        "action": "Xuất bản, lưu trữ, khôi phục, xóa, nhân bản, nộp, chấm lại; xem log máy chủ.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "output": "TC-122 actions logged: [\"Classes:reminder.sweep\",\"Curriculum:curriculum.create\",\"Curriculum:lesson.create\",\"Curriculum:item.create\",\"Curriculum:item.create\",\"Curriculum:item.publish\",\"Curriculum:item.publish\",\"Curriculum:lesson.publish\",\"Classes:class.create\",\"Classes:class.deadline.set\",\"Exercises:attempt.start\",\"Exercises:attempt.submit\",\"Exercises:set.regrade\",\"Curriculum:item.update\",\"Curriculum:item.duplicate\",\"Curriculum:item.archive\",\"Curriculum:item.restore\",\"Curriculum:item.delete\"]",
+    "note": "Máy chủ hermetic thứ hai (cổng 4174, LOG_LEVEL=info) do script dựng để đọc log."
+  },
+  {
+    "tc": "TC-123",
+    "acs": [
+      "NFR-11"
+    ],
+    "type": "API",
+    "role": "GV + HV",
+    "status": "Fail",
+    "durationMs": 5509,
+    "steps": [
+      {
+        "action": "Duyệt thay 30 bộ mới × 100 câu, đo; song song HV lưu/nộp bộ cũ.",
+        "target": "GV + HV"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: expect(received).toBe(expected) // Object.is equality  Expected: 200 Received: 413    36 |   const items = Array.from({ length: 30 }, (_, s) => ({ title: `Mới ${s + 1}`, content: set(Array.from({ length: 100 }, (_, k) => q(`Mới ${s + 1}.${k + 1}`))) }));"
+    ],
+    "note": "B15 — Duyệt 30 bộ × 100 câu bị từ chối 413 (giới hạn JSON 100 kB của API, `app.ts`) — không đo được NFR-11 qua đường duyệt (stand-in 010)."
+  },
+  {
+    "tc": "TC-124",
+    "acs": [
+      "NFR-12",
+      "NFR-13"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 4988,
+    "steps": [
+      {
+        "action": "Mở tab Bài tập lần đầu, đo.",
+        "target": "GV"
+      },
+      {
+        "action": "Sang Bài học rồi về, đo.",
+        "target": "GV"
+      },
+      {
+        "action": "Sửa 3 bộ, chuyển tab 10 lần, lưu lần lượt.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: expect(received).toBeLessThanOrEqual(expected)  Expected: <= 1000 Received:    1281    27 |   console.log(`TC-124: first open ${first} ms, back again ${again} ms`);"
+    ],
+    "output": "TC-124: first open 2046 ms, back again 1281 ms",
+    "note": "B16 — Quay lại tab Bài tập (10 bộ × 30 câu): 1 281–1 307 ms > 1 s (đo 3 lần). Mở lần đầu 1,9–2,0 s (≤ 3 s), không mất thay đổi."
+  },
+  {
+    "tc": "TC-125",
+    "acs": [
+      "NFR-14"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 1103,
+    "steps": [
+      {
+        "action": "Chạy các ca biên của NFR-14 (23:59:59 / 00:00:00, đổi / xóa hạn, lượt dở qua hạn).",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-126",
+    "acs": [
+      "NFR-8"
+    ],
+    "type": "Thủ công",
+    "role": "HV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [
+      {
+        "action": "Làm bộ B6 bằng chạm, bàn phím pinyin và viết tay của hệ điều hành.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-127",
+    "acs": [
+      "NFR-6"
+    ],
+    "type": "Thủ công",
+    "role": "HV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [
+      {
+        "action": "Kiểm tra kéo thả Nối cặp và Sắp xếp bằng ngón tay.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-128",
+    "acs": [
+      "NFR-8"
+    ],
+    "type": "Thủ công",
+    "role": "GV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [
+      {
+        "action": "Soạn bộ B6 trên T09 và xem T14.",
+        "target": "GV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-129",
+    "acs": [
+      "NFR-7"
+    ],
+    "type": "Thủ công",
+    "role": "HV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [
+      {
+        "action": "Làm một câu mỗi dạng.",
+        "target": "HV"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  }
+]
