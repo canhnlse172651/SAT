@@ -1,6 +1,11 @@
 import {
+  type Answer,
+  type Answers,
   CURRICULUM_MESSAGES as M,
   type Item,
+  formatNumber,
+  learnQuestion,
+  setPoints,
   SECTION_TITLES,
   type Section,
   setContentSchema,
@@ -20,6 +25,7 @@ import {
 import { useDocumentTitle } from '../../lib/use-document-title';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { Notice } from '../auth/Notice';
+import { QuestionView } from '../exercises/QuestionView';
 import { useStepEditorStore } from '../steps/step-editor-store';
 import { StepPreview } from '../steps/StepPreview';
 import { Crumbs } from './Crumbs';
@@ -33,47 +39,42 @@ export type Viewport = 'web' | 'mobile';
 /** Shared with the "Xem trước" mode of T20 (010) — AC-16.8. */
 export const VIEWPORT_PREF = 'preview.viewport';
 
-/** A set as S05 shows it: every question, answers can be tried, nothing submitted or graded (AC-16.3 … AC-16.5). */
+/**
+ * 005 AC-18.6: a set as S05 shows it — instructions, counts and every question one after the other. Answers can be tried
+ * (kept on this screen only); there is no "Nộp bài", no grading and no result.
+ */
 function SetView({
   item,
   answers,
   onAnswer,
 }: {
   item: Item;
-  answers: Record<string, number>;
-  onAnswer: (key: string, option: number) => void;
+  answers: Answers;
+  onAnswer: (questionId: string, a: Answer) => void;
 }) {
   const content = setContentSchema.safeParse(item.content);
+  if (!content.success) return null;
+  const { instructions, questions } = content.data;
   return (
-    <ol className="pv-questions">
-      {(content.success ? content.data.questions : []).map((q, k) => {
-        const key = `${item.id}-${k}`;
-        // Interim: multiple choice only (005 T022 renders every kind with QuestionView).
-        const options = q.type === 'mcq' || q.type === 'vocab' ? q.options : [];
-        return (
-          <li key={key} className="pv-question">
-            <fieldset>
-              <legend>
-                Câu {k + 1}. {q.prompt}
-              </legend>
-              {options.map((opt, o) =>
-                opt.text.trim() ? (
-                  <label key={opt.id} className="pv-option">
-                    <input
-                      type="radio"
-                      name={key}
-                      checked={answers[key] === o}
-                      onChange={() => onAnswer(key, o)}
-                    />
-                    <span>{opt.text}</span>
-                  </label>
-                ) : null,
-              )}
-            </fieldset>
+    <>
+      {instructions.trim() && <p className="muted">{instructions}</p>}
+      <p className="small muted">
+        {questions.length} câu · Tổng điểm{' '}
+        {formatNumber(setPoints(content.data), 1).replace(/,0$/, '')}
+      </p>
+      <ol className="pv-questions">
+        {questions.map((q, k) => (
+          <li key={q.id} className="pv-question">
+            <QuestionView
+              q={learnQuestion(q)}
+              n={String(k + 1)}
+              answer={answers[q.id]}
+              onAnswer={(a) => onAnswer(q.id, a)}
+            />
           </li>
-        );
-      })}
-    </ol>
+        ))}
+      </ol>
+    </>
   );
 }
 
@@ -91,8 +92,8 @@ export function PreviewPage() {
   const [viewport, setViewport] = useState<Viewport>(() =>
     readPref<Viewport>(VIEWPORT_PREF, ['web', 'mobile'], 'web'),
   );
-  // Tried answers live only on this screen (AC-16.5).
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  // Tried answers live only on this screen (AC-16.5), by question id.
+  const [answers, setAnswers] = useState<Answers>({});
   useDocumentTitle('Xem như học viên');
 
   const loadInfo = useStepEditorStore((s) => s.loadInfo);
@@ -164,7 +165,7 @@ export function PreviewPage() {
                       <SetView
                         item={item}
                         answers={answers}
-                        onAnswer={(key, o) => setAnswers((a) => ({ ...a, [key]: o }))}
+                        onAnswer={(id, a) => setAnswers((all) => ({ ...all, [id]: a }))}
                       />
                     </>
                   )}
