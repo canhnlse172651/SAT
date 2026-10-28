@@ -119,6 +119,11 @@ describe('shells', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
+  it('[005:NFR-7] the scrolling content area of TeacherShell is keyboard-focusable (read-only pages like T14)', async () => {
+    open('/gv', { role: 'GV' });
+    expect(await screen.findByRole('main')).toHaveAttribute('tabindex', '0');
+  });
+
   it('StudentShell lists the tab bar in order', async () => {
     open('/hv', hv);
     const nav = await screen.findByRole('navigation', { name: 'Thanh tab' });

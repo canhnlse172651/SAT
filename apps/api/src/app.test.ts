@@ -86,6 +86,25 @@ describe('error contract', () => {
     expect(res.body.error.code).toBe('BAD_REQUEST');
   });
 
+  it('[005:NFR-11] JSON bodies: 100 kB by default, 8 MB for lesson content (exercise sets of 100 questions)', async () => {
+    const http = await server();
+    const body = (kb: number) => JSON.stringify({ text: 'x'.repeat(kb * 1024) });
+    const post = (path: string, kb: number) =>
+      request(http).post(path).set('content-type', 'application/json').send(body(kb));
+    expect((await post('/api/health', 200)).status).toBe(413);
+    // Not refused for its size: the route is simply not registered in this test app.
+    expect((await post('/api/lessons/x/items/y', 2048)).status).toBe(404);
+    const tooBig = await post('/api/lessons/x/items/y', 9 * 1024);
+    expect(tooBig.status).toBe(413);
+    expect(tooBig.body.error.code).toBe((await post('/api/health', 200)).body.error.code);
+    const broken = await request(http)
+      .post('/api/lessons/x/items/y')
+      .set('content-type', 'application/json')
+      .send('{"broken":');
+    expect(broken.status).toBe(400);
+    expect(broken.body.error.code).toBe('BAD_REQUEST');
+  });
+
   it('sets security headers and hides the framework', async () => {
     const res = await request(await server()).get('/api/health');
     expect(res.headers['x-powered-by']).toBeUndefined();

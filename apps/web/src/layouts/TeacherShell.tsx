@@ -73,7 +73,8 @@ export function TeacherShell() {
             <span className="gv-top__name">{name}</span>
           </div>
         </header>
-        <main className="gv-content">
+        {/* Focusable so keyboard users can scroll read-only pages such as T14 (axe scrollable-region-focusable). */}
+        <main className="gv-content" tabIndex={0}>
           <Outlet />
         </main>
       </div>

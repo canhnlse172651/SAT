@@ -12,6 +12,8 @@ export interface HttpOptions {
   webDistDir?: string | undefined;
 }
 
+const LARGE_BODY_PATHS = ['/api/lessons', '/api/dev/curriculum'];
+
 /** The HTTP pipeline, shared by `main.ts` and the tests. Call before `app.init()` / `app.listen()`. */
 export function configureApp(app: NestExpressApplication, { webDistDir }: HttpOptions = {}): void {
   app.useLogger(app.get(Logger));
@@ -24,6 +26,9 @@ export function configureApp(app: NestExpressApplication, { webDistDir }: HttpOp
       },
     }),
   );
+  // 005 NFR-11: lesson content (an exercise set of 100 reading questions, AI approval) can be megabytes; the parser
+  // that runs first owns the body, so these paths get a larger limit and everything else keeps 100 kB.
+  app.use(LARGE_BODY_PATHS, express.json({ limit: '8mb' }));
   app.useBodyParser('json', { limit: '100kb' });
   // Feature modules are registered in AppModule; their controllers are served under /api/<resource>.
   app.setGlobalPrefix('api');

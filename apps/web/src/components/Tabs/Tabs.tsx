@@ -1,4 +1,4 @@
-import { useId, useRef, type KeyboardEvent, type ReactNode } from 'react';
+import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { cx } from '../cx';
 import './Tabs.css';
 
@@ -16,13 +16,30 @@ export interface TabsProps {
   onChange: (id: string) => void;
   'aria-label': string;
   className?: string;
+  /** Keep panels mounted (hidden) once visited, so switching back is instant and keeps their state. */
+  keepMounted?: boolean;
 }
 
 /** Controlled tabs with automatic activation and a roving tabindex. */
-export function Tabs({ items, value, onChange, 'aria-label': ariaLabel, className }: TabsProps) {
+export function Tabs({
+  items,
+  value,
+  onChange,
+  'aria-label': ariaLabel,
+  className,
+  keepMounted = false,
+}: TabsProps) {
   const base = useId();
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
   const selected = items.find((i) => i.id === value) ?? items[0];
+  const [visited, setVisited] = useState<readonly string[]>(selected ? [selected.id] : []);
+  if (keepMounted && selected && !visited.includes(selected.id))
+    setVisited([...visited, selected.id]);
+  const panels = keepMounted
+    ? items.filter((i) => i.id === selected?.id || visited.includes(i.id))
+    : selected
+      ? [selected]
+      : [];
 
   const move = (index: number) => {
     const target = items[(index + items.length) % items.length];
@@ -76,17 +93,19 @@ export function Tabs({ items, value, onChange, 'aria-label': ariaLabel, classNam
           );
         })}
       </div>
-      {selected && (
+      {panels.map((item) => (
         <div
+          key={item.id}
           role="tabpanel"
-          id={`${base}-panel-${selected.id}`}
-          aria-labelledby={`${base}-tab-${selected.id}`}
+          id={`${base}-panel-${item.id}`}
+          aria-labelledby={`${base}-tab-${item.id}`}
           tabIndex={0}
           className="tabs__panel"
+          hidden={item.id !== selected?.id}
         >
-          {selected.content}
+          {item.content}
         </div>
-      )}
+      ))}
     </div>
   );
 }

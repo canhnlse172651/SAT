@@ -208,13 +208,6 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const sectionItems = (s: Section) => lesson.items.filter((i) => i.section === s);
   /** 005 AC-1.3: the Bài's steps for "Bước học liên kết". */
   const steps = sectionItems('lesson').map((i) => ({ id: i.id, title: i.title, status: i.status }));
-  const items = sectionItems(tab);
-  const visible = items.filter((i) => showArchived[tab] || i.status !== 'archived');
-  const archivedCount = items.filter((i) => i.status === 'archived').length;
-  const counts = {
-    published: items.filter((i) => i.status === 'published').length,
-    draft: items.filter((i) => i.status === 'draft').length,
-  };
   const drafts_ = lesson.items.filter((i) => i.status === 'draft').length;
   const publishLabel =
     lesson.status === 'draft' ? 'Xuất bản bài…' : drafts_ ? `Xuất bản… (${drafts_} Nháp)` : null;
@@ -453,8 +446,15 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
 
   const back = () => navigate(lessonPath(curriculumId, lessonId), { state: { fromEditor: true } });
 
+  /** One tab's panel; both stay mounted once visited (005 NFR-13), so everything here depends on `section` only. */
   const panel = (section: Section) => {
     const all = sectionItems(section);
+    const visible = all.filter((i) => showArchived[section] || i.status !== 'archived');
+    const archivedCount = all.filter((i) => i.status === 'archived').length;
+    const counts = {
+      published: all.filter((i) => i.status === 'published').length,
+      draft: all.filter((i) => i.status === 'draft').length,
+    };
     return (
       <div className="cur-editor">
         <div className="cur-rv-bar" role="toolbar" aria-label={`Phần ${SECTION_TITLES[section]}`}>
@@ -641,6 +641,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       </div>
       <Tabs
         aria-label="Phần của bài"
+        keepMounted
         value={tab}
         onChange={(id) => setTab(id as Section)}
         items={(['lesson', 'exercise'] as const).map((s) => ({
