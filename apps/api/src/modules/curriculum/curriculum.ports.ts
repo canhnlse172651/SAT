@@ -199,9 +199,11 @@ export interface SetHooks {
     workspaceId: string,
     title: string,
     content: unknown,
-    before: ItemDoc,
+    before?: ItemDoc,
     confirmRegrade?: boolean,
   ): Promise<unknown>;
+  /** Submissions of each set (all classes) by item id — the AI replace confirmation (005 AC-13.11). */
+  submissionCounts(workspaceId: string, itemIds: readonly string[]): Promise<Map<string, number>>;
   /** A set's content was saved (images no longer used are released — AC-3.5). */
   saved(workspaceId: string, before: ItemDoc, after: ItemDoc): Promise<void>;
   /** Sets were deleted or replaced: their images are released when no longer used (AC-22.1, AC-13.9). */

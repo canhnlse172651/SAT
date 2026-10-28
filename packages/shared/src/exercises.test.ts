@@ -18,6 +18,8 @@ import {
   gradeQuestion,
   gradeSet,
   keptAnswers,
+  markAi,
+  screenGeneratedQuestions,
   learnAnswerState,
   learnQuestion,
   makeShuffles,
@@ -588,5 +590,28 @@ describe('structure lock and kept answers (AC-18.1, AC-18.4)', () => {
       q4: { tiles: ['t2', 't3', 't4'] },
       q6: { subs: { s1: { optionIds: ['a'] } } },
     });
+  });
+});
+
+describe('AI sets (AC-13.1, AC-13.4)', () => {
+  it('labels every question and sub-question "AI tạo"', () => {
+    const marked = markAi(setOf(mcq(), reading()));
+    expect(marked.questions.every((q) => q.ai)).toBe(true);
+    const r = marked.questions[1] as ReadingQuestion;
+    expect(r.subs.every((s) => s.ai)).toBe(true);
+  });
+
+  it('rejects unknown kinds, questions over their limits and questions past 100', () => {
+    const tooLong = { ...mcq(), id: 'long', prompt: 'x'.repeat(5000) };
+    const out = screenGeneratedQuestions([mcq(), { type: 'listen', id: 'x' }, tooLong, write()]);
+    expect(out.accepted.map((q) => q.id)).toEqual(['q1', 'q5']);
+    expect(out.rejected).toEqual([
+      { index: 1, reason: 'Dạng câu hỏi không được hỗ trợ' },
+      { index: 2, reason: 'Vượt giới hạn số lượng hoặc độ dài của dạng câu' },
+    ]);
+    const many = Array.from({ length: 101 }, (_, i) => ({ ...write(), id: `w${i}` }));
+    expect(screenGeneratedQuestions(many).rejected).toEqual([
+      { index: 100, reason: 'Bộ bài tập vượt 100 câu hỏi' },
+    ]);
   });
 });

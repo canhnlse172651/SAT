@@ -17,7 +17,9 @@ import {
   setFileIds,
   setStructure,
 } from '@sat/shared';
-import type { Model, Types } from 'mongoose';
+import { type Model, Types, isValidObjectId } from 'mongoose';
+
+const { ObjectId } = Types;
 import { CLOCK, type Clock } from '../../common/ports/index.js';
 import { scoped } from '../../common/tenancy/scoped.js';
 import { AppError } from '../../errors.js';
@@ -66,6 +68,22 @@ export class SetHooksService implements SetHooks {
       .lean<Graded[]>();
   }
 
+  async submissionCounts(workspaceId: string, itemIds: readonly string[]) {
+    const rows: { _id: Types.ObjectId; n: number }[] = await scoped(
+      this.attempts,
+      workspaceId,
+    ).aggregate([
+      {
+        $match: {
+          setId: { $in: itemIds.filter(isValidObjectId).map((id) => new ObjectId(id)) },
+          status: 'submitted',
+        },
+      },
+      { $group: { _id: '$setId', n: { $sum: 1 } } },
+    ]);
+    return new Map(rows.map((r) => [String(r._id), r.n]));
+  }
+
   /** Submissions of a set in every class (AC-18.1, AC-18.2). */
   submissions(workspaceId: string, setId: Types.ObjectId): Promise<number> {
     return scoped(this.attempts, workspaceId).count({ setId, status: 'submitted' });
@@ -80,7 +98,7 @@ export class SetHooksService implements SetHooks {
     workspaceId: string,
     title: string,
     raw: unknown,
-    before: ItemDoc,
+    before?: ItemDoc,
     confirmRegrade = false,
   ): Promise<ExerciseSetContent> {
     const content = setContentSchema.parse(raw);
@@ -89,12 +107,12 @@ export class SetHooksService implements SetHooks {
       throw new AppError(422, E.INVALID_CONTENT, saveRefusedMessage(invalid.message), {
         path: invalid.path,
       });
-    const previous = contentOf(before);
-    if (previous && setStructure(previous) !== setStructure(content)) {
+    const previous = before ? contentOf(before) : null;
+    if (before && previous && setStructure(previous) !== setStructure(content)) {
       const n = await this.submissions(workspaceId, before._id);
       if (n) throw new AppError(409, E.SET_LOCKED, saveRefusedMessage(lockedRule(n)), { count: n });
     }
-    if (previous && !confirmRegrade) {
+    if (before && previous && !confirmRegrade) {
       const n = regraded(content, await this.submitted(workspaceId, before._id)).filter(
         (r) => r.grade.score !== r.attempt.score,
       ).length;

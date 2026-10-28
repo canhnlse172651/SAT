@@ -5,6 +5,8 @@ import {
   CURRICULUM_ERROR_CODES as E,
   CURRICULUM_LIMITS,
   CURRICULUM_MESSAGES as M,
+  AI_SET_MESSAGES,
+  type ExerciseSetContent,
   type Lesson,
   type Section,
   approveLimitMessage,
@@ -12,6 +14,7 @@ import {
   contentSchemaFor,
   issueLine,
   itemNotReadyReason,
+  markAi,
   replaceConfirmation,
   stepContentSchema,
   stepIssues,
@@ -24,7 +27,7 @@ import { AppError } from '../../errors.js';
 import { CurriculumContext } from './curriculum.context.js';
 import { logAction, sectionItems } from './curriculum.mappers.js';
 import { type ItemDoc, LESSON_MODEL, type LessonDoc } from './curriculum.model.js';
-import { STEP_HOOKS, type StepHooks } from './curriculum.ports.js';
+import { SET_HOOKS, STEP_HOOKS, type SetHooks, type StepHooks } from './curriculum.ports.js';
 import { CurriculumService } from './curriculum.service.js';
 import { LessonsService } from './lessons.service.js';
 
@@ -46,6 +49,23 @@ export interface ReplacementPreview {
   token: string;
   /** Bài học section: the confirmation 004 prescribes (004 AC-19.1 – AC-19.3). */
   confirm: { title: string; lines: string[] } | null;
+  /** Bài tập section: what 005 AC-13.11 lists in "Duyệt và thay thế". */
+  sets: SetsConfirmation | null;
+}
+
+export interface SetsConfirmation {
+  newSets: number;
+  newQuestions: number;
+  published: string;
+  /** Old sets without learning data ("Sẽ bị xóa"). */
+  deleted: string[];
+  /** Old sets with learning data that get archived ("Sẽ được lưu trữ — giữ bài nộp và điểm"), with their submissions. */
+  archived: { title: string; submissions: number }[];
+  /** Old archived sets with learning data ("Giữ nguyên ở Lưu trữ"). */
+  keptArchived: string[];
+  /** "Phần Bài tập của Bài đang trống — …" when the section has no set. */
+  empty: string | null;
+  kept: string | null;
 }
 
 /**
@@ -61,6 +81,7 @@ export class AiReplaceService {
     private readonly lessonsService: LessonsService,
     private readonly curriculumService: CurriculumService,
     @Optional() @Inject(STEP_HOOKS) private readonly hooks?: StepHooks,
+    @Optional() @Inject(SET_HOOKS) private readonly setHooks?: SetHooks,
   ) {}
 
   /** AC-11.6, AC-19.4: limit and readiness of the approved items, before anything is shown or stored. */
@@ -105,7 +126,13 @@ export class AiReplaceService {
     });
   }
 
-  private async plan(p: AuthPrincipal, lesson: LessonDoc, section: Section, newCount: number) {
+  private async plan(
+    p: AuthPrincipal,
+    lesson: LessonDoc,
+    section: Section,
+    newCount: number,
+    newQuestions = 0,
+  ) {
     const old = sectionItems(lesson, section);
     const withData =
       section === 'exercise'
@@ -156,6 +183,29 @@ export class AiReplaceService {
         linkedSets,
       });
     }
+    let sets: SetsConfirmation | null = null;
+    if (section === 'exercise') {
+      const counts =
+        (await this.setHooks?.submissionCounts(
+          p.workspaceId,
+          kept.map((i) => String(i._id)),
+        )) ?? new Map<string, number>();
+      const archiving = kept.filter((i) => i.status !== 'archived');
+      const staying = kept.filter((i) => i.status === 'archived');
+      sets = {
+        newSets: newCount,
+        newQuestions,
+        published: AI_SET_MESSAGES.published,
+        deleted: dropped.map((i) => i.title),
+        archived: archiving.map((i) => ({
+          title: i.title,
+          submissions: counts.get(String(i._id)) ?? 0,
+        })),
+        keptArchived: staying.map((i) => i.title),
+        empty: old.length ? null : AI_SET_MESSAGES.empty,
+        kept: kept.length ? AI_SET_MESSAGES.kept : null,
+      };
+    }
     const preview: ReplacementPreview = {
       newCount,
       deleted: dropped.map((i) => i.title),
@@ -164,6 +214,7 @@ export class AiReplaceService {
       warning: usedBy ? approveWarning(usedBy) : null,
       token,
       confirm,
+      sets,
     };
     return { preview, kept, dropped };
   }
@@ -174,9 +225,10 @@ export class AiReplaceService {
     section: Section,
     items: ApprovedItem[],
   ): Promise<ReplacementPreview> {
-    this.check(section, items);
+    const checked = this.check(section, items);
     const { lesson } = await this.lessonsService.load(p, lessonId);
-    return (await this.plan(p, lesson, section, items.length)).preview;
+    return (await this.plan(p, lesson, section, items.length, questionCount(section, checked)))
+      .preview;
   }
 
   /** AC-11.5, AC-19.2, AC-19.3, AC-19.5, AC-19.6: one write; the Bài status and per-class settings are untouched. */
@@ -189,16 +241,41 @@ export class AiReplaceService {
   ): Promise<Lesson> {
     const checked = this.check(section, items);
     // 004: AI text is sanitised like any step content (NFR-6).
+    // 004: AI text is sanitised like any step content (NFR-6); 005: field rules and images checked like a saved set.
     const contents =
-      section === 'lesson' && this.hooks
-        ? await Promise.all(checked.map((c) => this.hooks?.prepare(p.workspaceId, c)))
-        : checked;
+      section === 'lesson'
+        ? this.hooks
+          ? await Promise.all(checked.map((c) => this.hooks?.prepare(p.workspaceId, c)))
+          : checked
+        : await Promise.all(
+            checked.map(async (c, i) => {
+              const set = markAi(c as ExerciseSetContent);
+              const title = items[i]?.title ?? '';
+              return this.setHooks ? this.setHooks.prepare(p.workspaceId, title, set) : set;
+            }),
+          );
+    const questions = questionCount(section, checked);
     for (let attempt = 0; attempt < 5; attempt++) {
       const { lesson } = await this.lessonsService.load(p, lessonId);
-      const { preview, kept, dropped } = await this.plan(p, lesson, section, items.length);
+      const { preview, kept, dropped } = await this.plan(
+        p,
+        lesson,
+        section,
+        items.length,
+        questions,
+      );
       if (preview.token !== token) {
-        throw new AppError(409, E.SECTION_CHANGED, M.sectionChanged, preview);
+        // 005 AC-13.12 words the Bài tập refusal its own way.
+        const message = section === 'exercise' ? AI_SET_MESSAGES.changed : M.sectionChanged;
+        throw new AppError(409, E.SECTION_CHANGED, message, preview);
       }
+      // 005 AC-13.1: the step link 010 set is kept only while that step is in the Bài học section.
+      const steps = new Set(sectionItems(lesson, 'lesson').map((i) => String(i._id)));
+      const linked = (c: unknown) => {
+        if (section !== 'exercise') return c;
+        const set = c as ExerciseSetContent;
+        return set.stepId && !steps.has(set.stepId) ? { ...set, stepId: null } : set;
+      };
       const now = this.clock.now();
       const fresh: ItemDoc[] = items.map((it, i) => ({
         _id: new Types.ObjectId(),
@@ -206,7 +283,7 @@ export class AiReplaceService {
         title: it.title,
         status: 'published',
         ai: true,
-        content: contents[i],
+        content: linked(contents[i]),
         version: 1,
         updatedAt: now,
       }));
@@ -231,7 +308,8 @@ export class AiReplaceService {
         )
         .lean<LessonDoc>();
       if (!updated) continue;
-      await this.hooks?.removed(p.workspaceId, dropped);
+      if (section === 'lesson') await this.hooks?.removed(p.workspaceId, dropped);
+      else await this.setHooks?.removed(p.workspaceId, dropped);
       await this.curriculumService.touch(p.workspaceId, lesson.curriculumId);
       logAction({
         action: 'section.replace',
@@ -249,6 +327,16 @@ export class AiReplaceService {
       });
       return this.lessonsService.dto(p, updated);
     }
-    throw new AppError(409, E.SECTION_CHANGED, M.sectionChanged);
+    throw new AppError(
+      409,
+      E.SECTION_CHANGED,
+      section === 'exercise' ? AI_SET_MESSAGES.changed : M.sectionChanged,
+    );
   }
 }
+
+/** Questions of the approved sets (005 AC-13.11); 0 for steps. */
+const questionCount = (section: Section, contents: readonly unknown[]): number =>
+  section === 'exercise'
+    ? contents.reduce<number>((n, c) => n + (c as ExerciseSetContent).questions.length, 0)
+    : 0;

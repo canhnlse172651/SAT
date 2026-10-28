@@ -503,6 +503,60 @@ export const exerciseSetContentSchema = z.preprocess(
 );
 export type ExerciseSetContent = z.infer<typeof exerciseSetContentSchema>;
 
+/* ---------- AI sets (REQ-13) ---------- */
+
+/** Wording of the "Duyệt và thay thế" confirmation of the Bài tập section and of its refusals (AC-13.11, AC-13.12). */
+export const AI_SET_MESSAGES = {
+  published: 'Nội dung mới được lưu ở trạng thái Đã xuất bản.',
+  empty: 'Phần Bài tập của Bài đang trống — không có nội dung nào bị thay thế.',
+  deletedGroup: 'Sẽ bị xóa',
+  archivedGroup: 'Sẽ được lưu trữ — giữ bài nộp và điểm',
+  keptGroup: 'Giữ nguyên ở Lưu trữ',
+  kept: 'Bài làm và điểm của học viên được giữ lại.',
+  changed: 'Nội dung của Bài đã thay đổi. Hãy xem lại danh sách trước khi duyệt.',
+  unsupportedKind: 'Dạng câu hỏi không được hỗ trợ',
+  overLimits: 'Vượt giới hạn số lượng hoặc độ dài của dạng câu',
+  overQuestions: `Bộ bài tập vượt ${L.questionsPerSet} câu hỏi`,
+} as const;
+
+/** AC-13.1: every question (and sub-question) of an approved AI set carries "AI tạo". */
+export function markAi(content: ExerciseSetContent): ExerciseSetContent {
+  return {
+    ...content,
+    questions: content.questions.map((q) =>
+      q.type === 'reading'
+        ? { ...q, ai: true, subs: q.subs.map((s) => ({ ...s, ai: true })) }
+        : { ...q, ai: true },
+    ),
+  };
+}
+
+/**
+ * AC-13.4: the questions 010 generated for one set — those of an unknown kind, over a limit of their kind, or past the
+ * 100th question are not taken; each refusal keeps its index and reason for 010 to show.
+ */
+export function screenGeneratedQuestions(raw: readonly unknown[]): {
+  accepted: Question[];
+  rejected: { index: number; reason: string }[];
+} {
+  const kinds = new Set<string>(questionSchema.options.map((o) => o.shape.type.value));
+  const accepted: Question[] = [];
+  const rejected: { index: number; reason: string }[] = [];
+  raw.forEach((q, index) => {
+    const type = (q as { type?: unknown } | null)?.type;
+    if (typeof type !== 'string' || !kinds.has(type)) {
+      rejected.push({ index, reason: AI_SET_MESSAGES.unsupportedKind });
+      return;
+    }
+    const parsed = questionSchema.safeParse(q);
+    if (!parsed.success) rejected.push({ index, reason: AI_SET_MESSAGES.overLimits });
+    else if (accepted.length >= L.questionsPerSet)
+      rejected.push({ index, reason: AI_SET_MESSAGES.overQuestions });
+    else accepted.push(parsed.data);
+  });
+  return { accepted, rejected };
+}
+
 /** Every id of questions and their parts (answers are bound to them, AC-18.3). */
 function partIds(questions: readonly (Question | SubQuestion)[]): string[] {
   return questions.flatMap((q): string[] => {
