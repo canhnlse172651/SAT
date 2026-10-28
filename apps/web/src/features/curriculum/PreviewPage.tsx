@@ -45,19 +45,24 @@ export const VIEWPORT_PREF = 'preview.viewport';
  */
 function SetView({
   item,
+  stepTitle,
   answers,
   onAnswer,
 }: {
   item: Item;
+  /** Title of the linked step, when it is a step of this Bài. */
+  stepTitle: (stepId: string | null) => string | null;
   answers: Answers;
   onAnswer: (questionId: string, a: Answer) => void;
 }) {
   const content = setContentSchema.safeParse(item.content);
   if (!content.success) return null;
-  const { instructions, questions } = content.data;
+  const { instructions, questions, stepId } = content.data;
+  const practice = stepTitle(stepId);
   return (
     <>
       {instructions.trim() && <p className="muted">{instructions}</p>}
+      {practice && <p className="small muted">Luyện cho: {practice}</p>}
       <p className="small muted">
         {questions.length} câu · Tổng điểm{' '}
         {formatNumber(setPoints(content.data), 1).replace(/,0$/, '')}
@@ -164,6 +169,10 @@ export function PreviewPage() {
                       </header>
                       <SetView
                         item={item}
+                        stepTitle={(id) =>
+                          lesson.items.find((i) => i.id === id && i.section === 'lesson')?.title ??
+                          null
+                        }
                         answers={answers}
                         onAnswer={(id, a) => setAnswers((all) => ({ ...all, [id]: a }))}
                       />

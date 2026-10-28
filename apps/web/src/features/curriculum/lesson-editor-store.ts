@@ -29,6 +29,8 @@ interface EditorState {
   setShowArchived: (section: Section, show: boolean) => void;
 
   addItem: (section: Section, afterItemId?: string) => Promise<string>;
+  /** 005 AC-18.5 "Nhân bản" of a set: the copy's id. */
+  duplicate: (itemId: string) => Promise<string>;
   move: (itemId: string, direction: 'up' | 'down') => Promise<{ position: number; total: number }>;
   save: (itemId: string) => Promise<void>;
   /** AC-2.3 "Ghi đè bằng bản của tôi": saves the working copy over the version saved elsewhere. */
@@ -129,6 +131,14 @@ export const useLessonEditorStore = create<EditorState>()((set, get) => {
           `/lessons/${id}/items`,
           json('POST', { section, ...(afterItemId ? { afterItemId } : {}) }),
         ),
+      );
+      apply(res.lesson);
+      return res.itemId;
+    },
+    duplicate: async (itemId) => {
+      const id = get().lesson?.id;
+      const res = addItemResponseSchema.parse(
+        await apiRequest<unknown>(`/lessons/${id}/items/${itemId}/duplicate`, json('POST')),
       );
       apply(res.lesson);
       return res.itemId;

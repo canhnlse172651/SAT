@@ -16,6 +16,11 @@ export class ExercisesController {
     return this.submissions.submission(p, parse(submissionQuerySchema, query));
   }
 
+  @Get('lessons/:lessonId/sets')
+  lessonSets(@CurrentUser() p: AuthPrincipal, @Param('lessonId') lessonId: string) {
+    return this.submissions.lessonSets(p, lessonId);
+  }
+
   @Get('classes/:classId/sets/:setId/submissions')
   setSubmissions(
     @CurrentUser() p: AuthPrincipal,

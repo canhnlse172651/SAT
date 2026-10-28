@@ -6,6 +6,7 @@ import {
   type SetSubmissions,
   type Submission,
   exerciseViewSchema,
+  lessonSetsSchema,
   newBlockId,
   reviewSchema,
   setSubmissionsSchema,
@@ -47,6 +48,8 @@ interface ExerciseState {
   submissionStatus: Status;
   setSubmissions: SetSubmissions['items'];
   setSubmissionsStatus: Status;
+  /** T09: submissions of each set of the open Bài by set id (AC-18.1, AC-18.2). */
+  lockCounts: Record<string, number>;
 
   load: (classId: string, setId: string) => Promise<void>;
   start: () => Promise<void>;
@@ -59,6 +62,7 @@ interface ExerciseState {
   loadSubmission: (q: { classId: string; studentId: string; setId: string }) => Promise<void>;
   /** T04 "Bài nộp" of one set in one class (AC-20.1). */
   loadSetSubmissions: (classId: string, setId: string) => Promise<void>;
+  loadLockCounts: (lessonId: string) => Promise<void>;
 }
 
 let timer: ReturnType<typeof setTimeout> | null = null;
@@ -102,6 +106,7 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
     submissionStatus: 'idle',
     setSubmissions: [],
     setSubmissionsStatus: 'idle',
+    lockCounts: {},
 
     async load(classId, setId) {
       if (timer) clearTimeout(timer);
@@ -221,6 +226,17 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
         set({ setSubmissions: items, setSubmissionsStatus: 'ok' });
       } catch {
         set({ setSubmissionsStatus: 'error' });
+      }
+    },
+
+    async loadLockCounts(lessonId) {
+      try {
+        const { sets } = lessonSetsSchema.parse(
+          await apiRequest(`/exercises/lessons/${lessonId}/sets`),
+        );
+        set({ lockCounts: Object.fromEntries(sets.map((x) => [x.id, x.submissions])) });
+      } catch {
+        // The lock is enforced by the API (409 SET_LOCKED); without counts the banner waits for the next load.
       }
     },
 

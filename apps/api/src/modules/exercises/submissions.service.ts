@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
+  type LessonSets,
   SUBMISSION_NOTES,
   type SetSubmissions,
   type Submission,
@@ -33,6 +34,24 @@ export class SubmissionsService {
     @InjectModel(CLASS_MODEL) private readonly classes: Model<ClassDoc>,
     @Inject(WORKSPACE_DIRECTORY) private readonly directory: WorkspaceDirectory,
   ) {}
+
+  /** Submissions of every set of a Bài, all classes together (AC-18.1, AC-18.2). */
+  async lessonSets(p: AuthPrincipal, lessonId: string): Promise<LessonSets> {
+    const lesson = await scoped(this.lessons, p.workspaceId).findById(lessonId).lean<LessonDoc>();
+    if (!lesson) throw notFound();
+    const sets = lesson.items.filter((i) => i.section === 'exercise');
+    const counts: { _id: Types.ObjectId; n: number }[] = await scoped(
+      this.attempts,
+      p.workspaceId,
+    ).aggregate([
+      { $match: { setId: { $in: sets.map((i) => i._id) }, status: 'submitted' } },
+      { $group: { _id: '$setId', n: { $sum: 1 } } },
+    ]);
+    const by = new Map(counts.map((c) => [String(c._id), c.n]));
+    return {
+      sets: sets.map((i) => ({ id: String(i._id), submissions: by.get(String(i._id)) ?? 0 })),
+    };
+  }
 
   /** The submitted HV of one set in one class, newest first — the T04 entry to T14 (AC-20.1). */
   async setSubmissions(

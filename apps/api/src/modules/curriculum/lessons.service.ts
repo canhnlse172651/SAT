@@ -11,6 +11,7 @@ import {
   itemLimitMessage,
   itemNotReadyReason,
   newItemContent,
+  setCopyTitle,
   notReadyMessage,
   STEP_ERROR_CODES,
   type StepContent,
@@ -203,7 +204,7 @@ export class LessonsService {
     const { lesson } = await this.load(p, id);
     const item = this.findItem(lesson, itemId);
     if (item.section === 'exercise')
-      return this.setHooks ? this.setHooks.prepare(p.workspaceId, title, raw) : raw;
+      return this.setHooks ? this.setHooks.prepare(p.workspaceId, title, raw, item) : raw;
     return this.hooks ? this.hooks.prepare(p.workspaceId, this.content('lesson', raw)) : raw;
   }
 
@@ -422,6 +423,35 @@ export class LessonsService {
       itemId: newId,
       section: body.section,
     });
+    return { lesson: await this.dto(p, updated), itemId: newId };
+  }
+
+  /**
+   * 005 AC-18.5: a draft copy of a set right after the original — title "<…> (bản sao)", content (questions, keys,
+   * images, linked step) and the "AI tạo" label; attempts and submissions stay with the original.
+   */
+  async duplicateItem(p: AuthPrincipal, id: string, itemId: string) {
+    let newId = '';
+    const updated = await this.mutate(p, id, (lesson) => {
+      const item = this.findItem(lesson, itemId);
+      if (item.section !== 'exercise') throw wrongSection();
+      const counted = sectionItems(lesson, 'exercise').filter((i) => i.status !== 'archived');
+      if (counted.length >= CURRICULUM_LIMITS.itemsPerSection)
+        throw new AppError(409, E.ITEM_LIMIT, itemLimitMessage('exercise'));
+      const copy: ItemDoc = {
+        ...item,
+        _id: new Types.ObjectId(),
+        title: setCopyTitle(item.title),
+        status: 'draft',
+        version: 1,
+        updatedAt: this.clock.now(),
+      };
+      newId = String(copy._id);
+      const items = [...lesson.items];
+      items.splice(items.indexOf(item) + 1, 0, copy);
+      return { items, sections: ['exercise'] };
+    });
+    logAction({ action: 'item.duplicate', actorId: p.userId, lessonId: id, itemId: newId });
     return { lesson: await this.dto(p, updated), itemId: newId };
   }
 

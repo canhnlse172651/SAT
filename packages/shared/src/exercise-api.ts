@@ -151,3 +151,9 @@ export const setSubmissionsSchema = z.object({
   ),
 });
 export type SetSubmissions = z.infer<typeof setSubmissionsSchema>;
+
+/** T09: submissions of each set of a Bài in every class — the structure lock and its banner (AC-18.1, AC-18.2). */
+export const lessonSetsSchema = z.object({
+  sets: z.array(z.object({ id: z.string(), submissions: z.number() })),
+});
+export type LessonSets = z.infer<typeof lessonSetsSchema>;

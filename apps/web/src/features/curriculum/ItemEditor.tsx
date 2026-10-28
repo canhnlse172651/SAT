@@ -3,6 +3,7 @@ import {
   EXERCISE_LIMITS,
   type Item,
   itemNotReadyReason,
+  lockedBanner,
   setProblems,
   stepProblems,
 } from '@sat/shared';
@@ -44,7 +45,13 @@ export interface ItemEditorProps {
   steps?: readonly StepOption[];
   /** Sets (005): a field to reveal and focus (first invalid field of a refused save — AC-12.14). */
   revealPath?: string | null;
+  /** Sets (005): submissions in every class — any locks the structure (AC-18.1, AC-18.2). */
+  submissions?: number;
+  /** Sets (005): "Nhân bản" (AC-18.5). */
+  onDuplicate?: () => void;
 }
+
+const SAVE_BEFORE_DUPLICATE = 'Hãy lưu hoặc bỏ thay đổi trước khi nhân bản';
 
 /** One step / set in a T07 tab: the 002 action bar (save, publish, order, archive, add after, delete) + interim fields. */
 export function ItemEditor(props: ItemEditorProps) {
@@ -71,6 +78,7 @@ export function ItemEditor(props: ItemEditorProps) {
       : undefined
     : problemText(problems.find((p) => p.path === 'title'));
   const blocked = props.blockedReason ?? null;
+  const submissions = props.submissions ?? 0;
   const saveDisabled = busy || !!blocked;
 
   useEffect(() => {
@@ -167,6 +175,20 @@ export function ItemEditor(props: ItemEditorProps) {
             Khôi phục
           </Button>
         )}
+        {!isStep && props.onDuplicate && (
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-disabled={dirty || undefined}
+            title={dirty ? SAVE_BEFORE_DUPLICATE : undefined}
+            aria-describedby={dirty ? `${item.id}-dup-hint` : undefined}
+            onClick={() => !dirty && props.onDuplicate?.()}
+            disabled={busy}
+          >
+            <Icon name="copy" size={15} />
+            Nhân bản
+          </Button>
+        )}
         <Button size="sm" variant="ghost" onClick={props.onAddAfter} disabled={busy}>
           <Icon name="plus" size={15} />
           Thêm sau
@@ -186,8 +208,18 @@ export function ItemEditor(props: ItemEditorProps) {
             {M.saveBeforeArchive}
           </span>
         )}
+        {dirty && !isStep && props.onDuplicate && (
+          <span id={`${item.id}-dup-hint`} className="field__hint">
+            {SAVE_BEFORE_DUPLICATE}
+          </span>
+        )}
       </div>
       {props.notice}
+      {!isStep && submissions > 0 && (
+        <p className="st-notice" role="note">
+          {lockedBanner(submissions)}
+        </p>
+      )}
       <div className="field">
         <label className="field__label" htmlFor={`${item.id}-title`}>
           {isStep ? 'Tên bước học' : 'Tiêu đề'}
@@ -234,6 +266,7 @@ export function ItemEditor(props: ItemEditorProps) {
             touched={touched}
             onTouch={touch}
             onChange={(c) => props.onEdit({ ...working, content: c })}
+            locked={submissions > 0}
           />
         )
       )}

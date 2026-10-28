@@ -17,6 +17,7 @@ import {
   firstInvalidSetProblem,
   gradeQuestion,
   gradeSet,
+  keptAnswers,
   learnAnswerState,
   learnQuestion,
   makeShuffles,
@@ -37,6 +38,7 @@ import {
   setFileIds,
   setIssues,
   setPoints,
+  setStructure,
   unmarkBlank,
   validPoints,
 } from './exercises.js';
@@ -512,5 +514,79 @@ describe('review rows (AC-16.2, AC-16.4, AC-18.3)', () => {
     expect(rows[0]?.explanation).toBe('Vì vậy');
     const r = reviewRows(setOf(reading()), {}, [])[0];
     expect(r?.subs.map((s) => s.n)).toEqual(['1.1', '1.2']);
+  });
+});
+
+describe('structure lock and kept answers (AC-18.1, AC-18.4)', () => {
+  const base = () => setOf(mcq(), cloze(), match(), order(), write(), reading(), vocab());
+  const edit = (f: (c: ExerciseSetContent) => void) => {
+    const c = structuredClone(base());
+    f(c);
+    return c;
+  };
+  const q = <T extends Question>(c: ExerciseSetContent, i: number) => c.questions[i] as T;
+
+  it('keeps the structure when text, images, explanations or the key change', () => {
+    const changed = edit((c) => {
+      c.instructions = 'Mới';
+      q<McqQuestion>(c, 0).prompt = 'Đề mới';
+      q<McqQuestion>(c, 0).options.forEach((o) => (o.correct = o.id === 'b'));
+      q<ClozeQuestion>(c, 1).blanks[0]!.answers = ['不是'];
+      const m = q<MatchQuestion>(c, 2);
+      [m.pairs[0]!.bId, m.pairs[1]!.bId] = [m.pairs[1]!.bId, m.pairs[0]!.bId];
+      q<OrderQuestion>(c, 3).tiles[0]!.text = '你';
+      q<OrderQuestion>(c, 3).alternatives = [['t3', 't1', 't2', 't4']];
+      q<WriteQuestion>(c, 4).answers = ['您好'];
+      q<WriteQuestion>(c, 4).explanation = 'Giải thích';
+    });
+    expect(setStructure(changed)).toBe(setStructure(base()));
+  });
+
+  it.each([
+    ['a question added', (c: ExerciseSetContent) => c.questions.push(write())],
+    ['questions reordered', (c: ExerciseSetContent) => c.questions.reverse()],
+    ['a mode change', (c: ExerciseSetContent) => (q<McqQuestion>(c, 0).multi = true)],
+    ['an option removed', (c: ExerciseSetContent) => q<McqQuestion>(c, 0).options.pop()],
+    ['points of a question', (c: ExerciseSetContent) => (q<McqQuestion>(c, 0).points = 3)],
+    [
+      'points of a blank',
+      (c: ExerciseSetContent) => (q<ClozeQuestion>(c, 1).blanks[0]!.points = 2),
+    ],
+    ['a distractor removed', (c: ExerciseSetContent) => (q<MatchQuestion>(c, 2).distractors = [])],
+    [
+      'a tile added',
+      (c: ExerciseSetContent) => q<OrderQuestion>(c, 3).tiles.push({ id: 't5', text: '的' }),
+    ],
+    ['a sub-question removed', (c: ExerciseSetContent) => q<ReadingQuestion>(c, 5).subs.pop()],
+    ['a vocabulary variant', (c: ExerciseSetContent) => (q<VocabQuestion>(c, 6).variant = 'hanzi')],
+  ])('changes the structure on %s', (_, f) => {
+    expect(setStructure(edit(f))).not.toBe(setStructure(base()));
+  });
+
+  it('keeps the answers of the parts that still exist and drops the rest', () => {
+    const answers: Answers = {
+      q1: { optionIds: ['a', 'c'] },
+      q2: { blanks: { b1: '是', b2: '也是' } },
+      q3: { pairs: { p1: 'b1', p2: 'd1', p3: 'b3' } },
+      q4: { tiles: ['t1', 't2', 't3', 't4'] },
+      q5: { text: '你好' },
+      q6: { subs: { s1: { optionIds: ['a'] }, s2: { blanks: { b1: '是' } } } },
+      gone: { optionIds: ['a'] },
+    };
+    const changed = edit((c) => {
+      q<McqQuestion>(c, 0).options.pop();
+      q<ClozeQuestion>(c, 1).blanks.pop();
+      q<MatchQuestion>(c, 2).distractors = [];
+      q<OrderQuestion>(c, 3).tiles.shift();
+      q<ReadingQuestion>(c, 5).subs.pop();
+      c.questions[4] = { ...mcq(), id: 'q5' };
+    });
+    expect(keptAnswers(changed, answers)).toEqual({
+      q1: { optionIds: ['a'] },
+      q2: { blanks: { b1: '是' } },
+      q3: { pairs: { p1: 'b1', p3: 'b3' } },
+      q4: { tiles: ['t2', 't3', 't4'] },
+      q6: { subs: { s1: { optionIds: ['a'] } } },
+    });
   });
 });

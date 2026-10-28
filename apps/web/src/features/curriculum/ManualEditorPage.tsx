@@ -8,6 +8,7 @@ import {
   itemAddedMessage,
   itemMovedMessage,
   leaveQuestion,
+  EXERCISE_ERROR_CODES,
   STEP_ERROR_CODES,
   STEP_MESSAGES as SM,
   deckMarksWarning,
@@ -28,6 +29,7 @@ import { type StepNotice, StepNoticeView } from '../steps/StepNotices';
 import { StorageMeter } from '../steps/StorageMeter';
 import { focusField, scrollToQuestion, setOf } from '../exercises/set-editing';
 import { SECTION_CHANGED_ELSEWHERE, type SetNotice, SetNoticeView } from '../exercises/SetNotices';
+import { useExerciseStore } from '../exercises/exercise-store';
 import { useCallback, useEffect, useState } from 'react';
 import { useBlocker, useNavigate, useParams } from 'react-router';
 import {
@@ -81,6 +83,9 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const reloadItem = useLessonEditorStore((s) => s.reloadItem);
   const discardSection = useLessonEditorStore((s) => s.discardSection);
   const loadInfo = useStepEditorStore((s) => s.loadInfo);
+  const duplicate = useLessonEditorStore((s) => s.duplicate);
+  const lockCounts = useExerciseStore((s) => s.lockCounts);
+  const loadLockCounts = useExerciseStore((s) => s.loadLockCounts);
   const info = useStepEditorStore((s) => s.info);
   const uploads = useStepEditorStore((s) => s.uploads);
   const cancelAll = useStepEditorStore((s) => s.cancelAll);
@@ -111,7 +116,8 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       if (isNotFound(err)) setMissingId(lessonId);
     });
     void loadInfo(lessonId);
-  }, [load, loadInfo, lessonId]);
+    void loadLockCounts(lessonId);
+  }, [load, loadInfo, loadLockCounts, lessonId]);
 
   useEffect(() => {
     refresh();
@@ -212,6 +218,15 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       const id = await addItem(tab, afterItemId);
       setSavedAt(nowHm());
       push(itemAddedMessage(tab), 'success');
+      setFocusId(id);
+    });
+
+  /** 005 AC-18.5: the draft copy lands right after the original and takes the focus. */
+  const onDuplicate = (item: Item) =>
+    run(async () => {
+      const id = await duplicate(item.id);
+      setSavedAt(nowHm());
+      push('Đã nhân bản bộ bài tập — bản sao ở trạng thái Nháp.', 'success');
       setFocusId(id);
     });
 
@@ -339,6 +354,13 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       .catch((err: unknown) => {
         if (isConflict(err) || isNotFound(err)) {
           setSetNotice(item.id, { kind: 'conflict' });
+        } else if (err instanceof ApiError && err.code === EXERCISE_ERROR_CODES.SET_LOCKED) {
+          // AC-18.1: a submission arrived since the counts were loaded — the banner and the lock show now.
+          void loadLockCounts(lessonId);
+          setSetNotice(item.id, {
+            kind: 'blocked',
+            message: messageOf(err).replace(/^Chưa lưu được: /, ''),
+          });
         } else if (err instanceof ApiError && err.code === STEP_ERROR_CODES.INVALID_CONTENT) {
           setSetNotice(item.id, {
             kind: 'blocked',
@@ -513,6 +535,8 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
                 }
                 onMove={(d) => void onMove(item, d)}
                 onAddAfter={() => void onAdd(item.id)}
+                onDuplicate={item.section === 'exercise' ? () => void onDuplicate(item) : undefined}
+                submissions={lockCounts[item.id] ?? 0}
                 onDelete={() => onDelete(item)}
                 blockedReason={blockedReason(item)}
                 draftSaveAllowed={

@@ -114,6 +114,18 @@ export class LessonsController {
     return this.lessons.setArchived(p, lessonId, item, expectedVersion, false);
   }
 
+  /** 005 AC-18.5 "Nhân bản" of a set. */
+  @Post(':id/items/:itemId/duplicate')
+  @HttpCode(201)
+  duplicateItem(
+    @CurrentUser() p: AuthPrincipal,
+    @Param('id') id: string,
+    @Param('itemId') itemId: string,
+  ) {
+    const [lessonId, item] = [pathId(id), pathId(itemId)];
+    return this.lessons.duplicateItem(p, lessonId, item);
+  }
+
   @Post(':id/items/:itemId/move')
   @HttpCode(200)
   move(

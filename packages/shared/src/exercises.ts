@@ -83,6 +83,19 @@ export const EXERCISE_ERROR_CODES = {
 
 export const saveRefusedMessage = (message: string): string => `Chưa lưu được: ${message}`;
 
+/** AC-18.5: "<tiêu đề gốc> (bản sao)", the original cut so the whole stays within the title limit. */
+export const setCopyTitle = (title: string): string =>
+  [...title]
+    .slice(0, L.titleMax - ' (bản sao)'.length)
+    .join('')
+    .trimEnd() + ' (bản sao)';
+
+/** AC-18.2: the banner of a set with submissions (its first sentence is also the refusal of a structure change). */
+export const lockedRule = (n: number): string =>
+  `Đã có ${n} bài nộp: không thêm, xóa, sắp xếp câu hoặc đổi điểm.`;
+export const lockedBanner = (n: number): string =>
+  `${lockedRule(n)} Sửa đáp án sẽ hỏi “Chấm lại và lưu”.`;
+
 export const optionLabel = (k: number): string => 'ABCDEF'.charAt(k);
 export const optionEmpty = (label: string): string => `Phương án ${label} đang trống`;
 export const optionDuplicate = (label: string, other: string): string =>
@@ -1196,6 +1209,93 @@ export function reconcileOrder(
   const now = new Set(current);
   const kept = (stored ?? []).filter((id) => now.has(id));
   return [...kept, ...current.filter((id) => !kept.includes(id))];
+}
+
+/* ---------- structure lock and kept answers (AC-18.1, AC-18.4) ---------- */
+
+/**
+ * AC-18.1: what a set with submissions may not change — questions and their order, kind and mode, the options, blanks,
+ * pairs, Cột B items, tiles and sub-questions (by id), and every points value. Text, images, explanations and the key
+ * (correct options, accepted answers, which Cột B item a pair takes, accepted orders) stay editable.
+ */
+export function setStructure(content: ExerciseSetContent): string {
+  const ids = (xs: readonly { id: string }[]) => xs.map((x) => x.id);
+  const shape = (q: Question | SubQuestion): unknown[] => {
+    const head = [q.id, questionKind(q)];
+    switch (q.type) {
+      case 'mcq':
+        return [...head, q.multi, q.points, ids(q.options)];
+      case 'vocab':
+        return [...head, q.points, ids(q.options)];
+      case 'cloze':
+        return [...head, q.blanks.map((b) => [b.id, b.points]).sort()];
+      case 'match':
+        return [
+          ...head,
+          q.pairs.map((p) => [p.id, p.points]),
+          [...q.pairs.map((p) => p.bId), ...ids(q.distractors)].sort(),
+        ];
+      case 'order':
+        return [...head, q.points, ids(q.tiles).sort()];
+      case 'write':
+        return [...head, q.points];
+      case 'reading':
+        return [...head, q.subs.map(shape)];
+    }
+  };
+  return JSON.stringify(content.questions.map(shape));
+}
+
+/** AC-18.4: the answers of the parts that still exist (removed or re-kinded parts dropped). */
+export function keptAnswers(content: ExerciseSetContent, answers: Answers): Answers {
+  const sub = (q: Question | SubQuestion, a: Answer): Answer | null => {
+    switch (q.type) {
+      case 'mcq':
+      case 'vocab': {
+        const now = new Set(q.options.map((o) => o.id));
+        const optionIds = (a.optionIds ?? []).filter((id) => now.has(id));
+        return optionIds.length ? { optionIds } : null;
+      }
+      case 'cloze': {
+        const now = new Set(q.blanks.map((b) => b.id));
+        const blanks = Object.fromEntries(
+          Object.entries(a.blanks ?? {}).filter(([id]) => now.has(id)),
+        );
+        return Object.keys(blanks).length ? { blanks } : null;
+      }
+      case 'match': {
+        const items = new Set([...q.pairs.map((p) => p.bId), ...q.distractors.map((d) => d.id)]);
+        const pairIds = new Set(q.pairs.map((p) => p.id));
+        const pairs = Object.fromEntries(
+          Object.entries(a.pairs ?? {}).filter(([p, b]) => pairIds.has(p) && items.has(b)),
+        );
+        return Object.keys(pairs).length ? { pairs } : null;
+      }
+      case 'order': {
+        const now = new Set(q.tiles.map((t) => t.id));
+        const tiles = (a.tiles ?? []).filter((id) => now.has(id));
+        return tiles.length ? { tiles } : null;
+      }
+      case 'write':
+        return a.text ? { text: a.text } : null;
+      case 'reading': {
+        const subs = Object.fromEntries(
+          q.subs.flatMap((s) => {
+            const kept = a.subs?.[s.id] && sub(s, a.subs[s.id] as Answer);
+            return kept ? [[s.id, kept]] : [];
+          }),
+        );
+        return Object.keys(subs).length ? { subs } : null;
+      }
+    }
+  };
+  return Object.fromEntries(
+    content.questions.flatMap((q) => {
+      const a = answers[q.id];
+      const kept = a && sub(q, a);
+      return kept ? [[q.id, kept]] : [];
+    }),
+  );
 }
 
 /* ---------- learner view: never the key nor the explanation (AC-16.5, NFR-9) ---------- */
