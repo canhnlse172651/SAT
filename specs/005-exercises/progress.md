@@ -75,3 +75,33 @@
   - The project's bash guard rejects inline scripts containing the word `set` followed by `&&`; patch scripts live in the
     session scratchpad instead.
 - Verify with: node .sdd/scripts/sdd.mjs run test -- packages/shared apps/api/src/common/tenancy
+
+## Handoff 2026-10-28 13:45 — /module 005 (implementer)
+- Status: 005-exercises implementing · 18/25 done, T036 in progress   Branch: feat/005-exercises @ aa01c44
+- Done this session: T030–T035 (3c4e9d5), T036 API + page (aa01c44).
+  - API `learn/classes/:classId/sets/:setId` (HV): `GET` start screen (+ the attempt's learner questions only while doing and
+    open), `POST start` (unique index, concurrent start safe), `PUT attempt` (changed questions, last write wins),
+    `POST submit {submitKey}` (same key = same submission; graded once with the current key), `GET review`. Refusals:
+    409 `ALREADY_SUBMITTED` "Bài đã nộp — mỗi bộ bài tập chỉ làm một lần", 409 `WORK_UNAVAILABLE` (AC-21.6 wording),
+    409 `NOT_OPEN` (AC-23.9 wording + "Câu trả lời đã lưu…" when an attempt exists), 422 `NOTHING_ANSWERED`, A05 otherwise.
+    `GET exercises/submissions?classId&studentId&setId` (GV) for T14. 003 `my-classes/:id/items/:itemId` no longer sends a
+    set's content (it carried the keys). 003 and 002 export their Mongoose models for 005.
+  - Web: S05 `ExercisePage` (start screen always first, "Bắt đầu làm" / "Tiếp tục làm", board, autosave ≤ 1 s with offline
+    retry, leave warning, confirm "n câu chưa hoàn thành: …" / "Bạn đã hoàn thành tất cả câu hỏi"), S06 `ReviewPage`,
+    T14 `SubmissionPage`; all registered in `screen-pages.ts`. Shared: `exercise-api.ts` (contracts, messages, `regradeNote`),
+    `learnAnswerState` (+ test).
+  - Walked in the real app: S05 at 390 px (start, answer 4 kinds, autosave "Đã lưu", reload → "Tiếp tục làm" restores answers,
+    Cột B order and question 3, submit confirm "2 câu chưa hoàn thành: 3, 5", S06 4,0 / 6,0 (67%)); no key / explanation in
+    any HV payload before submission; start / save / submit after submission refused; same submit key twice = 200; HV on the
+    T14 API = 404; T14 page as GV.
+  - Checks: lint ✔, typecheck ✔, build ✔, `run test` 32 files / 269 passed (+ the 31 pre-existing web worker errors).
+- In progress: T036 — missing only the entry on T04 (003 `ContentTab` "Xem bài nộp": submitted HV of a set → link
+  `/gv/bai-nop?lop=<classId>&hv=<studentId>&bo=<setId>`); AC-20.1 also names T15 (009, not built).
+- Next: finish T036 (T04 entry) → T022 (lock banner via `SetBody locked` + 409 `SET_LOCKED` in `SetHooksService.prepare`
+  when the set has submissions and the structure changed; "Nhân bản" = 002 `duplicateItem`; AC-18.4 `notice` on attempts
+  in progress) → T023 regrade (409 `REGRADE_REQUIRED {count}`, "Chấm lại và lưu", recompute `score/results/regrades`) →
+  T021 leftovers (AC-12.11) → T024 → T012 images → T025 AI. Then §4: test-cases.md to built labels, `run test:e2e`,
+  Handoff → `/test-module 005`.
+- Blockers / questions: unchanged (31 web test files cannot start a Vitest worker on this machine). Not walked yet: hidden
+  section / archived set / deadline removed while an attempt is in progress (logic in `LearnExercisesService.workGate`).
+- Verify with: node .sdd/scripts/sdd.mjs run test -- packages/shared
