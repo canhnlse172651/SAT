@@ -52,7 +52,6 @@ export class ExerciseLinks implements LearningData, ClassLearning, StepPractice 
         studentId: 1,
         setId: 1,
         status: 1,
-        answers: 1,
         submittedAt: 1,
         score: 1,
         maxScore: 1,
@@ -61,7 +60,7 @@ export class ExerciseLinks implements LearningData, ClassLearning, StepPractice 
     return rows.map((r) => ({
       studentId: String(r.studentId),
       setId: String(r.setId),
-      inProgress: r.status === 'doing' && Object.keys(r.answers ?? {}).length > 0,
+      inProgress: r.status === 'doing',
       submission:
         r.status === 'submitted' && r.submittedAt
           ? { score: r.score ?? 0, maxScore: r.maxScore ?? 0, at: r.submittedAt }

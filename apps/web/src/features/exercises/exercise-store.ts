@@ -129,18 +129,21 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
 
     async start() {
       set({ refusal: null });
-      // "Tiếp tục làm": the attempt in progress is already loaded (AC-14.7).
-      if (get().view?.attempt) {
-        set({ entered: true });
-        return;
-      }
+      // "Tiếp tục làm" asks the server too: the attempt may have been submitted elsewhere since this screen loaded (AC-17.7).
+      // The "set was updated" notice is shown once: the server cleared it when this screen loaded (AC-18.4).
+      const updated = get().view?.attempt?.updated ?? false;
       try {
+        const view = exerciseViewSchema.parse(
+          await apiRequest(`${base(get())}/start`, { method: 'POST' }),
+        );
         applyView(
-          exerciseViewSchema.parse(await apiRequest(`${base(get())}/start`, { method: 'POST' })),
+          updated && view.attempt ? { ...view, attempt: { ...view.attempt, updated: true } } : view,
         );
         set({ entered: true });
       } catch (err) {
         if (err instanceof ApiError) set({ refusal: err });
+        // Offline: continue the attempt already loaded; autosave retries (AC-14.5, AC-14.7).
+        else if (get().view?.attempt) set({ entered: true });
         else throw err;
       }
     },

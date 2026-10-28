@@ -204,12 +204,20 @@ export class LearnExercisesService {
     setId: string,
     body: SubmitBody,
   ): Promise<{ submitted: true }> {
+    // A repeat of the same submission (retry, double click, parallel requests) answers with that submission (AC-15.5).
+    const sameSubmission = async (err: unknown): Promise<true> => {
+      const now = await this.attemptOf(p, classId, setId);
+      if (now?.status === 'submitted' && now.submitKey === body.submitKey) return true;
+      throw err;
+    };
     const before = await this.attemptOf(p, classId, setId);
     if (before?.status === 'submitted') {
       if (before.submitKey === body.submitKey) return { submitted: true };
       throw this.alreadySubmitted(classId, setId);
     }
-    const { found, attempt, content } = await this.workGate(p, classId, setId);
+    const gate = await this.workGate(p, classId, setId).catch(sameSubmission);
+    if (gate === true) return { submitted: true };
+    const { found, attempt, content } = gate;
     if (!attempt) throw notFound();
     const answers = {
       ...known(content, attempt.answers ?? {}),
@@ -235,9 +243,8 @@ export class LearnExercisesService {
       },
     );
     if (!done) {
-      const now = await this.attemptOf(p, classId, setId);
-      if (now?.submitKey === body.submitKey) return { submitted: true };
-      throw this.alreadySubmitted(classId, setId);
+      await sameSubmission(this.alreadySubmitted(classId, setId));
+      return { submitted: true };
     }
     logExercise({
       action: 'attempt.submit',
