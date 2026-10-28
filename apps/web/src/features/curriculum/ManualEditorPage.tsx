@@ -7,14 +7,15 @@ import {
   formatVnTime,
   itemAddedMessage,
   itemMovedMessage,
-  itemNotReadyReason,
   leaveQuestion,
-  notReadyMessage,
   STEP_ERROR_CODES,
   STEP_MESSAGES as SM,
   deckMarksWarning,
   firstInvalidMessage,
+  firstInvalidSetProblem,
   formatVnTime as hhmm,
+  setIssues,
+  setProblems,
   publishedNotice,
   sectionReplacedAt,
   stepIssues,
@@ -25,6 +26,8 @@ import { stepOf } from '../steps/step-content';
 import { uploadPhase, useStepEditorStore } from '../steps/step-editor-store';
 import { type StepNotice, StepNoticeView } from '../steps/StepNotices';
 import { StorageMeter } from '../steps/StorageMeter';
+import { focusField, scrollToQuestion, setOf } from '../exercises/set-editing';
+import { SECTION_CHANGED_ELSEWHERE, type SetNotice, SetNoticeView } from '../exercises/SetNotices';
 import { useCallback, useEffect, useState } from 'react';
 import { useBlocker, useNavigate, useParams } from 'react-router';
 import {
@@ -82,6 +85,10 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const uploads = useStepEditorStore((s) => s.uploads);
   const cancelAll = useStepEditorStore((s) => s.cancelAll);
   const [notices, setNotices] = useState<Record<string, StepNotice>>({});
+  const [setNotices_, setSetNotices] = useState<Record<string, SetNotice>>({});
+  const [savedAtOf, setSavedAtOf] = useState<Record<string, string>>({});
+  /** 005 AC-12.14: the first invalid field of a refused set save, revealed and focused. */
+  const [reveal, setReveal] = useState<{ id: string; path: string } | null>(null);
   /** AC-6.4 / AC-6.5: a step's files still uploading (or processing) block its save / publish. */
   const blockedReason = (item: Item): string | null => {
     if (item.section !== 'lesson') return null;
@@ -142,6 +149,14 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       return next;
     });
 
+  const setSetNotice = (itemId: string, notice: SetNotice | null) =>
+    setSetNotices((n) => {
+      const next = { ...n };
+      if (notice) next[itemId] = notice;
+      else delete next[itemId];
+      return next;
+    });
+
   /** AC-19.5: the Bài học section was replaced by approved AI steps since this screen loaded it. */
   const replaced = (err: unknown): boolean => {
     if (!(err instanceof ApiError) || err.code !== STEP_ERROR_CODES.SECTION_REPLACED) return false;
@@ -179,6 +194,8 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   };
 
   const sectionItems = (s: Section) => lesson.items.filter((i) => i.section === s);
+  /** 005 AC-1.3: the Bài's steps for "Bước học liên kết". */
+  const steps = sectionItems('lesson').map((i) => ({ id: i.id, title: i.title, status: i.status }));
   const items = sectionItems(tab);
   const visible = items.filter((i) => showArchived[tab] || i.status !== 'archived');
   const archivedCount = items.filter((i) => i.status === 'archived').length;
@@ -207,6 +224,12 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
         push(text, 'success');
         setAnnouncement(text);
       } catch (err) {
+        // 005 AC-1.11: the sets' order changed in another window — nothing moves.
+        if (isConflict(err) && item.section === 'exercise') {
+          push(SECTION_CHANGED_ELSEWHERE, 'warn');
+          refresh();
+          return;
+        }
         if (isConflict(err)) throw err;
         push(M.orderFailed, 'error');
       }
@@ -279,36 +302,71 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       .finally(() => setBusy(false));
   };
 
-  const onSave = (item: Item) => {
-    if (item.section === 'lesson') {
-      saveStep(item, 'save');
+  /**
+   * 005 REQ-12 for a set: an invalid field refuses every save (AC-12.14); publishing and saving a published / archived
+   * set need a valid set (AC-12.5, AC-12.7); a conflict, refusal or failure stays on the set's block (AC-1.7).
+   */
+  const saveSet = (item: Item, mode: 'save' | 'publish') => {
+    const w = workingItem(item, drafts);
+    const content = setOf(w.content);
+    const invalid = firstInvalidSetProblem(w.title, content);
+    if (invalid) {
+      setSetNotice(item.id, { kind: 'blocked', message: invalid.message });
+      setReveal({ id: item.id, path: invalid.path });
+      window.setTimeout(() => focusField(item.id, invalid.path), 0);
       return;
     }
-    void run(async () => {
-      await save(item.id);
-      const at = nowHm();
-      setSavedAt(at);
-      push(`Đã lưu lúc ${at}`, 'success');
-    });
+    if (mode === 'publish' || item.status !== 'draft') {
+      const issues = setIssues(w.title, content);
+      if (issues.length) {
+        setSetNotice(item.id, { kind: 'issues', issues, publishing: mode === 'publish' });
+        const first = setProblems(w.title, content).find((p) => p.question !== null);
+        if (first?.question)
+          window.setTimeout(() => scrollToQuestion(item.id, first.question ?? ''), 0);
+        return;
+      }
+    }
+    if (busy) return;
+    setBusy(true);
+    (mode === 'publish' ? publish(item.id) : save(item.id))
+      .then(() => {
+        setSetNotice(item.id, null);
+        const at = nowHm();
+        setSavedAt(at);
+        setSavedAtOf((m) => ({ ...m, [item.id]: at }));
+        push(mode === 'publish' ? `Đã xuất bản · Đã lưu lúc ${at}` : `Đã lưu lúc ${at}`, 'success');
+      })
+      .catch((err: unknown) => {
+        if (isConflict(err) || isNotFound(err)) {
+          setSetNotice(item.id, { kind: 'conflict' });
+        } else if (err instanceof ApiError && err.code === STEP_ERROR_CODES.INVALID_CONTENT) {
+          setSetNotice(item.id, {
+            kind: 'blocked',
+            message: err.message.replace(/^Chưa lưu được: /, ''),
+          });
+        } else if (err instanceof ApiError && err.code === 'NOT_READY') {
+          setSetNotice(item.id, {
+            kind: 'issues',
+            issues: [err.message.replace(/^Không thể xuất bản — Chưa hoàn chỉnh: /, '')],
+            publishing: mode === 'publish',
+          });
+        } else if (err instanceof ApiError && err.status > 0 && err.status < 500) {
+          push(messageOf(err), 'warn');
+        } else {
+          setSetNotice(item.id, { kind: 'failed', retry: mode });
+        }
+      })
+      .finally(() => setBusy(false));
+  };
+
+  const onSave = (item: Item) => {
+    if (item.section === 'lesson') saveStep(item, 'save');
+    else saveSet(item, 'save');
   };
 
   const onPublish = (item: Item) => {
-    if (item.section === 'lesson') {
-      saveStep(item, 'publish');
-      return;
-    }
-    const w = workingItem(item, drafts);
-    const reason = itemNotReadyReason(item.section, w.title, w.content);
-    if (reason) {
-      push(notReadyMessage(reason), 'warn');
-      return;
-    }
-    void run(async () => {
-      await publish(item.id);
-      const at = nowHm();
-      setSavedAt(at);
-      push(`Đã xuất bản · Đã lưu lúc ${at}`, 'success');
-    });
+    if (item.section === 'lesson') saveStep(item, 'publish');
+    else saveSet(item, 'publish');
   };
 
   const onDelete = (item: Item) => {
@@ -347,6 +405,9 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   /** "Mở bộ bài tập" (AC-10.1): the Bài tập tab at that set, nothing saved or dropped. */
   const openSet = (setId: string) => {
     setTab('exercise');
+    // 005 AC-1.8: an archived set is shown with "Hiện mục lưu trữ".
+    if (lesson.items.find((i) => i.id === setId)?.status === 'archived')
+      setShowArchived('exercise', true);
     window.setTimeout(() => {
       document
         .querySelector(`[data-item="${setId}"]`)
@@ -414,7 +475,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
           Sửa trực tiếp; mỗi bước / bộ có nút lưu riêng. Sắp xếp, thêm, xóa, lưu trữ, xuất bản có
           hiệu lực ngay. Đổi tab không mất thay đổi chưa lưu.
         </p>
-        {visible.length === 0 ? (
+        {visible.length === 0 && (section === 'lesson' || all.length === 0) ? (
           <p className="muted cur-editor__empty">
             {section === 'lesson'
               ? 'Chưa có bước học nào — bấm “Thêm bước học”.'
@@ -458,8 +519,27 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
                   item.section === 'lesson' && uploadPhase(uploads, item.id) === 'processing'
                 }
                 onOpenSet={openSet}
+                steps={steps}
+                revealPath={reveal?.id === item.id ? reveal.path : null}
                 notice={
-                  notices[item.id] ? (
+                  item.section === 'exercise' ? (
+                    setNotices_[item.id] ? (
+                      <SetNoticeView
+                        notice={setNotices_[item.id] as SetNotice}
+                        onReload={() =>
+                          void reloadItem(item.id).then(() => setSetNotice(item.id, null))
+                        }
+                        onRetry={() => {
+                          const n = setNotices_[item.id];
+                          saveSet(item, n?.kind === 'failed' ? n.retry : 'save');
+                        }}
+                      />
+                    ) : savedAtOf[item.id] && !drafts[item.id] ? (
+                      <p className="small muted" role="status">
+                        Đã lưu lúc {savedAtOf[item.id]}
+                      </p>
+                    ) : null
+                  ) : notices[item.id] ? (
                     <StepNoticeView
                       itemId={item.id}
                       stepNo={all.indexOf(item) + 1}

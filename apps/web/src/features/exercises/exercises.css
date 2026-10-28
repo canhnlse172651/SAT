@@ -1,0 +1,135 @@
+/* 005 — T09 set editor (desktop). Tokens only (styles/tokens.css). */
+
+.ex-set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-3);
+  align-items: start;
+}
+
+.ex-total {
+  margin: 0;
+  color: var(--text-2);
+}
+
+.ex-questions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ex-question {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  background: var(--surface);
+}
+
+.ex-question > section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ex-question__bar,
+.ex-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.ex-missing {
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-6);
+  border-radius: var(--r-sm);
+  background: var(--st-pending-bg);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.ex-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.ex-option,
+.ex-pair {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.ex-option > .st-cell,
+.ex-pair > .st-cell {
+  flex: 1;
+}
+
+.ex-pair > .ex-points {
+  flex: 0 0 96px;
+}
+
+.ex-option__label {
+  min-width: 1.5em;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ex-row-tools {
+  display: inline-flex;
+  gap: var(--sp-1);
+}
+
+.ex-points {
+  max-width: 120px;
+}
+
+.ex-sub {
+  border: 1px dashed var(--border);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* The menu sits in the flow under its button: the button is often the last thing on the page. */
+.ex-menu {
+  margin-top: var(--sp-1);
+  width: max-content;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-1);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-pop);
+}
+
+.ex-menu__item {
+  text-align: left;
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  background: none;
+  border-radius: var(--r-sm);
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.ex-menu__item:hover,
+.ex-menu__item:focus-visible {
+  background: var(--surface-2);
+}

@@ -507,6 +507,10 @@ export class LessonsService {
       const content = this.content(item.section, raw);
       if (item.section === 'lesson') {
         checkStep(body.title, content as StepContent, item.status !== 'draft');
+      } else if (item.status !== 'draft') {
+        // 005 AC-12.7: a published or archived set is only saved while it stays valid to publish.
+        const reason = itemNotReadyReason('exercise', body.title, content);
+        if (reason) throw notReady(reason);
       }
       return { title: body.title, content };
     });
