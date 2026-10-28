@@ -152,3 +152,26 @@
 - Blockers / questions: Playwright MCP unusable this session (profile `mcp-chrome-7c84bcd` held by the Chrome of the earlier /module
   session; closing it was not permitted) — scripts ran on real Chromium instead. AC-20.7 has no script until 006 exists.
 - Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 005
+
+## Handoff 2026-10-28 19:00 — /module 005 (fix mode)
+- Status: 005-exercises implementing · 25/25 done (spec re-approved 2026-10-28 by canhnl: V19-1 … V19-3, AC-21.9 added to T030)
+  Branch: feat/005-exercises
+- Done this session: test-cases.md aligned with V19-1 / V19-2 (TC-012, TC-100, TC-103, TC-105 changed → "Chưa chạy"; new TC-130 for
+  AC-21.9 — scripts of the changed cases need updating by QA). Fixes: e6b8e0c (B7 TC-075, B8 TC-080, B10 TC-088), 16f8e28 (B3 TC-019,
+  B4 TC-029/TC-042, B6 TC-051, B11 TC-095), e179679 (B5 TC-038, B9 TC-082/TC-083 via `formatPoints`, B13 TC-119), 44cb425 (B12 TC-117
+  reference suite 590 + 320 cases, B14 TC-120 focusable TeacherShell `main`, B15 TC-123 8 MB JSON for `/api/lessons` + AI stand-in,
+  B16 TC-124 `Tabs keepMounted` on T07). Foundation changes have tests (numbers, exercises review parts, Tabs, routes, app body limits).
+  Checks: lint ✓, typecheck ✓, `run test` 64 files / 1336 tests passed, build ✓. Full replay (before the T07 panel fix): 107/124, all
+  of TC-019 … TC-120 above green; after the fix TC-001, TC-007, TC-008, TC-013, TC-015 replayed green one by one.
+- In progress: —
+- Next: `/test-module 005` trong phiên mới (agent QA) — chạy lại TC-019, 029, 038, 042, 048, 051, 059, 075, 080, 082, 083, 088, 091,
+  095, 110, 116, 117, 118, 119, 120, 123, 124; cập nhật script TC-012, TC-100, TC-103, TC-105 theo test case mới và viết TC-130.
+- Blockers / questions:
+  - Disk C: is full (≈ 0,6 GB free); mongodb-memory-server needs 500 MB, so the last replays (TC-048, 059, 091, 110, 116, 118, 123,
+    124) could not start. %TEMP% holds 54 orphaned `mongo-mem-*` folders (~10 GB) from killed test servers (no mongod running) —
+    deleting them was not permitted to the agent; the user should remove them before QA.
+  - Spec conflict for the spec agent: 005 AC-21.3 lists "lớp chưa tới ngày bắt đầu" under A05, but 003 AC-14.3 refuses sets of an
+    upcoming class with "Lớp sẽ bắt đầu vào ngày …" (what the code does). TC-103 keeps 003's message for that case, marked as a conflict.
+    Same ownership logic as V19-2 — suggest AC-21.3 defer to 003 AC-14.3.
+  - Node on PATH is v20; the web tests need 24 (portable Node 24 used, as in 003/004).
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 005
