@@ -10,6 +10,7 @@ interface Item {
   workspaceId: Types.ObjectId;
   name: string;
   qty: number;
+  tags?: { k: string; v: number }[];
 }
 
 const mongo = withMongo();
@@ -22,7 +23,15 @@ beforeAll(async () => {
   conn = await mongoose.createConnection(mongo.uri('tenancy')).asPromise();
   Items = conn.model<Item>(
     'Item',
-    new Schema({ workspaceId: workspaceIdField, name: String, qty: Number }, baseSchemaOptions),
+    new Schema(
+      {
+        workspaceId: workspaceIdField,
+        name: String,
+        qty: Number,
+        tags: [{ _id: false, k: String, v: Number }],
+      },
+      baseSchemaOptions,
+    ),
   );
 });
 
@@ -71,6 +80,31 @@ describe('scoped()', () => {
     expect((await b.deleteMany({})).deletedCount).toBe(1);
     const stillA = await Items.findById(aDoc._id);
     expect(stillA?.qty).toBe(1);
+  });
+
+  it('[000:AC-tenancy] update options (arrayFilters) pass through, still within the workspace', async () => {
+    const tags = [
+      { k: 'x', v: 1 },
+      { k: 'y', v: 1 },
+      { k: 'x', v: 1 },
+    ];
+    await Items.updateMany({}, { $set: { tags } });
+    const a = scoped(Items, wsA);
+    const r = await a.updateMany(
+      {},
+      { $set: { 'tags.$[t].v': 2 } },
+      { arrayFilters: [{ 't.k': 'x' }] },
+    );
+    expect(r.modifiedCount).toBe(1);
+    expect((await Items.findById(aDoc._id))?.toObject().tags?.map((t) => t.v)).toEqual([2, 1, 2]);
+    const other = await scoped(Items, wsB).findOne({});
+    expect(other?.toObject().tags?.map((t) => t.v)).toEqual([1, 1, 1]);
+    await a.updateOne(
+      { _id: aDoc._id },
+      { $set: { 'tags.$[t].v': 3 } },
+      { arrayFilters: [{ 't.k': 'y' }] },
+    );
+    expect((await Items.findById(aDoc._id))?.toObject().tags?.map((t) => t.v)).toEqual([2, 3, 2]);
   });
 
   it('[000:AC-tenancy] aggregate always starts with the workspace $match', async () => {

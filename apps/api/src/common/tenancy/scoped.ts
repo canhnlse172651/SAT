@@ -6,6 +6,8 @@ import { WORKSPACE_PROVIDER, type WorkspaceProvider } from './workspace-provider
 export { notFound, orNotFound } from './not-found.js';
 
 type Filter = Record<string, unknown>;
+/** Update options that cannot widen the scope (e.g. `arrayFilters` for positional `$[name]` updates). */
+type UpdateOptions = { arrayFilters?: Record<string, unknown>[] };
 
 function toObjectId(value: string | Types.ObjectId): Types.ObjectId {
   // Fail closed: never run a query without a valid workspace.
@@ -36,8 +38,10 @@ export function scoped<T>(model: Model<T>, workspace: string | Types.ObjectId) {
     exists: (filter: Filter = {}) => model.exists(only(filter)),
     count: (filter: Filter = {}) => model.countDocuments(only(filter)),
     create: (doc: Filter) => model.create({ ...doc, workspaceId } as never),
-    updateOne: (filter: Filter, update: UpdateQuery<T>) => model.updateOne(only(filter), update),
-    updateMany: (filter: Filter, update: UpdateQuery<T>) => model.updateMany(only(filter), update),
+    updateOne: (filter: Filter, update: UpdateQuery<T>, options?: UpdateOptions) =>
+      model.updateOne(only(filter), update, options),
+    updateMany: (filter: Filter, update: UpdateQuery<T>, options?: UpdateOptions) =>
+      model.updateMany(only(filter), update, options),
     findOneAndUpdate: (
       filter: Filter,
       update: UpdateQuery<T>,

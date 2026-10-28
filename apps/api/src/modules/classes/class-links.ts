@@ -117,6 +117,7 @@ export class ClassStudentLinks implements StudentLinks {
     const scope = scoped(this.members, workspaceId);
     const active = await scope.find({ studentId: sid, removedAt: null }).lean<MemberDoc[]>();
     await scope.deleteMany({ studentId: sid });
+    await this.learning.purgeStudent(workspaceId, studentId);
     if (active.length)
       await scoped(this.classes, workspaceId).updateMany(
         { _id: { $in: active.map((m) => m.classId) }, memberCount: { $gt: 0 } },

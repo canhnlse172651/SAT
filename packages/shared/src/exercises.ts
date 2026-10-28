@@ -66,6 +66,23 @@ export const EXERCISE_MESSAGES = {
   writeHelp: 'Gõ chữ Hán bằng bàn phím tiếng Trung (pinyin hoặc viết tay) của thiết bị',
 } as const;
 
+export const EXERCISE_ERROR_CODES = {
+  /** 422: a field rule is broken (AC-12.14) or an image is not a file of the workspace. */
+  INVALID_CONTENT: 'INVALID_CONTENT',
+  /** 409: structure change on a set with submissions (AC-18.1). */
+  SET_LOCKED: 'SET_LOCKED',
+  /** 409: the save changes scores, `details.count` submissions (AC-19.2). */
+  REGRADE_REQUIRED: 'REGRADE_REQUIRED',
+  /** 409: the attempt was submitted elsewhere (AC-14.9, AC-17.7). */
+  ALREADY_SUBMITTED: 'ALREADY_SUBMITTED',
+  /** 409: no current deadline in the class (AC-23.9). */
+  NOT_OPEN: 'NOT_OPEN',
+  /** 422: submit with nothing answered (AC-15.2). */
+  NOTHING_ANSWERED: 'NOTHING_ANSWERED',
+} as const;
+
+export const saveRefusedMessage = (message: string): string => `Chưa lưu được: ${message}`;
+
 export const optionLabel = (k: number): string => 'ABCDEF'.charAt(k);
 export const optionEmpty = (label: string): string => `Phương án ${label} đang trống`;
 export const optionDuplicate = (label: string, other: string): string =>

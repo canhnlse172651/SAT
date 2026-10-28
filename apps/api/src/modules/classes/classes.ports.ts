@@ -28,6 +28,8 @@ export interface ClassLearning {
   /** The classes (of `classIds`) with at least one exercise submission, removed students included. */
   classesWithSubmissions(workspaceId: string, classIds: readonly string[]): Promise<Set<string>>;
   studentHasSubmissions(workspaceId: string, studentId: string): Promise<boolean>;
+  /** A deleted student's attempts go (001 AC-13.2: deleting is only allowed without submissions). */
+  purgeStudent(workspaceId: string, studentId: string): Promise<void>;
 }
 
 export interface ClassExams {
@@ -114,6 +116,15 @@ export class DevClassLearning implements ClassLearning {
       studentId: oid(studentId),
       submittedAt: { $ne: null },
     }));
+  }
+
+  async purgeStudent(workspaceId: string, studentId: string) {
+    if (!Types.ObjectId.isValid(studentId)) return;
+    await devRows(this.connection).deleteMany({
+      workspaceId: oid(workspaceId),
+      kind: 'attempt',
+      studentId: oid(studentId),
+    });
   }
 }
 

@@ -23,7 +23,7 @@ import {
   cardMarkSchema,
   lessonFileSchema,
 } from './steps.model.js';
-import { DevStepPractice, STEP_PRACTICE } from './steps.ports.js';
+import { DevStepPractice } from './steps.ports.js';
 import { StepsService } from './steps.service.js';
 
 export interface StepsModuleOptions {
@@ -56,9 +56,8 @@ export class StepsModule implements NestModule {
         ...(options.devHelpers ? [StepsDevController] : []),
       ],
       providers: [
-        // 005 re-binds `STEP_PRACTICE` when it exists (steps.ports.ts).
+        // `STEP_PRACTICE` is bound by 005 (ExercisesModule, global); the dev endpoint still writes the stand-in links.
         DevStepPractice,
-        { provide: STEP_PRACTICE, useExisting: DevStepPractice },
         StepFilesService,
         StepHooksService,
         { provide: STEP_HOOKS, useExisting: StepHooksService },

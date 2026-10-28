@@ -103,6 +103,8 @@ export const FILE_KINDS = [
   'audio',
   'cardImage',
   'cardAudio',
+  /** 005: image of a question stem or option (AC-3.1, AC-3.2). */
+  'questionImage',
 ] as const;
 export const fileKindSchema = z.enum(FILE_KINDS);
 export type FileKind = z.infer<typeof fileKindSchema>;
@@ -156,6 +158,12 @@ export const FILE_RULES: Record<FileKind, FileRule> = {
     maxBytes: 5 * MB,
   },
   cardAudio: { label: 'Âm thanh', formats: 'MP3, M4A, WAV', types: AUDIO_TYPES, maxBytes: 5 * MB },
+  questionImage: {
+    label: 'Hình ảnh',
+    formats: 'JPG/JPEG, PNG, WebP, GIF',
+    types: IMAGE_TYPES,
+    maxBytes: 5 * MB,
+  },
 };
 
 /** Lower-case extension without the dot ('' when none). */

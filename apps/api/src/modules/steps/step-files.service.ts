@@ -28,11 +28,15 @@ import { LESSON_FILE_MODEL, type LessonFileDoc } from './steps.model.js';
 
 const ORPHAN_AFTER_MS = 24 * 60 * 60_000;
 
-/** Paths where a step stores file ids (block files and card files). */
+/** Paths where a step (block and card files) or a set (005: question and option images) stores file ids. */
 const FILE_PATHS = [
   'items.content.blocks.file.id',
   'items.content.blocks.cards.image.id',
   'items.content.blocks.cards.audio.id',
+  'items.content.questions.image.id',
+  'items.content.questions.options.image.id',
+  'items.content.questions.subs.image.id',
+  'items.content.questions.subs.options.image.id',
 ];
 
 /**

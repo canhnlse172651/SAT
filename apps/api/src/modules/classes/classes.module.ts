@@ -20,13 +20,7 @@ import {
   reminderRunSchema,
   reminderSchema,
 } from './classes.model.js';
-import {
-  CLASS_EXAMS,
-  CLASS_LEARNING,
-  ClassFaults,
-  DevClassExams,
-  DevClassLearning,
-} from './classes.ports.js';
+import { CLASS_EXAMS, ClassFaults, DevClassExams } from './classes.ports.js';
 import { ClassesService } from './classes.service.js';
 import { ContentService } from './content.service.js';
 import { LearnClassesController } from './learn-classes.controller.js';
@@ -70,10 +64,9 @@ export class ClassesModule {
       ],
       providers: [
         { provide: REMINDER_OPTIONS, useValue: { appOrigin: options.appOrigin } },
-        // 005 and 006 re-bind these when they exist (classes.ports.ts).
-        DevClassLearning,
+        // 006 re-binds `CLASS_EXAMS` when it exists (classes.ports.ts); `CLASS_LEARNING` is bound by 005
+        // (ExercisesModule, global).
         DevClassExams,
-        { provide: CLASS_LEARNING, useExisting: DevClassLearning },
         { provide: CLASS_EXAMS, useExisting: DevClassExams },
         ClassFaults,
         ClassCurriculumLinks,

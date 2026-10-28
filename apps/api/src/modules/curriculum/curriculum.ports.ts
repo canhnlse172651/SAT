@@ -183,3 +183,21 @@ export interface StepHooks {
 }
 
 export const STEP_HOOKS = Symbol('STEP_HOOKS');
+
+/**
+ * 005 (set content) checks and reacts to set changes made through 002's item lifecycle. Bound by `ExercisesModule`
+ * (global); absent in tests without it.
+ */
+export interface SetHooks {
+  /**
+   * Before a set's content is stored: parsed into the 005 shape, image references checked against the workspace's
+   * registered files. Throws an `AppError` for an invalid field (AC-12.14) or a foreign / unknown file.
+   */
+  prepare(workspaceId: string, title: string, content: unknown): Promise<unknown>;
+  /** A set's content was saved (images no longer used are released — AC-3.5). */
+  saved(workspaceId: string, before: ItemDoc, after: ItemDoc): Promise<void>;
+  /** Sets were deleted or replaced: their images are released when no longer used (AC-22.1, AC-13.9). */
+  removed(workspaceId: string, items: readonly ItemDoc[]): Promise<void>;
+}
+
+export const SET_HOOKS = Symbol('SET_HOOKS');

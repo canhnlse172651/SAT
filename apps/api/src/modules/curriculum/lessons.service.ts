@@ -35,7 +35,13 @@ import {
   LESSON_MODEL,
   type LessonDoc,
 } from './curriculum.model.js';
-import { CurriculumFaults, STEP_HOOKS, type StepHooks } from './curriculum.ports.js';
+import {
+  CurriculumFaults,
+  SET_HOOKS,
+  STEP_HOOKS,
+  type SetHooks,
+  type StepHooks,
+} from './curriculum.ports.js';
 import { CurriculumService, copyInProgress, copyItems } from './curriculum.service.js';
 
 const STALE_MS = 10 * 60_000;
@@ -82,12 +88,15 @@ export class LessonsService {
     private readonly curriculumService: CurriculumService,
     private readonly faults: CurriculumFaults,
     @Optional() @Inject(STEP_HOOKS) private readonly hooks?: StepHooks,
+    @Optional() @Inject(SET_HOOKS) private readonly setHooks?: SetHooks,
   ) {}
 
-  /** 004 reacts to a saved step (released files, marks of removed cards). */
+  /** 004 / 005 react to a saved step or set (released files, marks of removed cards). */
   private async afterSave(p: AuthPrincipal, before: ItemDoc | undefined, lesson: LessonDoc) {
     const after = before && lesson.items.find((i) => i._id.equals(before._id));
-    if (before && after) await this.hooks?.saved(p.workspaceId, before, after);
+    if (!before || !after) return;
+    if (after.section === 'lesson') await this.hooks?.saved(p.workspaceId, before, after);
+    else await this.setHooks?.saved(p.workspaceId, before, after);
   }
 
   /* ---------- loading ---------- */
@@ -183,12 +192,19 @@ export class LessonsService {
     throw notFound();
   }
 
-  /** 004: the step content as it will be stored (sanitised, files checked), or the raw content of a set. */
-  private async prepared(p: AuthPrincipal, id: string, itemId: string, raw: unknown) {
+  /** The content as it will be stored: a step sanitised, files checked (004); a set checked, images checked (005). */
+  private async prepared(
+    p: AuthPrincipal,
+    id: string,
+    itemId: string,
+    title: string,
+    raw: unknown,
+  ) {
     const { lesson } = await this.load(p, id);
     const item = this.findItem(lesson, itemId);
-    if (item.section !== 'lesson' || !this.hooks) return raw;
-    return this.hooks.prepare(p.workspaceId, this.content('lesson', raw));
+    if (item.section === 'exercise')
+      return this.setHooks ? this.setHooks.prepare(p.workspaceId, title, raw) : raw;
+    return this.hooks ? this.hooks.prepare(p.workspaceId, this.content('lesson', raw)) : raw;
   }
 
   /* ---------- Bài (REQ-5, REQ-9, REQ-12, REQ-14) ---------- */
@@ -485,7 +501,7 @@ export class LessonsService {
     body: { expectedVersion: number; title: string; content: unknown },
   ): Promise<Lesson> {
     let before: ItemDoc | undefined;
-    const raw = await this.prepared(p, id, itemId, body.content);
+    const raw = await this.prepared(p, id, itemId, body.title, body.content);
     const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
       before = item;
       const content = this.content(item.section, raw);
@@ -507,7 +523,7 @@ export class LessonsService {
     body: { expectedVersion: number; title: string; content: unknown },
   ): Promise<Lesson> {
     let before: ItemDoc | undefined;
-    const raw = await this.prepared(p, id, itemId, body.content);
+    const raw = await this.prepared(p, id, itemId, body.title, body.content);
     const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
       before = item;
       if (item.status !== 'draft') throw changedElsewhere();
@@ -564,7 +580,8 @@ export class LessonsService {
       }
       return { items: lesson.items.filter((i) => i !== item), sections: [item.section] };
     });
-    if (removed) await this.hooks?.removed(p.workspaceId, [removed]);
+    if (removed?.section === 'lesson') await this.hooks?.removed(p.workspaceId, [removed]);
+    else if (removed) await this.setHooks?.removed(p.workspaceId, [removed]);
     logAction({ action: 'item.delete', actorId: p.userId, lessonId: id, itemId });
     return this.dto(p, updated);
   }

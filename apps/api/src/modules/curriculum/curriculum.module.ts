@@ -19,12 +19,7 @@ import {
   lessonSchema,
 } from './curriculum.model.js';
 import { CurriculumReader } from './curriculum-reader.js';
-import {
-  AI_DRAFTS,
-  CurriculumFaults,
-  DevCurriculumLinks,
-  LEARNING_DATA,
-} from './curriculum.ports.js';
+import { AI_DRAFTS, CurriculumFaults, DevCurriculumLinks } from './curriculum.ports.js';
 import { CurriculumService } from './curriculum.service.js';
 import { LearnController } from './learn.controller.js';
 import { LearnService } from './learn.service.js';
@@ -40,14 +35,14 @@ export interface CurriculumModuleOptions {
 @Module({})
 export class CurriculumModule implements NestModule {
   static forRoot(options: CurriculumModuleOptions): DynamicModule {
+    // Exported: 005 keeps the content of sets in the Bài's items.
+    const models = MongooseModule.forFeature([
+      { name: CURRICULUM_MODEL, schema: curriculumSchema },
+      { name: LESSON_MODEL, schema: lessonSchema },
+    ]);
     return {
       module: CurriculumModule,
-      imports: [
-        MongooseModule.forFeature([
-          { name: CURRICULUM_MODEL, schema: curriculumSchema },
-          { name: LESSON_MODEL, schema: lessonSchema },
-        ]),
-      ],
+      imports: [models],
       controllers: [
         CurriculumController,
         LessonsController,
@@ -55,10 +50,9 @@ export class CurriculumModule implements NestModule {
         ...(options.devHelpers ? [CurriculumDevController] : []),
       ],
       providers: [
-        // 005 and 010 re-bind these when they exist (curriculum.ports.ts); `CURRICULUM_CLASSES` is bound by 003
-        // (ClassesModule, global).
+        // 010 re-binds `AI_DRAFTS` when it exists (curriculum.ports.ts); `CURRICULUM_CLASSES` is bound by 003
+        // (ClassesModule, global), `LEARNING_DATA` and `SET_HOOKS` by 005 (ExercisesModule, global).
         DevCurriculumLinks,
-        { provide: LEARNING_DATA, useExisting: DevCurriculumLinks },
         { provide: AI_DRAFTS, useExisting: DevCurriculumLinks },
         CurriculumFaults,
         CurriculumContext,
@@ -68,7 +62,7 @@ export class CurriculumModule implements NestModule {
         LearnService,
         CurriculumReader,
       ],
-      exports: [CurriculumService, LessonsService, AiReplaceService, CurriculumReader],
+      exports: [models, CurriculumService, LessonsService, AiReplaceService, CurriculumReader],
     };
   }
 
