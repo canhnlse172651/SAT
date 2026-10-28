@@ -1,4 +1,4 @@
-import { formatScore, formatVnDate, formatVnTime, regradeNote, vnDayStart } from '@sat/shared';
+import { formatPoints, formatVnDate, formatVnTime, regradeNote, vnDayStart } from '@sat/shared';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import { ErrorState, Skeleton } from '../../components';
@@ -52,7 +52,7 @@ export function SubmissionPage() {
         </dd>
         <dt>Điểm</dt>
         <dd>
-          {formatScore(sub.score)} / {formatScore(sub.maxScore)} điểm ({sub.percent}%)
+          {formatPoints(sub.score)} / {formatPoints(sub.maxScore)} điểm ({sub.percent}%)
         </dd>
       </dl>
       {sub.late && sub.deadline && (

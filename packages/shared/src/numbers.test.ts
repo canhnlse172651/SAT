@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatNumber, formatScore } from './numbers.js';
+import { formatNumber, formatPoints, formatScore } from './numbers.js';
 
 describe('numbers (vi-VN)', () => {
   it.each([
@@ -20,5 +20,17 @@ describe('numbers (vi-VN)', () => {
     expect(formatNumber(1234567.891, 2)).toBe('1.234.567,89');
     expect(formatNumber(999)).toBe('999');
     expect(formatNumber(Number.NaN)).toBe('');
+  });
+  // 005 AC-16.2: exercise points without trailing zeros ("7 / 12 điểm", "0,5 / 3 điểm").
+  it.each([
+    [7, '7'],
+    [12, '12'],
+    [0.5, '0,5'],
+    [2.25, '2,25'],
+    [1 / 3, '0,33'],
+    [0, '0'],
+    [1000, '1.000'],
+  ])('formatPoints(%f) = %s', (v, out) => {
+    expect(formatPoints(v)).toBe(out);
   });
 });

@@ -1,4 +1,4 @@
-import { formatScore, formatVnDate, formatVnTime } from '@sat/shared';
+import { formatPoints, formatVnDate, formatVnTime } from '@sat/shared';
 import { useEffect } from 'react';
 import { Link } from 'react-router';
 import { Button, Drawer, EmptyState, ErrorState, Skeleton } from '../../components';
@@ -52,7 +52,7 @@ export function SetSubmissionsDrawer({ classId, set, onClose }: Props) {
                   )}
                 </td>
                 <td className="num">
-                  {formatScore(it.score)} / {formatScore(it.maxScore)} ({it.percent}%)
+                  {formatPoints(it.score)} / {formatPoints(it.maxScore)} ({it.percent}%)
                 </td>
                 <td className="r">
                   <Link

@@ -514,6 +514,17 @@ describe('review rows (AC-16.2, AC-16.4, AC-18.3)', () => {
       ['5', 'write', 'unanswered', '—', '你好'],
     ]);
     expect(rows[0]?.explanation).toBe('Vì vậy');
+    // AC-16.3: each blank and each pair has its own result.
+    expect(rows[1]?.parts.map((p) => [p.label, p.verdict])).toEqual([
+      ['Chỗ trống 1', 'correct'],
+      ['Chỗ trống 2', 'unanswered'],
+    ]);
+    expect(rows[2]?.parts.map((p) => [p.label, p.verdict])).toEqual([
+      ['Cặp 1 · 你好', 'correct'],
+      ['Cặp 2 · 谢谢', 'wrong'],
+      ['Cặp 3 · 再见', 'unanswered'],
+    ]);
+    expect(rows[0]?.parts).toEqual([]);
     const r = reviewRows(setOf(reading()), {}, [])[0];
     expect(r?.subs.map((s) => s.n)).toEqual(['1.1', '1.2']);
   });

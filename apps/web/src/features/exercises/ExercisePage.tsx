@@ -3,7 +3,7 @@ import {
   LEARNER_SET_LABELS,
   type ExerciseView,
   learnAnswerState,
-  formatScore,
+  formatPoints,
   unfinishedLine,
 } from '@sat/shared';
 import { useEffect, useState } from 'react';
@@ -111,7 +111,7 @@ export function ExercisePage() {
         <p className="hv-row__chips">
           <span className={`chip ${TONE[set.status]}`}>
             {done && set.score !== null && set.maxScore !== null
-              ? `${LEARNER_SET_LABELS.done} · ${formatScore(set.score)} / ${formatScore(set.maxScore)}`
+              ? `${LEARNER_SET_LABELS.done} · ${formatPoints(set.score)} / ${formatPoints(set.maxScore)}`
               : LEARNER_SET_LABELS[set.status]}
           </span>
           {done && set.late && <span className="chip chip--pending">Nộp muộn</span>}
@@ -128,11 +128,11 @@ export function ExercisePage() {
           <dt>Số câu hỏi</dt>
           <dd>{set.questionCount}</dd>
           <dt>Tổng điểm</dt>
-          <dd>{formatScore(set.totalPoints)}</dd>
+          <dd>{formatPoints(set.totalPoints)}</dd>
           <dt>Điểm</dt>
           <dd>
             {done && set.score !== null && set.maxScore !== null
-              ? `${formatScore(set.score)} / ${formatScore(set.maxScore)}`
+              ? `${formatPoints(set.score)} / ${formatPoints(set.maxScore)}`
               : '—'}
           </dd>
         </dl>

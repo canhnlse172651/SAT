@@ -4,6 +4,7 @@ import {
   LESSON_LABELS,
   type LearnerSet,
   endedBanner,
+  formatPoints,
 } from '@sat/shared';
 import { useEffect } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router';
@@ -62,7 +63,7 @@ function SetRow({ classId, set, n }: { classId: string; set: LearnerSet; n: numb
           {questions}
           <span className={`chip ${STATUS_TONE[set.status]}`}>
             {done && set.score !== null && set.maxScore !== null
-              ? `${LEARNER_SET_LABELS.done} · ${set.score}/${set.maxScore}`
+              ? `${LEARNER_SET_LABELS.done} · ${formatPoints(set.score)} / ${formatPoints(set.maxScore)}`
               : LEARNER_SET_LABELS[set.status]}
           </span>
           {set.deadlineLabel && (

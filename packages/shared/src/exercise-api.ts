@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { formatScore } from './numbers.js';
+import { formatPoints } from './numbers.js';
 import { formatVnDate } from './time.js';
 import { learnerSetStatusSchema } from './classes.js';
 import { classStatusSchema } from './curriculum.js';
@@ -32,7 +32,7 @@ export const unfinishedLine = (numbers: readonly number[]): string =>
 
 /** "Điểm đã được cập nhật ngày <dd/MM/yyyy> do giáo viên sửa đáp án: <cũ> → <mới>" (AC-19.5), on S06 and T14. */
 export const regradeNote = (at: string, from: number, to: number): string =>
-  `Điểm đã được cập nhật ngày ${formatVnDate(new Date(at))} do giáo viên sửa đáp án: ${formatScore(from)} → ${formatScore(to)}`;
+  `Điểm đã được cập nhật ngày ${formatVnDate(new Date(at))} do giáo viên sửa đáp án: ${formatPoints(from)} → ${formatPoints(to)}`;
 
 const isoDate = z.string();
 

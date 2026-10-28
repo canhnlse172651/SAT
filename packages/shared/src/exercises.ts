@@ -1531,8 +1531,23 @@ export interface ReviewRow {
   /** "Đáp án đúng:". */
   key: string;
   explanation: string;
+  /** AC-16.3: result of each blank (Điền chỗ trống) or pair (Nối cặp); empty for other kinds. */
+  parts: ReviewPart[];
   subs: ReviewRow[];
 }
+export interface ReviewPart {
+  /** "Chỗ trống 2" or "Cặp 1 · 你好". */
+  label: string;
+  earned: number;
+  max: number;
+  verdict: Verdict;
+}
+const reviewPartSchema = z.object({
+  label: z.string(),
+  earned: z.number(),
+  max: z.number(),
+  verdict: z.enum(VERDICTS),
+});
 export const reviewRowSchema: z.ZodType<ReviewRow> = z.lazy(() =>
   z.object({
     n: z.string(),
@@ -1545,6 +1560,7 @@ export const reviewRowSchema: z.ZodType<ReviewRow> = z.lazy(() =>
     answer: z.string(),
     key: z.string(),
     explanation: z.string(),
+    parts: z.array(reviewPartSchema),
     subs: z.array(reviewRowSchema),
   }),
 );
@@ -1607,6 +1623,24 @@ function answerAndKey(
   }
 }
 
+/** AC-16.3: per-blank / per-pair results, from the stored grade or a grading with the current key. */
+function reviewParts(
+  q: Question | SubQuestion,
+  a: Answer | undefined,
+  r: GradeResult,
+): ReviewPart[] {
+  if (q.type !== 'cloze' && q.type !== 'match') return [];
+  const parts = r.parts ?? gradeQuestion(q, a).parts ?? [];
+  const labelled =
+    q.type === 'cloze'
+      ? clozeBlanks(q).map((b, k) => [b.id, `Chỗ trống ${k + 1}`] as const)
+      : q.pairs.map((p, k) => [p.id, `Cặp ${k + 1} · ${p.a.trim()}`] as const);
+  return labelled.flatMap(([id, label]) => {
+    const p = parts.find((x) => x.id === id);
+    return p ? [{ label, earned: p.earned, max: p.max, verdict: p.verdict }] : [];
+  });
+}
+
 function reviewRow(
   q: Question | SubQuestion,
   a: Answer | undefined,
@@ -1630,6 +1664,7 @@ function reviewRow(
     verdict: r.verdict,
     ...answerAndKey(q, a),
     explanation: q.explanation.trim(),
+    parts: reviewParts(q, a, r),
     subs,
   };
 }

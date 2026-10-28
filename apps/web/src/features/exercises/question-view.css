@@ -318,3 +318,18 @@
   align-items: center;
   gap: var(--sp-2);
 }
+
+/* NFR-6: Chinese in answers, keys and parts at least 18 px. */
+.ex-review__row [lang='zh-Hans'] {
+  font-family: var(--font-han);
+  font-size: var(--fs-xl);
+}
+
+.ex-review__parts {
+  list-style: none;
+  margin: var(--sp-1) 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}

@@ -19,3 +19,10 @@ export function formatNumber(value: number, decimals = 0): string {
 export function formatScore(value: number): string {
   return formatNumber(value, 1);
 }
+
+/** Exercise points (spec 005 AC-16.2): up to two decimals, no trailing zeros: 7 -> "7", 0.5 -> "0,5", 1/3 -> "0,33". */
+export function formatPoints(value: number): string {
+  return formatNumber(value, 2).replace(/,(\d*?)0+$/, (_, kept: string) =>
+    kept ? `,${kept}` : '',
+  );
+}

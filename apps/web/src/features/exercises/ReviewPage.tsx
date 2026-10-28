@@ -3,7 +3,7 @@ import {
   QUESTION_KIND_SHORT,
   type ReviewRow,
   VERDICT_LABELS,
-  formatScore,
+  formatPoints,
   formatVnDate,
   formatVnTime,
   regradeNote,
@@ -43,7 +43,7 @@ export function ReviewRowView({
         </strong>
         <span className={`chip ${VERDICT_TONE[row.verdict]}`}>{VERDICT_LABELS[row.verdict]}</span>
         <span className="small">
-          {formatScore(row.earned)} / {formatScore(row.max)} điểm
+          {formatPoints(row.earned)} / {formatPoints(row.max)} điểm
         </span>
       </p>
       {withPrompt && row.prompt.trim() && (
@@ -57,6 +57,21 @@ export function ReviewRowView({
             <span className="muted">{withPrompt ? 'Câu trả lời: ' : 'Bạn trả lời: '}</span>
             <span lang="zh-Hans">{row.answer}</span>
           </p>
+          {row.parts.length > 0 && (
+            <ul className="ex-review__parts" aria-label={`Kết quả từng phần câu ${row.n}`}>
+              {row.parts.map((p) => (
+                <li key={p.label}>
+                  <span lang="zh-Hans">{p.label}</span>:{' '}
+                  <span className={`chip ${VERDICT_TONE[p.verdict]}`}>
+                    {VERDICT_LABELS[p.verdict]}
+                  </span>{' '}
+                  <span className="small">
+                    {formatPoints(p.earned)} / {formatPoints(p.max)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
           <p>
             <span className="muted">Đáp án đúng: </span>
             <span lang="zh-Hans">{row.key}</span>
@@ -141,7 +156,7 @@ export function ReviewPage() {
         </p>
       )}
       <p className="ex-review__score">
-        {formatScore(review.score ?? 0)} / {formatScore(review.maxScore ?? 0)} điểm (
+        {formatPoints(review.score ?? 0)} / {formatPoints(review.maxScore ?? 0)} điểm (
         {review.percent}%)
       </p>
       <p className="small muted">{LM.oneAttempt}</p>
