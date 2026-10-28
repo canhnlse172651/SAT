@@ -105,3 +105,36 @@
 - Blockers / questions: unchanged (31 web test files cannot start a Vitest worker on this machine). Not walked yet: hidden
   section / archived set / deadline removed while an attempt is in progress (logic in `LearnExercisesService.workGate`).
 - Verify with: node .sdd/scripts/sdd.mjs run test -- packages/shared
+
+## Handoff 2026-10-28 15:00 — /module 005 (implementer)
+- Status: 005-exercises implementing · 25/25 done   Branch: feat/005-exercises
+- Done this session: T036 T04 entry (1464927), T022 (ae837d3), T023 (b5a044b), T021 + T024 (a054577), T012 (3eefbc9),
+  T025 (2409d64), hand-over fixes (this commit).
+  - T036: `GET exercises/classes/:classId/sets/:setId/submissions` (GV) + "Bài nộp" on each set row of T04 Nội dung → drawer
+    (Học viên, Nộp lúc, Điểm, "Nộp muộn") → "Xem bài nộp" → T14.
+  - T022: shared `setStructure` / `keptAnswers` (+ tests); `SET_HOOKS.prepare(…, before)` refuses a structure change of a set
+    with submissions (409 `SET_LOCKED` "Chưa lưu được: Đã có N bài nộp: …"); `saved` keeps the answers of parts that still
+    exist and sets `notice` on attempts in progress (AC-18.4). `GET exercises/lessons/:id/sets` (counts) → T09 banner
+    `lockedBanner(n)` + `locked` controls. 002 `POST lessons/:id/items/:itemId/duplicate` (copy right after, "(bản sao)",
+    Nháp, AI label kept) + "Nhân bản" (disabled while dirty with "Hãy lưu hoặc bỏ thay đổi trước khi nhân bản"). T21 shows
+    "Luyện cho: <bước>". S05/S06 link buttons now use the real `btn--*` classes.
+  - T023: save body `confirmRegrade`; a save changing any score → 409 `REGRADE_REQUIRED {count}` with AC-19.2 wording; T09
+    dialog "Chấm lại và lưu" / "Hủy" (Hủy keeps edits); confirmed save re-grades every submission of the set in every class
+    (`regrades[]`, `gradedVersion`), T14/S06 note from the last entry.
+  - T012: `ImageField` on every stem and MCQ option (004 upload store: quota pre-check, progress, "Tải tệp lên thất bại" +
+    "Thử lại", saves blocked while uploading); `questionImage` refusals say "Ảnh phải là JPG, PNG, WebP hoặc GIF, tối đa 5 MB";
+    S05/T21 zoom fixed (rendered only when `url` was set — now `/api/files/:id`).
+  - T025: AI approval of the Bài tập section: per-question `ai`, step link kept only if that step is in the Bài, `SET_HOOKS`
+    checks + image release, preview `sets` block (AC-13.11 groups, submissions per archived set, empty-section line),
+    AC-13.12 wording; AC-13.4 `screenGeneratedQuestions` (shared, for 010) and 422 `details.rejected` on the dev approval.
+  - Walked against the dev API: lock / notice / duplicate / counts, regrade 409 → confirm → T14 note, REQ-22 archive & delete,
+    AI preview / stale token / approve / invalid; in the browser: T09 banner + disabled controls, image refusal + upload +
+    save + T21 zoom.
+  - Checks: lint ✔, typecheck ✔, `run test` 32 files / 284 passed, build ✔, `run test:e2e` 10 passed.
+- In progress: —
+- Next: `/test-module 005` trong phiên mới (agent QA, Playwright MCP).
+- Blockers / questions: (1) TC-098 / AC-19.6 — re-grading runs inside the save request, so T09 shows "Đang chấm lại 0/N bài
+  nộp…" until it returns (no live x) — as decided in plan.md; QA/spec agent to confirm. (2) AC-20.1 also names T15 and AC-20.7
+  the exam variant (006) — not built, TC-102 waits for 006. (3) AC-13.4 "không nhận câu hỏi" happens at generation (010);
+  here the approval refuses with per-question reasons. (4) 31 web Vitest files still cannot start a worker on this machine.
+- Verify with: node .sdd/scripts/sdd.mjs run test -- packages/shared

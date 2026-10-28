@@ -52,7 +52,7 @@ export function Explanation({ q, path, onChange }: EditorProps<Question | SubQue
   return (
     <QField
       path={`${path}.explanation`}
-      label="Giải thích (tùy chọn)"
+      label="Giải thích (không bắt buộc)"
       value={q.explanation}
       max={L.explanationMax}
       multiline

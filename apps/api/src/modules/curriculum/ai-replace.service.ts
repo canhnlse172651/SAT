@@ -16,6 +16,7 @@ import {
   itemNotReadyReason,
   markAi,
   replaceConfirmation,
+  screenGeneratedQuestions,
   stepContentSchema,
   stepIssues,
 } from '@sat/shared';
@@ -105,6 +106,28 @@ export class AiReplaceService {
         throw new AppError(422, E.NOT_READY, `Không thể duyệt: ${lines[0]}`, { issues: lines });
       }
       return contents;
+    }
+    if (section === 'exercise') {
+      // 005 AC-13.4: generated questions of an unknown kind or over a limit are content errors, reported per question.
+      const rejected = items.flatMap((it, set) => {
+        const qs = (it.content as { questions?: unknown } | null)?.questions;
+        return Array.isArray(qs)
+          ? screenGeneratedQuestions(qs).rejected.map((r) => ({
+              set: set + 1,
+              question: r.index + 1,
+              reason: r.reason,
+            }))
+          : [];
+      });
+      const first = rejected[0];
+      if (first) {
+        throw new AppError(
+          422,
+          E.NOT_READY,
+          `Không thể duyệt: Bộ ${first.set} · Câu ${first.question} — ${first.reason}`,
+          { rejected },
+        );
+      }
     }
     return items.map((it) => {
       const parsed = contentSchemaFor(section).safeParse(it.content);
