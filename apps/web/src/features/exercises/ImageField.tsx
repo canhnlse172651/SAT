@@ -20,11 +20,12 @@ export function ImageField({
   label: string;
   image: FileRef | null;
 }) {
-  const { itemId } = useSetEditing();
+  const { itemId, patchImage } = useSetEditing();
   const key = `${itemId}/${target.ownerId}/${target.optionId ?? ''}`;
   const upload = useStepEditorStore((s) => s.uploads[key]);
   const retry = useStepEditorStore((s) => s.retry);
-  const put = (ref: FileRef | null) => patchSetImage(itemId, target, ref);
+  const put = (ref: FileRef | null) =>
+    patchImage ? patchImage(target, ref) : patchSetImage(itemId, target, ref);
   const picker = useFileInput('questionImage', (file) =>
     chooseFile(key, itemId, 'questionImage', file, put),
   );

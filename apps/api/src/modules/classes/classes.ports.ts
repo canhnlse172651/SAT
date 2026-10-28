@@ -38,6 +38,8 @@ export interface ClassExams {
   visibleCount(workspaceId: string, classId: string): Promise<number>;
   studentHasSubmissions(workspaceId: string, studentId: string): Promise<boolean>;
   removeClass(workspaceId: string, classId: string): Promise<void>;
+  /** A deleted student's attempts in progress and results go (001 AC-13.2: deleting is only allowed without submissions). */
+  purgeStudent(workspaceId: string, studentId: string): Promise<void>;
 }
 
 export const CLASS_LEARNING = Symbol('CLASS_LEARNING');
@@ -172,6 +174,14 @@ export class DevClassExams implements ClassExams {
     await devRows(this.connection).updateMany(
       { workspaceId: oid(workspaceId), kind: 'exam', classIds: oid(classId) },
       { $pull: { classIds: oid(classId) } },
+    );
+  }
+
+  async purgeStudent(workspaceId: string, studentId: string) {
+    if (!Types.ObjectId.isValid(studentId)) return;
+    await devRows(this.connection).updateMany(
+      { workspaceId: oid(workspaceId), kind: 'exam' },
+      { $pull: { submissions: { studentId: oid(studentId) } } },
     );
   }
 }

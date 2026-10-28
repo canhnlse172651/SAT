@@ -18,7 +18,7 @@ import { Button, Icon, IconButton, Textarea } from '../../components';
 import { move, replaceAt } from '../steps/step-content';
 import { useToastStore } from '../toast/toast-store';
 import { QuestionEditor } from './QuestionEditors';
-import { SetEditingContext, invalidAt } from './set-editing';
+import { type SetEditing, SetEditingContext, invalidAt } from './set-editing';
 import './exercises.css';
 
 export interface StepOption {
@@ -33,14 +33,20 @@ export interface SetBodyProps {
   itemId: string;
   title: string;
   content: ExerciseSetContent;
-  /** Steps of the Bài in section order (AC-1.3). */
-  steps: readonly StepOption[];
+  /** Steps of the Bài in section order (AC-1.3); absent = no "Hướng dẫn" / "Bước học liên kết" fields (006 exams own them). */
+  steps?: readonly StepOption[];
   /** Paths of fields the GV has left (their rule messages show, AC-2.6); "*" shows every field. */
   touched: ReadonlySet<string>;
   onTouch: (path: string) => void;
   onChange: (content: ExerciseSetContent) => void;
   /** Structure locked by submissions (AC-18.1). */
   locked?: boolean;
+  /** Refusal at the question limit (default: 005 AC-12.1 wording). */
+  limitMessage?: string;
+  /** The last question may be removed (an exam draft may have none, 006 AC-2.1). */
+  allowEmpty?: boolean;
+  /** Where finished uploads go (see `SetEditing.patchImage`). */
+  patchImage?: SetEditing['patchImage'];
 }
 
 /** T09: the body of one set — instructions, linked step, questions (REQ-1 … REQ-11). Edits stay unsaved (AC-12.9). */
@@ -53,6 +59,9 @@ export function SetBody({
   onTouch,
   onChange,
   locked = false,
+  limitMessage = XM.questionLimit,
+  allowEmpty = false,
+  patchImage,
 }: SetBodyProps) {
   const push = useToastStore((s) => s.push);
   const [menu, setMenu] = useState(false);
@@ -65,8 +74,9 @@ export function SetBody({
         touched.has(path) || touched.has('*') ? invalid.get(path) : undefined,
       locked,
       itemId,
+      ...(patchImage ? { patchImage } : {}),
     }),
-    [touched, invalid, locked, itemId],
+    [touched, invalid, locked, itemId, patchImage],
   );
   const questions = content.questions;
   const setQuestions = (qs: Question[]) => onChange({ ...content, questions: qs });
@@ -82,7 +92,7 @@ export function SetBody({
 
   const remove = (i: number) => {
     // AC-2.2: the last question stays; no confirmation (nothing is saved until the set is).
-    if (questions.length <= 1) {
+    if (questions.length <= 1 && !allowEmpty) {
       push(XM.lastQuestion, 'warn');
       return;
     }
@@ -98,34 +108,36 @@ export function SetBody({
           if (path) onTouch(path);
         }}
       >
-        <div className="ex-grid">
-          <Textarea
-            label="Hướng dẫn (tùy chọn)"
-            rows={2}
-            maxLength={L.instructionsMax}
-            value={content.instructions}
-            onChange={(e) => onChange({ ...content, instructions: e.target.value })}
-          />
-          <div className="field">
-            <label className="field__label" htmlFor={`${itemId}-step`}>
-              Bước học liên kết
-            </label>
-            <select
-              id={`${itemId}-step`}
-              className="input"
-              value={content.stepId ?? ''}
-              onChange={(e) => onChange({ ...content, stepId: e.target.value || null })}
-            >
-              <option value="">Không liên kết</option>
-              {steps.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {(s.title.trim() || 'Bước chưa đặt tên') + ` (${STEP_STATUS[s.status]})`}
-                </option>
-              ))}
-            </select>
-            <p className="field__hint">Học viên thấy nút “Luyện tập: …” ở cuối bước học này.</p>
+        {steps && (
+          <div className="ex-grid">
+            <Textarea
+              label="Hướng dẫn (tùy chọn)"
+              rows={2}
+              maxLength={L.instructionsMax}
+              value={content.instructions}
+              onChange={(e) => onChange({ ...content, instructions: e.target.value })}
+            />
+            <div className="field">
+              <label className="field__label" htmlFor={`${itemId}-step`}>
+                Bước học liên kết
+              </label>
+              <select
+                id={`${itemId}-step`}
+                className="input"
+                value={content.stepId ?? ''}
+                onChange={(e) => onChange({ ...content, stepId: e.target.value || null })}
+              >
+                <option value="">Không liên kết</option>
+                {steps.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {(s.title.trim() || 'Bước chưa đặt tên') + ` (${STEP_STATUS[s.status]})`}
+                  </option>
+                ))}
+              </select>
+              <p className="field__hint">Học viên thấy nút “Luyện tập: …” ở cuối bước học này.</p>
+            </div>
           </div>
-        </div>
+        )}
 
         <p className="ex-total" aria-live="polite">
           {questions.length} câu · Tổng điểm{' '}
@@ -219,7 +231,7 @@ export function SetBody({
           )}
           {limitNote && (
             <p className="field__error" role="alert">
-              {XM.questionLimit}
+              {limitMessage}
             </p>
           )}
         </div>

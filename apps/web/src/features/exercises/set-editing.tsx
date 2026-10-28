@@ -17,6 +17,8 @@ export interface SetEditing {
   error: (path: string) => string | undefined;
   /** Structure locked by submissions: no add / remove / reorder / points / kind changes (AC-18.1). */
   locked: boolean;
+  /** Where a finished upload goes; default: the set of the T07 working copy (`patchSetImage`). 006 T22 passes its own. */
+  patchImage?: (target: ImageTarget, image: FileRef | null) => void;
 }
 
 export const SetEditingContext = createContext<SetEditing>({
