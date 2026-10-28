@@ -1325,6 +1325,35 @@ export function learnQuestion(q: Question | SubQuestion, shuffles: Shuffles = {}
   }
 }
 
+/** AC-14.3 on the learner view (S05 board, submit confirmation): the same rule as `answerState`, without the key. */
+export function learnAnswerState(q: LearnQuestion, a: Answer | undefined): AnswerState {
+  if (!a) return 'none';
+  switch (q.type) {
+    case 'mcq':
+    case 'vocab':
+      return q.options.some((o) => a.optionIds?.includes(o.id)) ? 'complete' : 'none';
+    case 'cloze': {
+      const ids = q.segments.flatMap((s) => (s.kind === 'blank' ? [s.id] : []));
+      return stateOf(ids.filter((id) => filled(a.blanks?.[id])).length, ids.length);
+    }
+    case 'match': {
+      const bIds = new Set(q.b.map((b) => b.id));
+      return stateOf(q.a.filter((x) => bIds.has(a.pairs?.[x.id] ?? '')).length, q.a.length);
+    }
+    case 'order': {
+      const ids = new Set(q.tiles.map((t) => t.id));
+      return stateOf(new Set((a.tiles ?? []).filter((id) => ids.has(id))).size, q.tiles.length);
+    }
+    case 'write':
+      return filled(a.text) ? 'complete' : 'none';
+    case 'reading': {
+      const states = q.subs.map((s) => learnAnswerState(s, a.subs?.[s.id]));
+      if (states.length && states.every((s) => s === 'complete')) return 'complete';
+      return states.some((s) => s !== 'none') ? 'partial' : 'none';
+    }
+  }
+}
+
 /* ---------- review rows: S06 and T14 (AC-16.2, AC-16.4, AC-18.3, AC-20.2) ---------- */
 
 export interface ReviewRow {

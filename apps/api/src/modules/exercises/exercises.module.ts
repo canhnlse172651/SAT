@@ -15,6 +15,8 @@ import {
   mergedStepPractice,
 } from './exercise-links.js';
 import { ATTEMPT_MODEL, attemptSchema } from './exercises.model.js';
+import { LearnExercisesController } from './learn-exercises.controller.js';
+import { LearnExercisesService } from './learn-exercises.service.js';
 import { SetHooksService } from './set-hooks.service.js';
 
 export interface ExercisesModuleOptions {
@@ -43,7 +45,9 @@ export class ExercisesModule {
         options.curriculum,
         MongooseModule.forFeature([{ name: ATTEMPT_MODEL, schema: attemptSchema }]),
       ],
+      controllers: [LearnExercisesController],
       providers: [
+        LearnExercisesService,
         ExerciseLinks,
         DevCurriculumLinks,
         DevClassLearning,

@@ -278,7 +278,13 @@ export class LearnClassesService {
       set = { ...learner, canWork: !blockedReason && learner.status !== 'done', blockedReason };
     }
     return {
-      item: { id: itemId, section: item.section, title: item.title, content: item.content },
+      // A set's content (keys, explanations) never reaches an HV here: 005 serves the learner view (005 AC-16.5).
+      item: {
+        id: itemId,
+        section: item.section,
+        title: item.title,
+        content: item.section === 'exercise' ? null : item.content,
+      },
       lessonId: String(found.lesson._id),
       classStatus: found.status,
       set,

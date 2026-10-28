@@ -17,6 +17,7 @@ import {
   firstInvalidSetProblem,
   gradeQuestion,
   gradeSet,
+  learnAnswerState,
   learnQuestion,
   makeShuffles,
   markBlank,
@@ -361,6 +362,22 @@ describe('answered state (AC-14.3)', () => {
     expect(answerState(order(), { tiles: ['t1', 't2'] })).toBe('partial');
     expect(answerState(write(), { text: '  ' })).toBe('none');
     expect(answerState(reading(), { subs: { s1: { optionIds: ['a'] } } })).toBe('partial');
+  });
+});
+
+describe('answered state on the learner view (AC-14.3, S05 board)', () => {
+  it('matches the content rule for every kind', () => {
+    const cases: [Question, Answers[string] | undefined][] = [
+      [mcq(), { optionIds: ['b'] }],
+      [cloze(), { blanks: { b1: '是' } }],
+      [match(), { pairs: { p1: 'b2', p2: 'd1', p3: 'b1' } }],
+      [order(), { tiles: ['t1', 't2'] }],
+      [write(), { text: '  ' }],
+      [reading(), { subs: { s1: { optionIds: ['a'] } } }],
+      [reading(), undefined],
+    ];
+    for (const [q, a] of cases)
+      expect(learnAnswerState(learnQuestion(q), a)).toBe(answerState(q, a));
   });
 });
 
