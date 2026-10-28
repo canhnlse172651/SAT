@@ -14,3 +14,4 @@ export * from './exercises.js';
 export * from './curriculum.js';
 export * from './classes.js';
 export * from './exercise-api.js';
+export * from './exams.js';
