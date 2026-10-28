@@ -16,6 +16,9 @@ export const setPath = (classId: string, setId: string) =>
   `${myClassPath(classId)}/bai-tap/${setId}`;
 export const setResultPath = (classId: string, setId: string) =>
   `${setPath(classId, setId)}/ket-qua`;
+/** T14 (005) of one submission. */
+export const submissionPath = (classId: string, studentId: string, setId: string) =>
+  `/gv/bai-nop?${new URLSearchParams({ lop: classId, hv: studentId, bo: setId }).toString()}`;
 export const examsPath = '/hv/bai-thi';
 export const rankingPath = '/hv/xep-hang';
 export const myProfilePath = '/hv/ho-so';

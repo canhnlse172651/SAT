@@ -3,10 +3,12 @@ import {
   type Answers,
   type ExerciseView,
   type Review,
+  type SetSubmissions,
   type Submission,
   exerciseViewSchema,
   newBlockId,
   reviewSchema,
+  setSubmissionsSchema,
   submissionSchema,
 } from '@sat/shared';
 import { create } from 'zustand';
@@ -43,6 +45,8 @@ interface ExerciseState {
   reviewStatus: Status;
   submission: Submission | null;
   submissionStatus: Status;
+  setSubmissions: SetSubmissions['items'];
+  setSubmissionsStatus: Status;
 
   load: (classId: string, setId: string) => Promise<void>;
   start: () => Promise<void>;
@@ -53,6 +57,8 @@ interface ExerciseState {
   loadReview: (classId: string, setId: string) => Promise<void>;
   /** T14 (GV). */
   loadSubmission: (q: { classId: string; studentId: string; setId: string }) => Promise<void>;
+  /** T04 "Bài nộp" of one set in one class (AC-20.1). */
+  loadSetSubmissions: (classId: string, setId: string) => Promise<void>;
 }
 
 let timer: ReturnType<typeof setTimeout> | null = null;
@@ -94,6 +100,8 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
     reviewStatus: 'idle',
     submission: null,
     submissionStatus: 'idle',
+    setSubmissions: [],
+    setSubmissionsStatus: 'idle',
 
     async load(classId, setId) {
       if (timer) clearTimeout(timer);
@@ -201,6 +209,18 @@ export const useExerciseStore = create<ExerciseState>()((set, get) => {
         set({ submission, submissionStatus: 'ok' });
       } catch (err) {
         set({ submissionStatus: 'error', error: err instanceof ApiError ? err : null });
+      }
+    },
+
+    async loadSetSubmissions(classId, setId) {
+      set({ setSubmissionsStatus: 'loading', setSubmissions: [] });
+      try {
+        const { items } = setSubmissionsSchema.parse(
+          await apiRequest(`/exercises/classes/${classId}/sets/${setId}/submissions`),
+        );
+        set({ setSubmissions: items, setSubmissionsStatus: 'ok' });
+      } catch {
+        set({ setSubmissionsStatus: 'error' });
       }
     },
 

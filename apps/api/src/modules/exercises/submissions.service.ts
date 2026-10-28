@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   SUBMISSION_NOTES,
+  type SetSubmissions,
   type Submission,
   reviewRows,
   scorePercent,
@@ -32,6 +33,40 @@ export class SubmissionsService {
     @InjectModel(CLASS_MODEL) private readonly classes: Model<ClassDoc>,
     @Inject(WORKSPACE_DIRECTORY) private readonly directory: WorkspaceDirectory,
   ) {}
+
+  /** The submitted HV of one set in one class, newest first — the T04 entry to T14 (AC-20.1). */
+  async setSubmissions(
+    p: AuthPrincipal,
+    q: { classId: string; setId: string },
+  ): Promise<SetSubmissions> {
+    const cls = await scoped(this.classes, p.workspaceId).findById(oid(q.classId)).lean<ClassDoc>();
+    if (!cls) throw notFound();
+    const done = await scoped(this.attempts, p.workspaceId)
+      .find({ classId: cls._id, setId: oid(q.setId), status: 'submitted' })
+      .sort({ submittedAt: -1 })
+      .lean<AttemptDoc[]>();
+    const deadline = deadlineOf(cls, q.setId);
+    const names = await Promise.all(
+      done.map((a) => this.directory.findUser(String(a.studentId), p.workspaceId)),
+    );
+    return {
+      items: done.flatMap((a, i) => {
+        if (!a.submittedAt) return [];
+        const score = a.score ?? 0;
+        const max = a.maxScore ?? 0;
+        return [
+          {
+            student: { id: String(a.studentId), name: names[i]?.displayName ?? '—' },
+            submittedAt: a.submittedAt.toISOString(),
+            late: !!deadline && a.submittedAt > vnDayEnd(deadline),
+            score,
+            maxScore: max,
+            percent: scorePercent(score, max),
+          },
+        ];
+      }),
+    };
+  }
 
   async submission(
     p: AuthPrincipal,

@@ -109,7 +109,10 @@ export function ReviewPage() {
   if (!review || review.setId !== setId) return <Skeleton height={240} />;
 
   const lessonLink = (
-    <Link className="btn btn-outline" to={`${myLessonPath(classId, review.lesson.id)}?tab=bai-tap`}>
+    <Link
+      className="btn btn--outline"
+      to={`${myLessonPath(classId, review.lesson.id)}?tab=bai-tap`}
+    >
       Về trang bài
     </Link>
   );

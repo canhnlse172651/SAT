@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Button, ConfirmDialog, ErrorState, Skeleton } from '../../components';
 import { curriculumPath, lessonPath } from '../curriculum/paths';
+import { SetSubmissionsDrawer } from '../exercises/SetSubmissionsDrawer';
 import { useToastStore } from '../toast/toast-store';
 import { useClassesStore } from './classes-store';
 import { DeadlineField } from './DeadlinePopover';
@@ -53,6 +54,7 @@ export function ContentTab({ detail }: { detail: ClassDetail }) {
   const setDeadlines = useClassesStore((s) => s.setDeadlines);
   const [pending, setPending] = useState<Pending | null>(null);
   const [busy, setBusy] = useState(false);
+  const [submissionsOf, setSubmissionsOf] = useState<{ id: string; title: string } | null>(null);
   const ended = detail.status === 'ended';
 
   useEffect(() => {
@@ -233,6 +235,14 @@ export function ContentTab({ detail }: { detail: ClassDetail }) {
                   />
                   {!set.deadline && <span className="cls-dl-sub">{M.closedForStudents}</span>}
                 </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  aria-label={`Bài nộp: ${set.title || 'Bộ bài tập'}`}
+                  onClick={() => setSubmissionsOf({ id: set.id, title: set.title || 'Bộ bài tập' })}
+                >
+                  Bài nộp
+                </Button>
               </div>
             ))}
             <div className="cls-dl-row">
@@ -339,6 +349,11 @@ export function ContentTab({ detail }: { detail: ClassDetail }) {
         loading={busy}
         onConfirm={() => void apply()}
         onCancel={() => setPending(null)}
+      />
+      <SetSubmissionsDrawer
+        classId={detail.id}
+        set={submissionsOf}
+        onClose={() => setSubmissionsOf(null)}
       />
     </div>
   );

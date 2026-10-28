@@ -90,7 +90,7 @@ export function ExercisePage() {
 
   const { set, attempt } = view;
   const reviewLink = (
-    <Link className="btn btn-primary" to={setResultPath(classId, setId)}>
+    <Link className="btn btn--primary" to={setResultPath(classId, setId)}>
       Xem lại bài làm
     </Link>
   );

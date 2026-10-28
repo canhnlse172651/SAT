@@ -136,3 +136,18 @@ export const submissionSchema = z.object({
   rows: z.array(reviewRowSchema),
 });
 export type Submission = z.infer<typeof submissionSchema>;
+
+/** T04 entry to T14 (AC-20.1): the submissions of one set in one class, newest first. */
+export const setSubmissionsSchema = z.object({
+  items: z.array(
+    z.object({
+      student: z.object({ id: z.string(), name: z.string() }),
+      submittedAt: isoDate,
+      late: z.boolean(),
+      score: z.number(),
+      maxScore: z.number(),
+      percent: z.number(),
+    }),
+  ),
+});
+export type SetSubmissions = z.infer<typeof setSubmissionsSchema>;
