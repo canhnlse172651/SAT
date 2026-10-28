@@ -142,13 +142,13 @@ describe('401 handling', () => {
     const { apiRequest } = await import('../lib/api-client');
     const { useSessionStore } = await import('../features/session/session-store');
     stubFetch({ 'GET /api/classes': unauthenticated });
-    // T10 is still a placeholder screen (006), so no page of its own calls the API.
-    const { router } = open('/gv/bai-thi', gv);
-    await screen.findByRole('heading', { name: /T10/ });
+    // T23 is still a placeholder screen (016), so no page of its own calls the API.
+    const { router } = open('/gv/kho-tu-hoc', gv);
+    await screen.findByRole('heading', { name: /T23/ });
 
     await expect(apiRequest('/classes')).rejects.toMatchObject({ status: 401 });
     await vi.waitFor(() => expect(router.state.location.pathname).toBe('/dang-nhap'));
-    expect(router.state.location.search).toBe(`?returnTo=${encodeURIComponent('/gv/bai-thi')}`);
+    expect(router.state.location.search).toBe(`?returnTo=${encodeURIComponent('/gv/kho-tu-hoc')}`);
     expect(useSessionStore.getState().user).toBeNull();
   });
 
@@ -168,8 +168,8 @@ describe('401 handling', () => {
         },
       },
     });
-    const { router } = open('/gv/bai-thi', gv);
-    await screen.findByRole('heading', { name: /T10/ });
+    const { router } = open('/gv/kho-tu-hoc', gv);
+    await screen.findByRole('heading', { name: /T23/ });
     await expect(apiRequest('/classes')).rejects.toMatchObject({ status: 401 });
     await vi.waitFor(() => expect(router.state.location.pathname).toBe('/dang-nhap'));
     expect(router.state.location.state).toEqual({

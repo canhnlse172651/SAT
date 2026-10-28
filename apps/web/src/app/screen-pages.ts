@@ -15,7 +15,10 @@ export const SCREEN_PAGES: Record<string, () => Promise<ComponentType>> = {
   T09: async () => (await import('../features/curriculum/ManualEditorPage')).ExerciseTabPage,
   // T08 (004) is the deck dialog over T07's Bài học tab; its own path opens that tab.
   T08: async () => (await import('../features/curriculum/ManualEditorPage')).LessonTabPage,
+  T10: async () => (await import('../features/exams/ExamsPage')).ExamsPage,
   T14: async () => (await import('../features/exercises/SubmissionPage')).SubmissionPage,
+  T16: async () => (await import('../features/exams/ExamResultsPage')).ExamResultsPage,
+  T22: async () => (await import('../features/exams/ExamEditorPage')).ExamEditorPage,
   T18: async () => (await import('../features/curriculum/LessonPage')).LessonPage,
   T21: async () => (await import('../features/curriculum/PreviewPage')).PreviewPage,
   T11: async () => (await import('../features/students/StudentsPage')).StudentsPage,
@@ -27,6 +30,8 @@ export const SCREEN_PAGES: Record<string, () => Promise<ComponentType>> = {
   S04: async () => (await import('../features/steps/FlashcardsPage')).FlashcardsPage,
   S05: async () => (await import('../features/exercises/ExercisePage')).ExercisePage,
   S06: async () => (await import('../features/exercises/ReviewPage')).ReviewPage,
+  S07: async () => (await import('../features/exams/MyExamsPage')).MyExamsPage,
+  S08: async () => (await import('../features/exams/ExamTakePage')).ExamTakePage,
   // S10 belongs to 011; until then it shows the 001 part (password, sign-out).
   S10: async () => (await import('../features/account/StudentAccountPage')).StudentAccountPage,
 };

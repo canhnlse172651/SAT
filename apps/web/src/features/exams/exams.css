@@ -1,0 +1,357 @@
+/* 006 Bài thi — T10, T22, T16 (desktop) and S07, S08 (mobile). Tokens only. */
+
+/* T10 */
+.xm-tbl td {
+  vertical-align: top;
+}
+.xm-tbl tr.is-arch {
+  opacity: 0.7;
+}
+.xm-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.xm-row-acts {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.xm-menu-wrap {
+  position: relative;
+}
+.xm-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 20;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-1);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+}
+.xm-menu button {
+  text-align: left;
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  background: none;
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.xm-menu button:hover,
+.xm-menu button:focus-visible {
+  background: var(--surface-2, var(--border));
+}
+.xm-danger,
+.xm-menu .xm-danger {
+  color: var(--st-danger, var(--danger));
+}
+
+/* T22 */
+.xm-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--sp-4);
+  align-items: start;
+}
+.xm-main,
+.xm-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+.xm-side {
+  position: sticky;
+  top: var(--sp-4);
+}
+.xm-h {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-md, 16px);
+}
+.card-pad {
+  padding: var(--sp-4);
+}
+.xm-questions {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.xm-status {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+.xm-sum {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+.xm-sum div {
+  display: flex;
+  flex-direction: column;
+}
+.xm-sum strong {
+  font-size: var(--fs-xl, 22px);
+}
+.xm-sum span,
+.xm-count span {
+  color: var(--text-muted, var(--text));
+  font-size: var(--fs-sm, 13px);
+}
+.xm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-2);
+}
+.xm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill, 999px);
+  font-size: var(--fs-sm, 13px);
+}
+.xm-chip button {
+  display: inline-flex;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.xm-picker {
+  position: relative;
+}
+.xm-picker__pop {
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 0;
+  min-width: 280px;
+  max-height: 320px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+}
+.xm-sched {
+  display: grid;
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0;
+}
+.xm-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.xm-acts__more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  width: 100%;
+}
+
+/* T16 */
+.xm-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+.xm-classpick {
+  margin-bottom: var(--sp-3);
+}
+.xm-counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0;
+}
+.xm-count {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-3) var(--sp-4);
+}
+.xm-count strong {
+  font-size: var(--fs-xl, 22px);
+}
+.xm-sort {
+  width: auto;
+}
+.xm-none {
+  padding: var(--sp-4) var(--sp-5, 20px);
+}
+
+/* S07 */
+.xm-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.xm-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+}
+.xm-row__name {
+  margin: 0;
+  font-size: var(--fs-md, 16px);
+}
+.xm-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin: 0;
+}
+.xm-row__state {
+  align-self: flex-start;
+  margin: 0;
+}
+.xm-row__countdown {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.xm-lobby {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.xm-instructions {
+  white-space: pre-wrap;
+}
+.xm-rules {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.xm-rules li {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+}
+.xm-lobby__acts {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--sp-2);
+}
+.xm-lobby__acts .btn,
+.xm-take__nav .btn {
+  min-height: 44px;
+}
+
+/* S08 */
+.xm-take {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-4) var(--sp-6, 32px);
+}
+.xm-take__bar {
+  /* NFR-8: the countdown stays visible while scrolling a long question. */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.xm-take__name {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.xm-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-pill, 999px);
+  border: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.xm-timer--warn {
+  color: var(--st-pending, var(--text));
+  border-color: currentColor;
+}
+.xm-timer--danger {
+  color: var(--st-danger, var(--text));
+  border-color: currentColor;
+}
+.xm-take__status {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.xm-take__notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.xm-take__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.xm-take .ex-board__no {
+  min-width: 44px;
+  min-height: 44px;
+}
+.xm-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  text-align: left;
+}
+.xm-score {
+  margin: var(--sp-2) 0 0;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+}
+.xm-score small {
+  font-size: var(--fs-lg, 18px);
+  color: var(--text-muted, var(--text));
+}
+.link {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--brand);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}

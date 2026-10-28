@@ -4,14 +4,21 @@ import { useSearchParams } from 'react-router';
 import { ErrorState, Skeleton } from '../../components';
 import { useDocumentTitle } from '../../lib/use-document-title';
 import { NotFoundPage } from '../../pages/NotFoundPage';
+import { ExamSubmissionView } from '../exams/ExamSubmissionView';
 import { useExerciseStore } from './exercise-store';
 import { ReviewRowView } from './ReviewPage';
 import './question-view.css';
 
 const isNotFound = (err: { status: number } | null) => err?.status === 404;
 
-/** T14 "Xem bài nộp" (REQ-20): read-only — nothing to edit, no grading control (AC-20.3). */
+/** T14 "Xem bài nộp": a set submission (005 REQ-20) or, with `?thi=`, an exam submission (006 AC-15.5). */
 export function SubmissionPage() {
+  const [params] = useSearchParams();
+  return params.get('thi') ? <ExamSubmissionView /> : <SetSubmissionView />;
+}
+
+/** T14 for a set (REQ-20): read-only — nothing to edit, no grading control (AC-20.3). */
+function SetSubmissionView() {
   const [params] = useSearchParams();
   const classId = params.get('lop') ?? '';
   const studentId = params.get('hv') ?? '';

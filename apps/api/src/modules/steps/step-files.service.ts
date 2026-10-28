@@ -38,6 +38,10 @@ const FILE_PATHS = [
   'items.content.questions.subs.image.id',
   'items.content.questions.subs.options.image.id',
 ];
+/** Question and option images of 006 exams (`exams.content`, the same content shape as a set). */
+const EXAM_FILE_PATHS = FILE_PATHS.filter((p) => p.includes('.questions.')).map((p) =>
+  p.replace(/^items\./, ''),
+);
 
 /**
  * Workspace storage (AC-5.5): every registered file counts once by its size. Block and card files are released (bytes
@@ -85,14 +89,20 @@ export class StepFilesService implements OnModuleInit {
   }
 
   private async referenced(workspaceId: string, fileId: string): Promise<boolean> {
+    const workspace = new Types.ObjectId(workspaceId);
     const hit = await this.lessons.findOne(
-      {
-        workspaceId: new Types.ObjectId(workspaceId),
-        $or: FILE_PATHS.map((path) => ({ [path]: fileId })),
-      },
+      { workspaceId: workspace, $or: FILE_PATHS.map((path) => ({ [path]: fileId })) },
       { projection: { _id: 1 } },
     );
-    return !!hit;
+    if (hit) return true;
+    // 006: exam questions use the same images (an exam is never deleted for good, so its images stay).
+    const exam = await this.connection
+      .collection('exams')
+      .findOne(
+        { workspaceId: workspace, $or: EXAM_FILE_PATHS.map((path) => ({ [path]: fileId })) },
+        { projection: { _id: 1 } },
+      );
+    return !!exam;
   }
 
   /** Deletes the bytes and the registry row of each block / card file no step references any more. */

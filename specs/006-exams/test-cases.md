@@ -49,8 +49,17 @@ Không viết code test trong module; code test duy nhất là script agent QA s
 - **Làm bài qua API (phiên HV):** S07 `GET /api/learn/exams`; một bài thi `GET /api/learn/exams/<id>`; bắt đầu `POST /api/learn/exams/<id>/start
   {"holder":"<chuỗi>"}`; mở lại `POST …/open {"holder"}`; lưu `PUT …/attempt {"holder","answers":{"<id câu>":<trả lời>},"lastIndex":<n>}`
   (định dạng trả lời như 005); nộp `POST …/submit {"holder","submitKey":"<uuid>","answers":{}}`; đồng hồ `GET …/clock`.
-- **Trang:** T10 `/gv/bai-thi`, T22 `/gv/bai-thi/<id>` (mới: `/gv/bai-thi/moi`), T16 `/gv/bai-thi/<id>/ket-qua`, T14 `/gv/bai-nop?thi=<id>&lop=<lớp>&hv=<hv>`,
-  S07 `/hv/bai-thi`, S08 `/hv/bai-thi/<id>`.
+- **Trang:** T10 `/gv/bai-thi`, T22 `/gv/bai-thi/<id>` (mới: `/gv/bai-thi/moi`), T16 `/gv/bai-thi/<id>/ket-qua` (`?lop=<lớp>` chọn lớp),
+  T14 `/gv/bai-nop?thi=<id>&lop=<lớp>&hv=<hv>`, S07 `/hv/bai-thi`, S08 `/hv/bai-thi/<id>` ("Xem kết quả" của S07 mở `…?ket-qua=1`, đi
+  thẳng tới kết quả; mở S08 trần sau khi nộp tự động thì hiện thông báo "Hết giờ — …" trước).
+- **Nhãn giao diện đã dựng:** T10 — bộ lọc "Tất cả / Nháp / Đã lên lịch / Đang mở / Đã đóng", ô "Tìm theo tên bài thi", menu "⋯" (nhãn truy cập
+  "Thao tác khác · <tên>") gồm "Nhân bản", "Lưu trữ" (chỉ Đã đóng), "Khôi phục" (chỉ Lưu trữ), "Xóa" (chưa có lượt làm). T22 — "Tên bài thi",
+  "Hướng dẫn (tùy chọn)", "Thêm câu hỏi", thẻ trạng thái (chip + dòng trạng thái + "<n> câu hỏi" / "tổng điểm tối đa"), "Chọn lớp…" (hộp chọn
+  "Chọn lớp được giao", mỗi lớp "<tên> · <trạng thái> · <sĩ số> học viên"), chip lớp có nút "Bỏ lớp <tên>", "Giờ mở", "Thời lượng (phút)",
+  "Giờ đóng" (dd/mm/yyyy hh:mm), nút "Lưu nháp" / "Lên lịch" (Nháp), "Lưu thay đổi", "Khôi phục" (Lưu trữ), "Xem kết quả", "Hủy lịch",
+  "Lưu trữ", "Nhân bản", "Xóa", "Về danh sách bài thi". S08 — đồng hồ (`role="timer"`, nhãn "Thời gian còn lại"), "Bảng số câu", "Câu trước",
+  "Câu sau", "Nộp bài"; thiết bị bị lấy quyền có nút "Làm bài ở đây". Câu hỏi của lượt chỉ có trong phản hồi `POST …/start` / `…/open`
+  (không bao giờ trong `GET /api/learn/exams/<id>`).
 
 ## Danh sách test case
 
@@ -162,7 +171,7 @@ Không viết code test trong module; code test duy nhất là script agent QA s
 | TC-104 | AC-15.6 | E2E | GV | Bài thi giao lớp E chỉ có HV "Chưa kích hoạt" | 1. T16 chọn lớp E. | "Lớp chưa có học viên" thay cho danh sách và số liệu | [T16](../screen-flow-design.html#T16) | | Chưa chạy |
 | TC-105 | AC-15.7 | E2E | GV, HV | GV mở T16 của bài đang mở | 1. hv4 bắt đầu làm. 2. hv4 nộp. | Trong ≤ 60 giây mỗi lần, dòng hv4 chuyển "Đang làm" rồi "Đã nộp", số liệu cập nhật, không tải lại | [T16](../screen-flow-design.html#T16) | | Chưa chạy |
 | TC-106 | AC-16.1, NFR-7 | E2E | GV | GV thứ hai (workspace khác) | 1. Mở T22, T16, T14 của bài thi Cô Lan bằng đường dẫn. 2. `GET /api/exams/<id>`, `…/results`, `PUT …` | A05 "Không tìm thấy nội dung" (404) như id không tồn tại | [A05](../screen-flow-design.html#A05) | | Chưa chạy |
-| TC-107 | AC-16.2, AC-16.3, AC-16.4, NFR-7 | API | HV | Bài thi giao lớp A; hv3 không thuộc lớp được giao; hv1 đã bắt đầu; người chưa đăng nhập | 1. hv3 `GET /api/learn/exams/<id>`, mở S08. 2. hv1 xem phản hồi của `GET …/<id>` trước khi bắt đầu (sảnh), khi đang làm, ngay sau khi nộp. 3. hv1 thử `GET /api/exams/<id>/submissions/<hv2>`. 4. Không cookie gọi `GET /api/learn/exams/<id>`. | 1: 404 / A05, không lộ tên; 2: sảnh không có `questions`; đang làm có câu hỏi nhưng không có đáp án đúng, giải thích; sau khi nộp (chưa đóng) không có câu hỏi, đáp án, giải thích; 3: 404; 4: 401 | [S08](../screen-flow-design.html#S08) | | Chưa chạy |
+| TC-107 | AC-16.2, AC-16.3, AC-16.4, NFR-7 | API | HV | Bài thi giao lớp A; hv3 không thuộc lớp được giao; hv1 đã bắt đầu; người chưa đăng nhập | 1. hv3 `GET /api/learn/exams/<id>`, mở S08. 2. hv1 xem phản hồi của `GET …/<id>` trước khi bắt đầu (sảnh), của `POST …/start` / `…/open` khi đang làm, và của `GET …/<id>` ngay sau khi nộp. 3. hv1 thử `GET /api/exams/<id>/submissions/<hv2>`. 4. Không cookie gọi `GET /api/learn/exams/<id>`. | 1: 404 / A05, không lộ tên; 2: sảnh không có `questions`; đang làm có câu hỏi nhưng không có đáp án đúng, giải thích; sau khi nộp (chưa đóng) không có câu hỏi, đáp án, giải thích; 3: 404; 4: 401 | [S08](../screen-flow-design.html#S08) | | Chưa chạy |
 | TC-108 | AC-16.5 | E2E | GV, HV | Lớp A ẩn mọi section của mọi Bài (003 T04); bài thi giao lớp A đang mở | 1. hv1 mở S07. | hv1 thấy và làm được bài thi | [S07](../screen-flow-design.html#S07) | | Chưa chạy |
 | TC-109 | NFR-1 | E2E | HV | Trình duyệt với `timezoneId: 'Asia/Tokyo'` và đồng hồ thiết bị lệch +3 giờ (Playwright `clock.setFixedTime` / `page.clock.install`) | 1. Bắt đầu bài thi; so đồng hồ S08 với `GET …/clock` (`serverNow`, `endsAt`). 2. S07 "Mở sau". | Lệch ≤ 2 giây ở cả hai | [S08](../screen-flow-design.html#S08) | | Chưa chạy |
 | TC-110 | NFR-2, NFR-9 | API | GV | 200 lượt kết thúc cùng lúc tại Giờ đóng (tạo bằng script gọi API với 200 HV) | 1. Dời đồng hồ qua Giờ đóng + 15 giây. 2. `GET /api/exams/results?classId=` | 100 % lượt "Nộp tự động", 100 % HV không nộp có "Không làm bài"; thời gian phản hồi ≤ 60 giây | [T16](../screen-flow-design.html#T16) | | Chưa chạy |

@@ -2,6 +2,12 @@ import { type DynamicModule, Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CLASS_EXAMS, type ClassExams, DevClassExams } from '../classes/classes.ports.js';
 import { ExamLinks, mergedClassExams } from './exam-links.js';
+import { ExamResultsService } from './exam-results.service.js';
+import { ExamSettleService } from './exam-settle.service.js';
+import { ExamsController } from './exams.controller.js';
+import { ExamsService } from './exams.service.js';
+import { LearnExamsController } from './learn-exams.controller.js';
+import { LearnExamsService } from './learn-exams.service.js';
 import {
   EXAM_ATTEMPT_MODEL,
   EXAM_MODEL,
@@ -33,8 +39,12 @@ export class ExamsModule {
           { name: EXAM_NOSHOW_MODEL, schema: examNoShowSchema },
         ]),
       ],
-      controllers: [],
+      controllers: [ExamsController, LearnExamsController],
       providers: [
+        ExamSettleService,
+        ExamsService,
+        ExamResultsService,
+        LearnExamsService,
         ExamLinks,
         DevClassExams,
         {
@@ -44,7 +54,8 @@ export class ExamsModule {
           inject: [ExamLinks, DevClassExams],
         },
       ],
-      exports: [CLASS_EXAMS],
+      // `ExamResultsService.rows()` is what 008 / 009 read (AC-13.5).
+      exports: [CLASS_EXAMS, ExamResultsService],
     };
   }
 }
