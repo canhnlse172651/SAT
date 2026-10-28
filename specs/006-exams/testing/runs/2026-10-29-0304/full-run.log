@@ -1,0 +1,775 @@
+
+Running 112 tests using 1 worker
+
+  ok   1 [chromium] › specs\006-exams\testing\e2e\TC-001.spec.ts:8:1 › [006:AC-1.1] TC-001 T10 lists every exam not archived with its columns (4.2s)
+  ok   2 [chromium] › specs\006-exams\testing\e2e\TC-002.spec.ts:8:1 › [006:AC-1.2] TC-002 T10 groups Đang mở → Đã lên lịch → Nháp → Đã đóng with their order (4.3s)
+  ok   3 [chromium] › specs\006-exams\testing\e2e\TC-003.spec.ts:4:1 › [006:AC-1.3] TC-003 T10 status filter and accent-insensitive search (3.3s)
+  ok   4 [chromium] › specs\006-exams\testing\e2e\TC-004.spec.ts:4:1 › [006:AC-1.4] TC-004 empty workspace shows "Chưa có bài thi nào" with "Tạo bài thi" (689ms)
+  ok   5 [chromium] › specs\006-exams\testing\e2e\TC-005.spec.ts:8:1 › [006:AC-1.5] TC-005 archived exams behind "Hiện bài thi lưu trữ (n)", after Đã đóng (3.2s)
+  ok   6 [chromium] › specs\006-exams\testing\e2e\TC-006.spec.ts:4:1 › [006:AC-1.6] TC-006 name opens T22, "Xem kết quả" opens T16, none on a draft (4.4s)
+  ok   7 [chromium] › specs\006-exams\testing\e2e\TC-007.spec.ts:4:1 › [006:AC-2.1] TC-007 "Tạo bài thi" opens an unsaved exam; it is created as Nháp on the first save (2.2s)
+  ok   8 [chromium] › specs\006-exams\testing\e2e\TC-008.spec.ts:4:1 › [006:AC-2.2] TC-008 "Lưu nháp" keeps everything, an incomplete question and an empty schedule included (3.4s)
+  ok   9 [chromium] › specs\006-exams\testing\e2e\TC-009.spec.ts:4:1 › [006:AC-2.3] TC-009 field rules: name, duration, invalid question field — not saved, error under the field (1.4s)
+  ok  10 [chromium] › specs\006-exams\testing\e2e\TC-010.spec.ts:4:1 › [006:AC-2.3] TC-010 API refuses instructions over 2000 characters and a duration of 301 (196ms)
+  ok  11 [chromium] › specs\006-exams\testing\e2e\TC-011.spec.ts:16:1 › [006:AC-2.4] TC-011 only the 9 auto-graded kinds of 005; questions numbered from 1 (1.2s)
+  ok  12 [chromium] › specs\006-exams\testing\e2e\TC-012.spec.ts:4:1 › [006:AC-2.5] TC-012 question count and total points always shown, updated at once (725ms)
+  ok  13 [chromium] › specs\006-exams\testing\e2e\TC-013.spec.ts:4:1 › [006:AC-2.6] TC-013 no 101st question: "Bài thi có tối đa 100 câu hỏi" (1.8s)
+  ok  14 [chromium] › specs\006-exams\testing\e2e\TC-014.spec.ts:4:1 › [006:AC-2.7] TC-014 a save over a newer one from another tab is refused, the text kept (1.4s)
+  ok  15 [chromium] › specs\006-exams\testing\e2e\TC-015.spec.ts:4:1 › [006:AC-2.8] TC-015 leaving T22 with unsaved changes asks first (4.4s)
+  ok  16 [chromium] › specs\006-exams\testing\e2e\TC-016.spec.ts:4:1 › [006:AC-3.1] TC-016 the class picker lists Sắp bắt đầu and Đang học classes with size, never Đã kết thúc (3.7s)
+  ok  17 [chromium] › specs\006-exams\testing\e2e\TC-017.spec.ts:4:1 › [006:AC-3.2] TC-017 times are Vietnam time whatever the device zone (1.7s)
+  ok  18 [chromium] › specs\006-exams\testing\e2e\TC-018.spec.ts:4:1 › [006:AC-3.2] TC-018 an impossible date-time and a non-number duration are refused under their fields (1.3s)
+  x   19 [chromium] › specs\006-exams\testing\e2e\TC-019.spec.ts:4:1 › [006:AC-3.3] TC-019 close-time rules on "Lên lịch", shown under Giờ đóng (8.4s)
+  ok  20 [chromium] › specs\006-exams\testing\e2e\TC-020.spec.ts:4:1 › [006:AC-3.4] TC-020 "Lên lịch" schedules a ready draft and the HV sees it (3.5s)
+  x   21 [chromium] › specs\006-exams\testing\e2e\TC-021.spec.ts:4:1 › [006:AC-3.5] TC-021 "Lên lịch" with nothing set lists every unmet condition, each leading to its field (5.9s)
+  ok  22 [chromium] › specs\006-exams\testing\e2e\TC-022.spec.ts:4:1 › [006:AC-3.5] TC-022 an incomplete question and a past open time are listed; "Câu 2" leads to question 2 (3.5s)
+  ok  23 [chromium] › specs\006-exams\testing\e2e\TC-023.spec.ts:8:1 › [006:AC-3.6] TC-023 Đã lên lịch → Đang mở → Đã đóng by the clock alone (1.1m)
+  ok  24 [chromium] › specs\006-exams\testing\e2e\TC-024.spec.ts:6:1 › [006:AC-3.7] TC-024 upcoming classes starting after the open day: saved with a warning (4.0s)
+  ok  25 [chromium] › specs\006-exams\testing\e2e\TC-025.spec.ts:4:1 › [006:AC-3.8] TC-025 "Hủy lịch" back to Nháp, everything kept, HV no longer sees it (3.8s)
+  ok  26 [chromium] › specs\006-exams\testing\e2e\TC-026.spec.ts:4:1 › [006:AC-3.8] TC-026 no "Hủy lịch" once someone started; the API refuses it (3.1s)
+  ok  27 [chromium] › specs\006-exams\testing\e2e\TC-027.spec.ts:4:1 › [006:AC-4.1] TC-027 before any attempt everything is editable; without a class it is not saved (3.9s)
+  ok  28 [chromium] › specs\006-exams\testing\e2e\TC-028.spec.ts:8:1 › [006:AC-4.1] TC-028 a past open time counts only when it is changed (2.5s)
+  ok  29 [chromium] › specs\006-exams\testing\e2e\TC-029.spec.ts:4:1 › [006:AC-4.2] TC-029 after the first attempt: lock banner, questions / open / duration read-only (3.0s)
+  ok  30 [chromium] › specs\006-exams\testing\e2e\TC-030.spec.ts:4:1 › [006:AC-4.2] TC-030 API refuses question and duration changes once locked (2.6s)
+  ok  31 [chromium] › specs\006-exams\testing\e2e\TC-031.spec.ts:4:1 › [006:AC-4.3] TC-031 a question edit saved after the first start is refused, the text kept (3.3s)
+  ok  32 [chromium] › specs\006-exams\testing\e2e\TC-032.spec.ts:8:1 › [006:AC-4.4] TC-032 a closed exam: banner, only name and instructions (3.1s)
+  ok  33 [chromium] › specs\006-exams\testing\e2e\TC-033.spec.ts:8:1 › [006:AC-4.4] TC-033 API refuses classes and close changes on a closed exam (2.7s)
+  ok  34 [chromium] › specs\006-exams\testing\e2e\TC-034.spec.ts:4:1 › [006:AC-5.1] TC-034 with an attempt the close time can only move later (3.0s)
+  x   35 [chromium] › specs\006-exams\testing\e2e\TC-035.spec.ts:11:1 › [006:AC-5.2] TC-035 a later close lengthens the running attempt on the HV clock within 10 s (14.0s)
+  x   36 [chromium] › specs\006-exams\testing\e2e\TC-036.spec.ts:4:1 › [006:AC-5.2] TC-036 an attempt ending at start + duration keeps its end when the close moves later (2.7s)
+  ok  37 [chromium] › specs\006-exams\testing\e2e\TC-037.spec.ts:4:1 › [006:AC-5.3] TC-037 a class added to a running exam can take it (5.2s)
+  ok  38 [chromium] › specs\006-exams\testing\e2e\TC-038.spec.ts:4:1 › [006:AC-5.4] TC-038 a class with an attempt cannot be removed (3.6s)
+  ok  39 [chromium] › specs\006-exams\testing\e2e\TC-039.spec.ts:4:1 › [006:AC-5.5] TC-039 a class without attempts removed: its HV no longer see the exam unless in another assigned class (3.3s)
+  ok  40 [chromium] › specs\006-exams\testing\e2e\TC-040.spec.ts:4:1 › [006:AC-6.1] TC-040 deleting an exam without attempts (4.1s)
+  ok  41 [chromium] › specs\006-exams\testing\e2e\TC-041.spec.ts:4:1 › [006:AC-6.2] TC-041 an attempt started while the delete confirmation is open blocks the delete (3.4s)
+  ok  42 [chromium] › specs\006-exams\testing\e2e\TC-042.spec.ts:11:1 › [006:AC-6.3] TC-042 archiving a closed exam hides it from T10 and the HV, results kept for 008 / 009 (4.7s)
+  ok  43 [chromium] › specs\006-exams\testing\e2e\TC-043.spec.ts:8:1 › [006:AC-6.4] TC-043 "Lưu trữ" only for a closed exam (5.1s)
+  x   44 [chromium] › specs\006-exams\testing\e2e\TC-044.spec.ts:11:1 › [006:AC-6.5] TC-044 "Khôi phục" brings an archived exam back to Đã đóng with its results (14.2s)
+  ok  45 [chromium] › specs\006-exams\testing\e2e\TC-045.spec.ts:11:1 › [006:AC-6.6] TC-045 "Nhân bản" makes a Nháp copy with the questions and duration only (4.1s)
+  ok  46 [chromium] › specs\006-exams\testing\e2e\TC-046.spec.ts:4:1 › [006:AC-6.6] TC-046 the copy of a 150-character name stays within 150 characters (130ms)
+  ok  47 [chromium] › specs\006-exams\testing\e2e\TC-047.spec.ts:11:1 › [006:AC-7.1] TC-047 the HV sees scheduled / open / closed exams of a started assigned class only (3.6s)
+  ok  48 [chromium] › specs\006-exams\testing\e2e\TC-048.spec.ts:4:1 › [006:AC-7.2] TC-048 one S07 row per exam even for an HV in two assigned classes (3.2s)
+  ok  49 [chromium] › specs\006-exams\testing\e2e\TC-049.spec.ts:11:1 › [006:AC-7.3] TC-049 the seven HV states of S07 with their buttons (4.0s)
+  ok  50 [chromium] › specs\006-exams\testing\e2e\TC-050.spec.ts:4:1 › [006:AC-7.4] TC-050 S07 order: in progress, open (close soonest), not open (open soonest), the rest (latest close) (3.4s)
+  ok  51 [chromium] › specs\006-exams\testing\e2e\TC-051.spec.ts:6:1 › [006:AC-7.5] TC-051 "Mở sau hh:mm:ss" under 24 h, ticking each second; none beyond 24 h (5.0s)
+  ok  52 [chromium] › specs\006-exams\testing\e2e\TC-052.spec.ts:4:1 › [006:AC-7.6] TC-052 at the open and close times the S07 row changes within 5 s, no reload (1.3m)
+  ok  53 [chromium] › specs\006-exams\testing\e2e\TC-053.spec.ts:4:1 › [006:AC-7.7] TC-053 no exam: "Chưa có bài thi nào." (2.6s)
+  ok  54 [chromium] › specs\006-exams\testing\e2e\TC-054.spec.ts:4:1 › [006:AC-7.8] TC-054 an HV added to an assigned class during the exam can take it (3.1s)
+  ok  55 [chromium] › specs\006-exams\testing\e2e\TC-055.spec.ts:4:1 › [006:AC-8.1] TC-055 the lobby: facts, rules, buttons and no question (2.9s)
+  ok  56 [chromium] › specs\006-exams\testing\e2e\TC-056.spec.ts:11:1 › [006:AC-8.2] TC-056 less time left than the duration: the lobby warns with the minutes left (3.7s)
+  ok  57 [chromium] › specs\006-exams\testing\e2e\TC-057.spec.ts:4:1 › [006:AC-8.3] TC-057 "Bắt đầu làm bài" opens S08 at question 1 with the full duration (5.1s)
+  ok  58 [chromium] › specs\006-exams\testing\e2e\TC-058.spec.ts:8:1 › [006:AC-8.4] TC-058 "Bắt đầu làm bài" after the close: no attempt, S07 with the new state (3.6s)
+  x   59 [chromium] › specs\006-exams\testing\e2e\TC-059.spec.ts:4:1 › [006:AC-8.4] TC-059 an old tab still on the lobby after submitting: no new attempt, S07 shows "Đã nộp" (8.6s)
+  ok  60 [chromium] › specs\006-exams\testing\e2e\TC-060.spec.ts:4:1 › [006:AC-8.4] TC-060 the exam was unscheduled while the lobby was open: A05 (3.0s)
+  ok  61 [chromium] › specs\006-exams\testing\e2e\TC-061.spec.ts:4:1 › [006:AC-8.4] TC-061 API refuses a start before the open time and when only an ended class is assigned (2.7s)
+  ok  62 [chromium] › specs\006-exams\testing\e2e\TC-062.spec.ts:4:1 › [006:AC-8.5] TC-062 "Bắt đầu làm bài" on two devices at once: one attempt, the earlier device loses it (9.2s)
+  ok  63 [chromium] › specs\006-exams\testing\e2e\TC-063.spec.ts:4:1 › [006:AC-8.6] TC-063 an attempt counts as used as soon as it is created (3.3s)
+  ok  64 [chromium] › specs\006-exams\testing\e2e\TC-064.spec.ts:8:1 › [006:AC-9.1] TC-064 the countdown: h:mm:ss from an hour, mm:ss under, server time (8.6s)
+  ok  65 [chromium] › specs\006-exams\testing\e2e\TC-065.spec.ts:4:1 › [006:AC-9.2] TC-065 one question at a time, the board shows done / partial / unanswered, no key (3.7s)
+  ok  66 [chromium] › specs\006-exams\testing\e2e\TC-066.spec.ts:4:1 › [006:AC-9.3] TC-066 autosave within 3 s: "Đang lưu…" then "Đã lưu lúc HH:mm:ss"; kept after a reload (4.1s)
+  ok  67 [chromium] › specs\006-exams\testing\e2e\TC-067.spec.ts:8:1 › [006:AC-9.4] TC-067 "Còn 5 phút" and "Còn 1 phút", once each, not blocking (19.7s)
+  ok  68 [chromium] › specs\006-exams\testing\e2e\TC-068.spec.ts:8:1 › [006:AC-9.4] TC-068 started with 3 minutes left: no "Còn 5 phút", only "Còn 1 phút" (9.1s)
+  ok  69 [chromium] › specs\006-exams\testing\e2e\TC-069.spec.ts:4:1 › [006:AC-9.5] TC-069 authored question order for everyone; per-attempt order of items kept on resume (4.8s)
+  ok  70 [chromium] › specs\006-exams\testing\e2e\TC-070.spec.ts:7:1 › [006:AC-10.1] TC-070 offline: warning with the unsaved count, questions still usable, clock running (5.7s)
+  ok  71 [chromium] › specs\006-exams\testing\e2e\TC-071.spec.ts:4:1 › [006:AC-10.2] TC-071 back online: unsaved answers sent, "Đã lưu lúc", warning gone (6.5s)
+  ok  72 [chromium] › specs\006-exams\testing\e2e\TC-072.spec.ts:11:1 › [006:AC-10.2] [006:AC-12.2] TC-072 answers reaching the system up to end + 10 s count, later ones do not (2.7s)
+  ok  73 [chromium] › specs\006-exams\testing\e2e\TC-073.spec.ts:7:1 › [006:AC-10.3] TC-073 another device continues the same attempt where the HV left it (5.0s)
+  ok  74 [chromium] › specs\006-exams\testing\e2e\TC-074.spec.ts:4:1 › [006:AC-10.3] TC-074 signing in again after the session ended continues the attempt (2.8s)
+  ok  75 [chromium] › specs\006-exams\testing\e2e\TC-075.spec.ts:4:1 › [006:AC-10.4] TC-075 the device that opened last holds the attempt; the other cannot change answers (9.9s)
+  ok  76 [chromium] › specs\006-exams\testing\e2e\TC-076.spec.ts:4:1 › [006:AC-10.5] TC-076 leaving with unsaved answers warns first (6.5s)
+  ok  77 [chromium] › specs\006-exams\testing\e2e\TC-077.spec.ts:4:1 › [006:AC-11.1] TC-077 the submit confirmation names unfinished questions (4.1s)
+  ok  78 [chromium] › specs\006-exams\testing\e2e\TC-078.spec.ts:4:1 › [006:AC-11.2] TC-078 submitting with nothing answered: 0/100, then nothing can be changed (3.8s)
+  ok  79 [chromium] › specs\006-exams\testing\e2e\TC-079.spec.ts:4:1 › [006:AC-11.3] TC-079 two submits at once: exactly one submission (2.5s)
+  ok  80 [chromium] › specs\006-exams\testing\e2e\TC-080.spec.ts:4:1 › [006:AC-11.4] TC-080 a submit lost offline keeps the work and offers "Thử lại" (4.8s)
+  ok  81 [chromium] › specs\006-exams\testing\e2e\TC-081.spec.ts:11:1 › [006:AC-11.4] TC-081 "Thử lại" after the attempt was submitted automatically shows the automatic submission (5.5s)
+  ok  82 [chromium] › specs\006-exams\testing\e2e\TC-082.spec.ts:11:1 › [006:AC-12.1] TC-082 nobody connected: the attempt is submitted automatically at its end with the saved answers (3.0s)
+  ok  83 [chromium] › specs\006-exams\testing\e2e\TC-083.spec.ts:11:1 › [006:AC-12.1] TC-083 a locked account: the attempt is still submitted automatically (2.8s)
+  ok  84 [chromium] › specs\006-exams\testing\e2e\TC-084.spec.ts:11:1 › [006:AC-12.3] TC-084 time up on screen: "Hết giờ — … nộp tự động lúc HH:mm", answers locked; also on reopening (14.4s)
+  ok  85 [chromium] › specs\006-exams\testing\e2e\TC-085.spec.ts:11:1 › [006:AC-12.3] TC-085 time up while the submit confirmation is open: replaced by the time-up notice (12.4s)
+  ok  86 [chromium] › specs\006-exams\testing\e2e\TC-086.spec.ts:4:1 › [006:AC-12.4] TC-086 the class ends during the attempt: the HV goes on and submits (4.9s)
+  ok  87 [chromium] › specs\006-exams\testing\e2e\TC-087.spec.ts:11:1 › [006:AC-12.5] TC-087 removed from every assigned class during the attempt: no more answers, auto-submitted (9.1s)
+  ok  88 [chromium] › specs\006-exams\testing\e2e\TC-088.spec.ts:4:1 › [006:AC-13.1] TC-088 graded at once with partial credit; unanswered parts earn 0 (3.2s)
+  ok  89 [chromium] › specs\006-exams\testing\e2e\TC-089.spec.ts:4:1 › [006:AC-13.2] TC-089 exam score = earned ÷ max × 100, rounded half up (3.1s)
+  ok  90 [chromium] › specs\006-exams\testing\e2e\TC-090.spec.ts:11:1 › [006:AC-13.3] TC-090 "Không làm bài" at the close for counted HV, per assigned class (3.3s)
+  ok  91 [chromium] › specs\006-exams\testing\e2e\TC-091.spec.ts:4:1 › [006:AC-13.4] TC-091 the one submission counts in every assigned class of the HV (3.3s)
+  ok  92 [chromium] › specs\006-exams\testing\e2e\TC-092.spec.ts:11:1 › [006:AC-13.5] TC-092 results for 008 / 009 within 60 s of the close, with every field; membership and archive followed (3.0s)
+  ok  93 [chromium] › specs\006-exams\testing\e2e\TC-093.spec.ts:4:1 › [006:AC-13.6] TC-093 nothing for 008 while an HV is doing or has not started an open exam (2.6s)
+  ok  94 [chromium] › specs\006-exams\testing\e2e\TC-094.spec.ts:4:1 › [006:AC-14.1] TC-094 the result right after submitting: score, points, times, one attempt (4.5s)
+  ok  95 [chromium] › specs\006-exams\testing\e2e\TC-095.spec.ts:11:1 › [006:AC-14.2] TC-095 no key before the close and while an attempt is still running (3.9s)
+  ok  96 [chromium] › specs\006-exams\testing\e2e\TC-096.spec.ts:11:1 › [006:AC-14.3] TC-096 after the close with every attempt submitted: each question with answer, key and explanation (3.7s)
+  ok  97 [chromium] › specs\006-exams\testing\e2e\TC-097.spec.ts:8:1 › [006:AC-14.4] TC-097 "Không làm bài": "Bạn đã không làm bài thi này." with 0/100, no question (3.6s)
+  ok  98 [chromium] › specs\006-exams\testing\e2e\TC-098.spec.ts:8:1 › [006:AC-14.5] TC-098 joined after the close: "Bài thi đã đóng." without score, question or key (3.7s)
+  ok  99 [chromium] › specs\006-exams\testing\e2e\TC-099.spec.ts:4:1 › [006:AC-15.1] TC-099 T16 header and the class selector (first class A→Z by default) (3.9s)
+  ok 100 [chromium] › specs\006-exams\testing\e2e\TC-100.spec.ts:11:1 › [006:AC-15.2] [006:AC-15.3] TC-100 one state per HV with its data, counts and average; after the close (5.2s)
+  ok 101 [chromium] › specs\006-exams\testing\e2e\TC-101.spec.ts:4:1 › [006:AC-15.3] TC-101 nobody submitted: average "—" (3.6s)
+  ok 102 [chromium] › specs\006-exams\testing\e2e\TC-102.spec.ts:4:1 › [006:AC-15.4] TC-102 filter, search and sort change the list, never the class figures (4.4s)
+  ok 103 [chromium] › specs\006-exams\testing\e2e\TC-103.spec.ts:4:1 › [006:AC-15.5] TC-103 "Xem bài nộp" opens the submission read-only on T14, before the close (4.0s)
+  ok 104 [chromium] › specs\006-exams\testing\e2e\TC-104.spec.ts:4:1 › [006:AC-15.6] TC-104 a class without activated students: "Lớp chưa có học viên" (2.0s)
+  ok 105 [chromium] › specs\006-exams\testing\e2e\TC-105.spec.ts:4:1 › [006:AC-15.7] TC-105 T16 of an open exam follows starts and submissions within 60 s, no reload (33.5s)
+  ok 106 [chromium] › specs\006-exams\testing\e2e\TC-106.spec.ts:4:1 › [006:AC-16.1] [006:NFR-7] TC-106 another workspace's GV gets A05 / 404 for an exam, its results and submissions (4.5s)
+  ok 107 [chromium] › specs\006-exams\testing\e2e\TC-107.spec.ts:6:1 › [006:AC-16.2] [006:AC-16.3] [006:AC-16.4] [006:NFR-7] TC-107 secrecy: who sees the exam, its questions and its keys (4.1s)
+  ok 108 [chromium] › specs\006-exams\testing\e2e\TC-108.spec.ts:4:1 › [006:AC-16.5] TC-108 per-class hiding of sections (003) does not apply to exams (3.7s)
+  ok 109 [chromium] › specs\006-exams\testing\e2e\TC-109.spec.ts:6:1 › [006:NFR-1] TC-109 countdowns follow the server within 2 s on a device 3 h off in another time zone (7.6s)
+  ok 110 [chromium] › specs\006-exams\testing\e2e\TC-110.spec.ts:11:1 › [006:NFR-2] [006:NFR-9] TC-110 200 attempts ending together at the close: all automatic; every no-show recorded (21.9s)
+  ok 111 [chromium] › specs\006-exams\testing\e2e\TC-111.spec.ts:4:1 › [006:NFR-3] TC-111 50 attempts with retries, two devices and double submits: nothing saved is lost, nothing doubled (12.0s)
+  ok 112 [chromium] › specs\006-exams\testing\e2e\TC-113.spec.ts:4:1 › [006:NFR-8] TC-113 360 px: no sideways scroll, timer always visible, touch targets ≥ 44 px, Hanzi ≥ 18 px (4.0s)
+
+
+  1) [chromium] › specs\006-exams\testing\e2e\TC-019.spec.ts:4:1 › [006:AC-3.3] TC-019 close-time rules on "Lên lịch", shown under Giờ đóng 
+
+    Error: expect(locator).toHaveAccessibleDescription(expected) failed
+
+    Locator: getByLabel('Giờ đóng')
+    Expected pattern: /Giờ đóng phải sau giờ mở ít nhất bằng thời lượng làm bài \(45 phút\)\./
+    Received string:  "Giờ Việt Nam (UTC+7)"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveAccessibleDescription" getByLabel('Giờ đóng') with timeout 5000ms
+      - waiting for getByLabel('Giờ đóng')
+        14 × locator resolved to <input id="_r_11_" type="text" class="input" value="30/10/2026 04:17" placeholder="dd/mm/yyyy hh:mm" aria-describedby="_r_11_-hint"/>
+           - unexpected value "Giờ Việt Nam (UTC+7)"
+
+
+      13 |   await page.getByLabel('Giờ đóng').fill(vnInput(new Date(open.getTime() + 30 * MIN)));
+      14 |   await page.getByRole('button', { name: 'Lên lịch' }).click();
+    > 15 |   await expect(page.getByLabel('Giờ đóng')).toHaveAccessibleDescription(
+         |                                             ^
+      16 |     /Giờ đóng phải sau giờ mở ít nhất bằng thời lượng làm bài \(45 phút\)\./,
+      17 |   );
+      18 |   await evidence(page, 'TC-019', 1);
+        at C:\Users\CanhLN\Desktop\SAT\specs\006-exams\testing\e2e\TC-019.spec.ts:15:45
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-7.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-10.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-5.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-9.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-12.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-15.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-14.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #11: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-18.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #12: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-16.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #13: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-17.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #14: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-19.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #15: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-20.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #16: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-21.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #17: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-11.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #18: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #19: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-8.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #20: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-22.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #21: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-23.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #22: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #23: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\test-failed-13.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\error-context.md
+
+    attachment #25: trace (application/zip) ────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-019--006-AC-3-3-TC-019--861bb-n-lịch-shown-under-Giờ-đóng-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\006-exams\testing\e2e\TC-021.spec.ts:4:1 › [006:AC-3.5] TC-021 "Lên lịch" with nothing set lists every unmet condition, each leading to its field 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByLabel('Giờ mở')
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" getByLabel('Giờ mở') with timeout 5000ms
+      - waiting for getByLabel('Giờ mở')
+        14 × locator resolved to <input value="" id="_r_2_" type="text" class="input" aria-describedby="_r_2_-hint" placeholder="dd/mm/yyyy hh:mm"/>
+           - unexpected value "inactive"
+
+
+      22 |   await expect(page.getByRole('button', { name: 'Chọn lớp…' })).toBeFocused();
+      23 |   await box.getByRole('button', { name: 'Chưa nhập giờ mở' }).click();
+    > 24 |   await expect(page.getByLabel('Giờ mở')).toBeFocused();
+         |                                           ^
+      25 |   expect((await getExam(page, d.id)).state).toBe('draft');
+      26 |   await evidence(page, 'TC-021');
+      27 | });
+        at C:\Users\CanhLN\Desktop\SAT\specs\006-exams\testing\e2e\TC-021.spec.ts:24:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-021--006-AC-3-5-TC-021--4dca4-n-each-leading-to-its-field-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-021--006-AC-3-5-TC-021--4dca4-n-each-leading-to-its-field-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-021--006-AC-3-5-TC-021--4dca4-n-each-leading-to-its-field-chromium\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-021--006-AC-3-5-TC-021--4dca4-n-each-leading-to-its-field-chromium\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-021--006-AC-3-5-TC-021--4dca4-n-each-leading-to-its-field-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-021--006-AC-3-5-TC-021--4dca4-n-each-leading-to-its-field-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › specs\006-exams\testing\e2e\TC-035.spec.ts:11:1 › [006:AC-5.2] TC-035 a later close lengthens the running attempt on the HV clock within 10 s 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 2689
+    Received:   1179
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      28 |   await page.getByRole('button', { name: 'Lưu thay đổi' }).click();
+      29 |   // min(start + 60, new close) ≈ 50 min left; the HV page polls every 5 s.
+    > 30 |   await expect.poll(() => timerSeconds(hv.page), { timeout: 10_000, intervals: [500] }).toBeGreaterThan(before + 25 * 60);
+         |                                                                                         ^
+      31 |   await evidence(hv.page, 'TC-035');
+      32 | });
+      33 |
+        at C:\Users\CanhLN\Desktop\SAT\specs\006-exams\testing\e2e\TC-035.spec.ts:30:89
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-12.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-9.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-5.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-7.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-16.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-24.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #11: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-18.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #12: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #13: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-22.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #14: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-10.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #15: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-14.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #16: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-11.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #17: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-21.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #18: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-20.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #19: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-19.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #20: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-8.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #21: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-15.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #22: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-23.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #23: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-17.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #24: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-13.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #25: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-25.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #26: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\test-failed-26.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\error-context.md
+
+    attachment #28: trace (application/zip) ────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-035--006-AC-5-2-TC-035--fae35-on-the-HV-clock-within-10-s-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › specs\006-exams\testing\e2e\TC-036.spec.ts:4:1 › [006:AC-5.2] TC-036 an attempt ending at start + duration keeps its end when the close moves later 
+
+    Error: {"error":{"code":"INTERNAL","message":"Internal server error","requestId":"5b8d5d4d-a08b-4d66-9568-994f9ad76f9a"}}
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      12 |   expect(Date.parse(s.body.endsAt) - Date.parse(s.body.startedAt)).toBe(15 * MIN);
+      13 |   const r = await saveExam(page, ex.id, { closesAt: new Date(ex.closesAtDate.getTime() + 30 * MIN).toISOString() });
+    > 14 |   expect(r.status, JSON.stringify(r.body)).toBe(200);
+         |                                            ^
+      15 |   expect((await clockOf(hv.page, ex.id)).endsAt).toBe(s.body.endsAt);
+      16 | });
+      17 |
+        at C:\Users\CanhLN\Desktop\SAT\specs\006-exams\testing\e2e\TC-036.spec.ts:14:44
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-036--006-AC-5-2-TC-036--2cc50--when-the-close-moves-later-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-036--006-AC-5-2-TC-036--2cc50--when-the-close-moves-later-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-036--006-AC-5-2-TC-036--2cc50--when-the-close-moves-later-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-036--006-AC-5-2-TC-036--2cc50--when-the-close-moves-later-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-036--006-AC-5-2-TC-036--2cc50--when-the-close-moves-later-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [chromium] › specs\006-exams\testing\e2e\TC-044.spec.ts:11:1 › [006:AC-6.5] TC-044 "Khôi phục" brings an archived exam back to Đã đóng with its results 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('menuitem', { name: 'Khôi phục' })
+        - locator resolved to <button type="button" role="menuitem">Khôi phục</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <a data-discover="true" class="btn btn--outline btn--sm" href="/gv/bai-thi/6ae25fef1bf9c301df35e69c/ket-qua">Xem kết quả</a> from <tr class="is-arch" data-exam="6ae25fef1bf9c301df35e69c">…</tr> subtree intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <a data-discover="true" class="btn btn--outline btn--sm" href="/gv/bai-thi/6ae25fef1bf9c301df35e69c/ket-qua">Xem kết quả</a> from <tr class="is-arch" data-exam="6ae25fef1bf9c301df35e69c">…</tr> subtree intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        18 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <a data-discover="true" class="btn btn--outline btn--sm" href="/gv/bai-thi/6ae25fef1bf9c301df35e69c/ket-qua">Xem kết quả</a> from <tr class="is-arch" data-exam="6ae25fef1bf9c301df35e69c">…</tr> subtree intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      33 |   const restore = page.getByRole('menuitem', { name: 'Khôi phục' });
+      34 |   await restore.scrollIntoViewIfNeeded();
+    > 35 |   await restore.click({ timeout: 10_000 });
+         |                 ^
+      36 |   await expect(row).toContainText('Đã đóng');
+      37 |   await evidence(page, 'TC-044', 1);
+      38 |
+        at C:\Users\CanhLN\Desktop\SAT\specs\006-exams\testing\e2e\TC-044.spec.ts:35:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-7.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-10.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-13.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-11.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-9.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-14.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-16.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #11: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-8.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #12: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-18.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #13: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-5.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #14: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #15: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #16: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-12.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #17: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-15.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #18: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-19.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #19: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-17.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #20: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\test-failed-20.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\error-context.md
+
+    attachment #22: trace (application/zip) ────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-044--006-AC-6-5-TC-044--37079-to-Đã-đóng-with-its-results-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [chromium] › specs\006-exams\testing\e2e\TC-059.spec.ts:4:1 › [006:AC-8.4] TC-059 an old tab still on the lobby after submitting: no new attempt, S07 shows "Đã nộp" 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('article').filter({ has: getByRole('heading', { name: 'TC-059 mvslbyz591q55' }) }).locator('.xm-row__state')
+    Expected: "Đã nộp · 100/100"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveText" locator('article').filter({ has: getByRole('heading', { name: 'TC-059 mvslbyz591q55' }) }).locator('.xm-row__state') with timeout 5000ms
+      - waiting for locator('article').filter({ has: getByRole('heading', { name: 'TC-059 mvslbyz591q55' }) }).locator('.xm-row__state')
+
+
+      17 |   await hv.page.getByRole('button', { name: 'Bắt đầu làm bài' }).click();
+      18 |   // AC-8.4: S07 with the new state (the lobby itself lives on the S07 path).
+    > 19 |   await expect(card(hv.page, name).locator('.xm-row__state')).toHaveText('Đã nộp · 100/100');
+         |                                                               ^
+      20 |   await expect(hv.page).toHaveURL(new RegExp(`${S07}$`));
+      21 |   await evidence(hv.page, 'TC-059');
+      22 | });
+        at C:\Users\CanhLN\Desktop\SAT\specs\006-exams\testing\e2e\TC-059.spec.ts:19:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-7.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-10.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-15.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-12.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-21.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-17.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-27.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #10: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-29.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #11: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-25.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #12: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-30.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #13: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #14: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-35.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #15: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-13.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #16: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #17: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-9.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #18: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #19: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-19.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #20: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-5.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #21: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-11.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #22: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-23.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #23: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-32.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #24: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-8.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #25: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-14.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #26: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-20.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #27: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-18.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #28: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-24.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #29: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-26.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #30: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-22.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #31: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-28.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #32: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-33.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #33: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-16.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #34: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-31.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #35: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-36.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #36: screenshot (image/png) ─────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\test-failed-34.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\error-context.md
+
+    attachment #38: trace (application/zip) ────────────────────────────────────────────────────────
+    specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\006-exams\testing\runs\2026-10-29-0304\artifacts\TC-059--006-AC-8-4-TC-059--eedcd-w-attempt-S07-shows-Đã-nộp--chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6 failed
+    [chromium] › specs\006-exams\testing\e2e\TC-019.spec.ts:4:1 › [006:AC-3.3] TC-019 close-time rules on "Lên lịch", shown under Giờ đóng 
+    [chromium] › specs\006-exams\testing\e2e\TC-021.spec.ts:4:1 › [006:AC-3.5] TC-021 "Lên lịch" with nothing set lists every unmet condition, each leading to its field 
+    [chromium] › specs\006-exams\testing\e2e\TC-035.spec.ts:11:1 › [006:AC-5.2] TC-035 a later close lengthens the running attempt on the HV clock within 10 s 
+    [chromium] › specs\006-exams\testing\e2e\TC-036.spec.ts:4:1 › [006:AC-5.2] TC-036 an attempt ending at start + duration keeps its end when the close moves later 
+    [chromium] › specs\006-exams\testing\e2e\TC-044.spec.ts:11:1 › [006:AC-6.5] TC-044 "Khôi phục" brings an archived exam back to Đã đóng with its results 
+    [chromium] › specs\006-exams\testing\e2e\TC-059.spec.ts:4:1 › [006:AC-8.4] TC-059 an old tab still on the lobby after submitting: no new attempt, S07 shows "Đã nộp" 
+  106 passed (12.5m)
+exit 1

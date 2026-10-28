@@ -1,5 +1,24 @@
 # Progress — 006-exams
 
+## Handoff 2026-10-29 03:45 — /test-module 006 (QA)
+- Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams
+- Done this session: QA run 2026-10-29-0304 on commit e91a5aa — 112 replayable scripts `testing/e2e/TC-###.spec.ts` (+ `helpers.ts`),
+  full sequential run 106/112 Pass, 6 Fail, 3 Thủ công; report `testing/runs/2026-10-29-0304/report.md`, results.json, screenshots;
+  test-cases.md statuses + Script column; verification.md (Verdict FAIL); `sdd trace 006` → no gaps.
+- In progress: —
+- Next: `/module 006` — sửa TC-035 TC-036 (F1: `ExamsService.extend` → Mongoose 9 needs `{ updatePipeline: true }`), TC-019 (F2: AC-3.3
+  messages under "Giờ đóng"), TC-021 (F3: issue list must focus Tên / Giờ mở / Thời lượng / Giờ đóng — FormField overrides the ids),
+  TC-044 (F4: T10 row menu under the next row because of `tr.is-arch { opacity }`), TC-059 (F5: stay on S07 on `409 EXAM_SUBMITTED`);
+  also reword TC-009 step 4 (duplicate options are "chưa hoàn chỉnh" in 005). Then `/test-module 006` in a new session — chạy lại
+  TC-019 TC-021 TC-035 TC-036 TC-044 TC-059.
+- Blockers / questions:
+  - Playwright MCP unusable: profile `mcp-chrome-7c84bcd` held by Chrome PID 33248 (old MCP session, 2026-10-28 14:24) — close it or restart
+    Claude Code before the next QA run.
+  - Replay tool (owner: release-engineer / foundation): `playwright.modules.config.ts` needs `workers: 1` (30 scripts move the shared server
+    clock); `-g` with `|` breaks through cmd on Windows.
+  - This QA run was in the implementer's session; an independent run in a new session is recommended.
+- Verify with: SAT_MODULE_TEST_DIR=specs/006-exams/testing/e2e SAT_MODULE_RUN_DIR=<dir> npx playwright test -c playwright.modules.config.ts --workers=1 -g "TC-0(19|21|35|36|44|59)\b"
+
 ## Handoff 2026-10-29 02:55 — /module 006 (implementer, runtime check)
 - Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams
 - Done this session: disk freed by the user (6,4 GB). Checks: `run test -- apps/api` ✔ (17 files, 108 tests — boots the whole AppModule

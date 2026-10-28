@@ -1,0 +1,2282 @@
+[
+  {
+    "tc": "TC-001",
+    "acs": [
+      "AC-1.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4244,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-001.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-001-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-002",
+    "acs": [
+      "AC-1.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4310,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-002.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-002-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-003",
+    "acs": [
+      "AC-1.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3268,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-003.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-003-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-004",
+    "acs": [
+      "AC-1.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 689,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-004.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-004-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-005",
+    "acs": [
+      "AC-1.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3164,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-005.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-005-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-006",
+    "acs": [
+      "AC-1.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4438,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-006.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-006-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-007",
+    "acs": [
+      "AC-2.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2177,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-007.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-007-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-008",
+    "acs": [
+      "AC-2.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3375,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-008.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-008-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-009",
+    "acs": [
+      "AC-2.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1382,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-009.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-009-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-010",
+    "acs": [
+      "AC-2.3"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 196,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-010.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-011",
+    "acs": [
+      "AC-2.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1243,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-011.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-011-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-012",
+    "acs": [
+      "AC-2.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 725,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-012.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-012-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-013",
+    "acs": [
+      "AC-2.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1843,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-013.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-013-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-014",
+    "acs": [
+      "AC-2.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1377,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-014.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-014-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-015",
+    "acs": [
+      "AC-2.8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4373,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-015.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-015-1.png",
+      "screenshots/TC-015-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-016",
+    "acs": [
+      "AC-3.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3653,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-016.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-016-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-017",
+    "acs": [
+      "AC-3.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1697,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-017.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-017-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-018",
+    "acs": [
+      "AC-3.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1259,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-018.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-018-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-019",
+    "acs": [
+      "AC-3.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 8429,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-019.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: expect(locator).toHaveAccessibleDescription(expected) failed  Locator: getByLabel('Giờ đóng') Expected pattern: /Giờ đóng phải sau giờ mở ít nhất bằng thời lượng làm bài \\(45 phút\\)\\./"
+    ]
+  },
+  {
+    "tc": "TC-020",
+    "acs": [
+      "AC-3.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3450,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-020.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-020-1.png",
+      "screenshots/TC-020-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-021",
+    "acs": [
+      "AC-3.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 5914,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-021.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: expect(locator).toBeFocused() failed  Locator:  getByLabel('Giờ mở') Expected: focused"
+    ]
+  },
+  {
+    "tc": "TC-022",
+    "acs": [
+      "AC-3.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3487,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-022.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-022-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-023",
+    "acs": [
+      "AC-3.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 64233,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-023.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-023-1.png",
+      "screenshots/TC-023-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-024",
+    "acs": [
+      "AC-3.7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4011,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-024.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-024-1.png",
+      "screenshots/TC-024-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-025",
+    "acs": [
+      "AC-3.8"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3836,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-025.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-025-1.png",
+      "screenshots/TC-025-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-026",
+    "acs": [
+      "AC-3.8"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3150,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-026.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-026-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-027",
+    "acs": [
+      "AC-4.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3920,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-027.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-027-1.png",
+      "screenshots/TC-027-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-028",
+    "acs": [
+      "AC-4.1"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2459,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-028.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-029",
+    "acs": [
+      "AC-4.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3044,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-029.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-029-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-030",
+    "acs": [
+      "AC-4.2"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2582,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-030.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-031",
+    "acs": [
+      "AC-4.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3267,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-031.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-031-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-032",
+    "acs": [
+      "AC-4.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3096,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-032.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-032-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-033",
+    "acs": [
+      "AC-4.4"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2742,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-033.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-034",
+    "acs": [
+      "AC-5.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2975,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-034.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-034-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-035",
+    "acs": [
+      "AC-5.2"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Fail",
+    "durationMs": 14005,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-035.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: expect(received).toBeGreaterThan(expected)  Expected: > 2689 Received:   1179"
+    ]
+  },
+  {
+    "tc": "TC-036",
+    "acs": [
+      "AC-5.2"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Fail",
+    "durationMs": 2727,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-036.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: {\"error\":{\"code\":\"INTERNAL\",\"message\":\"Internal server error\",\"requestId\":\"5b8d5d4d-a08b-4d66-9568-994f9ad76f9a\"}}  expect(received).toBe(expected) // Object.is equality "
+    ]
+  },
+  {
+    "tc": "TC-037",
+    "acs": [
+      "AC-5.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 5248,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-037.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-037-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-038",
+    "acs": [
+      "AC-5.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3646,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-038.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-038-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-039",
+    "acs": [
+      "AC-5.5"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3270,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-039.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-039-1.png",
+      "screenshots/TC-039-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-040",
+    "acs": [
+      "AC-6.1"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4067,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-040.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-040-1.png",
+      "screenshots/TC-040-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-041",
+    "acs": [
+      "AC-6.2"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3424,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-041.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-041-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-042",
+    "acs": [
+      "AC-6.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4710,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-042.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-042-1.png",
+      "screenshots/TC-042-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-043",
+    "acs": [
+      "AC-6.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5105,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-043.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-043-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-044",
+    "acs": [
+      "AC-6.5"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Fail",
+    "durationMs": 14241,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-044.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "TimeoutError: locator.click: Timeout 10000ms exceeded. Call log:   - waiting for getByRole('menuitem', { name: 'Khôi phục' })     - locator resolved to <button type=\"button\" role=\"menuitem\">Khôi phục</button>"
+    ]
+  },
+  {
+    "tc": "TC-045",
+    "acs": [
+      "AC-6.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4073,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-045.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-045-1.png",
+      "screenshots/TC-045-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-046",
+    "acs": [
+      "AC-6.6"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 130,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-046.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-047",
+    "acs": [
+      "AC-7.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3569,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-047.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-047-1.png",
+      "screenshots/TC-047-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-048",
+    "acs": [
+      "AC-7.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3222,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-048.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-048-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-049",
+    "acs": [
+      "AC-7.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3979,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-049.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-049-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-050",
+    "acs": [
+      "AC-7.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3442,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-050.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-050-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-051",
+    "acs": [
+      "AC-7.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5003,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-051.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-051-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-052",
+    "acs": [
+      "AC-7.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 80968,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-052.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-052-1.png",
+      "screenshots/TC-052-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-053",
+    "acs": [
+      "AC-7.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2630,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-053.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-053-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-054",
+    "acs": [
+      "AC-7.8"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3092,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-054.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-054-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-055",
+    "acs": [
+      "AC-8.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2889,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-055.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-055-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-056",
+    "acs": [
+      "AC-8.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3727,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-056.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-056-1.png",
+      "screenshots/TC-056-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-057",
+    "acs": [
+      "AC-8.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5059,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-057.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-057-1.png",
+      "screenshots/TC-057-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-058",
+    "acs": [
+      "AC-8.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3554,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-058.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-058-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-059",
+    "acs": [
+      "AC-8.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Fail",
+    "durationMs": 8622,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-059.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": [
+      "Error: expect(locator).toHaveText(expected) failed  Locator: locator('article').filter({ has: getByRole('heading', { name: 'TC-059 mvslbyz591q55' }) }).locator('.xm-row__state') Expected: \"Đã nộp · 100/100\""
+    ]
+  },
+  {
+    "tc": "TC-060",
+    "acs": [
+      "AC-8.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3034,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-060.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-060-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-061",
+    "acs": [
+      "AC-8.4"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2680,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-061.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-062",
+    "acs": [
+      "AC-8.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 9164,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-062.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-062-1.png",
+      "screenshots/TC-062-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-063",
+    "acs": [
+      "AC-8.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3314,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-063.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-063-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-064",
+    "acs": [
+      "AC-9.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 8578,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-064.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-064-1.png",
+      "screenshots/TC-064-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-065",
+    "acs": [
+      "AC-9.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3670,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-065.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-065-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-066",
+    "acs": [
+      "AC-9.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4094,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-066.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-066-1.png",
+      "screenshots/TC-066-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-067",
+    "acs": [
+      "AC-9.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 19689,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-067.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-067-1.png",
+      "screenshots/TC-067-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-068",
+    "acs": [
+      "AC-9.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 9102,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-068.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-068-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-069",
+    "acs": [
+      "AC-9.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4755,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-069.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-069-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-070",
+    "acs": [
+      "AC-10.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5724,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-070.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-070-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-071",
+    "acs": [
+      "AC-10.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 6533,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-071.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-071-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-072",
+    "acs": [
+      "AC-10.2",
+      "AC-12.2"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2725,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-072.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-073",
+    "acs": [
+      "AC-10.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4965,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-073.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-073-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-074",
+    "acs": [
+      "AC-10.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2796,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-074.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-074-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-075",
+    "acs": [
+      "AC-10.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 9863,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-075.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-075-1.png",
+      "screenshots/TC-075-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-076",
+    "acs": [
+      "AC-10.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 6549,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-076.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-076-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-077",
+    "acs": [
+      "AC-11.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4114,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-077.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-077-1.png",
+      "screenshots/TC-077-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-078",
+    "acs": [
+      "AC-11.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3830,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-078.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-078-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-079",
+    "acs": [
+      "AC-11.3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2532,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-079.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-080",
+    "acs": [
+      "AC-11.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4800,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-080.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-080-1.png",
+      "screenshots/TC-080-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-081",
+    "acs": [
+      "AC-11.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5463,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-081.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-081-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-082",
+    "acs": [
+      "AC-12.1"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 2974,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-082.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-083",
+    "acs": [
+      "AC-12.1"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 2838,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-083.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-084",
+    "acs": [
+      "AC-12.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 14372,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-084.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-084-1.png",
+      "screenshots/TC-084-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-085",
+    "acs": [
+      "AC-12.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 12370,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-085.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-085-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-086",
+    "acs": [
+      "AC-12.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4910,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-086.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-086-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-087",
+    "acs": [
+      "AC-12.5"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 9056,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-087.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-087-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-088",
+    "acs": [
+      "AC-13.1"
+    ],
+    "type": "API",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 3224,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-088.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-088-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-089",
+    "acs": [
+      "AC-13.2"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3080,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-089.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-090",
+    "acs": [
+      "AC-13.3"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3284,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-090.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-091",
+    "acs": [
+      "AC-13.4"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3285,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-091.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-092",
+    "acs": [
+      "AC-13.5"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2984,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-092.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-093",
+    "acs": [
+      "AC-13.6"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2644,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-093.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-094",
+    "acs": [
+      "AC-14.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4546,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-094.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-094-1.png",
+      "screenshots/TC-094-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-095",
+    "acs": [
+      "AC-14.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3903,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-095.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-095-1.png",
+      "screenshots/TC-095-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-096",
+    "acs": [
+      "AC-14.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3745,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-096.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-096-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-097",
+    "acs": [
+      "AC-14.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3564,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-097.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-097-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-098",
+    "acs": [
+      "AC-14.5"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3658,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-098.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-098-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-099",
+    "acs": [
+      "AC-15.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3858,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-099.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-099-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-100",
+    "acs": [
+      "AC-15.2",
+      "AC-15.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 5161,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-100.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-100-1.png",
+      "screenshots/TC-100-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-101",
+    "acs": [
+      "AC-15.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3649,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-101.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-101-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-102",
+    "acs": [
+      "AC-15.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4431,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-102.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-102-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-103",
+    "acs": [
+      "AC-15.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4030,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-103.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-103-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-104",
+    "acs": [
+      "AC-15.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 2024,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-104.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-104-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-105",
+    "acs": [
+      "AC-15.7"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 33542,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-105.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-105-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-106",
+    "acs": [
+      "AC-16.1",
+      "NFR-7"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4485,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-106.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-106-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-107",
+    "acs": [
+      "AC-16.2",
+      "AC-16.3",
+      "AC-16.4",
+      "NFR-7"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4117,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-107.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-107-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-108",
+    "acs": [
+      "AC-16.5"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3745,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-108.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-108-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-109",
+    "acs": [
+      "NFR-1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 7626,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-109.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-109-1.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-110",
+    "acs": [
+      "NFR-2",
+      "NFR-9"
+    ],
+    "type": "API",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 21891,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-110.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-111",
+    "acs": [
+      "NFR-3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 11990,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-111.spec.ts"
+      }
+    ],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-112",
+    "acs": [
+      "NFR-4",
+      "NFR-5",
+      "NFR-6"
+    ],
+    "type": "Thủ công",
+    "role": "HV, GV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-113",
+    "acs": [
+      "NFR-8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4028,
+    "steps": [
+      {
+        "action": "script",
+        "target": "testing/e2e/TC-113.spec.ts"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-113-1.png",
+      "screenshots/TC-113-2.png"
+    ],
+    "errors": []
+  },
+  {
+    "tc": "TC-114",
+    "acs": [
+      "NFR-8"
+    ],
+    "type": "Thủ công",
+    "role": "HV",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  },
+  {
+    "tc": "TC-115",
+    "acs": [
+      "NFR-10"
+    ],
+    "type": "Thủ công",
+    "role": "—",
+    "status": "Thủ công",
+    "durationMs": 0,
+    "steps": [],
+    "evidence": [],
+    "errors": []
+  }
+]
