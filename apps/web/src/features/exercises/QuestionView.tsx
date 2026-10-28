@@ -304,7 +304,7 @@ function Write({
   return (
     <div className="qv-write">
       <p className="qv-pinyin">{q.pinyin}</p>
-      {q.hint && <p className="qv-hint">Nghĩa: {q.hint}</p>}
+      {q.hint && <p className="qv-hint">Nghĩa gợi ý: {q.hint}</p>}
       <input
         className="input qv-write__input"
         lang="zh-Hans"

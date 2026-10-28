@@ -156,21 +156,43 @@ export function RowButtons({
   );
 }
 
+/**
+ * "Thêm …" inside a question. Callers pass `locked` themselves for structural rows (AC-18.1); accepted answers stay
+ * addable on a set with submissions. At the maximum the button is disabled and `fullReason` is shown (AC-4.1, AC-8.1).
+ */
 export function AddButton({
   label,
   onClick,
   disabled,
+  full,
+  fullReason,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
+  full?: boolean;
+  fullReason?: string;
 }) {
-  const { locked } = useSetEditing();
+  const reasonId = useId();
+  const showReason = !!full && !!fullReason;
   return (
-    <Button size="sm" variant="ghost" onClick={onClick} disabled={locked || disabled}>
-      <Icon name="plus" size={15} />
-      {label}
-    </Button>
+    <span className="ex-add">
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={onClick}
+        disabled={disabled || full}
+        aria-describedby={showReason ? reasonId : undefined}
+      >
+        <Icon name="plus" size={15} />
+        {label}
+      </Button>
+      {showReason && (
+        <span id={reasonId} className="ex-add-reason">
+          {fullReason}
+        </span>
+      )}
+    </span>
   );
 }
 

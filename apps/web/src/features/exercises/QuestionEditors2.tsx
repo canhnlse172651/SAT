@@ -1,6 +1,7 @@
 import {
   type ClozeQuestion,
   EXERCISE_LIMITS as L,
+  EXERCISE_MESSAGES as XM,
   type MatchQuestion,
   type OrderQuestion,
   type ReadingQuestion,
@@ -241,14 +242,16 @@ export function MatchEditor(props: EditorProps<MatchQuestion>) {
               index={k}
               count={n}
               min={L.pairsMin}
-              minReason="Câu nối cặp cần từ 2 đến 8 cặp"
+              minReason={XM.pairCount}
               onDelete={() => onChange({ ...q, pairs: q.pairs.filter((_, i) => i !== k) })}
             />
           </div>
         ))}
         <AddButton
           label="Thêm cặp"
-          disabled={n >= L.pairsMax}
+          disabled={locked}
+          full={n >= L.pairsMax}
+          fullReason={XM.pairCount}
           onClick={() => onChange({ ...q, pairs: [...q.pairs, newPair()] })}
         />
       </Rows>
@@ -359,7 +362,7 @@ export function OrderEditor(props: EditorProps<OrderQuestion>) {
         ))}
         <AddButton
           label="Thêm mảnh"
-          disabled={q.tiles.length >= L.tilesMax}
+          disabled={locked || q.tiles.length >= L.tilesMax}
           onClick={() => setTiles([...q.tiles, newTile('')])}
         />
       </Rows>

@@ -124,7 +124,9 @@ function Options<Q extends McqQuestion | VocabQuestion>({ q, path, n, onChange }
       })}
       <AddButton
         label="Thêm phương án"
-        disabled={locked || q.options.length >= L.optionsMax}
+        disabled={locked}
+        full={q.options.length >= L.optionsMax}
+        fullReason={XM.optionCount}
         onClick={() => setOptions([...q.options, newOption()])}
       />
       <span className="sr-only">Câu {n}</span>

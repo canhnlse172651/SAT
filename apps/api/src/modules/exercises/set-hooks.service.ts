@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   EXERCISE_ERROR_CODES as E,
+  EXERCISE_LIMITS as L,
+  EXERCISE_MESSAGES as XM,
   type ExerciseSetContent,
   type FileRef,
   type Option,
@@ -101,6 +103,11 @@ export class SetHooksService implements SetHooks {
     before?: ItemDoc,
     confirmRegrade = false,
   ): Promise<ExerciseSetContent> {
+    const questions = (raw as { questions?: unknown } | null)?.questions;
+    if (Array.isArray(questions) && questions.length > L.questionsPerSet)
+      throw new AppError(422, E.INVALID_CONTENT, saveRefusedMessage(XM.questionLimit), {
+        path: 'questions',
+      });
     const content = setContentSchema.parse(raw);
     const invalid = firstInvalidSetProblem(title, content);
     if (invalid)

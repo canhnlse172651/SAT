@@ -152,3 +152,15 @@
   max-width: 64px;
   max-height: 48px;
 }
+
+.ex-add {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.ex-add-reason {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
