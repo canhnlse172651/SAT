@@ -48,7 +48,9 @@ Không viết code test trong module; code test duy nhất là script agent QA s
   **Bài thi "đang mở ngay"**: lên lịch với `opensAt` = phút hiện tại của máy chủ (làm tròn xuống phút), `closesAt` = mở + 60 phút, thời lượng 45.
 - **Làm bài qua API (phiên HV):** S07 `GET /api/learn/exams`; một bài thi `GET /api/learn/exams/<id>`; bắt đầu `POST /api/learn/exams/<id>/start
   {"holder":"<chuỗi>"}`; mở lại `POST …/open {"holder"}`; lưu `PUT …/attempt {"holder","answers":{"<id câu>":<trả lời>},"lastIndex":<n>}`
-  (định dạng trả lời như 005); nộp `POST …/submit {"holder","submitKey":"<uuid>","answers":{}}`; đồng hồ `GET …/clock`.
+  (trả lời theo `answerSchema` của `@sat/shared`: trắc nghiệm `{"optionIds":["<id phương án>"]}`, điền `{"blanks":{"<id ô>":"…"}}`,
+  nối `{"pairs":{"<id cặp>":"<id mục B>"}}`, sắp xếp `{"tiles":["<id mảnh>",…]}`, viết `{"text":"…"}`, đọc hiểu
+  `{"subs":{"<id câu con>":{"optionIds":[…]}|{"blanks":{…}}}}` — khóa lạ bị bỏ qua, không báo lỗi); nộp `POST …/submit {"holder","submitKey":"<uuid>","answers":{}}`; đồng hồ `GET …/clock`.
 - **Trang:** T10 `/gv/bai-thi`, T22 `/gv/bai-thi/<id>` (mới: `/gv/bai-thi/moi`), T16 `/gv/bai-thi/<id>/ket-qua` (`?lop=<lớp>` chọn lớp),
   T14 `/gv/bai-nop?thi=<id>&lop=<lớp>&hv=<hv>`, S07 `/hv/bai-thi`, S08 `/hv/bai-thi/<id>` ("Xem kết quả" của S07 mở `…?ket-qua=1`, đi
   thẳng tới kết quả; mở S08 trần sau khi nộp tự động thì hiện thông báo "Hết giờ — …" trước).

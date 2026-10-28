@@ -302,7 +302,7 @@ export class LearnExamsService {
       { returnDocument: 'after' },
     );
     if (!held) throw new AppError(409, E.EXAM_SUBMITTED, 'Bài thi đã được nộp.');
-    return this.payload(exam, held.toObject() as ExamAttemptDoc);
+    return this.payload(exam, held.toObject({ transform: false }) as ExamAttemptDoc);
   }
 
   /** AC-8.3 … AC-8.6: the one attempt, also under concurrent starts; the exam locks in the same write (AC-4.3). */
@@ -325,7 +325,7 @@ export class LearnExamsService {
       if (!again || again.phase !== 'scheduled') throw notFound();
       throw new AppError(409, E.EXAM_NOT_STARTABLE, 'Bài thi không còn mở để bắt đầu.');
     }
-    const doc = locked.toObject() as ExamDoc;
+    const doc = locked.toObject({ transform: false }) as ExamDoc;
     const content = examContent(doc);
     if (!doc.durationMin || !doc.closesAt) throw notFound();
     try {
@@ -339,7 +339,7 @@ export class LearnExamsService {
         shuffles: makeShuffles(content),
         answers: {},
       });
-      const a = created.toObject() as ExamAttemptDoc;
+      const a = created.toObject({ transform: false }) as ExamAttemptDoc;
       await this.settle.scheduleAt(p.workspaceId, a.endsAt);
       logExam({ action: 'exam.attempt.start', examId: id, attemptId: String(a._id) });
       return this.payload(doc, a);

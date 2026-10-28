@@ -1,5 +1,23 @@
 # Progress — 006-exams
 
+## Handoff 2026-10-29 02:55 — /module 006 (implementer, runtime check)
+- Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams
+- Done this session: disk freed by the user (6,4 GB). Checks: `run test -- apps/api` ✔ (17 files, 108 tests — boots the whole AppModule
+  with ExamsModule), `run test:e2e` ✔ (10 passed), `run build` ✔, lint ✔, typecheck ✔. Runtime walk on the hermetic server (scratch scripts,
+  not saved in the repo): API smoke 43/43 (create → schedule → start → lock / class / close refusals → submit → T16 / T14 → auto-submit at end
+  + 10 s → "Không làm bài" per class at close → answers after close → archive / restore / duplicate → isolation); UI smoke (Playwright, GV
+  1280 px in New York time zone, HV 390 px) T10, T22 (new, conditions list, field error, save, VN time), S07 lobby, S08 timer / autosave /
+  confirm / result, T16, T14 — all pass, no console errors.
+- Fixed: `toObject()` of the exams module dropped `_id` (schema transform) → every DTO after a write had `id: "undefined"`; now
+  `toObject({ transform: false })`. test-cases.md: the answer format is spelled out (`optionIds`, not `choice` — 005's test-cases.md says
+  `choice`, which the API silently ignores; flag for 005's QA owner).
+- In progress: —
+- Next: `/test-module 006` trong phiên mới (agent QA, Playwright MCP).
+- Blockers / questions:
+  - Node 20.20.2 still on PATH (project: 24) — the web Vitest suite (`apps/web`) still cannot start (`undici … 'bind'`); not run.
+  - 88 `mongo-mem-*` folders (~11 GB) remain in %TEMP%; MongoDB runs again, but they should still be deleted.
+- Verify with: node .sdd/scripts/sdd.mjs run test -- apps/api
+
 ## Handoff 2026-10-29 03:10 — /module 006 (implementer)
 - Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams (branched from feat/005-exercises — 006 builds on 005's code)
 - Done this session: spec clarified → approved (by canh) → lean plan.md, tasks.md, test-cases.md (115 TC, every AC with an E2E/API case),

@@ -341,7 +341,7 @@ export class ExamsService {
       phase: 'draft',
     });
     logExam({ action: 'exam.create', examId: String(doc._id) });
-    return this.dto(p, doc.toObject() as ExamDoc);
+    return this.dto(p, doc.toObject({ transform: false }) as ExamDoc);
   }
 
   /**
@@ -424,7 +424,7 @@ export class ExamsService {
         await this.assertRemovable(p, now2, removed);
       throw new AppError(409, E.EXAM_LOCKED, M.justLocked);
     }
-    const after = updated.toObject() as ExamDoc;
+    const after = updated.toObject({ transform: false }) as ExamDoc;
     if (closeChanged && after.closesAt && doc.phase === 'scheduled') await this.extend(p, after);
     logExam({
       action: 'exam.save',
@@ -527,7 +527,7 @@ export class ExamsService {
     if (!updated) throw new AppError(409, CONFLICT, M.changedElsewhere);
     if (draft.closesAt) await this.settle.scheduleAt(p.workspaceId, draft.closesAt);
     logExam({ action: 'exam.schedule', examId: id, classes: draft.classIds.length });
-    return this.dto(p, updated.toObject() as ExamDoc);
+    return this.dto(p, updated.toObject({ transform: false }) as ExamDoc);
   }
 
   /** AC-3.8: back to "Nháp" while nobody has started; content, classes and schedule kept. */
@@ -557,7 +557,7 @@ export class ExamsService {
       throw new AppError(409, CONFLICT, M.changedElsewhere, { currentVersion: now.version });
     }
     logExam({ action: 'exam.unschedule', examId: id });
-    return this.dto(p, updated.toObject() as ExamDoc);
+    return this.dto(p, updated.toObject({ transform: false }) as ExamDoc);
   }
 
   /* ---------- delete / archive / restore / duplicate (REQ-6) ---------- */
@@ -595,7 +595,7 @@ export class ExamsService {
     );
     if (!updated) throw new AppError(409, E.EXAM_STATE, M.archiveOnlyClosed);
     logExam({ action: 'exam.archive', examId: id });
-    return this.dto(p, updated.toObject() as ExamDoc);
+    return this.dto(p, updated.toObject({ transform: false }) as ExamDoc);
   }
 
   /** AC-6.5: back to "Đã đóng" (its close time has passed), visible again with its results. */
@@ -608,7 +608,7 @@ export class ExamsService {
     );
     if (!updated) throw new AppError(409, E.EXAM_STATE, 'Bài thi không ở trạng thái Lưu trữ.');
     logExam({ action: 'exam.restore', examId: id });
-    return this.dto(p, updated.toObject() as ExamDoc);
+    return this.dto(p, updated.toObject({ transform: false }) as ExamDoc);
   }
 
   /** AC-6.6: a new draft with the questions, instructions and duration; no classes, times, attempts. */
@@ -626,6 +626,6 @@ export class ExamsService {
       phase: 'draft',
     });
     logExam({ action: 'exam.duplicate', examId: String(copy._id), from: id });
-    return this.dto(p, copy.toObject() as ExamDoc);
+    return this.dto(p, copy.toObject({ transform: false }) as ExamDoc);
   }
 }
