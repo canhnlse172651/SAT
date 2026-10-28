@@ -32,7 +32,8 @@ interface EditorState {
   /** 005 AC-18.5 "Nhân bản" of a set: the copy's id. */
   duplicate: (itemId: string) => Promise<string>;
   move: (itemId: string, direction: 'up' | 'down') => Promise<{ position: number; total: number }>;
-  save: (itemId: string) => Promise<void>;
+  /** `confirmRegrade`: the GV chose "Chấm lại và lưu" (005 AC-19.2). */
+  save: (itemId: string, opts?: { confirmRegrade?: boolean }) => Promise<void>;
   /** AC-2.3 "Ghi đè bằng bản của tôi": saves the working copy over the version saved elsewhere. */
   overwrite: (itemId: string, currentVersion: number) => Promise<void>;
   /** AC-2.3 "Tải lại bản mới nhất": the latest saved item replaces this item's working copy only. */
@@ -158,7 +159,15 @@ export const useLessonEditorStore = create<EditorState>()((set, get) => {
       apply(res.lesson);
       return { position: res.position, total: res.total };
     },
-    save: (itemId) => call(`/items/${itemId}`, json('PUT', bodyOf(itemId)), itemId),
+    save: (itemId, opts) =>
+      call(
+        `/items/${itemId}`,
+        json('PUT', {
+          ...bodyOf(itemId),
+          ...(opts?.confirmRegrade ? { confirmRegrade: true } : {}),
+        }),
+        itemId,
+      ),
     overwrite: (itemId, currentVersion) =>
       call(
         `/items/${itemId}`,

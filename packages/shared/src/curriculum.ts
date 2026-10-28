@@ -258,6 +258,8 @@ export const saveItemBodySchema = z.object({
   expectedVersion: versionSchema,
   title: z.string().trim().max(CURRICULUM_LIMITS.itemTitleMax),
   content: z.unknown(),
+  /** 005 AC-19.2: the GV confirmed "Chấm lại và lưu" for a change of scores. */
+  confirmRegrade: z.boolean().optional(),
 });
 export type SaveItemBody = z.input<typeof saveItemBodySchema>;
 export const itemVersionBodySchema = z.object({ expectedVersion: versionSchema });

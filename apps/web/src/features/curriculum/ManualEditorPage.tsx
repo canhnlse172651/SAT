@@ -9,6 +9,9 @@ import {
   itemMovedMessage,
   leaveQuestion,
   EXERCISE_ERROR_CODES,
+  REGRADE_IMPACT,
+  regradeProgress,
+  regradeQuestion,
   STEP_ERROR_CODES,
   STEP_MESSAGES as SM,
   deckMarksWarning,
@@ -107,6 +110,9 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
   const [focusId, setFocusId] = useState<string | null>(null);
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<Item | null>(null);
+  // 005 AC-19.2 … AC-19.6: the save waiting for "Chấm lại và lưu", then the one running with it.
+  const [regradeAsk, setRegradeAsk] = useState<{ item: Item; count: number } | null>(null);
+  const [regrading, setRegrading] = useState<{ id: string; count: number } | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [announcement, setAnnouncement] = useState('');
   useDocumentTitle('Soạn bài thủ công');
@@ -321,7 +327,7 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
    * 005 REQ-12 for a set: an invalid field refuses every save (AC-12.14); publishing and saving a published / archived
    * set need a valid set (AC-12.5, AC-12.7); a conflict, refusal or failure stays on the set's block (AC-1.7).
    */
-  const saveSet = (item: Item, mode: 'save' | 'publish') => {
+  const saveSet = (item: Item, mode: 'save' | 'publish', confirmed?: number) => {
     const w = workingItem(item, drafts);
     const content = setOf(w.content);
     const invalid = firstInvalidSetProblem(w.title, content);
@@ -343,7 +349,8 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
     }
     if (busy) return;
     setBusy(true);
-    (mode === 'publish' ? publish(item.id) : save(item.id))
+    if (confirmed) setRegrading({ id: item.id, count: confirmed });
+    (mode === 'publish' ? publish(item.id) : save(item.id, { confirmRegrade: !!confirmed }))
       .then(() => {
         setSetNotice(item.id, null);
         const at = nowHm();
@@ -354,6 +361,10 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
       .catch((err: unknown) => {
         if (isConflict(err) || isNotFound(err)) {
           setSetNotice(item.id, { kind: 'conflict' });
+        } else if (err instanceof ApiError && err.code === EXERCISE_ERROR_CODES.REGRADE_REQUIRED) {
+          // AC-19.2: nothing is saved yet — the GV decides; "Hủy" keeps the edits on screen (AC-19.3).
+          const count = (err.details as { count?: number } | undefined)?.count ?? 0;
+          setRegradeAsk({ item, count });
         } else if (err instanceof ApiError && err.code === EXERCISE_ERROR_CODES.SET_LOCKED) {
           // AC-18.1: a submission arrived since the counts were loaded — the banner and the lock show now.
           void loadLockCounts(lessonId);
@@ -378,7 +389,10 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
           setSetNotice(item.id, { kind: 'failed', retry: mode });
         }
       })
-      .finally(() => setBusy(false));
+      .finally(() => {
+        setBusy(false);
+        setRegrading(null);
+      });
   };
 
   const onSave = (item: Item) => {
@@ -547,7 +561,11 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
                 revealPath={reveal?.id === item.id ? reveal.path : null}
                 notice={
                   item.section === 'exercise' ? (
-                    setNotices_[item.id] ? (
+                    regrading?.id === item.id ? (
+                      <p className="st-notice" role="status">
+                        {regradeProgress(0, regrading.count)}
+                      </p>
+                    ) : setNotices_[item.id] ? (
                       <SetNoticeView
                         notice={setNotices_[item.id] as SetNotice}
                         onReload={() =>
@@ -654,6 +672,19 @@ export function ManualEditorPage({ initialTab }: { initialTab: Section }) {
         tone="danger"
         onConfirm={confirmDelete}
         onCancel={() => setDeleting(null)}
+      />
+      <ConfirmDialog
+        open={!!regradeAsk}
+        title={regradeQuestion(regradeAsk?.count ?? 0)}
+        message={REGRADE_IMPACT}
+        confirmLabel="Chấm lại và lưu"
+        cancelLabel="Hủy"
+        onConfirm={() => {
+          const ask = regradeAsk;
+          setRegradeAsk(null);
+          if (ask) saveSet(ask.item, 'save', ask.count);
+        }}
+        onCancel={() => setRegradeAsk(null)}
       />
       <ConfirmDialog
         open={blocker.state === 'blocked'}

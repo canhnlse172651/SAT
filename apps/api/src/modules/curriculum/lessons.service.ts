@@ -200,11 +200,14 @@ export class LessonsService {
     itemId: string,
     title: string,
     raw: unknown,
+    confirmRegrade?: boolean,
   ) {
     const { lesson } = await this.load(p, id);
     const item = this.findItem(lesson, itemId);
     if (item.section === 'exercise')
-      return this.setHooks ? this.setHooks.prepare(p.workspaceId, title, raw, item) : raw;
+      return this.setHooks
+        ? this.setHooks.prepare(p.workspaceId, title, raw, item, confirmRegrade)
+        : raw;
     return this.hooks ? this.hooks.prepare(p.workspaceId, this.content('lesson', raw)) : raw;
   }
 
@@ -528,10 +531,15 @@ export class LessonsService {
     p: AuthPrincipal,
     id: string,
     itemId: string,
-    body: { expectedVersion: number; title: string; content: unknown },
+    body: {
+      expectedVersion: number;
+      title: string;
+      content: unknown;
+      confirmRegrade?: boolean | undefined;
+    },
   ): Promise<Lesson> {
     let before: ItemDoc | undefined;
-    const raw = await this.prepared(p, id, itemId, body.title, body.content);
+    const raw = await this.prepared(p, id, itemId, body.title, body.content, body.confirmRegrade);
     const updated = await this.edit(p, id, itemId, body.expectedVersion, (item) => {
       before = item;
       const content = this.content(item.section, raw);

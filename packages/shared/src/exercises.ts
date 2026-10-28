@@ -83,6 +83,13 @@ export const EXERCISE_ERROR_CODES = {
 
 export const saveRefusedMessage = (message: string): string => `Chưa lưu được: ${message}`;
 
+/** AC-19.2: the confirmation before a save that changes scores; AC-19.6: while it runs. */
+export const regradeQuestion = (n: number): string =>
+  `Thay đổi này làm thay đổi điểm của ${n} bài nộp. Chấm lại và lưu?`;
+export const REGRADE_IMPACT = 'Điểm của bài nộp và điểm xếp hạng được tính lại ở mọi lớp.';
+export const regradeProgress = (done: number, n: number): string =>
+  `Đang chấm lại ${done}/${n} bài nộp…`;
+
 /** AC-18.5: "<tiêu đề gốc> (bản sao)", the original cut so the whole stays within the title limit. */
 export const setCopyTitle = (title: string): string =>
   [...title]

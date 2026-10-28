@@ -192,9 +192,16 @@ export interface SetHooks {
   /**
    * Before a set's content is stored: parsed into the 005 shape, image references checked against the workspace's
    * registered files. Throws an `AppError` for an invalid field (AC-12.14), a foreign / unknown file or a structure
-   * change of a set with submissions (005 AC-18.1, against `before`).
+   * change of a set with submissions (005 AC-18.1, against `before`), or a change of scores the GV did not confirm
+   * (005 AC-19.2, `confirmRegrade`).
    */
-  prepare(workspaceId: string, title: string, content: unknown, before: ItemDoc): Promise<unknown>;
+  prepare(
+    workspaceId: string,
+    title: string,
+    content: unknown,
+    before: ItemDoc,
+    confirmRegrade?: boolean,
+  ): Promise<unknown>;
   /** A set's content was saved (images no longer used are released — AC-3.5). */
   saved(workspaceId: string, before: ItemDoc, after: ItemDoc): Promise<void>;
   /** Sets were deleted or replaced: their images are released when no longer used (AC-22.1, AC-13.9). */
