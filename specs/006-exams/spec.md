@@ -2,12 +2,13 @@
 id: 006
 slug: exams
 title: Exams
-status: draft
+status: approved
 branch: feat/006-exams
 created: 2026-10-18
-updated: 2026-10-19
-approved_by:
-approved_at:
+updated: 2026-10-28
+approved_by: “canh
+node .sdd/scripts/sdd.mjs approve 006 --by “canh
+approved_at: 2026-10-28
 ---
 
 # Exams — Bài thi độc lập theo lịch, giao cho lớp
