@@ -24,16 +24,19 @@ test('[005:AC-20.5] [005:NFR-9] TC-100 T14 only for the owner GV', async ({ brow
   await gv.goto(T14(d.cls, d.students[1]!, setId));
   await expect(gv.getByText('Không tìm thấy nội dung')).toBeVisible();
   await hidden(gv);
+  await evidence(gv, 'TC-100', 3);
   // 4. Not signed in → A01.
   const anon = await browser.newContext({ baseURL: ORIGIN });
   const a = await anon.newPage();
   await a.goto(link);
   await expect(a).toHaveURL(/\/dang-nhap\?returnTo=/);
   await hidden(a);
-  // 2. HV A opens the link.
+  await evidence(a, 'TC-100', 4);
+  // 2. HV A opens the link → S01 "Lớp của tôi" (V19-1).
   await hv.goto(link);
   await hv.waitForLoadState('networkidle');
-  await evidence(hv, 'TC-100', 2);
+  await expect(hv).toHaveURL(/\/hv$/);
+  await expect(hv).toHaveTitle(/Lớp của tôi/);
   await hidden(hv);
-  await expect(hv.getByText('Không tìm thấy nội dung')).toBeVisible();
+  await evidence(hv, 'TC-100', 2);
 });

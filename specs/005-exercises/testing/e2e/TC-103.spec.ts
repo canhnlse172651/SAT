@@ -14,8 +14,8 @@ test('[005:AC-21.1] [005:AC-21.3] TC-103 S05 / S06 outside what the HV may see',
   const inDraft = await publishedSet(gv, draftLesson.id, 'Bộ trong bài nháp', q());
   const one = await classWithSets(gv, [{ title: 'Bộ của lớp', content: q() }], { students: [] });
   const [hv1, hv2] = await (async () => (await (await gv.request.get('/api/students')).json()).items.map((s: any) => s.id))();
-  // Class of hv1 only (same curriculum as `one`), and a class that starts later.
-  const cls = await newClass(gv, one.cur, [hv1]);
+  // Class of hv1 and hv2 (same curriculum as `one`), and a class that starts later.
+  const cls = await newClass(gv, one.cur, [hv1, hv2]);
   await setDeadline(gv, cls.id, one.sets[0]!, vnToday(5));
   const draftCls = await newClass(gv, cur.id, [hv1]);
   const upcoming = await newClass(gv, one.cur, [hv1], vnToday(3));
@@ -37,14 +37,22 @@ test('[005:AC-21.1] [005:AC-21.3] TC-103 S05 / S06 outside what the HV may see',
   await expect(p1.getByRole('status')).toHaveText(/^Lớp sẽ bắt đầu vào ngày \d\d\/\d\d\/\d{4}\. Nội dung sẽ mở từ ngày này\.$/);
   await expect(p1.getByText('Câu riêng?')).toHaveCount(0);
   await evidence(p1, 'TC-103', 2);
-  // An HV outside the class, and the submission of another HV.
+  // The submission of another HV (hv1's). S05 / S06 address only the caller's own work: hv2 (member, not submitted) sees only
+  // "Bạn chưa nộp bài này." (AC-16.5), nothing of hv1's submission; every route that names hv1's submission answers 404 (A05).
   const p2 = (await hvPage(browser, hv2)).page;
-  for (const [k, path] of [S05(cls.id, one.sets[0]!), S06(cls.id, one.sets[0]!)].entries()) {
-    await p2.goto(path);
-    await p2.waitForLoadState('networkidle');
-    await evidence(p2, 'TC-103', 3 + k);
-    await expect(p2.getByText('Câu riêng?')).toHaveCount(0);
-    await expect(p2.getByText('Bộ của lớp')).toHaveCount(0);
-    await expect.soft(p2.getByText('Không tìm thấy nội dung'), `A05 for an HV outside the class (${path})`).toBeVisible();
+  await p2.goto(S06(cls.id, one.sets[0]!));
+  await expect(p2.getByRole('status')).toHaveText('Bạn chưa nộp bài này.');
+  await expect(p2.getByText('Câu riêng?')).toHaveCount(0);
+  await expect(p2.getByText('Đúng', { exact: true })).toHaveCount(0);
+  await evidence(p2, 'TC-103', 3);
+  for (const path of [
+    `/api/exercises/submissions?classId=${cls.id}&setId=${one.sets[0]!}&studentId=${hv1}`,
+    `/api/exercises/classes/${cls.id}/sets/${one.sets[0]!}/submissions`,
+  ]) {
+    const r = await p2.request.get(path);
+    const text = await r.text();
+    expect([r.status(), JSON.parse(text).error?.code], path).toEqual([404, 'NOT_FOUND']);
+    expect(text, path).not.toContain('Câu riêng?');
+    expect(text, path).not.toContain(hv1);
   }
 });

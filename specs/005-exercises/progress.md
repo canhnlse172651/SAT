@@ -175,3 +175,23 @@
     Same ownership logic as V19-2 — suggest AC-21.3 defer to 003 AC-14.3.
   - Node on PATH is v20; the web tests need 24 (portable Node 24 used, as in 003/004).
 - Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 005
+
+## Handoff 2026-10-29 00:35 — /test-module 005 (QA)
+- Status: 005-exercises implementing · 25/25 done   Branch: feat/005-exercises
+- Done this session: QA run 2026-10-29-0004 on commit c1798b7 — scripts TC-012, TC-100, TC-103, TC-105 updated to V19-1 / V19-2,
+  new TC-130 (AC-21.9), TC-048 script race fixed (wait after "Tiếp tục làm"). Full replay (3 workers) 113/125, the 12 failures rerun one
+  by one on a clean server. Result: 123/126 automated Pass, 1 Fail (TC-130 = F1), 2 Bị chặn (TC-102 waits for 006; TC-122 disk space),
+  4 Thủ công. All of B1–B16 are gone. Report `testing/runs/2026-10-29-0004/report.md`, results.json, screenshots; test-cases.md,
+  verification.md (Verdict FAIL).
+- In progress: —
+- Next: `/module 005` — sửa TC-130 (F1: HV removed from the class while doing a set — a refused save / submit with CLASS_NOT_MEMBER
+  shows the message but stays on S05; it must go through `useHvRefusal` to S01 like the load error, `ExercisePage.tsx:58`). Then
+  `/test-module 005` again (TC-130, TC-122).
+- Blockers / questions:
+  - Disk C: ≈ 0,8 GB free; %TEMP% has 54 orphaned `mongo-mem-*` folders (~10 GB) from earlier sessions — the user should delete them;
+    until then TC-122 (second hermetic server) cannot seed.
+  - Playwright MCP still unusable: profile `mcp-chrome-7c84bcd` held by the MCP process PID 40720 (started 2026-10-28 14:06) — close it
+    (or restart Claude Code) before the next QA run.
+  - Replay tool (owner: release-engineer / foundation): on Windows several TC ids break the `-g` filter (`|` goes through cmd); the
+    replay runs 3 workers, so the clock-moving and timing cases (TC-109/110/125, TC-116/123/124) disturb other cases — set `workers: 1`.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 005 TC-130

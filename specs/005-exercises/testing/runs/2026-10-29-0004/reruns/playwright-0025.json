@@ -1,0 +1,210 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\CanhLN\\Desktop\\SAT\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "-c",
+      "playwright.modules.config.ts",
+      "-g",
+      "TC-122\\b"
+    ],
+    "configFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\playwright.modules.config.ts",
+    "rootDir": "C:/Users/CanhLN/Desktop/SAT/specs/005-exercises/testing/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/CanhLN/Desktop/SAT/specs/005-exercises/testing/runs/2026-10-29-0025-replay/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/CanhLN/Desktop/SAT/specs/005-exercises/testing/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0025-replay\\artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e",
+        "snapshotDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0025-replay/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 3,
+    "webServer": {
+      "command": "npm run build && node tests/e2e/server.mjs",
+      "url": "http://127.0.0.1:4173/api/ready",
+      "reuseExistingServer": true,
+      "timeout": 240000,
+      "env": {
+        "PORT": "4173"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "TC-122.spec.ts",
+      "file": "TC-122.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[005:NFR-10] TC-122 one structured log line per action, no content or PII",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 0,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-122.spec.ts:27:93",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-122.spec.ts",
+                      "column": 93,
+                      "line": 27
+                    },
+                    "snippet": "  25 |     LOG_LEVEL: 'info',\n  26 |   };\n> 27 |   expect(spawnSync(process.execPath, ['apps/api/dist/seed.js'], { cwd: ROOT, env }).status).toBe(0);\n     |                                                                                             ^\n  28 |   api = spawn(process.execPath, ['apps/api/dist/main.js'], { cwd: ROOT, env });\n  29 |   let buf = '';\n  30 |   api.stdout!.on('data', (c: Buffer) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-122.spec.ts",
+                        "column": 93,
+                        "line": 27
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n\n  25 |     LOG_LEVEL: 'info',\n  26 |   };\n> 27 |   expect(spawnSync(process.execPath, ['apps/api/dist/seed.js'], { cwd: ROOT, env }).status).toBe(0);\n     |                                                                                             ^\n  28 |   api = spawn(process.execPath, ['apps/api/dist/main.js'], { cwd: ROOT, env });\n  29 |   let buf = '';\n  30 |   api.stdout!.on('data', (c: Buffer) => {\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-122.spec.ts:27:93"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T17:25:46.409Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0025-replay\\artifacts\\TC-122--005-NFR-10-TC-122--824e6-er-action-no-content-or-PII-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0025-replay\\artifacts\\TC-122--005-NFR-10-TC-122--824e6-er-action-no-content-or-PII-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0025-replay\\artifacts\\TC-122--005-NFR-10-TC-122--824e6-er-action-no-content-or-PII-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-122.spec.ts",
+                    "column": 93,
+                    "line": 27
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "afe1144db9de9cf96bf6-39636b2209dab8c45592",
+          "file": "TC-122.spec.ts",
+          "line": 48,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-28T17:25:40.974Z",
+    "duration": 7649.562,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

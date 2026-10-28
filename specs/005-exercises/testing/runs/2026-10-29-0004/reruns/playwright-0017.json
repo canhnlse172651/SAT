@@ -1,0 +1,210 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\CanhLN\\Desktop\\SAT\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "-c",
+      "playwright.modules.config.ts",
+      "-g",
+      "TC-118\\b"
+    ],
+    "configFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\playwright.modules.config.ts",
+    "rootDir": "C:/Users/CanhLN/Desktop/SAT/specs/005-exercises/testing/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/CanhLN/Desktop/SAT/specs/005-exercises/testing/runs/2026-10-29-0017-replay/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/CanhLN/Desktop/SAT/specs/005-exercises/testing/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0017-replay\\artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e",
+        "snapshotDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0017-replay/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 3,
+    "webServer": {
+      "command": "npm run build && node tests/e2e/server.mjs",
+      "url": "http://127.0.0.1:4173/api/ready",
+      "reuseExistingServer": true,
+      "timeout": 240000,
+      "env": {
+        "PORT": "4173"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "TC-118.spec.ts",
+      "file": "TC-118.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[005:NFR-5] TC-118 re-grading 5 000 submissions within 60 s, none lost or doubled",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 1200000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 201429,
+                  "error": {
+                    "message": "Error: apiRequestContext.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - → POST http://127.0.0.1:4173/api/learn/classes/6ae22eda9842e43190c0946c/sets/6ae22e189842e43190c06dba/start\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - Origin: http://127.0.0.1:4173\u001b[22m\n\u001b[2m    - cookie: sat_sid=UtrySbN3oDfbi0s5tHfy4_jStFFmw9Z1jZU5LeSG2iY\u001b[22m\n",
+                    "stack": "Error: apiRequestContext.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - → POST http://127.0.0.1:4173/api/learn/classes/6ae22eda9842e43190c0946c/sets/6ae22e189842e43190c06dba/start\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - Origin: http://127.0.0.1:4173\u001b[22m\n\u001b[2m    - cookie: sat_sid=UtrySbN3oDfbi0s5tHfy4_jStFFmw9Z1jZU5LeSG2iY\u001b[22m\n\n    at rawCall (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts:483:25)\n    at fn (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-118.spec.ts:28:13)\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts:501:24\n    at pool (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts:497:3)\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-118.spec.ts:26:5",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts",
+                      "column": 25,
+                      "line": 483
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mhelpers.ts:483\n\n  481 | export async function rawCall(ctx: APIRequestContext, method: string, path: string, data?: unknown) {\n  482 |   const t0 = Date.now();\n> 483 |   const res = await ctx.fetch(path, { method, ...(data === undefined ? {} : { data: data as any }) });\n      |                         ^\n  484 |   const text = await res.text();\n  485 |   let body: any = text;\n  486 |   try {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts",
+                        "column": 25,
+                        "line": 483
+                      },
+                      "message": "Error: apiRequestContext.fetch: read ECONNRESET\nCall log:\n\u001b[2m  - → POST http://127.0.0.1:4173/api/learn/classes/6ae22eda9842e43190c0946c/sets/6ae22e189842e43190c06dba/start\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - Origin: http://127.0.0.1:4173\u001b[22m\n\u001b[2m    - cookie: sat_sid=UtrySbN3oDfbi0s5tHfy4_jStFFmw9Z1jZU5LeSG2iY\u001b[22m\n\n\n   at helpers.ts:483\n\n  481 | export async function rawCall(ctx: APIRequestContext, method: string, path: string, data?: unknown) {\n  482 |   const t0 = Date.now();\n> 483 |   const res = await ctx.fetch(path, { method, ...(data === undefined ? {} : { data: data as any }) });\n      |                         ^\n  484 |   const text = await res.text();\n  485 |   let body: any = text;\n  486 |   try {\n    at rawCall (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts:483:25)\n    at fn (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-118.spec.ts:28:13)\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts:501:24\n    at pool (C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts:497:3)\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\TC-118.spec.ts:26:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T17:17:08.333Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0017-replay\\artifacts\\TC-118--005-NFR-5-TC-118-r-91c91-n-60-s-none-lost-or-doubled-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0017-replay\\artifacts\\TC-118--005-NFR-5-TC-118-r-91c91-n-60-s-none-lost-or-doubled-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\runs\\2026-10-29-0017-replay\\artifacts\\TC-118--005-NFR-5-TC-118-r-91c91-n-60-s-none-lost-or-doubled-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\005-exercises\\testing\\e2e\\helpers.ts",
+                    "column": 25,
+                    "line": 483
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "41fecb8ce134e2e9202d-4df5ffb09834fc972548",
+          "file": "TC-118.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-28T17:17:03.147Z",
+    "duration": 220639.508,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

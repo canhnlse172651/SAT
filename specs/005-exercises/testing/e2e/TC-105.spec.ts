@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import {
-  S05, api, archiveItem, classWithSets, endClass, evidence, gvPage, hideSection, hvPage, mcq, removeStudent, restoreItem, set,
+  S05, archiveItem, classWithSets, endClass, evidence, gvPage, hideSection, hvPage, mcq, restoreItem, set,
   view,
 } from './helpers';
 
@@ -13,7 +13,6 @@ test('[005:AC-21.6] TC-105 the set becomes unavailable during an attempt', async
   const cases: [string, (d: Awaited<ReturnType<typeof classWithSets>>) => Promise<unknown>, ((d: Awaited<ReturnType<typeof classWithSets>>) => Promise<unknown>) | null][] = [
     ['ẩn phần', (d) => hideSection(gv, d.cls, d.les, true), (d) => hideSection(gv, d.cls, d.les, false)],
     ['lưu trữ', (d) => archiveItem(gv, d.les, d.sets[0]!), (d) => restoreItem(gv, d.les, d.sets[0]!)],
-    ['gỡ HV', (d) => removeStudent(gv, d.cls, d.students[0]!), (d) => api(gv, 'POST', `/api/classes/${d.cls}/students`, { studentIds: [d.students[0]!] })],
     ['kết thúc lớp', (d) => endClass(gv, d.cls), null],
   ];
   let n = 0;
@@ -33,7 +32,7 @@ test('[005:AC-21.6] TC-105 the set becomes unavailable during an attempt', async
     await page.getByRole('radio', { name: /^A\s*Đúng/ }).click();
     await expect(page.getByRole('alert')).toBeVisible();
     await evidence(page, 'TC-105', ++n);
-    await expect.soft(page.getByRole('alert').filter({ hasText: UNAVAILABLE }), name).toBeVisible();
+    await expect(page.getByRole('alert').filter({ hasText: UNAVAILABLE }), name).toBeVisible();
     if (undo) {
       await undo(d);
       const v = (await view(page, d.cls, d.sets[0]!)).body;

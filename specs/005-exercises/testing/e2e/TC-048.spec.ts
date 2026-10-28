@@ -45,7 +45,8 @@ test('[005:AC-9.4] [005:AC-9.5] [005:AC-9.6] TC-048 building the sentence', asyn
   // 4. Reload: the bank keeps its order.
   await page.reload();
   await page.getByRole('button', { name: 'Tiếp tục làm' }).click();
-  expect(await texts(line)).toEqual(['我', '是', '越南']);
+  await expect(page.getByText('Câu 1/1')).toBeVisible();
+  await expect.poll(() => texts(line)).toEqual(['我', '是', '越南']);
   expect(await texts(bank)).toEqual(shuffled.filter((t) => !['我', '是', '越南'].includes(t)));
   await line.getByRole('button', { name: '越南' }).click();
   await line.getByRole('button', { name: '是' }).click();

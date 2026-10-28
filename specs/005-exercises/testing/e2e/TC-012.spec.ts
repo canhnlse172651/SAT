@@ -30,7 +30,11 @@ test('[005:AC-1.13] [005:AC-21.2] TC-012 direct link to T09', async ({ browser }
   const { page: hv } = await hvPage(browser, hvId!);
   await hv.goto(T09(cur.id, les.id));
   await hv.waitForLoadState('networkidle');
-  await evidence(hv, 'TC-012', 3);
+  // V19-1: the HV is sent to S01 "Lớp của tôi", nothing of the Bài or its sets is shown.
+  await expect(hv).toHaveURL(/\/hv$/);
+  await expect(hv).toHaveTitle(/Lớp của tôi/);
   await expect(hv.getByText('Bộ 1')).toHaveCount(0);
-  await expect(hv.getByText('Không tìm thấy nội dung')).toBeVisible();
+  await expect(hv.getByText('Câu?')).toHaveCount(0);
+  await expect(hv.getByRole('heading', { name: 'Soạn bài thủ công' })).toHaveCount(0);
+  await evidence(hv, 'TC-012', 3);
 });
