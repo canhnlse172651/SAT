@@ -2,7 +2,7 @@
 id: 006
 slug: exams
 title: Exams
-status: approved
+status: tasked
 branch: feat/006-exams
 created: 2026-10-18
 updated: 2026-10-28
