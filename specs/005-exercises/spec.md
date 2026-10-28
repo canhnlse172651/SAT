@@ -2,12 +2,12 @@
 id: 005
 slug: exercises
 title: Exercises and Auto Grading
-status: clarified
+status: implementing
 branch: feat/005-exercises
 created: 2026-10-18
 updated: 2026-10-28
-approved_by:
-approved_at:
+approved_by: canhnl
+approved_at: 2026-10-28
 reopened_reason: QA 2026-10-28 B1/B2: refusal screens for HV on GV screens and for non-member/removed HV conflict with the foundation guard and 003 AC-14.5
 ---
 
