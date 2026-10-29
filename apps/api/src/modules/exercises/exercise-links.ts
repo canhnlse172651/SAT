@@ -68,7 +68,7 @@ export class ExerciseLinks implements LearningData, ClassLearning, StepPractice 
               score: r.score ?? 0,
               maxScore: r.maxScore ?? 0,
               at: r.submittedAt,
-              regradedAt: r.regrades?.at(-1)?.at ?? null,
+              regrades: (r.regrades ?? []).map((g) => ({ at: g.at, from: g.from })),
             }
           : null,
     }));

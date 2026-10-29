@@ -368,8 +368,21 @@
 .rk-tbl th {
   vertical-align: middle;
 }
+.rk-tbl th {
+  white-space: normal;
+}
 .rk-tbl .r {
   text-align: right;
+}
+.rk-tbl__email {
+  overflow-wrap: anywhere;
+}
+/* NFR-5: every column, the detail button included, fits the content area from 1024 px. */
+@media (max-width: 1279px) {
+  .rk-tbl td,
+  .rk-tbl th {
+    padding-inline: var(--sp-2);
+  }
 }
 .rk-tbl__who {
   display: flex;

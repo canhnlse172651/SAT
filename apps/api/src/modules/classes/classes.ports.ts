@@ -15,8 +15,13 @@ export interface LearningRecord {
   setId: string;
   /** An attempt with saved answers and no submission. */
   inProgress: boolean;
-  /** `regradedAt`: the last re-grade after an answer-key change (008 AC-3.3). */
-  submission: { score: number; maxScore: number; at: Date; regradedAt?: Date | null } | null;
+  /** `regrades`: re-grades after answer-key changes, oldest first; `from` is the score before each (008 AC-3.3, AC-6.6). */
+  submission: {
+    score: number;
+    maxScore: number;
+    at: Date;
+    regrades?: readonly { at: Date; from: number }[];
+  } | null;
 }
 
 export interface ClassLearning {

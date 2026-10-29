@@ -10,6 +10,12 @@ export const updatedText = (iso: string) => {
   return `Cập nhật lúc ${formatVnTime(d)} · ${formatVnDate(d)}`;
 };
 
+/** AC-10.1 "Cập nhật lần cuối": dd/mm/yyyy HH:mm, as the prototype T04 tab shows it. */
+export const achievedText = (iso: string) => {
+  const d = new Date(iso);
+  return `${formatVnDate(d)} ${formatVnTime(d)}`;
+};
+
 export const SET_STATUS = {
   todo: { label: 'Chưa làm', tone: 'todo' },
   done: { label: 'Đã có điểm', tone: 'done' },

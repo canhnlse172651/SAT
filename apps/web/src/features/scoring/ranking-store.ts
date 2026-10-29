@@ -55,6 +55,8 @@ interface RankingState {
   loadDetail: (classId: string, studentId: string) => Promise<void>;
 }
 
+let boardRequest = 0;
+
 export const useRankingStore = create<RankingState>()((set) => ({
   classes: null,
   classesStatus: 'idle',
@@ -79,14 +81,16 @@ export const useRankingStore = create<RankingState>()((set) => ({
   },
 
   loadBoard: async (classId) => {
+    const req = ++boardRequest;
     set({ board: null, boardStatus: 'loading' });
     try {
       const board = learnRankingSchema.parse(
         await apiRequest<unknown>(`/learn/ranking/${encodeURIComponent(classId)}`),
       );
-      set({ board, boardStatus: 'ok' });
+      // A class picked while an older answer was on its way: only the newest request is shown.
+      if (req === boardRequest) set({ board, boardStatus: 'ok' });
     } catch (err) {
-      set({ board: null, boardStatus: failure(err) });
+      if (req === boardRequest) set({ board: null, boardStatus: failure(err) });
     }
   },
 

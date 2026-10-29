@@ -12,7 +12,7 @@ stored per item). Web `apps/web/src/features/scoring/` (S09 page, T04 "Xếp h�
 
 **Inputs (read through the owners' exported providers, no foreign models).** Class doc (`deadlines`, `hidden`) + members of 003
 (`CLASS_MODEL`, `MEMBER_MODEL`, exported); Bài/sets in order via `CurriculumReader` (002); exercise submissions via `CLASS_LEARNING.records`
-(005, + new optional `submission.regradedAt` = last regrade); exams via new `ExamResultsService.scoringData(ws, classId)` (006: settles first,
+(005, + new optional `submission.regrades` = re-grade history `{ at, from }`); exams via new `ExamResultsService.scoringData(ws, classId)` (006: settles first,
 returns the class's scheduled/archived exams with name, opens/closes, phase, and the submitted attempts with score/maxScore/submittedAt and
 the "Không làm bài" rows 006 records at close for activated members — AC-2.8, AC-2.9, AC-5.6, AC-5.7 for exams come from 006's own record);
 account status + `activatedAt` via new `StudentDirectory.activation(ws, ids)` (001).
@@ -33,8 +33,10 @@ New collection `rank_scores` (workspace): `classId`, `studentId`, `score`, `avgE
   (AC-11.8); archived → submitted ones only, "Bài thi đã gỡ" line (AC-4.9, AC-11.10).
 - TB = round1(mean) or 0; score = round1(0.3×TBex + 0.7×TBexam) (AC-1.5–1.10); ranks: score > 0 competition ranking, ties by achievedAt,
   given name (last word, vi collation), full name, e-mail; 0,0 = "—" after the ranked (REQ-6).
-- `achievedAt`: compared with `rank_scores` on each read; on change = latest input event ≤ now (submission, regrade, deadline / close
-  instant, `hidden[].at`, `deadlines[].at`) if newer than the stored one, else now; the change is logged `score.change` (NFR-8).
+- `achievedAt`: the engine replays the displayed score over the timed inputs (submissions, re-grades with their `from`, deadline /
+  close instants, `hidden[].at`, `deadlines[].at`) and takes the last change (QA F1: also when the score went away and back between
+  reads); when the replay cannot explain a change against `rank_scores`, latest input event newer than the stored one, else now; changes
+  against `rank_scores` are logged `score.change` (NFR-8). Per read the class is indexed once (`prepareClass`, QA F4: NFR-2).
 
 **Endpoints.** HV: `GET /api/learn/ranking/classes` (S09 picker, AC-8.1 order), `GET /api/learn/ranking/:classId` → class + status,
 `N`, top 10 (`id, name, rank, score, me`), my position, my breakdown, `loadedAt` (REQ-7, 8, 9, 11, 13); not a member / malformed → 404
@@ -61,7 +63,7 @@ REQ-9, REQ-11, REQ-13 → HV endpoints + S09 (T004–T006); REQ-10 → GV endpoi
 | Change log and `achievedAt` detected at the next read of the class | No job runner exists yet (ADR-0008 dev scheduler) | A sweep job: no production scheduler |
 
 Known limit: a change that is reverted before anyone opens S09 / T04 is not logged (NFR-8), and its time is the read time when the
-cause has no timestamp (section shown again, deadline removed). Membership history exists only from this change on (legacy: `joinedAt`).
+cause has no timestamp (section shown again, deadline removed, set archived). Membership history exists only from this change on (legacy: `joinedAt`).
 
 ## Constitution Check
 

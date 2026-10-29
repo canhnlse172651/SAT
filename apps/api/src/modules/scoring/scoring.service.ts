@@ -34,6 +34,7 @@ import {
   type MemberTimeline,
   type SetSubmission,
   type StudentScore,
+  prepareClass,
   scoreStudent,
   studentView,
 } from './scoring.engine.js';
@@ -237,7 +238,7 @@ export class ScoringService {
                   score: r.submission.score,
                   maxScore: r.submission.maxScore,
                   at: r.submission.at,
-                  regradedAt: r.submission.regradedAt ?? null,
+                  regrades: r.submission.regrades ?? [],
                 } satisfies SetSubmission,
               },
             ]
@@ -258,7 +259,7 @@ export class ScoringService {
       noShowsOf.set(n.studentId, set);
     }
 
-    const inputs = { now, cls, lessons, exams: exams.exams };
+    const inputs = prepareClass({ now, cls, lessons, exams: exams.exams });
     const scored = students.map((student) => {
       const member = memberOf.get(student.id);
       return {
@@ -291,8 +292,10 @@ export class ScoringService {
   }
 
   /**
-   * AC-6.6, NFR-8: compares each score with the last one seen. A change takes the time of the newest input event when that
-   * is newer than the stored time (a submission, re-grade, deadline, close, GV change), otherwise now; it is logged.
+   * AC-6.6, NFR-8: the time the current score was reached is the replayed last change (`changed`), also when the score went
+   * away and back between two reads. When the replay cannot explain a change seen against the last stored score (an
+   * unhide, an archive, a membership change), it takes the newest input event newer than the stored time, otherwise now.
+   * Changes against the stored score are logged.
    */
   private async track(
     workspaceId: string,
@@ -313,16 +316,22 @@ export class ScoringService {
         result.lastEvent && (!prev?.achievedAt || result.lastEvent.at > prev.achievedAt)
           ? result.lastEvent
           : null;
-      let achievedAt = prev?.achievedAt ?? null;
+      // The replay counts only when it lands after the time already recorded.
+      const replayed =
+        result.changed && (!prev?.achievedAt || result.changed.at > prev.achievedAt)
+          ? result.changed
+          : null;
+      let achievedAt = replayed?.at ?? prev?.achievedAt ?? null;
       const changed = !prev || prev.score !== score;
       if (changed) {
-        achievedAt = score > 0 || prev ? (event?.at ?? now) : null;
+        const cause = replayed ?? event;
+        achievedAt = score > 0 || prev ? (cause?.at ?? now) : null;
         if (prev || score > 0)
           logScoreChange({
             classId: String(classId),
             studentId: student.id,
-            itemId: event?.itemId ?? null,
-            reason: event?.reason ?? 'Thay đổi nội dung',
+            itemId: cause?.itemId ?? null,
+            reason: cause?.reason ?? 'Thay đổi nội dung',
             before: prev ? { avgEx: prev.avgEx, avgExam: prev.avgExam, score: prev.score } : null,
             after: { avgEx, avgExam, score },
             at: (achievedAt ?? now).toISOString(),
@@ -337,7 +346,12 @@ export class ScoringService {
             if (!isDuplicateKey(err)) throw err;
           }),
         );
-      else if (changed || prev.avgEx !== avgEx || prev.avgExam !== avgExam)
+      else if (
+        changed ||
+        prev.avgEx !== avgEx ||
+        prev.avgExam !== avgExam ||
+        achievedAt?.getTime() !== prev.achievedAt?.getTime()
+      )
         writes.push(scope.updateOne({ _id: prev._id }, { $set: values }).exec());
     }
     await Promise.all(writes);

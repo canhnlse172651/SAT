@@ -40,3 +40,28 @@
   `SAT_MODULE_RUN_DIR`, or one TC per `run test:modules -- 008 TC-###` (a `|` filter breaks on Windows).
 - Next: `/module 008` — sửa TC-030, TC-049, TC-064, TC-063; then `/test-module 008`.
 - Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 008 TC-030 (one TC per call)
+
+## Handoff 2026-10-29 23:00 — /module 008 (implementer, fix mode)
+- Status: 008-scoring-leaderboard [implementing], 8/8 tasks done   Branch: feat/008-scoring-leaderboard @ d3cad77 + this commit
+- Done this session (QA run 2026-10-29-1806, F1–F4):
+  - F1 TC-030 (AC-6.2/6.6): `scoring.engine.ts` replays the displayed score over the timed inputs (submissions, re-grades with their
+    `from` score, deadline / close instants, `hidden[].at`, `deadlines[].at`) → `changed`; `scoring.service.ts#track` uses it, also when
+    the score went away and back between two reads. 005 `LearningRecord.submission.regrades` (`{ at, from }[]`) replaces `regradedAt`.
+  - F2 TC-049 (AC-10.1): "Cập nhật lần cuối" now `dd/mm/yyyy HH:mm` like the prototype (`fmtDT` of T04) — `rank-format.ts#achievedText`.
+  - F3 TC-064 (NFR-5): `.rk-tbl` headers wrap, e-mails break, tighter cells < 1280 px, `.tbl-scroll` fallback.
+  - F4 TC-063 (NFR-2/4): `prepareClass` indexes deadlines / hides / sets once per read (was a scan per HV × set) → API p95 GV 447–499 ms,
+    HV 451 ms; UI p95 S09 1 524–1 575 ms, T04 1 440–1 570 ms.
+  - S09 store: an older board answer no longer overwrites the class picked after it.
+- Replays (`run test:modules -- 008 TC-###`, one per call): TC-030 ✔, TC-049 ✔, TC-064 ✔, TC-063 ✔ (twice), TC-018 ✔.
+  Full serial run (`--workers=1`, 8,8 min): 60/64 — TC-014, TC-018, TC-039, TC-063 failed; TC-018 and TC-063 (ECONNRESET in setup) pass alone.
+- Checks: `run lint` ✔, `run typecheck` ✔, `run build` ✔; `run test` ✔ 35 files / 1231 tests before the last (store-only) edit. After it,
+  `run test` and `run test:e2e` could not run: drive C: had 45 MB free (mongod `fassert`, 135 orphan `%TEMP%\mongo-mem-*` = 18 GB).
+- In progress: —
+- Next: `/test-module 008` trong phiên mới (agent QA, Playwright MCP) — chạy lại TC-030, TC-049, TC-063, TC-064, rồi cả bộ.
+- Blockers / questions (for QA):
+  - TC-014 script line 44 (`asShown`) hard-codes the old `HH:mm dd/mm/yyyy` of the column; its expected result names no format and still
+    holds — the script needs the `dd/mm/yyyy HH:mm` of TC-049 / the prototype.
+  - TC-039 is flaky on the old code too (1 of 2 failed at d3cad77): `helpers.ts#openS09` checks `picker.isVisible()` once, before the class
+    list has loaded, and then skips `selectOption` — it should wait for the picker.
+  - Free disk space before running anything: delete the orphan `%TEMP%\mongo-mem-*` folders (no mongod running).
+- Verify with: node .sdd/scripts/sdd.mjs run test && node .sdd/scripts/sdd.mjs run test:modules -- 008 TC-030

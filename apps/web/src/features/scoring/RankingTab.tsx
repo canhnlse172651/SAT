@@ -1,9 +1,9 @@
-import { RANKING_MESSAGES as M, foldSearch, formatScore, formatVnDateTime } from '@sat/shared';
+import { RANKING_MESSAGES as M, foldSearch, formatScore } from '@sat/shared';
 import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Avatar, Button, Dialog, ErrorState, Icon, IconButton, Skeleton } from '../../components';
 import { RankBadge } from './rank-bits';
-import { updatedText } from './rank-format';
+import { achievedText, updatedText } from './rank-format';
 import { RankInfo } from './RankInfo';
 import { useRankingStore } from './ranking-store';
 import { ScoreBreakdown } from './ScoreBreakdown';
@@ -105,7 +105,7 @@ export function RankingTab({ classId }: { classId: string }) {
     );
   else
     body = (
-      <div className="card">
+      <div className="card tbl-scroll">
         <table className="tbl rk-tbl">
           <thead>
             <tr>
@@ -141,13 +141,11 @@ export function RankingTab({ classId }: { classId: string }) {
                         )}
                       </span>
                     </td>
-                    <td className="small muted">{r.student.email}</td>
+                    <td className="small muted rk-tbl__email">{r.student.email}</td>
                     <td className="r num">{formatScore(r.avgEx)}</td>
                     <td className="r num">{formatScore(r.avgExam)}</td>
                     <td className="r num rk-tbl__score">{formatScore(r.score)}</td>
-                    <td className="small num">
-                      {r.achievedAt ? formatVnDateTime(new Date(r.achievedAt)) : '—'}
-                    </td>
+                    <td className="small num">{r.achievedAt ? achievedText(r.achievedAt) : '—'}</td>
                     <td className="r">
                       <IconButton
                         size="sm"
