@@ -2,7 +2,7 @@
 id: 008
 slug: scoring-leaderboard
 title: Scoring and Leaderboard
-status: tasked
+status: implementing
 branch: feat/008-scoring-leaderboard
 created: 2026-10-18
 updated: 2026-10-29
