@@ -1,0 +1,123 @@
+
+Running 64 tests using 1 worker
+
+  ok  1 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-001.spec.ts:6:1 › [008:AC-1.1] [008:AC-1.2] [008:AC-1.6] [008:AC-2.1] [008:AC-11.1] [008:AC-11.2] [008:AC-13.5] TC-001 a submission shows on "Điểm của tôi" with no GV action (4.9s)
+  ok  2 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-002.spec.ts:6:1 › [008:AC-1.2] TC-002 item points are rounded half-up to an integer (8.8s)
+  ok  3 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-003.spec.ts:6:1 › [008:AC-1.3] TC-003 steps and flashcards add no points; a set without Hạn nộp is not counted (4.1s)
+  ok  4 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-004.spec.ts:6:1 › [008:AC-1.4] TC-004 a submission with maximum 0 is left out (4.0s)
+  ok  5 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-005.spec.ts:6:1 › [008:AC-1.5] [008:AC-1.7] [008:AC-1.10] TC-005 exercise and exam averages, weighted and rounded (4.4s)
+  ok  6 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-006.spec.ts:10:1 › [008:AC-1.8] [008:AC-2.5] [008:AC-1.9] [008:AC-11.1] TC-006 an unsubmitted set counts 0 only once its Hạn nộp has passed (4.5s)
+  ok  7 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-007.spec.ts:8:1 › [008:AC-2.8] [008:AC-11.8] TC-007 an exam not taken counts 0 after its close time (7.0s)
+  ok  8 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-008.spec.ts:6:1 › [008:AC-1.11] [008:AC-11.2] TC-008 only sets with a Hạn nộp are listed (3.8s)
+  ok  9 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-009.spec.ts:6:1 › [008:AC-1.12] [008:AC-2.7] TC-009 one exam submission counts in every class it was assigned to (7.6s)
+  ok 10 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-010.spec.ts:8:1 › [008:AC-2.2] [008:AC-2.3] TC-010 a second submission is refused and the score stays (4.8s)
+  ok 11 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-011.spec.ts:7:1 › [008:AC-2.4] [008:NFR-3] TC-011 concurrent submissions are all counted once (3.1s)
+  ok 12 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-012.spec.ts:8:1 › [008:AC-2.6] [008:AC-11.1] TC-012 a late submission replaces the 0 without a penalty (4.1s)
+  ok 13 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-013.spec.ts:8:1 › [008:AC-2.9] TC-013 the automatic submission at close time counts instead of 0 (4.2s)
+  x  14 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-014.spec.ts:10:1 › [008:AC-3.1] [008:AC-3.3] TC-014 a re-grade lowers the score and sets "Cập nhật lần cuối" to the re-grade time (6.9s)
+  ok 15 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-015.spec.ts:6:1 › [008:AC-3.2] TC-015 a re-grade changes each class only through its own submission (4.8s)
+  ok 16 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-016.spec.ts:8:1 › [008:AC-4.1] [008:AC-4.2] [008:AC-4.5] [008:AC-11.3] TC-016 hiding a Bài tập section keeps submitted points in one anonymous line (7.4s)
+  ok 17 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-017.spec.ts:6:1 › [008:AC-4.3] TC-017 a re-grade of hidden content updates the hidden line and the average (6.1s)
+  ok 18 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-018.spec.ts:6:1 › [008:AC-4.4] TC-018 hiding in one class does not touch another class (4.2s)
+  ok 19 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-019.spec.ts:8:1 › [008:AC-4.6] [008:AC-11.3] TC-019 an archived set keeps submitted points, an overdue 0 is dropped (7.3s)
+  ok 20 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-020.spec.ts:8:1 › [008:AC-4.7] TC-020 removing a Hạn nộp keeps submissions and drops the overdue 0 (7.4s)
+  ok 21 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-021.spec.ts:10:1 › [008:AC-4.8] TC-021 moving a passed Hạn nộp to the future removes the 0 until the new one passes (6.5s)
+  ok 22 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-022.spec.ts:10:1 › [008:AC-4.9] [008:AC-11.10] TC-022 an archived exam keeps submitted points in "Bài thi đã gỡ", drops the no-show 0 (8.0s)
+  ok 23 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-023.spec.ts:8:1 › [008:AC-5.1] [008:AC-5.2] TC-023 a removed student leaves the board and comes back with the same points (9.5s)
+  ok 24 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-024.spec.ts:6:1 › [008:AC-5.3] TC-024 a deleted account leaves the board (6.5s)
+  ok 25 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-025.spec.ts:6:1 › [008:AC-5.4] [008:AC-10.1] TC-025 a locked account stays on the board, labelled for the GV (6.7s)
+  ok 26 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-026.spec.ts:10:1 › [008:AC-5.5] [008:AC-8.6] TC-026 an ended class shows the final board and still counts passed deadlines (4.3s)
+  ok 27 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-027.spec.ts:10:1 › [008:AC-5.6] TC-027 a student who joins after a Hạn nộp gets no 0 for it, a late submission counts (6.2s)
+  ok 28 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-028.spec.ts:11:1 › [008:AC-5.7] [008:AC-7.2] [008:AC-10.1] TC-028 a student activated after a Hạn nộp gets no 0 for it (7.8s)
+  ok 29 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-029.spec.ts:6:1 › [008:AC-6.1] [008:AC-7.4] TC-029 equal scores share a rank (1, 2, 2, 4), medals for 1–3 (10.2s)
+  ok 30 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-030.spec.ts:10:1 › [008:AC-6.2] TC-030 inside a tie: who reached the score first, then given name (7.0s)
+  ok 31 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-031.spec.ts:6:1 › [008:AC-6.3] [008:AC-7.3] TC-031 0,0 is unranked: pinned message for the HV, "—" after the ranked for the GV (8.5s)
+  ok 32 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-032.spec.ts:6:1 › [008:AC-6.4] [008:AC-6.5] TC-032 one new submission re-ranks the class from all sets since the start (6.8s)
+  ok 33 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-033.spec.ts:8:1 › [008:AC-6.6] TC-033 "Cập nhật lần cuối" changes only when the score changes (4.1s)
+  ok 34 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-034.spec.ts:6:1 › [008:AC-7.1] [008:AC-7.2] TC-034 at most 10 ranks are shown, own position pinned (28.9s)
+  ok 35 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-035.spec.ts:6:1 › [008:AC-7.5] TC-035 nobody has points yet (5.5s)
+  ok 36 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-036.spec.ts:6:1 › [008:AC-7.6] TC-036 a classmate opens S12, oneself and the pinned row open S10 (10.2s)
+  ok 37 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-037.spec.ts:6:1 › [008:AC-7.7] TC-037 S09 has exactly two parts and no score history (10.3s)
+  ok 38 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-038.spec.ts:6:1 › [008:AC-8.1] TC-038 class picker order: Đang học (newest start first), Sắp bắt đầu, Đã kết thúc (6.2s)
+  ok 39 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-039.spec.ts:6:1 › [008:AC-8.2] TC-039 the class viewed last is chosen again, the first one when it is gone (4.2s)
+  ok 40 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-040.spec.ts:6:1 › [008:AC-8.3] TC-040 "Bảng xếp hạng ›" on S02 opens S09 with that class (3.7s)
+  ok 41 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-041.spec.ts:6:1 › [008:AC-8.4] TC-041 an HV without a class (2.9s)
+  ok 42 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-042.spec.ts:6:1 › [008:AC-8.5] TC-042 a class that has not started yet (3.6s)
+  ok 43 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-043.spec.ts:7:1 › [008:AC-9.1] [008:NFR-7] TC-043 the HV receives only names and scores of others, nothing of hidden content (27.4s)
+  ok 44 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-044.spec.ts:6:1 › [008:AC-9.2] TC-044 a class that is not mine answers "Không tìm thấy lớp." without telling whether it exists (6.0s)
+  ok 45 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-045.spec.ts:6:1 › [008:AC-9.3] TC-045 an HV cannot read the GV endpoints or another student's breakdown (5.1s)
+  ok 46 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-046.spec.ts:6:1 › [008:AC-9.4] TC-046 another GV sees "Không tìm thấy lớp." on my class's ranking tab (3.6s)
+  ok 47 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-047.spec.ts:6:1 › [008:AC-9.5] TC-047 signed out: S09 and the ranking tab go through A01 and come back (4.8s)
+  ok 48 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-048.spec.ts:6:1 › [008:AC-9.6] TC-048 the own position on S09 matches the GV tab (29.0s)
+  ok 49 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-049.spec.ts:7:1 › [008:AC-10.1] TC-049 the GV tab lists activated members (locked labelled) with every column (13.4s)
+  ok 50 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-050.spec.ts:10:1 › [008:AC-10.2] TC-050 the expanded row shows every item, labelled, "Không tính" where it does not count (6.9s)
+  ok 51 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-051.spec.ts:6:1 › [008:AC-10.3] [008:AC-10.4] TC-051 search by name (no accents, spaces trimmed) or e-mail keeps the ranks (11.1s)
+  ok 52 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-052.spec.ts:6:1 › [008:AC-10.5] TC-052 a class without students (1.5s)
+  ok 53 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-053.spec.ts:6:1 › [008:AC-11.4] TC-053 a set row with a submission opens its S06 review (4.2s)
+  ok 54 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-054.spec.ts:8:1 › [008:AC-11.5] TC-054 Hanzi, pinyin and Vietnamese names are shown exactly (5.2s)
+  ok 55 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-055.spec.ts:6:1 › [008:AC-11.6] [008:AC-11.9] TC-055 nothing to count yet (3.8s)
+  ok 56 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-056.spec.ts:6:1 › [008:AC-11.7] TC-056 no "Làm lại" or "Cải thiện điểm" anywhere on "Điểm của tôi" (4.3s)
+  ok 57 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-057.spec.ts:8:1 › [008:AC-11.8] TC-057 the "Bài thi" group: order by opening time, states, close times; exams closed before joining are left out (7.1s)
+  ok 58 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-058.spec.ts:8:1 › [008:AC-11.11] [008:AC-11.12] TC-058 an exam row with a submission opens its S08 result, others open nothing (6.9s)
+  ok 59 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-059.spec.ts:25:1 › [008:AC-13.1] TC-059 "Cách tính điểm" explains the rules on S09 and on the GV tab (4.7s)
+  ok 60 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-060.spec.ts:18:1 › [008:AC-13.2] [008:AC-13.3] TC-060 "Cập nhật lúc …" is the server time of the data; refresh, class change and reopening load new data (11.8s)
+  ok 61 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-061.spec.ts:6:1 › [008:AC-13.4] TC-061 offline refresh shows the error with "Thử lại", never the old list (4.7s)
+  ok 62 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-062.spec.ts:9:1 › [008:NFR-1] TC-062 a submission shows within 10 s, an overdue 0 within 60 s (3.2s)
+API p95: GV 482 ms, HV 416 ms; UI p95: S09 1431 ms, T04 1481 ms
+  ok 63 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-063.spec.ts:15:1 › [008:NFR-2] [008:NFR-4] TC-063 100 HV, 300 sets with Hạn nộp, 50 exams: p95 full display ≤ 2 s (1.6m)
+  ok 64 [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-064.spec.ts:23:1 › [008:NFR-5] TC-064 S09 at 360–430 px without horizontal scroll, ≥ 44 px targets; the GV tab at 1024 px (12.9s)
+
+
+  1) [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-014.spec.ts:10:1 › [008:AC-3.1] [008:AC-3.3] TC-014 a re-grade lowers the score and sets "Cập nhật lần cuối" to the re-grade time 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Array [
+        "1",
+    -   "15,0",
+    -   "50,0",
+    +   "7,5",
+    +   "25,0",
+      ]
+
+      38 |   rows = await tableRows(gv);
+      39 |   const anRow = rows.find((x) => x.name === 'Nguyễn Văn An')!;
+    > 40 |   expect([anRow.rank, anRow.score, anRow.avgEx]).toEqual(['1', '15,0', '50,0']);
+         |                                                  ^
+      41 |   expect(rows.find((x) => x.name === 'Trần Thị Bình')!.rank).toBe('1');
+      42 |   // The re-grade time (moved clock), as shown in the column (dd/mm/yyyy HH:mm, TC-049).
+      43 |   const shown = [vnDateTime(new Date(done.getTime() - 60_000)), vnDateTime(done)];
+        at C:\Users\CanhLN\Desktop\SAT\specs\008-scoring-leaderboard\testing\e2e\TC-014.spec.ts:40:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\008-scoring-leaderboard\testing\runs\2026-10-29-2303\artifacts\TC-014--008-AC-3-1-008-AC--70e5d-n-cuối-to-the-re-grade-time-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › specs\008-scoring-leaderboard\testing\e2e\TC-014.spec.ts:10:1 › [008:AC-3.1] [008:AC-3.3] TC-014 a re-grade lowers the score and sets "Cập nhật lần cuối" to the re-grade time 
+  63 passed (9.4m)

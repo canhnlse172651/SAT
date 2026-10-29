@@ -290,6 +290,17 @@ export const archiveExam = (gv: Page, id: string) => api(gv, 'POST', `/api/exams
 /* ---------- clock ---------- */
 
 export const advanceClock = (page: Page, ms: number) => api(page, 'POST', '/api/dev/clock', { advanceMs: ms });
+/**
+ * For scripts whose "hôm nay" must last through `needMs` of clock moves: when the server's VN day ends sooner (a run late in
+ * the evening), the clock first goes to 08:00 of the next VN day. Returns true when it moved (GV sessions then need relogin).
+ */
+export async function roomToday(page: Page, needMs: number) {
+  const vn = (await serverNow(page)).getTime() + 7 * HOUR;
+  const toMidnight = DAY - (vn % DAY);
+  if (toMidnight > needMs + 30 * MIN) return false;
+  await advanceClock(page, toMidnight + 8 * HOUR);
+  return true;
+}
 export const resetClock = (page: Page) => call(page, 'DELETE', '/api/dev/clock');
 /** Moves the server clock to one minute after `closesAt` and lets 006 settle the exam (10 s). */
 export async function pastClose(page: Page, closesAt: Date) {
@@ -309,6 +320,8 @@ export async function openS09(hv: Page, cls?: string) {
   await hv.goto('/hv');
   await hv.getByRole('link', { name: 'Xếp hạng' }).first().click();
   await expect(hv.locator('[data-screen="S09"]')).toBeVisible();
+  // The picker exists only once the class list has loaded (one class: no picker).
+  await settle(hv);
   if (cls) {
     const picker = hv.getByRole('combobox', { name: 'Chọn lớp' });
     if (await picker.isVisible().catch(() => false)) await picker.selectOption(cls);

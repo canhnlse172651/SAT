@@ -65,3 +65,15 @@
     list has loaded, and then skips `selectOption` — it should wait for the picker.
   - Free disk space before running anything: delete the orphan `%TEMP%\mongo-mem-*` folders (no mongod running).
 - Verify with: node .sdd/scripts/sdd.mjs run test && node .sdd/scripts/sdd.mjs run test:modules -- 008 TC-030
+
+## Handoff 2026-10-29 23:20 — /test-module 008 (QA)
+- Status: 008-scoring-leaderboard [verified], 8/8 tasks done   Branch: feat/008-scoring-leaderboard @ 9662093 + this commit
+- Done this session: QA run 2026-10-29-2303 — 64/64 E2E + API Pass, 2 Thủ công; report `testing/runs/2026-10-29-2303/report.md`;
+  `verification.md` QA section **Verdict: PASS**; trace 87/87 AC, no gaps. F1–F4 of run 1806 confirmed fixed (TC-030, TC-049, TC-064 also via MCP).
+- Script fixes (expectations unchanged): TC-014 compares the column as `dd/mm/yyyy HH:mm` and calls the new `helpers.ts#roomToday` so a
+  late-evening run does not cross VN midnight; `helpers.ts#openS09` waits for the class list before picking a class (TC-039 flake).
+- Note: run in the same session as the /module 008 fix (user's request), not an independent QA session.
+- In progress: —
+- Next: `/sdd-ship 008` (PR) — or `/sdd-verify 008` for code + security review first.
+- Blockers / questions: free disk C: (`%TEMP%\mongo-mem-*`, ~18 GB of orphan test DBs) before the next run.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 008 TC-030

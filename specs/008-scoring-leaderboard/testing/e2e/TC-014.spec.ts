@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   HOUR, LESSONS, advanceClock, deadlines, evidence, expectSummary, gvPage, hvPage, myScore, newClass, openRankingTab, openS09, people,
-  r1, realSubmit, refresh, regrade, serverNow, setRow, submitScore, tableRows, useClockReset, vnDateTime, closeOpened } from './helpers';
+  r1, realSubmit, refresh, regrade, relogin, roomToday, serverNow, setRow, submitScore, tableRows, useClockReset, vnDateTime, closeOpened } from './helpers';
 
 test.afterEach(closeOpened);
 
@@ -10,6 +10,8 @@ useClockReset();
 test('[008:AC-3.1] [008:AC-3.3] TC-014 a re-grade lowers the score and sets "Cập nhật lần cuối" to the re-grade time', async ({ browser }) => {
   test.setTimeout(120_000);
   const { page: gv } = await gvPage(browser);
+  // "Hạn nộp hôm nay" must still be today after step 2 (+1 h), whatever the hour of the run.
+  if (await roomToday(gv, HOUR)) await relogin(gv, 'GV');
   const { An, Bình } = await people(gv, ['An', 'Bình']);
   const r = await r1(gv, { twoQ: ['S1a'] });
   const A = await newClass(gv, r.cur, [An, Bình]);
@@ -39,10 +41,9 @@ test('[008:AC-3.1] [008:AC-3.3] TC-014 a re-grade lowers the score and sets "C�
   const anRow = rows.find((x) => x.name === 'Nguyễn Văn An')!;
   expect([anRow.rank, anRow.score, anRow.avgEx]).toEqual(['1', '15,0', '50,0']);
   expect(rows.find((x) => x.name === 'Trần Thị Bình')!.rank).toBe('1');
-  // The re-grade time (moved clock), as shown in the column.
+  // The re-grade time (moved clock), as shown in the column (dd/mm/yyyy HH:mm, TC-049).
   const shown = [vnDateTime(new Date(done.getTime() - 60_000)), vnDateTime(done)];
-  const asShown = (s: string) => `${s.slice(11)} ${s.slice(0, 10)}`;
-  expect(shown.map(asShown)).toContain(anRow.updated);
+  expect(shown).toContain(anRow.updated);
   await evidence(gv, 'TC-014', 2);
 
   await openS09(an.page);
