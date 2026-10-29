@@ -1,0 +1,203 @@
+
+Running 76 tests using 1 worker
+
+  ok  1 [chromium] › specs\002-curriculum\testing\e2e\TC-001.spec.ts:6:1 › [002:AC-1.1] [002:AC-1.2] [002:AC-4.2] TC-001 tạo giáo trình mở T06 trống (2.3s)
+  ok  2 [chromium] › specs\002-curriculum\testing\e2e\TC-002.spec.ts:6:1 › [002:AC-1.3] TC-002 tên giáo trình rỗng hoặc quá 100 ký tự (1.6s)
+  ok  3 [chromium] › specs\002-curriculum\testing\e2e\TC-003.spec.ts:6:1 › [002:AC-1.4] TC-003 tên trùng (hoa/thường, khoảng trắng, kể cả đã lưu trữ) (1.4s)
+  ok  4 [chromium] › specs\002-curriculum\testing\e2e\TC-004.spec.ts:6:1 › [002:AC-1.5] TC-004 thiếu cấp độ HSK, mô tả quá 2000 ký tự (1.7s)
+  ok  5 [chromium] › specs\002-curriculum\testing\e2e\TC-005.spec.ts:17:1 › [002:AC-1.6] [002:AC-1.2] TC-005 ảnh bìa: sai định dạng, quá 2 MB, PNG hợp lệ (2.5s)
+  ok  6 [chromium] › specs\002-curriculum\testing\e2e\TC-006.spec.ts:15:1 › [002:AC-3.1] [002:AC-3.4] TC-006 T05 trống rồi thẻ giáo trình đầy đủ thông tin (1.5s)
+  ok  7 [chromium] › specs\002-curriculum\testing\e2e\TC-007.spec.ts:6:1 › [002:AC-3.2] [002:AC-3.3] [002:AC-3.5] TC-007 lọc cấp độ giữ trong phiên, tìm không dấu, không khớp (2.5s)
+  ok  8 [chromium] › specs\002-curriculum\testing\e2e\TC-008.spec.ts:7:1 › [002:AC-3.6] TC-008 phân trang 20 giáo trình, tổng số, T05 ≤ 2 s với 300 giáo trình (NFR-1) (5.2s)
+  ok  9 [chromium] › specs\002-curriculum\testing\e2e\TC-009.spec.ts:12:1 › [002:AC-2.1] [002:AC-2.2] TC-009 sửa thông tin giáo trình, tên trùng bị từ chối (3.7s)
+  ok 10 [chromium] › specs\002-curriculum\testing\e2e\TC-010.spec.ts:17:1 › [002:AC-2.3] [002:AC-2.4] TC-010 đổi cấp độ HSK của giáo trình đang dùng: xác nhận, hủy, lớp thấy mới (3.9s)
+  ok 11 [chromium] › specs\002-curriculum\testing\e2e\TC-011.spec.ts:19:1 › [002:AC-4.1] [002:AC-4.3] TC-011 T06 dòng Bài: số, tên, trạng thái, tóm tắt, nhãn; thông báo lớp đang dùng (1.5s)
+  ok 12 [chromium] › specs\002-curriculum\testing\e2e\TC-012.spec.ts:6:1 › [002:AC-4.4] TC-012 danh sách Lớp sử dụng (1.6s)
+  ok 13 [chromium] › specs\002-curriculum\testing\e2e\TC-013.spec.ts:6:1 › [002:AC-13.1] TC-013 xóa giáo trình không lớp, không dữ liệu (2.1s)
+  ok 14 [chromium] › specs\002-curriculum\testing\e2e\TC-014.spec.ts:18:1 › [002:AC-13.2] [002:AC-13.5] TC-014 giáo trình đang dùng không xóa được, lưu trữ thay thế (3.6s)
+  ok 15 [chromium] › specs\002-curriculum\testing\e2e\TC-015.spec.ts:6:1 › [002:AC-13.3] TC-015 giáo trình có dữ liệu học tập không xóa được (1.6s)
+  ok 16 [chromium] › specs\002-curriculum\testing\e2e\TC-016.spec.ts:6:1 › [002:AC-13.4] TC-016 lớp hoặc dữ liệu phát sinh sau khi hộp xóa đã mở (2.3s)
+  ok 17 [chromium] › specs\002-curriculum\testing\e2e\TC-017.spec.ts:6:1 › [002:AC-13.6] TC-017 khôi phục giáo trình đã lưu trữ (1.4s)
+  x  18 [chromium] › specs\002-curriculum\testing\e2e\TC-018.spec.ts:6:1 › [002:AC-5.1] [002:AC-5.2] [002:AC-7.1] TC-018 thêm bài, T18 mở với 2 panel (9.0s)
+  ok 19 [chromium] › specs\002-curriculum\testing\e2e\TC-019.spec.ts:6:1 › [002:AC-5.3] [002:AC-5.4] TC-019 đổi tên bài trên T06 và T18 (NFR-8) (2.2s)
+  ok 20 [chromium] › specs\002-curriculum\testing\e2e\TC-020.spec.ts:7:1 › [002:AC-5.5] TC-020 giới hạn 100 bài (2.6s)
+  ok 21 [chromium] › specs\002-curriculum\testing\e2e\TC-021.spec.ts:6:1 › [002:AC-6.1] [002:AC-6.3] TC-021 kéo-thả bài, thả ra ngoài thì về chỗ cũ (1.7s)
+  ok 22 [chromium] › specs\002-curriculum\testing\e2e\TC-022.spec.ts:6:1 › [002:AC-6.2] [002:AC-6.3] TC-022 sắp xếp bài bằng bàn phím, nút và menu (NFR-5) (1.7s)
+  ok 23 [chromium] › specs\002-curriculum\testing\e2e\TC-023.spec.ts:6:1 › [002:AC-6.4] TC-023 lưu thứ tự thất bại thì trả về thứ tự cũ (1.5s)
+  ok 24 [chromium] › specs\002-curriculum\testing\e2e\TC-024.spec.ts:6:1 › [002:AC-6.5] [002:AC-6.6] [002:AC-8.1] TC-024 Lên/Xuống trong T07, kể cả mục lưu trữ đang ẩn (1.6s)
+  ok 25 [chromium] › specs\002-curriculum\testing\e2e\TC-025.spec.ts:6:1 › [002:AC-7.3] [002:AC-7.4] [002:AC-7.2] TC-025 panel Thủ công: tóm tắt theo trạng thái, phần trống (1.2s)
+  ok 26 [chromium] › specs\002-curriculum\testing\e2e\TC-026.spec.ts:16:1 › [002:AC-7.5] [002:AC-7.11] [002:AC-7.14] [002:AC-8.3] TC-026 T07 mở ở tab Bài học, phần đầu, không chế độ xem trước (1.6s)
+  ok 27 [chromium] › specs\002-curriculum\testing\e2e\TC-027.spec.ts:6:1 › [002:AC-7.6] [002:AC-7.10] TC-027 thêm mục lưu ngay ở Nháp, Thêm sau, rời T07 (1.6s)
+  ok 28 [chromium] › specs\002-curriculum\testing\e2e\TC-028.spec.ts:6:1 › [002:AC-7.8] TC-028 quay lại T18 thấy tóm tắt mới nhất, tiêu điểm ở Soạn thủ công (1.6s)
+  ok 29 [chromium] › specs\002-curriculum\testing\e2e\TC-029.spec.ts:7:1 › [002:AC-7.9] TC-029 tối đa 30 bộ bài tập không lưu trữ, nút thêm luôn bật (2.1s)
+  ok 30 [chromium] › specs\002-curriculum\testing\e2e\TC-030.spec.ts:6:1 › [002:AC-7.12] [002:AC-7.13] TC-030 thay đổi chưa lưu giữ qua tab, hỏi khi rời T07, đường dẫn T09 (2.3s)
+  ok 31 [chromium] › specs\002-curriculum\testing\e2e\TC-031.spec.ts:4:1 › [002:AC-8.2] TC-031 không chuyển hay thêm mục sang phần kia (894ms)
+  ok 32 [chromium] › specs\002-curriculum\testing\e2e\TC-032.spec.ts:20:1 › [002:AC-8.3] [002:AC-10.2] TC-032 cùng một thứ tự cho T07, T21 và HV (2.6s)
+  ok 33 [chromium] › specs\002-curriculum\testing\e2e\TC-033.spec.ts:6:1 › [002:AC-9.1] [002:AC-9.2] TC-033 xuất bản một mục: chưa hoàn chỉnh bị từ chối, lưu + xuất bản ngay (1.4s)
+  ok 34 [chromium] › specs\002-curriculum\testing\e2e\TC-034.spec.ts:19:1 › [002:AC-9.3] [002:AC-9.4] TC-034 hộp xuất bản bài: chọn sẵn mục sẵn sàng, cảnh báo lớp, HV thấy đúng (2.5s)
+  ok 35 [chromium] › specs\002-curriculum\testing\e2e\TC-035.spec.ts:6:1 › [002:AC-9.5] [002:AC-9.3] TC-035 không có mục sẵn sàng thì không xuất bản được bài (1.2s)
+  ok 36 [chromium] › specs\002-curriculum\testing\e2e\TC-036.spec.ts:17:1 › [002:AC-9.6] [002:AC-9.3] TC-036 chỉ có các chuyển trạng thái hợp lệ, không về Nháp (2.1s)
+  ok 37 [chromium] › specs\002-curriculum\testing\e2e\TC-037.spec.ts:15:1 › [002:AC-10.1] [002:AC-10.3] TC-037 HV chỉ thấy Bài và mục Đã xuất bản, không thấy phần/Bài rỗng (1.9s)
+  x  38 [chromium] › specs\002-curriculum\testing\e2e\TC-038.spec.ts:19:1 › [002:AC-10.5] [002:AC-17.3] TC-038 HV mở nội dung không được thấy: 404 đồng nhất, trang quản trị chuyển về S01, A05 (7.7s)
+  ok 39 [chromium] › specs\002-curriculum\testing\e2e\TC-039.spec.ts:19:1 › [002:AC-10.4] [002:AC-11.2] [002:AC-11.3] TC-039 nhãn AI, mọi thao tác vẫn dùng được, HV chỉ thấy nội dung đã lưu (3.6s)
+  ok 40 [chromium] › specs\002-curriculum\testing\e2e\TC-040.spec.ts:16:1 › [002:AC-10.6] TC-040 thay đổi của GV hiện cho HV ở lần tải kế tiếp ≤ 5 s (NFR-4) (2.1s)
+  ok 41 [chromium] › specs\002-curriculum\testing\e2e\TC-041.spec.ts:6:1 › [002:AC-10.7] TC-041 Bài đã xuất bản không còn nội dung cho HV thì có cảnh báo (1.9s)
+  ok 42 [chromium] › specs\002-curriculum\testing\e2e\TC-042.spec.ts:6:1 › [002:AC-11.1] TC-042 panel Tạo bằng AI có trên mọi Bài (1.4s)
+  ok 43 [chromium] › specs\002-curriculum\testing\e2e\TC-043.spec.ts:6:1 › [002:AC-11.4] TC-043 bấm nhãn AI: chờ duyệt → T20, đang tạo → panel Tạo bằng AI của T18 (1.7s)
+  ok 44 [chromium] › specs\002-curriculum\testing\e2e\TC-044.spec.ts:21:1 › [002:AC-11.5] [002:AC-11.7] [002:AC-19.2] [002:AC-19.3] [002:AC-19.6] TC-044 duyệt AI thay phần Bài tập (3.1s)
+  ok 45 [chromium] › specs\002-curriculum\testing\e2e\TC-045.spec.ts:4:1 › [002:AC-11.6] TC-045 duyệt quá 30 mục thì không thay đổi gì (1.0s)
+  ok 46 [chromium] › specs\002-curriculum\testing\e2e\TC-046.spec.ts:16:1 › [002:AC-19.1] TC-046 nội dung hộp xác nhận duyệt AI (906ms)
+  ok 47 [chromium] › specs\002-curriculum\testing\e2e\TC-047.spec.ts:4:1 › [002:AC-19.4] TC-047 mục chưa đạt điều kiện xuất bản thì không duyệt (986ms)
+  ok 48 [chromium] › specs\002-curriculum\testing\e2e\TC-048.spec.ts:6:1 › [002:AC-19.5] TC-048 phần đổi sau khi mở hộp duyệt thì không thay thế (1.2s)
+  ok 49 [chromium] › specs\002-curriculum\testing\e2e\TC-049.spec.ts:6:1 › [002:AC-12.1] [002:AC-12.2] TC-049 xóa mục: hộp xác nhận, xóa cả thay đổi chưa lưu, đánh số lại (1.6s)
+  ok 50 [chromium] › specs\002-curriculum\testing\e2e\TC-050.spec.ts:6:1 › [002:AC-12.3] [002:AC-12.6] TC-050 bộ bài tập có dữ liệu học tập không xóa được (1.5s)
+  ok 51 [chromium] › specs\002-curriculum\testing\e2e\TC-051.spec.ts:18:1 › [002:AC-12.4] TC-051 xóa bài không có dữ liệu học tập (1.5s)
+  ok 52 [chromium] › specs\002-curriculum\testing\e2e\TC-052.spec.ts:6:1 › [002:AC-12.5] [002:AC-12.6] TC-052 bài có dữ liệu học tập không xóa được (2.2s)
+  ok 53 [chromium] › specs\002-curriculum\testing\e2e\TC-053.spec.ts:6:1 › [002:AC-12.7] TC-053 xóa bài có nội dung AI chờ duyệt (1.4s)
+  ok 54 [chromium] › specs\002-curriculum\testing\e2e\TC-054.spec.ts:20:1 › [002:AC-18.1] [002:AC-18.2] [002:AC-18.4] TC-054 lưu trữ và khôi phục bộ bài tập có dữ liệu (2.4s)
+  ok 55 [chromium] › specs\002-curriculum\testing\e2e\TC-055.spec.ts:6:1 › [002:AC-18.3] TC-055 mục lưu trữ: tính trong tóm tắt, ẩn mặc định, sửa được (1.4s)
+  ok 56 [chromium] › specs\002-curriculum\testing\e2e\TC-056.spec.ts:6:1 › [002:AC-18.5] TC-056 không lưu trữ được khi còn thay đổi chưa lưu (1.3s)
+  ok 57 [chromium] › specs\002-curriculum\testing\e2e\TC-057.spec.ts:21:1 › [002:AC-14.1] [002:AC-14.2] [002:AC-14.3] TC-057 nhân bản bài: ngay sau bản gốc, tất cả Nháp, giữ AI tạo (1.9s)
+  ok 58 [chromium] › specs\002-curriculum\testing\e2e\TC-058.spec.ts:4:1 › [002:AC-14.1] [002:AC-14.4] TC-058 tên bản sao tối đa 100 ký tự, bản sao độc lập (984ms)
+  x  59 [chromium] › specs\002-curriculum\testing\e2e\TC-059.spec.ts:6:1 › [002:AC-14.5] [002:AC-15.5] TC-059 nhân bản thất bại không để lại bản sao (6.8s)
+  ok 60 [chromium] › specs\002-curriculum\testing\e2e\TC-060.spec.ts:6:1 › [002:AC-15.1] TC-060 hộp nhân bản giáo trình điền sẵn tên và cấp độ (1.4s)
+  ok 61 [chromium] › specs\002-curriculum\testing\e2e\TC-061.spec.ts:26:1 › [002:AC-15.2] [002:AC-15.3] [002:AC-15.4] TC-061 nhân bản giáo trình: đầy đủ, giữ trạng thái, độc lập (2.1s)
+  ok 62 [chromium] › specs\002-curriculum\testing\e2e\TC-062.spec.ts:6:1 › [002:AC-15.6] [002:AC-17.5] TC-062 đang nhân bản: thông báo, không nhận thêm yêu cầu (4.4s)
+  ok 63 [chromium] › specs\002-curriculum\testing\e2e\TC-063.spec.ts:6:1 › [002:AC-16.1] [002:AC-16.10] TC-063 mở T21 từ T06; T18, T07 không có Xem như học viên (1.5s)
+  ok 64 [chromium] › specs\002-curriculum\testing\e2e\TC-064.spec.ts:6:1 › [002:AC-16.1] [002:AC-16.2] TC-064 công tắc Gồm cả mục Nháp, trạng thái trống (1.4s)
+  ok 65 [chromium] › specs\002-curriculum\testing\e2e\TC-065.spec.ts:6:1 › [002:AC-16.3] [002:AC-16.4] [002:AC-16.5] TC-065 nội dung đầy đủ, chọn thử đáp án, không nộp, không ghi nhận (1.4s)
+  ok 66 [chromium] › specs\002-curriculum\testing\e2e\TC-066.spec.ts:6:1 › [002:AC-16.6] TC-066 thoát xem trước về đúng vị trí Bài trên T06 (1.6s)
+  ok 67 [chromium] › specs\002-curriculum\testing\e2e\TC-067.spec.ts:6:1 › [002:AC-16.7] [002:AC-16.8] [002:AC-16.9] TC-067 Web / Mobile: mặc định Web, giữ trạng thái, nhớ trong phiên (2.3s)
+  ok 68 [chromium] › specs\002-curriculum\testing\e2e\TC-068.spec.ts:18:1 › [002:AC-17.1] [002:AC-17.2] TC-068 GV workspace khác: A05 và 404 đồng nhất, không đổi dữ liệu (NFR-6) (2.9s)
+  ok 69 [chromium] › specs\002-curriculum\testing\e2e\TC-069.spec.ts:6:1 › [002:AC-17.4] TC-069 thao tác dựa trên dữ liệu đã đổi ở tab khác bị từ chối, giữ nội dung đang nhập (4.5s)
+  ok 70 [chromium] › specs\002-curriculum\testing\e2e\TC-070.spec.ts:6:1 › [002:AC-17.5] TC-070 bấm gửi nhiều lần chỉ thực hiện một lần (2.5s)
+  ok 71 [chromium] › specs\002-curriculum\testing\e2e\TC-071.spec.ts:13:1 › [002:NFR-2] TC-071 hiệu năng T06, T18, thao tác lưu, Web/Mobile và duyệt AI (5.5s)
+  ok 72 [chromium] › specs\002-curriculum\testing\e2e\TC-072.spec.ts:6:1 › [002:NFR-3] TC-072 hiệu năng nhân bản Bài 60 mục và giáo trình 20 Bài (~400 mục) (13.2s)
+  ok 73 [chromium] › specs\002-curriculum\testing\e2e\TC-075.spec.ts:6:1 › [002:AC-3.3] [002:NFR-8] TC-075 chữ Hán, pinyin có dấu, tiếng Việt hiển thị nguyên văn (2.4s)
+  ok 74 [chromium] › specs\002-curriculum\testing\e2e\TC-076.spec.ts:22:1 › [002:AC-2.4] [002:AC-10.6] TC-076 thông tin giáo trình mới hiện cho HV các lớp đang dùng (2.0s)
+  ok 75 [chromium] › specs\002-curriculum\testing\e2e\TC-077.spec.ts:6:1 › [002:AC-7.2] [002:AC-8.2] TC-077 không có thao tác chuyển mục hay sửa phần trong T07 (1.2s)
+  ok 76 [chromium] › specs\002-curriculum\testing\e2e\TC-078.spec.ts:7:1 › [002:AC-17.3] TC-078 HV mở T05 bị đưa về S01 (967ms)
+
+
+  1) [chromium] › specs\002-curriculum\testing\e2e\TC-018.spec.ts:6:1 › [002:AC-5.1] [002:AC-5.2] [002:AC-7.1] TC-018 thêm bài, T18 mở với 2 panel 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByRole('dialog', { name: 'Thêm bài' }).getByLabel('Tên bài')
+    Expected: "Bài 2"
+    Received: "Bài 1"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByRole('dialog', { name: 'Thêm bài' }).getByLabel('Tên bài') with timeout 5000ms
+      - waiting for getByRole('dialog', { name: 'Thêm bài' }).getByLabel('Tên bài')
+        14 × locator resolved to <input id="_r_8_" required="" type="text" class="input" value="Bài 1" maxlength="150" aria-required="true"/>
+           - unexpected value "Bài 1"
+
+
+      45 |   await page.unroute(`**/api/curricula/${c.id}`);
+      46 |   dlg = page.getByRole('dialog', { name: 'Thêm bài' });
+    > 47 |   await expect(dlg.getByLabel('Tên bài')).toHaveValue('Bài 2');
+         |                                           ^
+      48 |   await dlg.getByRole('button', { name: 'Thêm bài' }).click();
+      49 |   await expect(page).toHaveURL(/\/bai\/[0-9a-f]{24}$/);
+      50 |   await page.goBack();
+        at C:\Users\CanhLN\Desktop\sat-002-qa\specs\002-curriculum\testing\e2e\TC-018.spec.ts:47:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-018--002-AC-5-1-002-AC--c9651-thêm-bài-T18-mở-với-2-panel-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-018--002-AC-5-1-002-AC--c9651-thêm-bài-T18-mở-với-2-panel-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-018--002-AC-5-1-002-AC--c9651-thêm-bài-T18-mở-với-2-panel-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-018--002-AC-5-1-002-AC--c9651-thêm-bài-T18-mở-với-2-panel-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › specs\002-curriculum\testing\e2e\TC-038.spec.ts:19:1 › [002:AC-10.5] [002:AC-17.3] TC-038 HV mở nội dung không được thấy: 404 đồng nhất, trang quản trị chuyển về S01, A05 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Không tìm thấy nội dung bạn yêu cầu.' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Không tìm thấy nội dung bạn yêu cầu.' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Không tìm thấy nội dung bạn yêu cầu.' })
+
+
+      76 |   await hv.goto(`/hv/lop/x/bai/${b2.id}`);
+      77 |   await shot(hv, 'TC-038', 2);
+    > 78 |   await expect(hv.getByRole('heading', { name: 'Không tìm thấy nội dung bạn yêu cầu.' })).toBeVisible();
+         |                                                                                           ^
+      79 |   await hv.context().close();
+      80 | });
+      81 |
+        at C:\Users\CanhLN\Desktop\sat-002-qa\specs\002-curriculum\testing\e2e\TC-038.spec.ts:78:91
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-038--002-AC-10-5-002-AC-52414--quản-trị-chuyển-về-S01-A05-chromium\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-038--002-AC-10-5-002-AC-52414--quản-trị-chuyển-về-S01-A05-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-038--002-AC-10-5-002-AC-52414--quản-trị-chuyển-về-S01-A05-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-038--002-AC-10-5-002-AC-52414--quản-trị-chuyển-về-S01-A05-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-038--002-AC-10-5-002-AC-52414--quản-trị-chuyển-về-S01-A05-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › specs\002-curriculum\testing\e2e\TC-059.spec.ts:6:1 › [002:AC-14.5] [002:AC-15.5] TC-059 nhân bản thất bại không để lại bản sao 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Nhân bản không thành công. Vui lòng thử lại.', { exact: true }).first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Nhân bản không thành công. Vui lòng thử lại.', { exact: true }).first() with timeout 5000ms
+      - waiting for getByText('Nhân bản không thành công. Vui lòng thử lại.', { exact: true }).first()
+
+
+      27 |   await expect(dlg.getByLabel('Tên')).toHaveValue(`${name} (bản sao)`);
+      28 |   await dlg.getByRole('button', { name: 'Nhân bản' }).click();
+    > 29 |   await expect(page.getByText(msg, { exact: true }).first()).toBeVisible();
+         |                                                              ^
+      30 |   await shot(page, 'TC-059', 2);
+      31 |   await page.goto('/gv/giao-trinh');
+      32 |   await page.getByLabel('Tìm giáo trình').fill(`${name} (bản sao`);
+        at C:\Users\CanhLN\Desktop\sat-002-qa\specs\002-curriculum\testing\e2e\TC-059.spec.ts:29:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-059--002-AC-14-5-002-AC-673aa-ất-bại-không-để-lại-bản-sao-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-059--002-AC-14-5-002-AC-673aa-ất-bại-không-để-lại-bản-sao-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-059--002-AC-14-5-002-AC-673aa-ất-bại-không-để-lại-bản-sao-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\002-curriculum\testing\runs\2026-10-23-2227\artifacts\TC-059--002-AC-14-5-002-AC-673aa-ất-bại-không-để-lại-bản-sao-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [chromium] › specs\002-curriculum\testing\e2e\TC-018.spec.ts:6:1 › [002:AC-5.1] [002:AC-5.2] [002:AC-7.1] TC-018 thêm bài, T18 mở với 2 panel 
+    [chromium] › specs\002-curriculum\testing\e2e\TC-038.spec.ts:19:1 › [002:AC-10.5] [002:AC-17.3] TC-038 HV mở nội dung không được thấy: 404 đồng nhất, trang quản trị chuyển về S01, A05 
+    [chromium] › specs\002-curriculum\testing\e2e\TC-059.spec.ts:6:1 › [002:AC-14.5] [002:AC-15.5] TC-059 nhân bản thất bại không để lại bản sao 
+  73 passed (3.2m)

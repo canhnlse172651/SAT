@@ -18,7 +18,10 @@ export function LessonNameDialog(props: LessonNameDialogProps) {
 }
 
 function LessonNameForm({ mode, initialName, onClose, onSubmit }: LessonNameDialogProps) {
-  const [name, setName] = useState(initialName);
+  // Until the GV types, the field follows `initialName`: "Bài N" stays right when T06 finishes reloading
+  // after the dialog opened on cached data (AC-5.1).
+  const [typed, setTyped] = useState<string | null>(null);
+  const name = typed ?? initialName;
   const [error, setError] = useState<string | undefined>();
   const [busy, setBusy] = useState(false);
 
@@ -63,7 +66,7 @@ function LessonNameForm({ mode, initialName, onClose, onSubmit }: LessonNameDial
           value={name}
           maxLength={150}
           error={error}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setTyped(e.target.value)}
         />
         {mode === 'add' && (
           <p className="small muted">

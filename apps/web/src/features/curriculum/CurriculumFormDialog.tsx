@@ -17,7 +17,7 @@ import { formFailure } from '../auth/form-errors';
 import { Notice } from '../auth/Notice';
 import { useToastStore } from '../toast/toast-store';
 import { useCurriculumStore } from './curriculum-store';
-import { isConflict } from './errors';
+import { isConflict, messageOf } from './errors';
 import { curriculumPath } from './paths';
 
 export type CurriculumFormMode = 'create' | 'edit' | 'duplicate';
@@ -148,7 +148,8 @@ function CurriculumForm({ mode, onClose, source }: CurriculumFormDialogProps) {
       } else {
         const f = formFailure(err);
         setErrors(f.fields as Errors);
-        setFormError(f.form);
+        // Module errors answered with 5xx (e.g. 503 COPY_FAILED, AC-15.5) carry their own wording.
+        setFormError(f.form && messageOf(err));
       }
     } finally {
       setBusy(false);
