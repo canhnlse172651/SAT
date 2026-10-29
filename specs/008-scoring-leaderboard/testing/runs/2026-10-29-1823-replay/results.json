@@ -1,0 +1,225 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\CanhLN\\Desktop\\SAT\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "-c",
+      "playwright.modules.config.ts",
+      "-g",
+      "TC-030\\b"
+    ],
+    "configFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\playwright.modules.config.ts",
+    "rootDir": "C:/Users/CanhLN/Desktop/SAT/specs/008-scoring-leaderboard/testing/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/CanhLN/Desktop/SAT/specs/008-scoring-leaderboard/testing/runs/2026-10-29-1823-replay/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/CanhLN/Desktop/SAT/specs/008-scoring-leaderboard/testing/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e",
+        "snapshotDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 3,
+    "webServer": {
+      "command": "npm run build && node tests/e2e/server.mjs",
+      "url": "http://127.0.0.1:4173/api/ready",
+      "reuseExistingServer": true,
+      "timeout": 240000,
+      "env": {
+        "PORT": "4173"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "TC-030.spec.ts",
+      "file": "TC-030.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-6.2] TC-030 inside a tie: who reached the score first, then given name",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8014,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Trần Thị Bình\",\u001b[39m\n\u001b[31m+     \"Phạm Thu Chi\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Phạm Thu Chi\",\u001b[39m\n\u001b[31m+     \"Trần Thị Bình\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Trần Thị Bình\",\u001b[39m\n\u001b[31m+     \"Phạm Thu Chi\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Phạm Thu Chi\",\u001b[39m\n\u001b[31m+     \"Trần Thị Bình\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m  ]\u001b[22m\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts:36:54",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts",
+                      "column": 54,
+                      "line": 36
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 34 |\u001b[39m   \u001b[36mawait\u001b[39m refresh(gv)\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m   rows \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m tableRows(gv)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 36 |\u001b[39m   expect(rows\u001b[33m.\u001b[39mmap((x) \u001b[33m=>\u001b[39m [x\u001b[33m.\u001b[39mname\u001b[33m,\u001b[39m x\u001b[33m.\u001b[39mrank\u001b[33m,\u001b[39m x\u001b[33m.\u001b[39mscore]))\u001b[33m.\u001b[39mtoEqual([\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 37 |\u001b[39m     [\u001b[32m'Trần Thị Bình'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'1'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'24,0'\u001b[39m]\u001b[33m,\u001b[39m\n \u001b[90m 38 |\u001b[39m     [\u001b[32m'Phạm Thu Chi'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'1'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'24,0'\u001b[39m]\u001b[33m,\u001b[39m\n \u001b[90m 39 |\u001b[39m   ])\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts",
+                        "column": 54,
+                        "line": 36
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Trần Thị Bình\",\u001b[39m\n\u001b[31m+     \"Phạm Thu Chi\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Phạm Thu Chi\",\u001b[39m\n\u001b[31m+     \"Trần Thị Bình\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m  ]\u001b[22m\n\n  34 |   await refresh(gv);\n  35 |   rows = await tableRows(gv);\n> 36 |   expect(rows.map((x) => [x.name, x.rank, x.score])).toEqual([\n     |                                                      ^\n  37 |     ['Trần Thị Bình', '1', '24,0'],\n  38 |     ['Phạm Thu Chi', '1', '24,0'],\n  39 |   ]);\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts:36:54"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:24:06.472Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-4.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1823-replay\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts",
+                    "column": 54,
+                    "line": 36
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b2b97c203906bf13eae9-c9d989530930f38b821c",
+          "file": "TC-030.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-29T11:23:40.237Z",
+    "duration": 35815.319,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

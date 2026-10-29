@@ -25,3 +25,18 @@
   - spec.md frontmatter `approved_by` is garbled by the approve command's curly quotes — a human should fix it.
   - The commit for T003 left the API unable to start (module wiring); fixed in 4a4934e.
 - Verify with: node .sdd/scripts/sdd.mjs run test && node .sdd/scripts/sdd.mjs run test:e2e
+
+## Handoff 2026-10-29 18:30 — /test-module 008 (QA)
+- Status: 008-scoring-leaderboard [implementing], 8/8 tasks done   Branch: feat/008-scoring-leaderboard @ e4b1e7d
+- Done this session: QA run 2026-10-29-1806 — 60/64 E2E + API Pass, 4 Fail, 2 Thủ công; 64 replayable scripts in `testing/e2e/` (+ `helpers.ts`);
+  report `testing/runs/2026-10-29-1806/report.md`; `verification.md` QA section, **Verdict: FAIL**; trace 87/87 AC, no gaps.
+- Failures (details, steps, screenshots in the report):
+  - F1 TC-030 (AC-6.2/6.6): "Cập nhật lần cuối" comes from read-time snapshots (`rank_scores`); a 24 → 12 → 24 change nobody read in between
+    keeps the old time → wrong order inside a tie. Needs the time the score really changed (deadline passed 23:59:59, section hidden, …).
+  - F2 TC-049 (AC-10.1): column shows `HH:mm dd/mm/yyyy`; TC says `dd/mm/yyyy HH:mm` — fix the UI or the TC wording (spec is silent).
+  - F3 TC-064 (NFR-5): T04 tab at 1024 px — table clipped, "Cập nhật lần cuối" and the "Chi tiết điểm của …" buttons off screen (e.g. `.tbl-scroll`).
+  - F4 TC-063 (NFR-2/4): 100 HV / 300 sets / 50 exams — API p95 ≈ 3,1 s, S09 4,0 s, T04 4,5 s (target ≤ 2 s); cost is in the full recompute per read.
+- Notes: scripts must run serially (clock moves): `npx playwright test -c playwright.modules.config.ts --workers=1` with `SAT_MODULE_TEST_DIR` /
+  `SAT_MODULE_RUN_DIR`, or one TC per `run test:modules -- 008 TC-###` (a `|` filter breaks on Windows).
+- Next: `/module 008` — sửa TC-030, TC-049, TC-064, TC-063; then `/test-module 008`.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 008 TC-030 (one TC per call)

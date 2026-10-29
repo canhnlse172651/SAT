@@ -1,0 +1,1821 @@
+[
+  {
+    "tc": "TC-001",
+    "acs": [
+      "AC-1.1",
+      "AC-1.2",
+      "AC-1.6",
+      "AC-2.1",
+      "AC-11.1",
+      "AC-11.2",
+      "AC-13.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4361,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An nộp S1a 18/20."
+      },
+      {
+        "action": "step",
+        "target": "2. An mở S09, chọn \"Điểm của tôi\"."
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-001-1.png",
+      "screenshots/TC-001-mcp-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-001.spec.ts"
+  },
+  {
+    "tc": "TC-002",
+    "acs": [
+      "AC-1.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 6933,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An nộp S1a 2/3."
+      },
+      {
+        "action": "step",
+        "target": "2. Bình nộp S1b 1/8."
+      },
+      {
+        "action": "step",
+        "target": "3. Mỗi người mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-002-1.png",
+      "screenshots/TC-002-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-002.spec.ts"
+  },
+  {
+    "tc": "TC-003",
+    "acs": [
+      "AC-1.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4227,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở Bài 4, xem bước học và học hết Bộ thẻ từ vựng (S03, S04)."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-003-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-003.spec.ts"
+  },
+  {
+    "tc": "TC-004",
+    "acs": [
+      "AC-1.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3938,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An nộp S1a 0/0 (`{\"score\":0,\"maxScore\":0}`) và S1b 8/10."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-004-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-004.spec.ts"
+  },
+  {
+    "tc": "TC-005",
+    "acs": [
+      "AC-1.5",
+      "AC-1.7",
+      "AC-1.10"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4388,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An nộp S1a 18/20, S1b 7/10, S2a 2/3."
+      },
+      {
+        "action": "step",
+        "target": "2. An làm X được 3/4."
+      },
+      {
+        "action": "step",
+        "target": "3. Mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-005-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-005.spec.ts"
+  },
+  {
+    "tc": "TC-006",
+    "acs": [
+      "AC-1.8",
+      "AC-2.5",
+      "AC-1.9",
+      "AC-11.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4347,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Trước Hạn nộp: mở \"Điểm của tôi\"."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +24 giờ, bấm \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-006-1.png",
+      "screenshots/TC-006-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-006.spec.ts"
+  },
+  {
+    "tc": "TC-007",
+    "acs": [
+      "AC-2.8",
+      "AC-11.8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 6718,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An không làm X."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ qua giờ đóng."
+      },
+      {
+        "action": "step",
+        "target": "3. An mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-007-1.png",
+      "screenshots/TC-007-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-007.spec.ts"
+  },
+  {
+    "tc": "TC-008",
+    "acs": [
+      "AC-1.11",
+      "AC-11.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3625,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-008-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-008.spec.ts"
+  },
+  {
+    "tc": "TC-009",
+    "acs": [
+      "AC-1.12",
+      "AC-2.7"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 7221,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Bình làm X 3/4 một lần."
+      },
+      {
+        "action": "step",
+        "target": "2. Bình mở S09 lớp A rồi lớp B."
+      },
+      {
+        "action": "step",
+        "target": "3. An làm X 1/4."
+      },
+      {
+        "action": "step",
+        "target": "4. GV thêm An vào lớp B."
+      },
+      {
+        "action": "step",
+        "target": "5. An mở S09 lớp B, \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-009-1.png",
+      "screenshots/TC-009-2.png",
+      "screenshots/TC-009-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-009.spec.ts"
+  },
+  {
+    "tc": "TC-010",
+    "acs": [
+      "AC-2.2",
+      "AC-2.3"
+    ],
+    "type": "API",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 4432,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Gọi lại `POST /api/dev/classes/<A>/sets/<S1a>/submit {\"score\":20,\"maxScore\":20}` (phiên An)."
+      },
+      {
+        "action": "step",
+        "target": "2. GV bấm \"Làm mới\" ở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-010-1.png",
+      "screenshots/TC-010-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-010.spec.ts"
+  },
+  {
+    "tc": "TC-011",
+    "acs": [
+      "AC-2.4",
+      "NFR-3"
+    ],
+    "type": "API",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 3127,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Gửi đồng thời (`Promise.all`) 4 bài nộp của An: S1a 9/10, S1b 8/10, S2a 7/10, S2b 6/10."
+      },
+      {
+        "action": "step",
+        "target": "2. `GET /api/learn/ranking/<A>` (phiên An) và GV `GET /api/classes/<A>/ranking`"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "script": "../../e2e/TC-011.spec.ts"
+  },
+  {
+    "tc": "TC-012",
+    "acs": [
+      "AC-2.6",
+      "AC-11.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4398,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Dời đồng hồ +24 giờ (S1a \"Quá hạn\", 0/100)."
+      },
+      {
+        "action": "step",
+        "target": "2. An nộp S1a 16/20 (nộp muộn)."
+      },
+      {
+        "action": "step",
+        "target": "3. Mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-012-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-012.spec.ts"
+  },
+  {
+    "tc": "TC-013",
+    "acs": [
+      "AC-2.9"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4257,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An bắt đầu X và lưu trả lời đúng Câu 1 + Câu 2 (không nộp)."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ qua giờ đóng."
+      },
+      {
+        "action": "step",
+        "target": "3. An mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-013-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-013.spec.ts"
+  },
+  {
+    "tc": "TC-014",
+    "acs": [
+      "AC-3.1",
+      "AC-3.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7587,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV mở T04 tab Xếp hạng (An hạng 1 \"30,0\", Bình hạng 2 \"15,0\")."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +1 giờ; GV sửa đáp án câu 2 thành B và xác nhận chấm lại."
+      },
+      {
+        "action": "step",
+        "target": "3. GV bấm \"Làm mới\"; An mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-014-1.png",
+      "screenshots/TC-014-2.png",
+      "screenshots/TC-014-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-014.spec.ts"
+  },
+  {
+    "tc": "TC-015",
+    "acs": [
+      "AC-3.2"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 4317,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV sửa đáp án câu 2 thành B, xác nhận chấm lại."
+      },
+      {
+        "action": "step",
+        "target": "2. An mở S09 lớp A rồi lớp B"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-015-1.png",
+      "screenshots/TC-015-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-015.spec.ts"
+  },
+  {
+    "tc": "TC-016",
+    "acs": [
+      "AC-4.1",
+      "AC-4.2",
+      "AC-4.5",
+      "AC-11.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7560,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An, Dũng xem \"Điểm của tôi\" (An 26,5; Dũng \"TB bài tập\" \"46,7\", 14,0)."
+      },
+      {
+        "action": "step",
+        "target": "2. GV ẩn section Bài tập của Bài 3 ở lớp A."
+      },
+      {
+        "action": "step",
+        "target": "3. An, Dũng \"Làm mới\"."
+      },
+      {
+        "action": "step",
+        "target": "4. GV hiện lại; An, Dũng \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-016-1.png",
+      "screenshots/TC-016-2.png",
+      "screenshots/TC-016-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-016.spec.ts"
+  },
+  {
+    "tc": "TC-017",
+    "acs": [
+      "AC-4.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6295,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV sửa đáp án câu 2 của S3a và xác nhận chấm lại."
+      },
+      {
+        "action": "step",
+        "target": "2. An \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-017-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-017.spec.ts"
+  },
+  {
+    "tc": "TC-018",
+    "acs": [
+      "AC-4.4"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3875,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV ẩn section Bài tập của Bài 3 ở lớp A."
+      },
+      {
+        "action": "step",
+        "target": "2. An mở S09 lớp B, \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-018-1.png",
+      "screenshots/TC-018-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-018.spec.ts"
+  },
+  {
+    "tc": "TC-019",
+    "acs": [
+      "AC-4.6",
+      "AC-11.3"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7558,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV lưu trữ bộ S3b (\"Luyện mẫu câu\" của Bài 3)."
+      },
+      {
+        "action": "step",
+        "target": "2. An, Dũng \"Làm mới\"."
+      },
+      {
+        "action": "step",
+        "target": "3. GV khôi phục S3b; An, Dũng \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-019-1.png",
+      "screenshots/TC-019-2.png",
+      "screenshots/TC-019-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-019.spec.ts"
+  },
+  {
+    "tc": "TC-020",
+    "acs": [
+      "AC-4.7"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6974,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV gỡ Hạn nộp của S3b ở lớp A."
+      },
+      {
+        "action": "step",
+        "target": "2. An, Dũng \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-020-1.png",
+      "screenshots/TC-020-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-020.spec.ts"
+  },
+  {
+    "tc": "TC-021",
+    "acs": [
+      "AC-4.8"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6624,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV đổi Hạn nộp của S3b sang ngày mai."
+      },
+      {
+        "action": "step",
+        "target": "2. Dũng \"Làm mới\"."
+      },
+      {
+        "action": "step",
+        "target": "3. Dời đồng hồ +48 giờ; Dũng \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-021-1.png",
+      "screenshots/TC-021-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-021.spec.ts"
+  },
+  {
+    "tc": "TC-022",
+    "acs": [
+      "AC-4.9",
+      "AC-11.10"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7874,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV lưu trữ X."
+      },
+      {
+        "action": "step",
+        "target": "2. An và Dũng mở \"Điểm của tôi\"."
+      },
+      {
+        "action": "step",
+        "target": "3. GV mở rộng dòng An ở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-022-1.png",
+      "screenshots/TC-022-2.png",
+      "screenshots/TC-022-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-022.spec.ts"
+  },
+  {
+    "tc": "TC-023",
+    "acs": [
+      "AC-5.1",
+      "AC-5.2"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 9348,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV gỡ An khỏi lớp A."
+      },
+      {
+        "action": "step",
+        "target": "2. Bình mở S09 và GV mở T04 tab Xếp hạng."
+      },
+      {
+        "action": "step",
+        "target": "3. GV thêm lại An."
+      },
+      {
+        "action": "step",
+        "target": "4. Bình \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-023-1.png",
+      "screenshots/TC-023-2.png",
+      "screenshots/TC-023-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-023.spec.ts"
+  },
+  {
+    "tc": "TC-024",
+    "acs": [
+      "AC-5.3"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 6393,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV xóa tài khoản Bình (T11, 001)."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở T04 tab Xếp hạng lớp A; An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-024-1.png",
+      "screenshots/TC-024-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-024.spec.ts"
+  },
+  {
+    "tc": "TC-025",
+    "acs": [
+      "AC-5.4",
+      "AC-10.1"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6670,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV khóa Bình."
+      },
+      {
+        "action": "step",
+        "target": "2. GV mở T04 tab Xếp hạng; An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-025-1.png",
+      "screenshots/TC-025-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-025.spec.ts"
+  },
+  {
+    "tc": "TC-026",
+    "acs": [
+      "AC-5.5",
+      "AC-8.6"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 3960,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV kết thúc lớp A."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +24 giờ."
+      },
+      {
+        "action": "step",
+        "target": "3. An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-026-1.png",
+      "screenshots/TC-026-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-026.spec.ts"
+  },
+  {
+    "tc": "TC-027",
+    "acs": [
+      "AC-5.6"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 6174,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Dời đồng hồ +24 giờ."
+      },
+      {
+        "action": "step",
+        "target": "2. GV thêm Chi vào lớp A."
+      },
+      {
+        "action": "step",
+        "target": "3. Chi mở \"Điểm của tôi\"."
+      },
+      {
+        "action": "step",
+        "target": "4. Chi nộp S1a 8/10 (nộp muộn); \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-027-1.png",
+      "screenshots/TC-027-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-027.spec.ts"
+  },
+  {
+    "tc": "TC-028",
+    "acs": [
+      "AC-5.7",
+      "AC-7.2",
+      "AC-10.1"
+    ],
+    "type": "E2E",
+    "role": "GV, HV",
+    "status": "Pass",
+    "durationMs": 7588,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV mở T04 tab Xếp hạng."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +24 giờ."
+      },
+      {
+        "action": "step",
+        "target": "3. GV kích hoạt Hà."
+      },
+      {
+        "action": "step",
+        "target": "4. Hà mở \"Điểm của tôi\"."
+      },
+      {
+        "action": "step",
+        "target": "5. GV đặt Hạn nộp S1b hôm nay (theo đồng hồ đã dời); dời thêm +24 giờ; Hà \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-028-1.png",
+      "screenshots/TC-028-2.png",
+      "screenshots/TC-028-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-028.spec.ts"
+  },
+  {
+    "tc": "TC-029",
+    "acs": [
+      "AC-6.1",
+      "AC-7.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 10544,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Dũng mở S09 \"Xếp hạng\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-029-1.png",
+      "screenshots/TC-029-mcp-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-029.spec.ts"
+  },
+  {
+    "tc": "TC-030",
+    "acs": [
+      "AC-6.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 6685,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Chi nộp S1a 8/10, sau đó Bình nộp S1a 8/10."
+      },
+      {
+        "action": "step",
+        "target": "2. GV mở T04 tab Xếp hạng."
+      },
+      {
+        "action": "step",
+        "target": "3. Dời đồng hồ +24 giờ (cả hai \"Quá hạn\" S3b)."
+      },
+      {
+        "action": "step",
+        "target": "4. GV ẩn section Bài tập của Bài 3; \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-030-1.png",
+      "screenshots/TC-030-fail.png",
+      "screenshots/TC-030-mcp-no-step2-view.png"
+    ],
+    "errors": [
+      "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 2\n+ Received  + 2\n\n  Array [\n    Array [\n-     \"Trần Thị Bình\",\n+     \"Phạm Thu Chi\",\n      \"1\",\n      \"24,0\",\n    ],"
+    ],
+    "script": "../../e2e/TC-030.spec.ts"
+  },
+  {
+    "tc": "TC-031",
+    "acs": [
+      "AC-6.3",
+      "AC-7.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 9073,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Chi mở S09 \"Xếp hạng\"."
+      },
+      {
+        "action": "step",
+        "target": "2. GV mở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-031-1.png",
+      "screenshots/TC-031-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-031.spec.ts"
+  },
+  {
+    "tc": "TC-032",
+    "acs": [
+      "AC-6.4",
+      "AC-6.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 7149,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Bình mở S09 (\"Hạng 2/2\")."
+      },
+      {
+        "action": "step",
+        "target": "2. Bình nộp S1b 10/10; \"Làm mới\"."
+      },
+      {
+        "action": "step",
+        "target": "3. An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-032-1.png",
+      "screenshots/TC-032-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-032.spec.ts"
+  },
+  {
+    "tc": "TC-033",
+    "acs": [
+      "AC-6.6"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 4243,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV mở T04 tab Xếp hạng, ghi \"Cập nhật lần cuối\" của An."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +2 giờ; GV đặt Hạn nộp cho S2a ngày mai."
+      },
+      {
+        "action": "step",
+        "target": "3. \"Làm mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-033-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-033.spec.ts"
+  },
+  {
+    "tc": "TC-034",
+    "acs": [
+      "AC-7.1",
+      "AC-7.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 29217,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. HV thứ 11 mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-034-1.png",
+      "screenshots/TC-034-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-034.spec.ts"
+  },
+  {
+    "tc": "TC-035",
+    "acs": [
+      "AC-7.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5985,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở S09 \"Xếp hạng\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-035-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-035.spec.ts"
+  },
+  {
+    "tc": "TC-036",
+    "acs": [
+      "AC-7.6"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 10926,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Dũng chạm tên An trên S09."
+      },
+      {
+        "action": "step",
+        "target": "2. Quay lại, chạm dòng của mình."
+      },
+      {
+        "action": "step",
+        "target": "3. Quay lại, chạm \"Vị trí của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-036-1.png",
+      "screenshots/TC-036-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-036.spec.ts"
+  },
+  {
+    "tc": "TC-037",
+    "acs": [
+      "AC-7.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 10592,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-037-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-037.spec.ts"
+  },
+  {
+    "tc": "TC-038",
+    "acs": [
+      "AC-8.1"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 6365,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-038-1.png",
+      "screenshots/TC-038-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-038.spec.ts"
+  },
+  {
+    "tc": "TC-039",
+    "acs": [
+      "AC-8.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4194,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An chọn lớp P trên S09."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở S01, rồi chạm tab \"Xếp hạng\"."
+      },
+      {
+        "action": "step",
+        "target": "3. GV gỡ An khỏi P; An chạm tab \"Xếp hạng\" lần nữa"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-039-1.png",
+      "screenshots/TC-039-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-039.spec.ts"
+  },
+  {
+    "tc": "TC-040",
+    "acs": [
+      "AC-8.3"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3873,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở S02 của lớp P, chạm \"Bảng xếp hạng ›\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-040-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-040.spec.ts"
+  },
+  {
+    "tc": "TC-041",
+    "acs": [
+      "AC-8.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 2709,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-041-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-041.spec.ts"
+  },
+  {
+    "tc": "TC-042",
+    "acs": [
+      "AC-8.5"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3233,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở S09"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-042-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-042.spec.ts"
+  },
+  {
+    "tc": "TC-043",
+    "acs": [
+      "AC-9.1",
+      "NFR-7"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 27603,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. HV thứ 11 gọi `GET /api/learn/ranking/<A>`."
+      },
+      {
+        "action": "step",
+        "target": "2. Kiểm toàn bộ thân phản hồi"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "script": "../../e2e/TC-043.spec.ts"
+  },
+  {
+    "tc": "TC-044",
+    "acs": [
+      "AC-9.2"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5889,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở `/hv/xep-hang?lop=<B>`."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở `/hv/xep-hang?lop=<C>`."
+      },
+      {
+        "action": "step",
+        "target": "3. Mở `/hv/xep-hang?lop=abc`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-044-1.png",
+      "screenshots/TC-044-2.png",
+      "screenshots/TC-044-3.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-044.spec.ts"
+  },
+  {
+    "tc": "TC-045",
+    "acs": [
+      "AC-9.3"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 5178,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An gọi `GET /api/classes/<A>/ranking/<Bình>`, `GET /api/classes/<A>/ranking`."
+      },
+      {
+        "action": "step",
+        "target": "2. An gọi `GET /api/learn/ranking/<A>?studentId=<Bình>`"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "script": "../../e2e/TC-045.spec.ts"
+  },
+  {
+    "tc": "TC-046",
+    "acs": [
+      "AC-9.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 3331,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV thứ hai mở `/gv/lop-hoc/<A>?tab=xep-hang`."
+      },
+      {
+        "action": "step",
+        "target": "2. Gọi `GET /api/classes/<A>/ranking`"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-046-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-046.spec.ts"
+  },
+  {
+    "tc": "TC-047",
+    "acs": [
+      "AC-9.5"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 4853,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Mở `/hv/xep-hang`, đăng nhập bằng HV ở A01."
+      },
+      {
+        "action": "step",
+        "target": "2. Đăng xuất; mở `/gv/lop-hoc/<A>?tab=xep-hang`, đăng nhập bằng GV"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-047-1.png",
+      "screenshots/TC-047-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-047.spec.ts"
+  },
+  {
+    "tc": "TC-048",
+    "acs": [
+      "AC-9.6"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 29199,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. HV thứ 11 mở S09."
+      },
+      {
+        "action": "step",
+        "target": "2. GV mở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-048-1.png",
+      "screenshots/TC-048-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-048.spec.ts"
+  },
+  {
+    "tc": "TC-049",
+    "acs": [
+      "AC-10.1"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Fail",
+    "durationMs": 13315,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV mở T04 tab \"Xếp hạng\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-049-fail.png",
+      "screenshots/TC-049-mcp-1.png"
+    ],
+    "errors": [
+      "Error: expect(received).toMatch(expected)\n\nExpected pattern: /^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/\nReceived string:  \"18:16 29/10/2026\"\n\n  31 |     expect(r.score).toMatch(/^\\d+,\\d$/);\n  32 |     // \"Cập nhật lần cuối (dd/mm/yyyy HH:mm)\".\n> 33 |     expect(r.updated).toMatch(/^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/);\n     |                       ^\n  34 |   }\n  35 |   await expect(gv.locator('.rk-tbl tbody tr .avatar')).toHaveCount(4);\n  36 |   await evidence(gv, 'TC-049', 1);"
+    ],
+    "script": "../../e2e/TC-049.spec.ts"
+  },
+  {
+    "tc": "TC-050",
+    "acs": [
+      "AC-10.2"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 7492,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV bấm \"Chi tiết điểm của Nguyễn Văn An\"."
+      },
+      {
+        "action": "step",
+        "target": "2. Bấm \"Xem hồ sơ học tập\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-050-1.png",
+      "screenshots/TC-050-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-050.spec.ts"
+  },
+  {
+    "tc": "TC-051",
+    "acs": [
+      "AC-10.3",
+      "AC-10.4"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 10923,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Nhập \"  nguyen van an  \" vào \"Tìm học viên\"."
+      },
+      {
+        "action": "step",
+        "target": "2. Nhập \"chi+\"."
+      },
+      {
+        "action": "step",
+        "target": "3. Nhập \"zzz\"."
+      },
+      {
+        "action": "step",
+        "target": "4. Xóa từ khóa"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-051-1.png",
+      "screenshots/TC-051-2.png",
+      "screenshots/TC-051-mcp-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-051.spec.ts"
+  },
+  {
+    "tc": "TC-052",
+    "acs": [
+      "AC-10.5"
+    ],
+    "type": "E2E",
+    "role": "GV",
+    "status": "Pass",
+    "durationMs": 1477,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. GV mở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-052-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-052.spec.ts"
+  },
+  {
+    "tc": "TC-053",
+    "acs": [
+      "AC-11.4"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3952,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở \"Điểm của tôi\", chạm dòng \"Luyện từ mới\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-053-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-053.spec.ts"
+  },
+  {
+    "tc": "TC-054",
+    "acs": [
+      "AC-11.5"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 4859,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở \"Điểm của tôi\"."
+      },
+      {
+        "action": "step",
+        "target": "2. GV mở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-054-1.png",
+      "screenshots/TC-054-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-054.spec.ts"
+  },
+  {
+    "tc": "TC-055",
+    "acs": [
+      "AC-11.6",
+      "AC-11.9"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3545,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-055-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-055.spec.ts"
+  },
+  {
+    "tc": "TC-056",
+    "acs": [
+      "AC-11.7"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 4147,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-056-1.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-056.spec.ts"
+  },
+  {
+    "tc": "TC-057",
+    "acs": [
+      "AC-11.8"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 7188,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An mở \"Điểm của tôi\"."
+      },
+      {
+        "action": "step",
+        "target": "2. Chi mở \"Điểm của tôi\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-057-1.png",
+      "screenshots/TC-057-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-057.spec.ts"
+  },
+  {
+    "tc": "TC-058",
+    "acs": [
+      "AC-11.11",
+      "AC-11.12"
+    ],
+    "type": "E2E",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 7129,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An chạm dòng Y (\"Đã có điểm\")."
+      },
+      {
+        "action": "step",
+        "target": "2. Quay lại, chạm X (\"Không làm bài\") và Z (\"Chưa thi\")"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-058-1.png",
+      "screenshots/TC-058-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-058.spec.ts"
+  },
+  {
+    "tc": "TC-059",
+    "acs": [
+      "AC-13.1"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 5798,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. HV chạm nút \"Cách tính điểm\" trên S09."
+      },
+      {
+        "action": "step",
+        "target": "2. GV bấm \"Cách tính điểm\" ở T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-059-1.png",
+      "screenshots/TC-059-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-059.spec.ts"
+  },
+  {
+    "tc": "TC-060",
+    "acs": [
+      "AC-13.2",
+      "AC-13.3"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 12110,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Ghi \"Cập nhật lúc HH:mm · dd/mm/yyyy\"."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +5 phút; Bình nộp S1b 10/10."
+      },
+      {
+        "action": "step",
+        "target": "3. Dũng bấm \"Làm mới\"."
+      },
+      {
+        "action": "step",
+        "target": "4. Đổi lớp rồi đổi lại; GV mở lại tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-060-1.png",
+      "screenshots/TC-060-2.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-060.spec.ts"
+  },
+  {
+    "tc": "TC-061",
+    "acs": [
+      "AC-13.4"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Pass",
+    "durationMs": 4844,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Ngắt mạng, bấm \"Làm mới\"."
+      },
+      {
+        "action": "step",
+        "target": "2. Nối mạng, bấm \"Thử lại\""
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-061-1.png",
+      "screenshots/TC-061-2.png",
+      "screenshots/TC-061-3.png",
+      "screenshots/TC-061-4.png"
+    ],
+    "errors": [],
+    "script": "../../e2e/TC-061.spec.ts"
+  },
+  {
+    "tc": "TC-062",
+    "acs": [
+      "NFR-1"
+    ],
+    "type": "API",
+    "role": "HV",
+    "status": "Pass",
+    "durationMs": 3377,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. An nộp S1a; đo thời gian tới khi `GET /api/learn/ranking/<A>` trả điểm mới."
+      },
+      {
+        "action": "step",
+        "target": "2. Dời đồng hồ +24 giờ cho S1b chưa nộp; đo tới khi \"Quá hạn\" 0 xuất hiện"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "script": "../../e2e/TC-062.spec.ts"
+  },
+  {
+    "tc": "TC-063",
+    "acs": [
+      "NFR-2",
+      "NFR-4"
+    ],
+    "type": "API",
+    "role": "GV, HV",
+    "status": "Fail",
+    "durationMs": 254788,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Đo `GET /api/classes/<lớp>/ranking` và `GET /api/learn/ranking/<lớp>` 20 lần."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở S09 ở 360 px với giới hạn 4G (10 Mbps) và T04 tab Xếp hạng"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-063-fail-s09.png",
+      "screenshots/TC-063-fail-t04.png"
+    ],
+    "errors": [
+      "Error: expect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 2000\nReceived:    3113\n\n  107 |   test.info().annotations.push({ type: 'timing', description: summary });\n  108 |   console.log(summary);\n> 109 |   expect(p95(gvMs)).toBeLessThanOrEqual(2000);\n      |                     ^\n  110 |   expect(p95(hvMs)).toBeLessThanOrEqual(2000);\n  111 |   expect(p95(s09Ms)).toBeLessThanOrEqual(2000);\n  112 |   expect(p95(t04Ms)).toBeLessThanOrEqual(2000);"
+    ],
+    "script": "../../e2e/TC-063.spec.ts"
+  },
+  {
+    "tc": "TC-064",
+    "acs": [
+      "NFR-5"
+    ],
+    "type": "E2E",
+    "role": "HV, GV",
+    "status": "Fail",
+    "durationMs": 17332,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Mở S09 ở 360 px và 430 px."
+      },
+      {
+        "action": "step",
+        "target": "2. Mở T04 tab ở 1024 px và 1280 px"
+      }
+    ],
+    "evidence": [
+      "screenshots/TC-064-1.png",
+      "screenshots/TC-064-2.png",
+      "screenshots/TC-064-3.png",
+      "screenshots/TC-064-4.png",
+      "screenshots/TC-064-5.png",
+      "screenshots/TC-064-fail-1024.png",
+      "screenshots/TC-064-mcp-1024.png"
+    ],
+    "errors": [
+      "Error: expect(locator).toBeInViewport() failed\n\nLocator:  getByRole('columnheader', { name: 'Cập nhật lần cuối' })\nExpected: in viewport\nReceived: viewport ratio 0.5333873629570007\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeInViewport\" getByRole('columnheader', { name: 'Cập nhật lần cuối' }) with timeout 5000ms\n  - waiting for getByRole('columnheader', { name: 'Cập nhật lần cuối' })\n    3 × locator resolved to <th>Cập nhật lần cuối</th>\n      - unexpected value \"viewport ratio 0.8711978793144226\""
+    ],
+    "script": "../../e2e/TC-064.spec.ts"
+  },
+  {
+    "tc": "TC-065",
+    "acs": [
+      "NFR-6"
+    ],
+    "type": "Thủ công",
+    "role": "HV, GV",
+    "status": "Thủ công",
+    "durationMs": null,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Kiểm tương phản chữ S09, T04 bằng công cụ (axe/Lighthouse)."
+      },
+      {
+        "action": "step",
+        "target": "2. Xem huy hiệu và nhãn trạng thái"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "script": null
+  },
+  {
+    "tc": "TC-066",
+    "acs": [
+      "NFR-8"
+    ],
+    "type": "Thủ công",
+    "role": "GV",
+    "status": "Thủ công",
+    "durationMs": null,
+    "steps": [
+      {
+        "action": "step",
+        "target": "1. Thực hiện nộp, Quá hạn, chấm lại, ẩn section; mở T04 sau mỗi bước."
+      },
+      {
+        "action": "step",
+        "target": "2. Xem log máy chủ"
+      }
+    ],
+    "evidence": [],
+    "errors": [],
+    "script": null
+  }
+]

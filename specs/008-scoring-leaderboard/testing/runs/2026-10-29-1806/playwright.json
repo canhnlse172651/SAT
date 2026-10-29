@@ -1,0 +1,3071 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\CanhLN\\Desktop\\SAT\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "-c",
+      "playwright.modules.config.ts",
+      "--workers=1",
+      "--reporter=list,json"
+    ],
+    "configFile": "C:\\Users\\CanhLN\\Desktop\\SAT\\playwright.modules.config.ts",
+    "rootDir": "C:/Users/CanhLN/Desktop/SAT/specs/008-scoring-leaderboard/testing/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/CanhLN/Desktop/SAT/specs/008-scoring-leaderboard/testing/runs/2026-10-29-1806/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/CanhLN/Desktop/SAT/specs/008-scoring-leaderboard/testing/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e",
+        "snapshotDir": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run build && node tests/e2e/server.mjs",
+      "url": "http://127.0.0.1:4173/api/ready",
+      "reuseExistingServer": true,
+      "timeout": 240000,
+      "env": {
+        "PORT": "4173"
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "TC-001.spec.ts",
+      "file": "TC-001.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.1] [008:AC-1.2] [008:AC-1.6] [008:AC-2.1] [008:AC-11.1] [008:AC-11.2] [008:AC-13.5] TC-001 a submission shows on \"Điểm của tôi\" with no GV action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4361,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:08.266Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "577687e59bef6f4b4ce3-3954ffdb0d25561f3cc3",
+          "file": "TC-001.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-002.spec.ts",
+      "file": "TC-002.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.2] TC-002 item points are rounded half-up to an integer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6933,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:12.933Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bfc1d44aad53a9e876a9-257bbb7b5255b549fee5",
+          "file": "TC-002.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-003.spec.ts",
+      "file": "TC-003.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.3] TC-003 steps and flashcards add no points; a set without Hạn nộp is not counted",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4227,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:19.905Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "92d5083d9b78aba49eb2-f30aef00de30b299aea3",
+          "file": "TC-003.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-004.spec.ts",
+      "file": "TC-004.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.4] TC-004 a submission with maximum 0 is left out",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3938,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:24.170Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e48783768359d1219d03-ffba6aa233bca00b34ee",
+          "file": "TC-004.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-005.spec.ts",
+      "file": "TC-005.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.5] [008:AC-1.7] [008:AC-1.10] TC-005 exercise and exam averages, weighted and rounded",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4388,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:28.164Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "19d53905058c42a34022-e87655fc21f461ca241a",
+          "file": "TC-005.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-006.spec.ts",
+      "file": "TC-006.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.8] [008:AC-2.5] [008:AC-1.9] [008:AC-11.1] TC-006 an unsubmitted set counts 0 only once its Hạn nộp has passed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4347,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:32.590Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c5494511e34622abe317-2e09d4ba2dbf84238e88",
+          "file": "TC-006.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-007.spec.ts",
+      "file": "TC-007.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-2.8] [008:AC-11.8] TC-007 an exam not taken counts 0 after its close time",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6718,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:36.986Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ca7b40687a645774213e-6cb962ea560d3178dd1c",
+          "file": "TC-007.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-008.spec.ts",
+      "file": "TC-008.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.11] [008:AC-11.2] TC-008 only sets with a Hạn nộp are listed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:43.742Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b953b07c8b8e6d4118b0-454481ab53caf0f1444c",
+          "file": "TC-008.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-009.spec.ts",
+      "file": "TC-009.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-1.12] [008:AC-2.7] TC-009 one exam submission counts in every class it was assigned to",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7221,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:47.404Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04b207b27998ef992328-43948decb4bfa54baa9c",
+          "file": "TC-009.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-010.spec.ts",
+      "file": "TC-010.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-2.2] [008:AC-2.3] TC-010 a second submission is refused and the score stays",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4432,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:54.663Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2348bd1f618b8b14c73-265ed75ad175d40a612c",
+          "file": "TC-010.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-011.spec.ts",
+      "file": "TC-011.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-2.4] [008:NFR-3] TC-011 concurrent submissions are all counted once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3127,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:10:59.138Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a7ed6a0c0473529cd3ae-bf871e9d35bcf752a614",
+          "file": "TC-011.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-012.spec.ts",
+      "file": "TC-012.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-2.6] [008:AC-11.1] TC-012 a late submission replaces the 0 without a penalty",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:02.298Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "26b4aca73d23ae606561-32b7e47d5d14c65720fd",
+          "file": "TC-012.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-013.spec.ts",
+      "file": "TC-013.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-2.9] TC-013 the automatic submission at close time counts instead of 0",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4257,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:06.761Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c313cfca5c06473f6c04-071dfcc89f5bdfea1df7",
+          "file": "TC-013.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-014.spec.ts",
+      "file": "TC-014.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-3.1] [008:AC-3.3] TC-014 a re-grade lowers the score and sets \"Cập nhật lần cuối\" to the re-grade time",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7587,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:11.066Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bc69a875a65632d3101e-cd2d7497f28c97d5d18d",
+          "file": "TC-014.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-015.spec.ts",
+      "file": "TC-015.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-3.2] TC-015 a re-grade changes each class only through its own submission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4317,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:18.695Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "308797960fde6fcc0a36-3e9d1a97623fe3ed30ac",
+          "file": "TC-015.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-016.spec.ts",
+      "file": "TC-016.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.1] [008:AC-4.2] [008:AC-4.5] [008:AC-11.3] TC-016 hiding a Bài tập section keeps submitted points in one anonymous line",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7560,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:23.042Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2d7497a6bd903db4f99a-d7d15da7f54a5b519347",
+          "file": "TC-016.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-017.spec.ts",
+      "file": "TC-017.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.3] TC-017 a re-grade of hidden content updates the hidden line and the average",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6295,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:30.647Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2be6daf7d59534d6e90f-596a7662ad16199fafa7",
+          "file": "TC-017.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-018.spec.ts",
+      "file": "TC-018.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.4] TC-018 hiding in one class does not touch another class",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3875,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:36.989Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "022dd72be9cecda5c34d-ab961bf4679df3ae12d1",
+          "file": "TC-018.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-019.spec.ts",
+      "file": "TC-019.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.6] [008:AC-11.3] TC-019 an archived set keeps submitted points, an overdue 0 is dropped",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7558,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:40.926Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "154979ee6cdf344cf689-4df8dca192b788746388",
+          "file": "TC-019.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-020.spec.ts",
+      "file": "TC-020.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.7] TC-020 removing a Hạn nộp keeps submissions and drops the overdue 0",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6974,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:48.546Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b26856616beb29245e9-2d43559c717530f1e006",
+          "file": "TC-020.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-021.spec.ts",
+      "file": "TC-021.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.8] TC-021 moving a passed Hạn nộp to the future removes the 0 until the new one passes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6624,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:11:55.563Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de421ffcb2b42a200dfc-9d8e5901b9c3f2fa73fa",
+          "file": "TC-021.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-022.spec.ts",
+      "file": "TC-022.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-4.9] [008:AC-11.10] TC-022 an archived exam keeps submitted points in \"Bài thi đã gỡ\", drops the no-show 0",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7874,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:02.224Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b73285d337e7df95ae95-827894901b31fede1430",
+          "file": "TC-022.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-023.spec.ts",
+      "file": "TC-023.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-5.1] [008:AC-5.2] TC-023 a removed student leaves the board and comes back with the same points",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9348,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:10.136Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc34993dfd501704b399-fa8c66854b4e12ef682c",
+          "file": "TC-023.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-024.spec.ts",
+      "file": "TC-024.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-5.3] TC-024 a deleted account leaves the board",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6393,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:19.529Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "120c5a8272fb8a75bde6-4ad5d30ae94e6a9243ce",
+          "file": "TC-024.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-025.spec.ts",
+      "file": "TC-025.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-5.4] [008:AC-10.1] TC-025 a locked account stays on the board, labelled for the GV",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6670,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:25.987Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f724f3f65608cb9e977a-5d01910f26e3683cf063",
+          "file": "TC-025.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-026.spec.ts",
+      "file": "TC-026.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-5.5] [008:AC-8.6] TC-026 an ended class shows the final board and still counts passed deadlines",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3960,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:32.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97ea5c49a5cb0b05d26-8fc7c37c3c6ccd2f2acb",
+          "file": "TC-026.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-027.spec.ts",
+      "file": "TC-027.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-5.6] TC-027 a student who joins after a Hạn nộp gets no 0 for it, a late submission counts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6174,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:36.729Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f25cce21bc501249b882-fab00c90305e367bd975",
+          "file": "TC-027.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-028.spec.ts",
+      "file": "TC-028.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-5.7] [008:AC-7.2] [008:AC-10.1] TC-028 a student activated after a Hạn nộp gets no 0 for it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7588,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:43.007Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a478bcbb19262b2a35b3-3bf44d76a9d98c8e4531",
+          "file": "TC-028.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-029.spec.ts",
+      "file": "TC-029.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-6.1] [008:AC-7.4] TC-029 equal scores share a rank (1, 2, 2, 4), medals for 1–3",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10544,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:12:50.641Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1154854a8ccd4797161f-fd3d193a5a3334a1c246",
+          "file": "TC-029.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-030.spec.ts",
+      "file": "TC-030.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-6.2] TC-030 inside a tie: who reached the score first, then given name",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6685,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Trần Thị Bình\",\u001b[39m\n\u001b[31m+     \"Phạm Thu Chi\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Phạm Thu Chi\",\u001b[39m\n\u001b[31m+     \"Trần Thị Bình\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Trần Thị Bình\",\u001b[39m\n\u001b[31m+     \"Phạm Thu Chi\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Phạm Thu Chi\",\u001b[39m\n\u001b[31m+     \"Trần Thị Bình\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m  ]\u001b[22m\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts:36:54",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts",
+                      "column": 54,
+                      "line": 36
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 34 |\u001b[39m   \u001b[36mawait\u001b[39m refresh(gv)\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m   rows \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m tableRows(gv)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 36 |\u001b[39m   expect(rows\u001b[33m.\u001b[39mmap((x) \u001b[33m=>\u001b[39m [x\u001b[33m.\u001b[39mname\u001b[33m,\u001b[39m x\u001b[33m.\u001b[39mrank\u001b[33m,\u001b[39m x\u001b[33m.\u001b[39mscore]))\u001b[33m.\u001b[39mtoEqual([\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 37 |\u001b[39m     [\u001b[32m'Trần Thị Bình'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'1'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'24,0'\u001b[39m]\u001b[33m,\u001b[39m\n \u001b[90m 38 |\u001b[39m     [\u001b[32m'Phạm Thu Chi'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'1'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'24,0'\u001b[39m]\u001b[33m,\u001b[39m\n \u001b[90m 39 |\u001b[39m   ])\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts",
+                        "column": 54,
+                        "line": 36
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Trần Thị Bình\",\u001b[39m\n\u001b[31m+     \"Phạm Thu Chi\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    Array [\u001b[22m\n\u001b[32m-     \"Phạm Thu Chi\",\u001b[39m\n\u001b[31m+     \"Trần Thị Bình\",\u001b[39m\n\u001b[2m      \"1\",\u001b[22m\n\u001b[2m      \"24,0\",\u001b[22m\n\u001b[2m    ],\u001b[22m\n\u001b[2m  ]\u001b[22m\n\n  34 |   await refresh(gv);\n  35 |   rows = await tableRows(gv);\n> 36 |   expect(rows.map((x) => [x.name, x.rank, x.score])).toEqual([\n     |                                                      ^\n  37 |     ['Trần Thị Bình', '1', '24,0'],\n  38 |     ['Phạm Thu Chi', '1', '24,0'],\n  39 |   ]);\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts:36:54"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:13:01.247Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\test-failed-4.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-030--008-AC-6-2-TC-030--486fd-score-first-then-given-name-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-030.spec.ts",
+                    "column": 54,
+                    "line": 36
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b2b97c203906bf13eae9-c9d989530930f38b821c",
+          "file": "TC-030.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-031.spec.ts",
+      "file": "TC-031.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-6.3] [008:AC-7.3] TC-031 0,0 is unranked: pinned message for the HV, \"—\" after the ranked for the GV",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9073,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:13:10.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "52f605ce1815b90e7f3c-bdfd4377c083ac7a8663",
+          "file": "TC-031.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-032.spec.ts",
+      "file": "TC-032.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-6.4] [008:AC-6.5] TC-032 one new submission re-ranks the class from all sets since the start",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7149,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:13:19.926Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8f15c3bdefec52d9949a-b8476b28e8af65d5f264",
+          "file": "TC-032.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-033.spec.ts",
+      "file": "TC-033.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-6.6] TC-033 \"Cập nhật lần cuối\" changes only when the score changes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4243,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:13:27.123Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8958525cff07b4bb9d40-f97903328ff616e275c4",
+          "file": "TC-033.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-034.spec.ts",
+      "file": "TC-034.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-7.1] [008:AC-7.2] TC-034 at most 10 ranks are shown, own position pinned",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 29217,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:13:31.409Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d510935597c5b3b6f33b-1cc166f192897621f9dd",
+          "file": "TC-034.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-035.spec.ts",
+      "file": "TC-035.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-7.5] TC-035 nobody has points yet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5985,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:00.687Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "622ad55cee311f009da6-2ec8df221c63f80b921b",
+          "file": "TC-035.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-036.spec.ts",
+      "file": "TC-036.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-7.6] TC-036 a classmate opens S12, oneself and the pinned row open S10",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10926,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:06.725Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0639b046532b78992ff8-b3cd916d1edd829413bd",
+          "file": "TC-036.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-037.spec.ts",
+      "file": "TC-037.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-7.7] TC-037 S09 has exactly two parts and no score history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10592,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:17.692Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "deade9a142574823c9de-7129ccc3c0313e4dc5f6",
+          "file": "TC-037.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-038.spec.ts",
+      "file": "TC-038.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-8.1] TC-038 class picker order: Đang học (newest start first), Sắp bắt đầu, Đã kết thúc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6365,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:28.322Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "429a5d5d6cf3084aef0e-f6f6fe00c8cf3d9f48f9",
+          "file": "TC-038.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-039.spec.ts",
+      "file": "TC-039.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-8.2] TC-039 the class viewed last is chosen again, the first one when it is gone",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4194,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:34.730Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d78ed10af7a4c7c15e91-d2e35b97c097586fac14",
+          "file": "TC-039.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-040.spec.ts",
+      "file": "TC-040.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-8.3] TC-040 \"Bảng xếp hạng ›\" on S02 opens S09 with that class",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3873,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:38.982Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "49e9fdce764baa083c07-f69be06e00e56013173a",
+          "file": "TC-040.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-041.spec.ts",
+      "file": "TC-041.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-8.4] TC-041 an HV without a class",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2709,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:42.898Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "20eeec4cf46ed29903f1-a596336cbfd512ed6b08",
+          "file": "TC-041.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-042.spec.ts",
+      "file": "TC-042.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-8.5] TC-042 a class that has not started yet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3233,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:45.654Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e95fde93c6b3f5ea31bc-6e653c0046580ff97463",
+          "file": "TC-042.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-043.spec.ts",
+      "file": "TC-043.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-9.1] [008:NFR-7] TC-043 the HV receives only names and scores of others, nothing of hidden content",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 27603,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:14:48.923Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0ee1af92df4d5c94b6c4-23727243415dc9701b07",
+          "file": "TC-043.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-044.spec.ts",
+      "file": "TC-044.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-9.2] TC-044 a class that is not mine answers \"Không tìm thấy lớp.\" without telling whether it exists",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5889,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:15:16.614Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8b5e550db1b34e1205eb-5b1ee80e175aa60ae84f",
+          "file": "TC-044.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-045.spec.ts",
+      "file": "TC-045.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-9.3] TC-045 an HV cannot read the GV endpoints or another student's breakdown",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5178,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:15:22.550Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a9503f3203afb20be6d4-7ec22bb6c2530577cc8d",
+          "file": "TC-045.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-046.spec.ts",
+      "file": "TC-046.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-9.4] TC-046 another GV sees \"Không tìm thấy lớp.\" on my class's ranking tab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3331,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:15:27.767Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f9ca26e8fbe6db89d84e-a7fb7d63b46404c63788",
+          "file": "TC-046.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-047.spec.ts",
+      "file": "TC-047.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-9.5] TC-047 signed out: S09 and the ranking tab go through A01 and come back",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4853,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:15:31.147Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c352ed077be94d31b92b-eee45aa9f663c9646cdc",
+          "file": "TC-047.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-048.spec.ts",
+      "file": "TC-048.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-9.6] TC-048 the own position on S09 matches the GV tab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 29199,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:15:36.098Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "56e86a122f282d690757-9ff0b2fe30f931e47809",
+          "file": "TC-048.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-049.spec.ts",
+      "file": "TC-049.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-10.1] TC-049 the GV tab lists activated members (locked labelled) with every column",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 13315,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatch\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected pattern: \u001b[32m/^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/\u001b[39m\nReceived string:  \u001b[31m\"18:16 29/10/2026\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatch\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected pattern: \u001b[32m/^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/\u001b[39m\nReceived string:  \u001b[31m\"18:16 29/10/2026\"\u001b[39m\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-049.spec.ts:33:23",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-049.spec.ts",
+                      "column": 23,
+                      "line": 33
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m     expect(r\u001b[33m.\u001b[39mscore)\u001b[33m.\u001b[39mtoMatch(\u001b[35m/^\\d+,\\d$/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m     \u001b[90m// \"Cập nhật lần cuối (dd/mm/yyyy HH:mm)\".\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m     expect(r\u001b[33m.\u001b[39mupdated)\u001b[33m.\u001b[39mtoMatch(\u001b[35m/^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m   }\n \u001b[90m 35 |\u001b[39m   \u001b[36mawait\u001b[39m expect(gv\u001b[33m.\u001b[39mlocator(\u001b[32m'.rk-tbl tbody tr .avatar'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m4\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 36 |\u001b[39m   \u001b[36mawait\u001b[39m evidence(gv\u001b[33m,\u001b[39m \u001b[32m'TC-049'\u001b[39m\u001b[33m,\u001b[39m \u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-049.spec.ts",
+                        "column": 23,
+                        "line": 33
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoMatch\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected pattern: \u001b[32m/^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/\u001b[39m\nReceived string:  \u001b[31m\"18:16 29/10/2026\"\u001b[39m\n\n  31 |     expect(r.score).toMatch(/^\\d+,\\d$/);\n  32 |     // \"Cập nhật lần cuối (dd/mm/yyyy HH:mm)\".\n> 33 |     expect(r.updated).toMatch(/^\\d{2}\\/\\d{2}\\/\\d{4} \\d{2}:\\d{2}$/);\n     |                       ^\n  34 |   }\n  35 |   await expect(gv.locator('.rk-tbl tbody tr .avatar')).toHaveCount(4);\n  36 |   await evidence(gv, 'TC-049', 1);\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-049.spec.ts:33:23"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:05.361Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-6.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-5.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-4.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\test-failed-7.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-049--008-AC-10-1-TC-049-ddfab--labelled-with-every-column-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-049.spec.ts",
+                    "column": 23,
+                    "line": 33
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "273ceb7c7ff83cb7aa51-d82c926be83b8ed6d1c2",
+          "file": "TC-049.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-050.spec.ts",
+      "file": "TC-050.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-10.2] TC-050 the expanded row shows every item, labelled, \"Không tính\" where it does not count",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7492,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:21.795Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bd027748bf0162325275-27e86ece99273fcab670",
+          "file": "TC-050.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-051.spec.ts",
+      "file": "TC-051.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-10.3] [008:AC-10.4] TC-051 search by name (no accents, spaces trimmed) or e-mail keeps the ranks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10923,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:29.576Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7904efd58f91bb28d6c4-a13d11f0cfe09e6fdd2d",
+          "file": "TC-051.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-052.spec.ts",
+      "file": "TC-052.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-10.5] TC-052 a class without students",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1477,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:40.542Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ddf7d9945dd287a749ff-8cf0cece58ee58adcc8d",
+          "file": "TC-052.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-053.spec.ts",
+      "file": "TC-053.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-11.4] TC-053 a set row with a submission opens its S06 review",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3952,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:42.065Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ebd7b683a342f98e8f73-e20bae64e05d9c6b095a",
+          "file": "TC-053.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-054.spec.ts",
+      "file": "TC-054.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-11.5] TC-054 Hanzi, pinyin and Vietnamese names are shown exactly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:46.061Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "373e626296c0c794b633-ddaca59ef177e4b30912",
+          "file": "TC-054.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-055.spec.ts",
+      "file": "TC-055.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-11.6] [008:AC-11.9] TC-055 nothing to count yet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3545,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:50.958Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5b1629b9f7ece439d44a-c69f748a050fb4f37b8b",
+          "file": "TC-055.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-056.spec.ts",
+      "file": "TC-056.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-11.7] TC-056 no \"Làm lại\" or \"Cải thiện điểm\" anywhere on \"Điểm của tôi\"",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4147,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:54.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "7e783b3f76505b52c09c-8be31bb1b5640a0ace06",
+          "file": "TC-056.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-057.spec.ts",
+      "file": "TC-057.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-11.8] TC-057 the \"Bài thi\" group: order by opening time, states, close times; exams closed before joining are left out",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7188,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:16:58.734Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ba0d3acd412059367fe6-8c3ff6b6c10aeb492642",
+          "file": "TC-057.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-058.spec.ts",
+      "file": "TC-058.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-11.11] [008:AC-11.12] TC-058 an exam row with a submission opens its S08 result, others open nothing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7129,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:17:05.990Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "81c2ef41dbc2414b90c9-4f60716ad53b17050ab5",
+          "file": "TC-058.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-059.spec.ts",
+      "file": "TC-059.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-13.1] TC-059 \"Cách tính điểm\" explains the rules on S09 and on the GV tab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5798,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:17:13.177Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "85e6ff5550aa0af3dbea-be59d0529adbe5c0dc0e",
+          "file": "TC-059.spec.ts",
+          "line": 25,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-060.spec.ts",
+      "file": "TC-060.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-13.2] [008:AC-13.3] TC-060 \"Cập nhật lúc …\" is the server time of the data; refresh, class change and reopening load new data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12110,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:17:19.041Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "955c0f1a98c89e8d6e84-52d9f73dd2dc8122fa26",
+          "file": "TC-060.spec.ts",
+          "line": 18,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-061.spec.ts",
+      "file": "TC-061.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:AC-13.4] TC-061 offline refresh shows the error with \"Thử lại\", never the old list",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4844,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:17:31.200Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "31f347639c3ea4d5269c-91bc334157b69e51a0c3",
+          "file": "TC-061.spec.ts",
+          "line": 6,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-062.spec.ts",
+      "file": "TC-062.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:NFR-1] TC-062 a submission shows within 10 s, an overdue 0 within 60 s",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [
+                {
+                  "type": "timing",
+                  "description": "submit→visible 34 ms; overdue→visible 19 ms"
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3377,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:17:36.094Z",
+                  "annotations": [
+                    {
+                      "type": "timing",
+                      "description": "submit→visible 34 ms; overdue→visible 19 ms"
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "016017034ffac9dbb6e5-696dc5e642edb6c393a7",
+          "file": "TC-062.spec.ts",
+          "line": 9,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-063.spec.ts",
+      "file": "TC-063.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:NFR-2] [008:NFR-4] TC-063 100 HV, 300 sets with Hạn nộp, 50 exams: p95 full display ≤ 2 s",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 900000,
+              "annotations": [
+                {
+                  "type": "timing",
+                  "description": "API p95: GV 3113 ms, HV 3079 ms; UI p95: S09 3987 ms, T04 4498 ms"
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 254788,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2000\u001b[39m\nReceived:    \u001b[31m3113\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2000\u001b[39m\nReceived:    \u001b[31m3113\u001b[39m\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-063.spec.ts:109:21",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-063.spec.ts",
+                      "column": 21,
+                      "line": 109
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 107 |\u001b[39m   test\u001b[33m.\u001b[39minfo()\u001b[33m.\u001b[39mannotations\u001b[33m.\u001b[39mpush({ type\u001b[33m:\u001b[39m \u001b[32m'timing'\u001b[39m\u001b[33m,\u001b[39m description\u001b[33m:\u001b[39m summary })\u001b[33m;\u001b[39m\n \u001b[90m 108 |\u001b[39m   console\u001b[33m.\u001b[39mlog(summary)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 109 |\u001b[39m   expect(p95(gvMs))\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 110 |\u001b[39m   expect(p95(hvMs))\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 111 |\u001b[39m   expect(p95(s09Ms))\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 112 |\u001b[39m   expect(p95(t04Ms))\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-063.spec.ts",
+                        "column": 21,
+                        "line": 109
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2000\u001b[39m\nReceived:    \u001b[31m3113\u001b[39m\n\n  107 |   test.info().annotations.push({ type: 'timing', description: summary });\n  108 |   console.log(summary);\n> 109 |   expect(p95(gvMs)).toBeLessThanOrEqual(2000);\n      |                     ^\n  110 |   expect(p95(hvMs)).toBeLessThanOrEqual(2000);\n  111 |   expect(p95(s09Ms)).toBeLessThanOrEqual(2000);\n  112 |   expect(p95(t04Ms)).toBeLessThanOrEqual(2000);\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-063.spec.ts:109:21"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "API p95: GV 3113 ms, HV 3079 ms; UI p95: S09 3987 ms, T04 4498 ms\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:17:39.519Z",
+                  "annotations": [
+                    {
+                      "type": "timing",
+                      "description": "API p95: GV 3113 ms, HV 3079 ms; UI p95: S09 3987 ms, T04 4498 ms"
+                    }
+                  ],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-063--008-NFR-2-008-NFR--b00ea-xams-p95-full-display-≤-2-s-chromium\\test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-063--008-NFR-2-008-NFR--b00ea-xams-p95-full-display-≤-2-s-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-063--008-NFR-2-008-NFR--b00ea-xams-p95-full-display-≤-2-s-chromium\\test-failed-3.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-063--008-NFR-2-008-NFR--b00ea-xams-p95-full-display-≤-2-s-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-063--008-NFR-2-008-NFR--b00ea-xams-p95-full-display-≤-2-s-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-063.spec.ts",
+                    "column": 21,
+                    "line": 109
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7fe63bddc80054b667f7-58adc47bd0ca5d46e97b",
+          "file": "TC-063.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "TC-064.spec.ts",
+      "file": "TC-064.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[008:NFR-5] TC-064 S09 at 360–430 px without horizontal scroll, ≥ 44 px targets; the GV tab at 1024 px",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 17332,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeInViewport\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('columnheader', { name: 'Cập nhật lần cuối' })\nExpected: in viewport\nReceived: viewport ratio 0.5333873629570007\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeInViewport\" getByRole('columnheader', { name: 'Cập nhật lần cuối' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('columnheader', { name: 'Cập nhật lần cuối' })\u001b[22m\n\u001b[2m    3 × locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m      - unexpected value \"viewport ratio 0.8711978793144226\"\u001b[22m\n\u001b[2m    - locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m    - unexpected value \"viewport ratio 0.7775382995605469\"\u001b[22m\n\u001b[2m    9 × locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m      - unexpected value \"viewport ratio 0.5333873629570007\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeInViewport\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('columnheader', { name: 'Cập nhật lần cuối' })\nExpected: in viewport\nReceived: viewport ratio 0.5333873629570007\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeInViewport\" getByRole('columnheader', { name: 'Cập nhật lần cuối' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('columnheader', { name: 'Cập nhật lần cuối' })\u001b[22m\n\u001b[2m    3 × locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m      - unexpected value \"viewport ratio 0.8711978793144226\"\u001b[22m\n\u001b[2m    - locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m    - unexpected value \"viewport ratio 0.7775382995605469\"\u001b[22m\n\u001b[2m    9 × locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m      - unexpected value \"viewport ratio 0.5333873629570007\"\u001b[22m\n\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-064.spec.ts:59:79",
+                    "location": {
+                      "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-064.spec.ts",
+                      "column": 79,
+                      "line": 59
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 57 |\u001b[39m     \u001b[90m// Usable: every column readable and the row's expand button reachable on screen.\u001b[39m\n \u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(gv\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Làm mới'\u001b[39m }))\u001b[33m.\u001b[39mtoBeInViewport()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 59 |\u001b[39m     \u001b[36mawait\u001b[39m expect(gv\u001b[33m.\u001b[39mgetByRole(\u001b[32m'columnheader'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Cập nhật lần cuối'\u001b[39m }))\u001b[33m.\u001b[39mtoBeInViewport({ ratio\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 60 |\u001b[39m     \u001b[36mawait\u001b[39m expect(gv\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Chi tiết điểm của Nguyễn Văn An'\u001b[39m }))\u001b[33m.\u001b[39mtoBeInViewport({ ratio\u001b[33m:\u001b[39m \u001b[35m1\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 61 |\u001b[39m   }\n \u001b[90m 62 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-064.spec.ts",
+                        "column": 79,
+                        "line": 59
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeInViewport\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('columnheader', { name: 'Cập nhật lần cuối' })\nExpected: in viewport\nReceived: viewport ratio 0.5333873629570007\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeInViewport\" getByRole('columnheader', { name: 'Cập nhật lần cuối' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('columnheader', { name: 'Cập nhật lần cuối' })\u001b[22m\n\u001b[2m    3 × locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m      - unexpected value \"viewport ratio 0.8711978793144226\"\u001b[22m\n\u001b[2m    - locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m    - unexpected value \"viewport ratio 0.7775382995605469\"\u001b[22m\n\u001b[2m    9 × locator resolved to <th>Cập nhật lần cuối</th>\u001b[22m\n\u001b[2m      - unexpected value \"viewport ratio 0.5333873629570007\"\u001b[22m\n\n\n  57 |     // Usable: every column readable and the row's expand button reachable on screen.\n  58 |     await expect(gv.getByRole('button', { name: 'Làm mới' })).toBeInViewport();\n> 59 |     await expect(gv.getByRole('columnheader', { name: 'Cập nhật lần cuối' })).toBeInViewport({ ratio: 1 });\n     |                                                                               ^\n  60 |     await expect(gv.getByRole('button', { name: 'Chi tiết điểm của Nguyễn Văn An' })).toBeInViewport({ ratio: 1 });\n  61 |   }\n  62 | });\n    at C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-064.spec.ts:59:79"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-29T11:22:04.935Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\test-failed-5.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\test-failed-4.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\test-failed-2.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\runs\\2026-10-29-1806\\artifacts\\TC-064--008-NFR-5-TC-064-S-94b20-rgets-the-GV-tab-at-1024-px-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\CanhLN\\Desktop\\SAT\\specs\\008-scoring-leaderboard\\testing\\e2e\\TC-064.spec.ts",
+                    "column": 79,
+                    "line": 59
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd61355de7f0f69c7a37-dff4d077e2283eaad028",
+          "file": "TC-064.spec.ts",
+          "line": 23,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-29T11:09:40.274Z",
+    "duration": 763650.66,
+    "expected": 60,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}
