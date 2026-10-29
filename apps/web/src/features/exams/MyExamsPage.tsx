@@ -1,5 +1,4 @@
 import {
-  EXAM_ERROR_CODES as E,
   EXAM_MESSAGES as M,
   type LearnerExam,
   type LearnerExamView,
@@ -91,10 +90,11 @@ export function MyExamsPage() {
     setBusy(true);
     const err = await start(lobby.exam.id);
     setBusy(false);
-    if (!err || err.code === E.EXAM_SUBMITTED) {
+    if (!err) {
       navigate(myExamPath(lobby.exam.id));
       return;
     }
+    // Refused (e.g. submitted meanwhile in another tab): back to S07 with the new state (AC-8.4).
     setLobby(null);
     if (err.status === 404) navigate(NOT_FOUND_PATH, { replace: true });
     else {

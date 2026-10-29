@@ -40,21 +40,16 @@ const CLASS_STATUS = {
   active: 'Đang học',
   ended: 'Đã kết thúc',
 } as const;
-const FIELD_IDS: Record<string, string> = {
-  name: 'xm-name',
-  instructions: 'xm-instructions',
-  classes: 'xm-classes',
-  open: 'xm-open',
-  dur: 'xm-dur',
-  close: 'xm-close',
-};
 
 function focusTarget(target: string) {
   if (target.startsWith('q')) {
     scrollToQuestion('exam', target.slice(1));
     return;
   }
-  const el = document.getElementById(FIELD_IDS[target] ?? 'xm-questions');
+  // `data-field`, not `id`: the UI kit gives every field its own generated id.
+  const el =
+    document.querySelector<HTMLElement>(`[data-field="${target}"]`) ??
+    document.getElementById('xm-questions');
   el?.scrollIntoView({ block: 'center' });
   el?.focus();
 }
@@ -220,7 +215,7 @@ export function ExamEditorPage() {
               Thông tin bài thi
             </h2>
             <TextField
-              id="xm-name"
+              data-field="name"
               label="Tên bài thi"
               required
               maxLength={XL.nameMax + 50}
@@ -230,7 +225,7 @@ export function ExamEditorPage() {
               onChange={(e) => edit({ name: e.target.value })}
             />
             <Textarea
-              id="xm-instructions"
+              data-field="instructions"
               label="Hướng dẫn (tùy chọn)"
               rows={2}
               maxLength={XL.instructionsMax}
@@ -320,7 +315,7 @@ export function ExamEditorPage() {
               {!closed && (
                 <div className="xm-picker">
                   <Button
-                    id="xm-classes"
+                    data-field="classes"
                     size="sm"
                     variant="outline"
                     aria-haspopup="true"
@@ -356,7 +351,7 @@ export function ExamEditorPage() {
             </div>
             <div className="xm-sched">
               <TextField
-                id="xm-open"
+                data-field="open"
                 label="Giờ mở"
                 placeholder="dd/mm/yyyy hh:mm"
                 hint="Giờ Việt Nam (UTC+7)"
@@ -366,7 +361,7 @@ export function ExamEditorPage() {
                 onChange={(e) => edit({ open: e.target.value })}
               />
               <TextField
-                id="xm-dur"
+                data-field="dur"
                 label="Thời lượng (phút)"
                 placeholder="1–300"
                 inputMode="numeric"
@@ -376,7 +371,7 @@ export function ExamEditorPage() {
                 onChange={(e) => edit({ dur: e.target.value })}
               />
               <TextField
-                id="xm-close"
+                data-field="close"
                 label="Giờ đóng"
                 placeholder="dd/mm/yyyy hh:mm"
                 hint={locked ? 'Chỉ lùi được muộn hơn' : 'Giờ Việt Nam (UTC+7)'}

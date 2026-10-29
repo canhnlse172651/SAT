@@ -472,21 +472,22 @@ export class ExamsService {
   private async extend(p: AuthPrincipal, exam: ExamDoc) {
     const close = exam.closesAt;
     if (!close || !exam.durationMin) return;
-    const r = await scoped(this.attempts, p.workspaceId).updateMany(
-      { examId: exam._id, status: 'doing' },
-      [
-        {
-          $set: {
-            endsAt: {
-              $min: [{ $add: ['$startedAt', exam.durationMin * 60_000] }, close],
-            },
-          },
-        },
-      ] as never,
-    );
+    const attempts = scoped(this.attempts, p.workspaceId);
+    const running = await attempts
+      .find({ examId: exam._id, status: 'doing' })
+      .select({ startedAt: 1, endsAt: 1 })
+      .lean();
+    const durationMs = exam.durationMin * 60_000;
+    let count = 0;
+    for (const a of running) {
+      const endsAt = new Date(Math.min(a.startedAt.getTime() + durationMs, close.getTime()));
+      if (endsAt.getTime() === a.endsAt.getTime()) continue;
+      // `status: 'doing'` again: an attempt submitted meanwhile keeps its end.
+      const r = await attempts.updateOne({ _id: a._id, status: 'doing' }, { $set: { endsAt } });
+      count += r.modifiedCount;
+    }
     await this.settle.scheduleAt(p.workspaceId, close);
-    if (r.modifiedCount)
-      logExam({ action: 'exam.close.extend', examId: String(exam._id), count: r.modifiedCount });
+    if (count) logExam({ action: 'exam.close.extend', examId: String(exam._id), count });
   }
 
   /* ---------- schedule / unschedule (REQ-3) ---------- */

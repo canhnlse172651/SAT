@@ -4,7 +4,8 @@
 .xm-tbl td {
   vertical-align: top;
 }
-.xm-tbl tr.is-arch {
+/* Not on the row or the actions cell: opacity there would trap the "⋯" menu under the next row. */
+.xm-tbl tr.is-arch > td:not(:last-child) {
   opacity: 0.7;
 }
 .xm-classes {

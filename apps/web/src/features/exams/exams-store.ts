@@ -63,6 +63,16 @@ const workOf = (e: Exam): ExamWork => ({
 
 const fingerprint = (w: ExamWork) => JSON.stringify(w);
 
+const FIELD_KEYS: readonly string[] = ['name', 'instructions', 'classes', 'open', 'dur', 'close'];
+
+/** AC-3.3: an unmet condition of a field also shows under that field (the first one per field; typed-text errors win). */
+function withIssues(errors: Partial<Record<FieldKey, string>>, issues: readonly ExamIssue[]) {
+  const out = { ...errors };
+  for (const i of issues)
+    if (FIELD_KEYS.includes(i.target)) out[i.target as FieldKey] ??= i.message;
+  return out;
+}
+
 /** Typed text → API values; problems of the text itself per field (AC-2.3, AC-3.2). */
 export function readWork(w: ExamWork): {
   draft: ExamDraft;
@@ -178,8 +188,10 @@ export const useExamsStore = create<ExamsState>()((set, get) => {
       { field?: FieldKey; issues?: ExamIssue[]; path?: string } | undefined;
     if (err.code === E.INVALID_EXAM && details?.field)
       set({ fieldErrors: { ...get().fieldErrors, [details.field]: err.message } });
-    else if (err.code === E.EXAM_NOT_READY) set({ issues: details?.issues ?? [] });
-    else if (err.code === E.EXAM_CLOSE_EARLIER) set({ fieldErrors: { close: err.message } });
+    else if (err.code === E.EXAM_NOT_READY) {
+      const issues = details?.issues ?? [];
+      set({ issues, fieldErrors: withIssues(get().fieldErrors, issues) });
+    } else if (err.code === E.EXAM_CLOSE_EARLIER) set({ fieldErrors: { close: err.message } });
     else if (err.code === E.EXAM_HAS_ATTEMPTS) set({ fieldErrors: { classes: err.message } });
     else if (err.code === 'INVALID_CONTENT') set({ notice: err.message, touched: new Set(['*']) });
     else if (err.code === E.EXAM_LOCKED) {
@@ -320,7 +332,12 @@ export const useExamsStore = create<ExamsState>()((set, get) => {
           ? []
           : examIssues(draft, serverNow(), { checkOpen: openChanged });
         if (issues.length) {
-          set({ busy: false, issues, touched: new Set(['*']) });
+          set({
+            busy: false,
+            issues,
+            fieldErrors: withIssues({}, issues),
+            touched: new Set(['*']),
+          });
           return false;
         }
       }
@@ -347,7 +364,12 @@ export const useExamsStore = create<ExamsState>()((set, get) => {
       startWrite();
       const issues = examIssues(draft, serverNow(), { checkOpen: true });
       if (Object.keys(errors).length || issues.length) {
-        set({ busy: false, fieldErrors: errors, issues, touched: new Set(['*']) });
+        set({
+          busy: false,
+          fieldErrors: withIssues(errors, issues),
+          issues,
+          touched: new Set(['*']),
+        });
         return false;
       }
       try {
