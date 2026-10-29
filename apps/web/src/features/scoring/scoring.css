@@ -1,0 +1,408 @@
+/* 008 — S09 Bảng xếp hạng (HV, mobile) and T04 tab Xếp hạng (GV). Prototype: SCREENS.S09, rankTable(). */
+
+/* ---------- S09 ---------- */
+
+.rk-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.rk-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.rk-head__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rk-head__title h1 {
+  margin: 0;
+  font-size: var(--fs-lg);
+}
+.rk-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.rk-picker select {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border-input);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-base);
+}
+.rk-seg {
+  display: flex;
+}
+.rk-seg > * {
+  flex: 1;
+  min-height: 44px;
+}
+.rk-updated {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.rk-updated .btn {
+  min-height: 44px;
+}
+.rk-body {
+  flex: 1;
+  padding-bottom: 88px;
+}
+.rk-banner {
+  margin: var(--sp-3) var(--sp-4) 0;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.rk-noclass {
+  padding: 56px 24px;
+}
+
+/* rank number + medal (AC-7.4) */
+.rk-no {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--sp-1);
+  border-radius: var(--r-pill);
+  background: var(--bg-sunk);
+  color: var(--text);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  line-height: 1;
+  flex: none;
+}
+.rk-no__medal {
+  font-size: 9px;
+  font-weight: 700;
+}
+.rk-no--m1 {
+  background: var(--medal-1);
+  color: var(--medal-1-ink);
+  height: 36px;
+}
+.rk-no--m2 {
+  background: var(--medal-2);
+  color: var(--medal-2-ink);
+  height: 36px;
+}
+.rk-no--m3 {
+  background: var(--medal-3);
+  color: var(--medal-3-ink);
+  height: 36px;
+}
+
+.rk-podium {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-3) var(--sp-2);
+}
+.rk-pod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  min-width: 0;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-1);
+  border-radius: var(--r-lg);
+  color: var(--text);
+  text-decoration: none;
+  text-align: center;
+}
+.rk-pod:hover {
+  background: var(--surface-2);
+}
+.rk-pod--1 {
+  padding-bottom: var(--sp-5);
+}
+.rk-pod__name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+.rk-pod__pts {
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.rk-lrow,
+.rk-row,
+.rk-pin {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 56px;
+  padding: var(--sp-2) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+.rk-lrow:hover,
+.rk-row--link:hover {
+  background: var(--surface-2);
+}
+.rk-lrow--me {
+  background: var(--me-wash);
+}
+.rk-lrow__name,
+.rk-row__main,
+.rk-pin__main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+.rk-lrow__name {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+.rk-me {
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+.rk-lrow__pts,
+.rk-pin__pts {
+  font-weight: 700;
+  font-size: var(--fs-md);
+}
+.rk-help {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+.rk-pin {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-raise);
+  background: var(--me-wash);
+}
+.rk-pin__rank {
+  font-weight: 700;
+}
+.rk-pin__pts {
+  font-size: var(--fs-lg);
+}
+
+/* "Điểm của tôi" */
+.rk-hero {
+  margin: var(--sp-3) var(--sp-4);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+}
+.rk-hero__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.rk-hero__label {
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.rk-hero__big {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+}
+.rk-hero__rank {
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.rk-hero__rank--on {
+  border-color: var(--brand-line);
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+}
+.rk-hero__formula {
+  margin: var(--sp-2) 0 var(--sp-3);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.rk-hero__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-2);
+}
+.rk-cell {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+}
+.rk-cell__l {
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+.rk-cell__v {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+.rk-sec {
+  margin: var(--sp-4) var(--sp-4) var(--sp-2);
+  font-size: var(--fs-md);
+}
+.rk-bai {
+  margin: 0;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.rk-row[aria-disabled='true'] {
+  cursor: default;
+}
+.rk-row__title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  font-size: var(--fs-base);
+}
+.rk-row__sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+.rk-row__pts {
+  flex: none;
+  font-weight: 700;
+}
+.rk-chip {
+  height: 20px;
+}
+.rk-empty {
+  margin: 0;
+  padding: var(--sp-1) var(--sp-4) var(--sp-3);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+.rk-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+
+/* "Cách tính điểm" */
+.rk-info__formula {
+  margin: 0;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-weight: 700;
+}
+.rk-info__list {
+  margin: var(--sp-3) 0 0;
+  padding-left: 18px;
+  color: var(--text-2);
+  font-size: var(--fs-base);
+  line-height: 1.75;
+}
+.rk-info__example {
+  display: flex;
+  gap: var(--sp-2);
+  margin: var(--sp-3) 0 0;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--primary-wash);
+  color: var(--primary-text);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- T04 tab Xếp hạng ---------- */
+
+.rk-tab .toolbar {
+  margin-top: var(--sp-5);
+}
+.rk-tbl td,
+.rk-tbl th {
+  vertical-align: middle;
+}
+.rk-tbl .r {
+  text-align: right;
+}
+.rk-tbl__who {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.rk-tbl__score {
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+.rk-tbl__detail td {
+  background: var(--surface-2);
+}
+.rk-bk__formula {
+  margin: 0 0 var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+}
+.rk-bk .grp td {
+  font-weight: 700;
+}
+.rk-bk .sub-grp td {
+  color: var(--text-2);
+  font-weight: 600;
+}
+.rk-bk .muted-row td {
+  color: var(--text-3);
+}
+.rk-flag {
+  margin-left: var(--sp-2);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}

@@ -32,6 +32,7 @@ export const SCREEN_PAGES: Record<string, () => Promise<ComponentType>> = {
   S06: async () => (await import('../features/exercises/ReviewPage')).ReviewPage,
   S07: async () => (await import('../features/exams/MyExamsPage')).MyExamsPage,
   S08: async () => (await import('../features/exams/ExamTakePage')).ExamTakePage,
+  S09: async () => (await import('../features/scoring/RankingPage')).RankingPage,
   // S10 belongs to 011; until then it shows the 001 part (password, sign-out).
   S10: async () => (await import('../features/account/StudentAccountPage')).StudentAccountPage,
 };

@@ -13,7 +13,7 @@ import { useDocumentTitle } from '../../lib/use-document-title';
 import { ClassStatusChip, ProgressLine } from './ClassBits';
 import { MembersList } from './MembersSheet';
 import { useMyClassesStore } from './my-classes-store';
-import { examsPath, myLessonPath, rankingPath } from './paths';
+import { classRankingPath, examsPath, myLessonPath } from './paths';
 import { useHvRefusal } from './use-hv-refusal';
 import './classes.css';
 
@@ -69,7 +69,7 @@ export function ClassHomePage() {
               <h3 id="s02-progress" className="strong">
                 Tiến độ bài tập của tôi
               </h3>
-              <Link to={rankingPath}>Bảng xếp hạng ›</Link>
+              <Link to={classRankingPath(classId)}>Bảng xếp hạng ›</Link>
             </div>
             {page.progress && page.progress.total > 0 ? (
               <ProgressLine progress={page.progress} />

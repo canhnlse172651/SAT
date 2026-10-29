@@ -58,7 +58,7 @@ export class AppModule {
         StepsModule.forRoot({ curriculum, devHelpers }),
         ExercisesModule.forRoot({ curriculum, devHelpers }),
         ExamsModule.forRoot({ devHelpers }),
-        ScoringModule,
+        ScoringModule.forRoot({ curriculum }),
         HealthModule,
         SessionModule,
         FilesModule,

@@ -21,5 +21,7 @@ export const submissionPath = (classId: string, studentId: string, setId: string
   `/gv/bai-nop?${new URLSearchParams({ lop: classId, hv: studentId, bo: setId }).toString()}`;
 export const examsPath = '/hv/bai-thi';
 export const rankingPath = '/hv/xep-hang';
+/** S09 with the class chosen (008 AC-8.3). */
+export const classRankingPath = (classId: string) => `${rankingPath}?lop=${classId}`;
 export const myProfilePath = '/hv/ho-so';
 export const studentProfilePath = (studentId: string) => `/hv/hoc-vien/${studentId}`;
