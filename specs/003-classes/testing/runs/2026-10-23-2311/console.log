@@ -1,0 +1,134 @@
+
+Running 89 tests using 1 worker
+
+  ok  1 [chromium] › specs\003-classes\testing\e2e\TC-001.spec.ts:6:1 › [003:AC-1.1] [003:AC-1.2] TC-001 mở T03, bước 1/4, kiểm tra dữ liệu bước (2.0s)
+  x   2 [chromium] › specs\003-classes\testing\e2e\TC-002.spec.ts:6:1 › [003:AC-1.3] [003:AC-1.4] TC-002 Quay lại / Back / thanh tiến trình giữ dữ liệu (7.1s)
+  ok  3 [chromium] › specs\003-classes\testing\e2e\TC-003.spec.ts:8:1 › [003:AC-1.5] TC-003 hỏi trước khi rời T03, Ở lại / Bỏ (2.1s)
+  ok  4 [chromium] › specs\003-classes\testing\e2e\TC-004.spec.ts:6:1 › [003:AC-1.6] TC-004 tải lại T03 hỏi rời trang, dữ liệu không khôi phục (1.3s)
+  ok  5 [chromium] › specs\003-classes\testing\e2e\TC-005.spec.ts:6:1 › [003:AC-2.1] TC-005 các trường bước 1 và giới hạn ký tự (1.0s)
+  ok  6 [chromium] › specs\003-classes\testing\e2e\TC-006.spec.ts:6:1 › [003:AC-2.2] [003:AC-2.3] [003:AC-2.4] TC-006 tên lớp trống, quá dài, trùng (kể cả lớp Đã kết thúc) (1.6s)
+  ok  7 [chromium] › specs\003-classes\testing\e2e\TC-007.spec.ts:8:1 › [003:AC-2.5] [003:AC-2.6] TC-007 khoảng ngày bắt đầu và thông báo Đang học ngay (1.5s)
+  ok  8 [chromium] › specs\003-classes\testing\e2e\TC-008.spec.ts:6:1 › [003:AC-3.1] [003:AC-14.6] TC-008 bước 2 liệt kê HV của workspace, nhãn trạng thái, A→Z, 20/trang (28.5s)
+  ok  9 [chromium] › specs\003-classes\testing\e2e\TC-009.spec.ts:6:1 › [003:AC-3.2] [003:NFR-2] TC-009 tìm HV không dấu / hoa thường, ≤ 1 giây với 2.000 HV (13.4s)
+  ok 10 [chromium] › specs\003-classes\testing\e2e\TC-010.spec.ts:6:1 › [003:AC-3.3] [003:AC-3.7] TC-010 khu "Đã chọn", giữ lựa chọn qua tìm kiếm, trang, bước; 0 HV được phép (5.5s)
+  ok 11 [chromium] › specs\003-classes\testing\e2e\TC-011.spec.ts:6:1 › [003:AC-3.4] TC-011 T12 từ bước 2: HV mới Chưa kích hoạt và tự động được chọn (6.4s)
+  ok 12 [chromium] › specs\003-classes\testing\e2e\TC-012.spec.ts:7:1 › [003:AC-3.5] TC-012 tối đa 100 HV khi chọn và khi T12 nhập Excel (12.6s)
+  ok 13 [chromium] › specs\003-classes\testing\e2e\TC-013.spec.ts:6:1 › [003:AC-3.6] TC-013 workspace chưa có HV (1.5s)
+  ok 14 [chromium] › specs\003-classes\testing\e2e\TC-014.spec.ts:15:1 › [003:AC-4.1] [003:AC-4.2] TC-014 bước 3: danh sách, thứ tự HSK rồi tên, lọc HSK + từ khóa (1.9s)
+  ok 15 [chromium] › specs\003-classes\testing\e2e\TC-015.spec.ts:9:1 › [003:AC-4.3] [003:AC-4.4] [003:AC-4.5] TC-015 chọn một giáo trình, bắt buộc, cảnh báo chưa có Bài đã xuất bản (2.0s)
+  ok 16 [chromium] › specs\003-classes\testing\e2e\TC-016.spec.ts:6:1 › [003:AC-4.6] TC-016 workspace chưa có giáo trình: liên kết T05 thẻ mới, Tải lại danh sách (2.3s)
+  ok 17 [chromium] › specs\003-classes\testing\e2e\TC-017.spec.ts:6:1 › [003:AC-5.1] [003:AC-5.2] TC-017 bước 4: tóm tắt, Sửa từng phần, cảnh báo còn hiệu lực (1.8s)
+  ok 18 [chromium] › specs\003-classes\testing\e2e\TC-018.spec.ts:18:1 › [003:AC-5.3] [003:AC-5.6] [003:NFR-1] TC-018 tạo lớp: đúng một lớp, T04 Tổng quan, mọi phần Hiển thị, HV thấy lớp (4.2s)
+  ok 19 [chromium] › specs\003-classes\testing\e2e\TC-019.spec.ts:22:1 › [003:AC-5.4] TC-019 dữ liệu không còn hợp lệ khi bấm Tạo lớp: về bước sớm nhất có lỗi (4.6s)
+  ok 20 [chromium] › specs\003-classes\testing\e2e\TC-020.spec.ts:6:1 › [003:AC-5.5] [003:AC-5.6] TC-020 mất kết nối khi Tạo lớp, thử lại tạo đúng một lớp (1.8s)
+  ok 21 [chromium] › specs\003-classes\testing\e2e\TC-021.spec.ts:6:1 › [003:AC-6.1] [003:AC-6.5] [003:AC-14.1] TC-021 T02 cột, lọc mặc định, thứ tự, nhãn trạng thái, mở T04 (1.5s)
+  ok 22 [chromium] › specs\003-classes\testing\e2e\TC-022.spec.ts:6:1 › [003:AC-6.2] [003:AC-6.3] [003:NFR-1] TC-022 T02 lọc trạng thái, tìm không dấu, 20/trang; 300 lớp ≤ 2 giây (5.5s)
+  ok 23 [chromium] › specs\003-classes\testing\e2e\TC-023.spec.ts:6:1 › [003:AC-6.4] TC-023 T02 khi GV chưa có lớp nào (1.6s)
+  ok 24 [chromium] › specs\003-classes\testing\e2e\TC-024.spec.ts:6:1 › [003:AC-7.1] [003:AC-7.2] TC-024 T04 phần đầu, 5 tab, tab Tổng quan và thẻ giáo trình (1.8s)
+  ok 25 [chromium] › specs\003-classes\testing\e2e\TC-025.spec.ts:19:1 › [003:AC-7.3] [003:AC-7.4] TC-025 sửa thông tin lớp Đang học bắt đầu 400 ngày trước (3.8s)
+  ok 26 [chromium] › specs\003-classes\testing\e2e\TC-026.spec.ts:6:1 › [003:AC-7.5] TC-026 lớp vừa được thay đổi ở nơi khác (2.4s)
+  ok 27 [chromium] › specs\003-classes\testing\e2e\TC-027.spec.ts:6:1 › [003:AC-8.1] [003:AC-8.7] [003:NFR-1] [003:NFR-6] TC-027 tab Học viên: dòng, trạng thái, sĩ số, tìm, lớp trống; 100 HV ≤ 2 giây (9.6s)
+  ok 28 [chromium] › specs\003-classes\testing\e2e\TC-028.spec.ts:6:1 › [003:AC-8.2] [003:AC-8.3] TC-028 Thêm học viên: Đã trong lớp, Thêm (2), HV thấy lớp (8.5s)
+  ok 29 [chromium] › specs\003-classes\testing\e2e\TC-029.spec.ts:6:1 › [003:AC-8.4] [003:AC-8.3] TC-029 giới hạn 100 khi thêm đồng thời, không trùng thành viên (2.5s)
+  ok 30 [chromium] › specs\003-classes\testing\e2e\TC-030.spec.ts:19:1 › [003:AC-8.5] [003:AC-8.6] TC-030 gỡ HV khỏi lớp, dữ liệu giữ lại và hiện lại khi thêm lại (4.5s)
+  ok 31 [chromium] › specs\003-classes\testing\e2e\TC-031.spec.ts:4:1 › [003:AC-8.9] TC-031 danh sách tab Tiến độ / Xếp hạng chỉ gồm HV đã kích hoạt (kể cả Đã khóa) (18.8s)
+  ok 32 [chromium] › specs\003-classes\testing\e2e\TC-032.spec.ts:20:1 › [003:AC-8.8] TC-032 kích hoạt HV đang thuộc lớp: giữ tư cách và ngày vào lớp, thấy lớp ngay (4.3s)
+  ok 33 [chromium] › specs\003-classes\testing\e2e\TC-033.spec.ts:22:1 › [003:AC-9.1] [003:AC-9.2] TC-033 đổi giáo trình lớp Sắp bắt đầu: đặt lại ẩn/hiện và hạn nộp (5.3s)
+  ok 34 [chromium] › specs\003-classes\testing\e2e\TC-034.spec.ts:8:1 › [003:AC-9.3] [003:AC-9.4] TC-034 bài nộp đầu tiên giữa lúc mở hộp và lúc xác nhận chặn đổi giáo trình (4.2s)
+  ok 35 [chromium] › specs\003-classes\testing\e2e\TC-035.spec.ts:20:1 › [003:AC-10.1] [003:AC-10.6] [003:AC-14.4] TC-035 kết thúc lớp: nhãn, ngày kết thúc, HV chỉ xem lại (5.1s)
+  ok 36 [chromium] › specs\003-classes\testing\e2e\TC-036.spec.ts:17:1 › [003:AC-10.2] [003:AC-10.3] TC-036 lớp Sắp bắt đầu không có Kết thúc; lớp Đã kết thúc khóa thao tác (6.0s)
+  ok 37 [chromium] › specs\003-classes\testing\e2e\TC-037.spec.ts:4:1 › [003:AC-10.4] [003:AC-10.5] TC-037 lượt dở khi lớp kết thúc: giữ, từ chối lưu/nộp, mở lại thì nộp được (2.3s)
+  ok 38 [chromium] › specs\003-classes\testing\e2e\TC-037.spec.ts:33:1 › [003:AC-10.4] TC-037 mở lại lớp qua T04: xác nhận và thông báo (1.6s)
+  ok 39 [chromium] › specs\003-classes\testing\e2e\TC-038.spec.ts:6:1 › [003:AC-11.1] [003:AC-11.2] TC-038 xóa lớp chưa có bài nộp: tài khoản, lớp khác, giáo trình còn; dùng lại tên (6.3s)
+  ok 40 [chromium] › specs\003-classes\testing\e2e\TC-039.spec.ts:20:1 › [003:AC-11.3] [003:AC-11.4] TC-039 bài nộp (kể cả HV đã gỡ, bài thi tự nộp) chặn xóa lớp (4.2s)
+  ok 41 [chromium] › specs\003-classes\testing\e2e\TC-040.spec.ts:4:1 › [003:AC-11.5] TC-040 xóa lớp bỏ lớp khỏi các bài thi được giao, bài thi và lớp khác giữ nguyên (228ms)
+  ok 42 [chromium] › specs\003-classes\testing\e2e\TC-041.spec.ts:6:1 › [003:AC-12.1] [003:AC-12.2] [003:NFR-3] TC-041 S01 thẻ lớp, thứ tự, dòng Bắt đầu ngày; 10 lớp ≤ 3 giây (3.6s)
+  ok 43 [chromium] › specs\003-classes\testing\e2e\TC-042.spec.ts:6:1 › [003:AC-12.3] TC-042 S01 khi HV chưa thuộc lớp nào (3.1s)
+  ok 44 [chromium] › specs\003-classes\testing\e2e\TC-043.spec.ts:19:1 › [003:AC-13.1] [003:AC-13.2] [003:AC-13.3] TC-043 S02: thông tin lớp, Bài theo thứ tự, nhãn phần, tiến độ (3.6s)
+  ok 45 [chromium] › specs\003-classes\testing\e2e\TC-044.spec.ts:6:1 › [003:AC-13.4] [003:AC-13.5] [003:AC-13.7] TC-044 nhãn Chưa có bài tập / Chưa có nội dung / Bài tập chưa mở; lớp chưa có bài (3.9s)
+  ok 46 [chromium] › specs\003-classes\testing\e2e\TC-045.spec.ts:20:1 › [003:AC-13.6] [003:AC-17.3] [003:AC-22.4] TC-045 hai lớp cùng giáo trình: ẩn và hạn nộp chỉ theo lớp; Bài mới Hiển thị, bộ mới Chưa mở (5.2s)
+  ok 47 [chromium] › specs\003-classes\testing\e2e\TC-046.spec.ts:6:1 › [003:AC-13.8] [003:AC-17.8] TC-046 lối vào "Bài thi của lớp (N)" và ẩn phần không ảnh hưởng bài thi (3.5s)
+  ok 48 [chromium] › specs\003-classes\testing\e2e\TC-047.spec.ts:6:1 › [003:AC-14.2] TC-047 00:00 (UTC+7) ngày bắt đầu: lớp tự chuyển Đang học, nội dung mở (3.4s)
+  ok 49 [chromium] › specs\003-classes\testing\e2e\TC-048.spec.ts:6:1 › [003:AC-14.3] TC-048 lớp Sắp bắt đầu: S02 chỉ thông tin + thông điệp, từ chối mọi nội dung kể cả đường dẫn trực tiếp (3.4s)
+  ok 50 [chromium] › specs\003-classes\testing\e2e\TC-049.spec.ts:8:1 › [003:AC-14.5] [003:AC-20.7] TC-049 HV bị gỡ / lớp bị xóa: từ chối, thông báo, về S01 (3.8s)
+  ok 51 [chromium] › specs\003-classes\testing\e2e\TC-050.spec.ts:6:1 › [003:AC-14.6] [003:NFR-7] TC-050 GV khác workspace: A05 và 404 cho mọi thao tác, không lộ thông tin (3.7s)
+  ok 52 [chromium] › specs\003-classes\testing\e2e\TC-051.spec.ts:6:1 › [003:AC-15.1] [003:AC-15.2] [003:AC-15.3] [003:NFR-1] TC-051 tab Nội dung: dòng Bài, ô phần, Bài Nháp đặt trước; 50 Bài ≤ 2 giây (8.9s)
+  ok 53 [chromium] › specs\003-classes\testing\e2e\TC-052.spec.ts:6:1 › [003:AC-15.4] TC-052 tab Nội dung khi giáo trình chưa có Bài (1.6s)
+  ok 54 [chromium] › specs\003-classes\testing\e2e\TC-053.spec.ts:19:1 › [003:AC-16.1] [003:AC-16.2] [003:AC-17.4] [003:AC-17.6] TC-053 ẩn / hiện Bài tập của Bài 2 chỉ trong lớp A (7.4s)
+  ok 55 [chromium] › specs\003-classes\testing\e2e\TC-054.spec.ts:6:1 › [003:AC-16.3] TC-054 hộp xác nhận ẩn nêu số HV đang làm dở (7.4s)
+  ok 56 [chromium] › specs\003-classes\testing\e2e\TC-055.spec.ts:6:1 › [003:AC-16.4] [003:NFR-4] TC-055 ẩn / hiện hàng loạt theo cột và theo dòng; 50 Bài ≤ 3 giây (6.0s)
+  ok 57 [chromium] › specs\003-classes\testing\e2e\TC-056.spec.ts:8:1 › [003:AC-16.5] TC-056 ẩn / hiện thất bại: không phần nào đổi (2.6s)
+  ok 58 [chromium] › specs\003-classes\testing\e2e\TC-057.spec.ts:6:1 › [003:AC-16.6] TC-057 phần đã ở trạng thái đích do phiên khác (2.8s)
+  ok 59 [chromium] › specs\003-classes\testing\e2e\TC-058.spec.ts:6:1 › [003:AC-17.1] [003:AC-17.2] [003:AC-17.5] TC-058 chỉ nội dung đã xuất bản, phần không ẩn; đường dẫn trực tiếp → A05 có nút về S02 (3.6s)
+  ok 60 [chromium] › specs\003-classes\testing\e2e\TC-059.spec.ts:6:1 › [003:AC-17.7] TC-059 HV không thấy nhãn AI hay nội dung AI chưa duyệt (3.5s)
+  ok 61 [chromium] › specs\003-classes\testing\e2e\TC-060.spec.ts:4:1 › [003:AC-18.1] [003:AC-18.3] TC-060 thao tác tiếp trên bước học của phần vừa bị ẩn (7.3s)
+  ok 62 [chromium] › specs\003-classes\testing\e2e\TC-061.spec.ts:4:1 › [003:AC-18.2] TC-061 lưu / nộp lượt dở của phần vừa bị ẩn: từ chối, lượt dở giữ; hiện lại thì nộp được (2.3s)
+  ok 63 [chromium] › specs\003-classes\testing\e2e\TC-062.spec.ts:6:1 › [003:AC-19.1] [003:AC-19.2] [003:AC-19.6] [003:NFR-3] TC-062 S11 phần đầu, tab, bước học đánh số; Bài trống; 40 mục ≤ 3 giây (5.2s)
+  ok 64 [chromium] › specs\003-classes\testing\e2e\TC-063.spec.ts:22:1 › [003:AC-19.3] [003:AC-19.5] [003:AC-19.7] TC-063 S11 tab Bài tập: số câu, nhãn hạn, 5 trạng thái, mở đúng màn hình (3.8s)
+  ok 65 [chromium] › specs\003-classes\testing\e2e\TC-064.spec.ts:6:1 › [003:AC-19.4] [003:AC-19.8] TC-064 mở mọi Bài, bước, bộ theo bất kỳ thứ tự nào (3.7s)
+  ok 66 [chromium] › specs\003-classes\testing\e2e\TC-065.spec.ts:6:1 › [003:AC-19.9] [003:AC-23.5] TC-065 bộ chưa đặt hạn: dòng bị vô hiệu Chưa mở · Giáo viên chưa đặt hạn nộp (3.1s)
+  ok 67 [chromium] › specs\003-classes\testing\e2e\TC-066.spec.ts:6:1 › [003:AC-20.1] [003:AC-20.2] [003:AC-20.5] [003:NFR-3] TC-066 Thành viên (4): mình đứng đầu "Bạn", A→Z, mở S12 / S10; 100 HV ≤ 3 giây (14.2s)
+  ok 68 [chromium] › specs\003-classes\testing\e2e\TC-067.spec.ts:4:1 › [003:AC-20.3] [003:AC-20.4] [003:NFR-7] TC-067 danh sách Thành viên: ai được liệt kê, chỉ họ tên + ảnh (11.0s)
+  ok 69 [chromium] › specs\003-classes\testing\e2e\TC-068.spec.ts:6:1 › [003:AC-20.6] TC-068 thành viên duy nhất: Lớp chưa có thành viên nào khác. (3.2s)
+  ok 70 [chromium] › specs\003-classes\testing\e2e\TC-069.spec.ts:6:1 › [003:AC-21.1] [003:AC-21.7] TC-069 ô Bài tập: bộ đã xuất bản theo thứ tự, ngày hạn / Đặt hạn + Chưa mở với học viên (1.6s)
+  ok 71 [chromium] › specs\003-classes\testing\e2e\TC-070.spec.ts:6:1 › [003:AC-21.2] [003:NFR-6] TC-070 lịch popup: bàn phím, hôm nay, ngày đang có, khoảng ±365, Esc / bấm ra ngoài (2.3s)
+  ok 72 [chromium] › specs\003-classes\testing\e2e\TC-071.spec.ts:6:1 › [003:AC-21.3] [003:AC-21.6] TC-071 đặt hạn bằng Áp dụng, xóa hạn bằng Xóa (4.6s)
+  ok 73 [chromium] › specs\003-classes\testing\e2e\TC-072.spec.ts:9:1 › [003:AC-21.4] [003:AC-21.5] TC-072 cảnh báo ngày đã qua và không có thư nhắc (2.2s)
+  ok 74 [chromium] › specs\003-classes\testing\e2e\TC-073.spec.ts:9:1 › [003:AC-21.8] TC-073 cảnh báo trước nút Xóa khi đang có hạn (2.1s)
+  ok 75 [chromium] › specs\003-classes\testing\e2e\TC-074.spec.ts:6:1 › [003:AC-22.1] [003:AC-22.2] [003:NFR-4] TC-074 đặt / xóa hạn cho mọi bộ của Bài; 20 bộ ≤ 3 giây (3.0s)
+  ok 76 [chromium] › specs\003-classes\testing\e2e\TC-075.spec.ts:8:1 › [003:AC-22.3] TC-075 cập nhật hạn thất bại: không hạn nào đổi (1.9s)
+  ok 77 [chromium] › specs\003-classes\testing\e2e\TC-076.spec.ts:19:1 › [003:AC-22.5] [003:AC-22.6] TC-076 hạn được giữ nhưng không hiệu lực khi phần ẩn / bộ lưu trữ (12.2s)
+  ok 78 [chromium] › specs\003-classes\testing\e2e\TC-077.spec.ts:22:1 › [003:AC-23.1] [003:AC-23.2] [003:AC-23.3] [003:AC-23.4] TC-077 nhãn Hạn nộp dd/MM(/yyyy), Hạn hôm nay, Quá hạn; nộp muộn được (3.5s)
+  ok 79 [chromium] › specs\003-classes\testing\e2e\TC-078.spec.ts:6:1 › [003:AC-23.6] TC-078 lớp Đã kết thúc chỉ có nhãn Hạn nộp dd/MM (3.2s)
+  ok 80 [chromium] › specs\003-classes\testing\e2e\TC-079.spec.ts:6:1 › [003:AC-23.7] [003:NFR-4] TC-079 đặt / xóa hạn có hiệu lực với HV trong ≤ 5 giây (6.5s)
+  ok 81 [chromium] › specs\003-classes\testing\e2e\TC-080.spec.ts:16:1 › [003:AC-24.1] [003:AC-24.2] [003:NFR-10] TC-080 lượt nhắc 08:00: đúng người, đúng bộ, một email mỗi lớp (14.4s)
+  ok 82 [chromium] › specs\003-classes\testing\e2e\TC-081.spec.ts:4:1 › [003:AC-24.3] [003:AC-24.5] TC-081 sau lượt 08:00: hạn mới hôm nay, chạy lại, đổi qua lại, nộp bài — không có email mới (4.0s)
+  ok 83 [chromium] › specs\003-classes\testing\e2e\TC-082.spec.ts:4:1 › [003:AC-24.4] TC-082 dời hạn sang ngày mai: nhắc lại lúc 08:00 ngày mới (8.4s)
+  ok 84 [chromium] › specs\003-classes\testing\e2e\TC-083.spec.ts:4:1 › [003:AC-24.6] TC-083 sự cố lúc 08:00: gửi bù một lần trước 20:00, bỏ nếu sau 20:00 (3.8s)
+  ok 85 [chromium] › specs\003-classes\testing\e2e\TC-084.spec.ts:4:1 › [003:AC-25.1] [003:AC-25.2] [003:AC-25.5] [003:NFR-6] TC-084 nội dung email nhắc, thứ tự bộ, người gửi, đọc được ở 360–430 px (7.7s)
+  ok 86 [chromium] › specs\003-classes\testing\e2e\TC-085.spec.ts:4:1 › [003:AC-25.3] TC-085 hơn 20 bộ: liệt kê 20 bộ đầu và "Và {M} bài tập khác cũng hết hạn hôm nay." (4.4s)
+  ok 87 [chromium] › specs\003-classes\testing\e2e\TC-086.spec.ts:8:1 › [003:AC-25.4] TC-086 nút "Làm bài ngay": S05 (1 bộ) / S02 (≥ 2 bộ), qua A01 khi chưa đăng nhập, quy tắc truy cập (7.4s)
+  ok 88 [chromium] › specs\003-classes\testing\e2e\TC-087.spec.ts:5:1 › [003:AC-26.1] [003:AC-26.2] TC-087 thư nhắc bị từ chối / không nhận: không gửi lại, trạng thái giữ, ghi nhật ký; không bị giới hạn 001 chặn (17.5s)
+  ok 89 [chromium] › specs\003-classes\testing\e2e\TC-088.spec.ts:6:1 › [003:AC-26.3] TC-088 thông tin đã nhắc theo bộ cho 009, không hiện ở ô hạn, mất khi đổi hạn (8.6s)
+
+
+  1) [chromium] › specs\003-classes\testing\e2e\TC-002.spec.ts:6:1 › [003:AC-1.3] [003:AC-1.4] TC-002 Quay lại / Back / thanh tiến trình giữ dữ liệu 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Bước 2/4 · Thêm học viên', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Bước 2/4 · Thêm học viên', { exact: true }) with timeout 5000ms
+      - waiting for getByText('Bước 2/4 · Thêm học viên', { exact: true })
+
+
+      30 |   );
+      31 |   await page.goBack();
+    > 32 |   await expect(page.getByText('Bước 2/4 · Thêm học viên', { exact: true })).toBeVisible();
+         |                                                                             ^
+      33 |   await expect(page.getByRole('checkbox', { name: 'Học viên Một' })).toBeChecked();
+      34 |   await expect(page.getByRole('checkbox', { name: 'Học viên Hai' })).toBeChecked();
+      35 |   await expect(page.getByRole('heading', { name: 'Đã chọn (2)' })).toBeVisible();
+        at C:\Users\CanhLN\Desktop\sat-003-qa\specs\003-classes\testing\e2e\TC-002.spec.ts:32:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    specs\003-classes\testing\runs\2026-10-23-2311\artifacts\TC-002--003-AC-1-3-003-AC--f5a80-hanh-tiến-trình-giữ-dữ-liệu-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: specs\003-classes\testing\runs\2026-10-23-2311\artifacts\TC-002--003-AC-1-3-003-AC--f5a80-hanh-tiến-trình-giữ-dữ-liệu-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    specs\003-classes\testing\runs\2026-10-23-2311\artifacts\TC-002--003-AC-1-3-003-AC--f5a80-hanh-tiến-trình-giữ-dữ-liệu-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace specs\003-classes\testing\runs\2026-10-23-2311\artifacts\TC-002--003-AC-1-3-003-AC--f5a80-hanh-tiến-trình-giữ-dữ-liệu-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › specs\003-classes\testing\e2e\TC-002.spec.ts:6:1 › [003:AC-1.3] [003:AC-1.4] TC-002 Quay lại / Back / thanh tiến trình giữ dữ liệu 
+  88 passed (8.1m)

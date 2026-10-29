@@ -20,3 +20,49 @@
   - 004/005/006/008/009/011 do not exist: S03–S07, S09, S10, S12 and the T04 tabs Tiến độ / Xếp hạng are placeholders; their 003 parts are
     checked through the API and dev stand-ins described in test-cases.md ("Dữ liệu và tài khoản dùng chung").
 - Verify with: node .sdd/scripts/sdd.mjs run test && node .sdd/scripts/sdd.mjs run test:e2e
+
+## Handoff 2026-10-23 23:25 — /test-module 003 (QA)
+- Status: 003-classes implementing · 28/28 tasks · QA 87/88 E2E/API Pass   Branch: feat/003-classes @ dfbe561 (worktree ../sat-003-qa)
+- Done this session: QA run 2026-10-23-2311 — one replayable script per E2E/API case (`testing/e2e/TC-001…TC-088.spec.ts`, shared
+  `helpers.ts`), report + results + 134 screenshots in `testing/runs/2026-10-23-2311/`, test-cases.md statuses, verification.md (Verdict FAIL).
+- In progress: —
+- Next: `/module 003` — sửa TC-002 (AC-1.3: sau "Quay lại", nút Back của trình duyệt phải về bước liền trước — hiện "Quay lại"/"Sửa" đẩy
+  thêm một mục lịch sử nên Back trở lại bước 4), rồi `/test-module 003` chạy lại TC-002.
+- Blockers / questions:
+  - Tooling (not 003): Playwright configs hard-code port 4173 (two worktrees collide — this run used an uncommitted `SAT_E2E_PORT`
+    override); `replay-module-tests.mjs` breaks on Windows with ≥ 2 TC ids (`-g "A|B"` through cmd.exe); replays of 003 need `--workers=1`
+    (scripts move the server clock). See the report's "Notes".
+  - Playwright MCP browser was held by the 002 QA session; this run used the Playwright library in an isolated browser.
+  - Thủ công TC-089 … TC-092 need a person / a real mail provider (instructions in the report).
+- Verify with: PORT=4183 SAT_E2E_PORT=4183 node .sdd/scripts/sdd.mjs run test:modules -- 003 TC-002   (server: PORT=4183 node tests/e2e/server.mjs)
+
+## Handoff 2026-10-25 23:40 — /module 003 (fix mode)
+- Status: 003-classes implementing · 28/28 tasks   Branch: feat/003-classes (worktree ../sat-003-qa)
+- Done this session: TC-002 (AC-1.3) fixed — every move back in T03 ("Quay lại", progress bar, "Sửa", re-validation after "Tạo lớp")
+  goes back through the browser history, so the wizard's history is always [bước 1 … bước hiện tại] and Back lands on the step before.
+  The fix exposed a race on AC-5.6 (3 quick "Tạo lớp": a late duplicate got "Tên lớp đã tồn tại" and sent the GV back into the wizard):
+  the API now answers the class the same `createKey` created instead of a name conflict, and T03 sends one create at a time (ref guard)
+  and ignores late failures once T04 is open. Replay `testing/runs/2026-10-25-2337-replay/` (TC-002 Pass); full replay of the 88
+  scripts (one worker, port 4183): 86 Pass — TC-007 and TC-070 failed, see below. lint ✔, `run test` 60 files / 308 passed (a first run
+  during the replay had 1 failure that did not repeat), build ✔.
+- In progress: —
+- Next: `/test-module 003` — chạy lại TC-002 (và TC-018 … TC-020: tạo lớp), sửa script TC-070, xem TC-007.
+- Blockers / questions (for the QA agent — saved scripts are not edited in fix mode):
+  - **TC-070 script is date-dependent and breaks typecheck:** `run typecheck` reports `TC-070.spec.ts(55,…): 'fd' is possibly
+    'undefined'` (scripts are type-checked with the repo); and the step "mở lại → hôm nay có aria-current" assumes today is in the month the
+    popup opens on. Its deadline is today + 7, so from 25/10 the popup opens on November and today (25/10) is not on screen — the app
+    behaves per AC-21.2 (the popup opens on the selected day's month; today is marked when shown).
+  - **TC-007** timed out before its first step in the full replay (waiting for "Tên lớp" on T03), passed twice alone right after — the
+    dev sign-in + `goto` opening looks racy under load.
+- Verify with: PORT=4183 SAT_E2E_PORT=4183 node .sdd/scripts/sdd.mjs run test:modules -- 003 TC-002   (server: PORT=4183 node tests/e2e/server.mjs)
+
+## Handoff 2026-10-26 09:15 — /test-module 003 (QA, re-run)
+- Status: 003-classes verified · 28/28 tasks · QA 88/88 E2E/API Pass   Branch: feat/003-classes (worktree ../sat-003-qa)
+- Done this session: QA re-run 2026-10-26-0859 — TC-002 walked by hand in the Playwright MCP browser, full pass of all saved scripts
+  on a clean server (one worker): 88/88. Scripts maintained: TC-070 (date-independent, type-checks), TC-018 / TC-053 (wait for the screen
+  before "absent" checks; exact "Đang ẩn"), shared `signIn` (waits, confirms the session). verification.md Verdict PASS.
+- In progress: —
+- Next: review / ship (`/sdd-verify` or `/sdd-ship` per the pipeline); Thủ công TC-089 … TC-092 need a person / a real mail provider.
+- Blockers / questions: tooling only — Playwright configs hard-code port 4173 (an uncommitted `SAT_E2E_PORT` override stays in the
+  worktree, not committed); `replay-module-tests.mjs` breaks on Windows with ≥ 2 TC ids; 003 replays need `--workers=1`.
+- Verify with: PORT=4183 SAT_E2E_PORT=4183 npx playwright test -c playwright.modules.config.ts --workers=1 (with SAT_MODULE_TEST_DIR / SAT_MODULE_RUN_DIR, server: PORT=4183 node tests/e2e/server.mjs)
