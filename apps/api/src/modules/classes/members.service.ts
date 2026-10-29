@@ -6,6 +6,7 @@ import {
   type ClassMember,
   seatsLeftMessage,
   studentsRemovedMessage,
+  vnDayStart,
 } from '@sat/shared';
 import { type Model, Types } from 'mongoose';
 import type { AuthPrincipal } from '../../common/auth/auth.types.js';
@@ -145,10 +146,11 @@ export class MembersService {
     }
 
     let added = 0;
+    const addedAt = this.clock.now();
     for (const studentId of toAdd) {
       const back = await memberScope.updateOne(
         { classId: c._id, studentId: oid(studentId), removedAt: { $ne: null } },
-        { $set: { removedAt: null, joinedAt: today } },
+        { $set: { removedAt: null, joinedAt: today, addedAt } },
       );
       if (back.modifiedCount) {
         added++;
@@ -159,6 +161,7 @@ export class MembersService {
           classId: c._id,
           studentId: oid(studentId),
           joinedAt: today,
+          addedAt,
           removedAt: null,
         });
         added++;
@@ -186,10 +189,16 @@ export class MembersService {
     const c = await loadClass(this.classes, p.workspaceId, classId);
     assertNotEnded(c, todayOf(this.clock));
     if (!Types.ObjectId.isValid(studentId)) throw notFound();
-    const res = await scoped(this.members, p.workspaceId).updateOne(
-      { classId: c._id, studentId: oid(studentId), removedAt: null },
-      { $set: { removedAt: this.clock.now() } },
-    );
+    const scope = scoped(this.members, p.workspaceId);
+    const filter = { classId: c._id, studentId: oid(studentId), removedAt: null };
+    const member = await scope.findOne(filter).lean<MemberDoc>();
+    if (!member) throw notFound();
+    const now = this.clock.now();
+    const res = await scope.updateOne(filter, {
+      $set: { removedAt: now },
+      // 008 AC-5.2: the period just ended, so a missed deadline inside it still counts after a re-add.
+      $push: { history: { from: member.addedAt ?? vnDayStart(member.joinedAt), to: now } },
+    });
     if (!res.modifiedCount) throw notFound();
     await scoped(this.classes, p.workspaceId).updateOne(
       { _id: c._id, memberCount: { $gt: 0 } },

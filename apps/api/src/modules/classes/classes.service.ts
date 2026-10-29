@@ -230,6 +230,7 @@ export class ClassesService {
 
     // Memberships first, under a pre-generated id: the class becomes visible only once its members exist.
     const today = todayOf(this.clock);
+    const addedAt = this.clock.now();
     const classId = new Types.ObjectId();
     const memberScope = scoped(this.members, p.workspaceId);
     await Promise.all(
@@ -238,6 +239,7 @@ export class ClassesService {
           classId,
           studentId: oid(studentId),
           joinedAt: today,
+          addedAt,
           removedAt: null,
         }),
       ),

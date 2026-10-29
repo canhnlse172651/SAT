@@ -122,6 +122,10 @@ export interface MemberDoc {
   joinedAt: string;
   /** Set on removal; the row is kept so a re-added HV gets their data back (AC-8.6). */
   removedAt: Date | null;
+  /** Clock time of the (last) addition; absent on rows written before 008 (fall back to `joinedAt`). */
+  addedAt?: Date;
+  /** Earlier membership periods, pushed on removal: 008 counts a missed deadline only inside a period (AC-5.2). */
+  history: { from: Date; to: Date }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -133,6 +137,8 @@ export const memberSchema = new Schema<MemberDoc>(
     studentId: { type: Schema.Types.ObjectId, required: true },
     joinedAt: { type: String, required: true },
     removedAt: { type: Date, default: null },
+    addedAt: { type: Date },
+    history: { type: [{ _id: false, from: Date, to: Date }], default: [] },
   },
   { ...baseSchemaOptions, collection: 'class_members' },
 );

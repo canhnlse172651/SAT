@@ -17,6 +17,7 @@ import { SessionModule } from './modules/session/session.module.js';
 import { StepsModule } from './modules/steps/steps.module.js';
 import { ExercisesModule } from './modules/exercises/exercises.module.js';
 import { ExamsModule } from './modules/exams/exams.module.js';
+import { ScoringModule } from './modules/scoring/scoring.module.js';
 
 export type AppConfig = Pick<
   Config,
@@ -57,6 +58,7 @@ export class AppModule {
         StepsModule.forRoot({ curriculum, devHelpers }),
         ExercisesModule.forRoot({ curriculum, devHelpers }),
         ExamsModule.forRoot({ devHelpers }),
+        ScoringModule,
         HealthModule,
         SessionModule,
         FilesModule,

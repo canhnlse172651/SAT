@@ -35,6 +35,26 @@ import {
 const oid = (id: string | Types.ObjectId) => new Types.ObjectId(String(id));
 const isoOf = (d: Date | null | undefined) => d?.toISOString() ?? null;
 
+/** `ExamResultsService.scoringData` — read by 008 Điểm & Xếp hạng. */
+export interface ExamScoringData {
+  exams: {
+    id: string;
+    name: string;
+    opensAt: Date | null;
+    closesAt: Date | null;
+    archived: boolean;
+    maxScore: number;
+  }[];
+  submissions: {
+    examId: string;
+    studentId: string;
+    score: number;
+    maxScore: number;
+    submittedAt: Date;
+  }[];
+  noShows: { examId: string; studentId: string }[];
+}
+
 /**
  * T16 / T14 of the GV (REQ-15) and the exam results 006 provides to 008 / 009 (AC-13.4 … AC-13.6): one result per HV and
  * assigned class — the HV's one submission, or "Không làm bài" (0) recorded at the close.
@@ -176,6 +196,49 @@ export class ExamResultsService {
       maxScore: attempt.maxScore ?? 0,
       percent: attempt.percent ?? 0,
       rows: reviewRows(content, attempt.answers ?? {}, attempt.results ?? []),
+    };
+  }
+
+  /**
+   * What 008 scores for one class (AC-13.4 … AC-13.6 of 006, settled first): the exams of the class an HV can see or that
+   * were archived, the submitted attempts of those exams (any student — one attempt counts in every assigned class,
+   * 008 AC-1.12) and the "Không làm bài" records of the class.
+   */
+  async scoringData(workspaceId: string, classId: string): Promise<ExamScoringData> {
+    if (!Types.ObjectId.isValid(classId)) return { exams: [], submissions: [], noShows: [] };
+    await this.settle.settle(workspaceId);
+    const exams = await scoped(this.exams, workspaceId)
+      .find({ classIds: oid(classId), phase: { $in: ['scheduled', 'archived'] } })
+      .lean<ExamDoc[]>();
+    if (!exams.length) return { exams: [], submissions: [], noShows: [] };
+    const examIds = exams.map((e) => e._id);
+    const [attempts, noShows] = await Promise.all([
+      scoped(this.attempts, workspaceId)
+        .find({ examId: { $in: examIds }, status: 'submitted' })
+        .select({ examId: 1, studentId: 1, score: 1, maxScore: 1, submittedAt: 1 })
+        .lean<ExamAttemptDoc[]>(),
+      scoped(this.noShows, workspaceId)
+        .find({ examId: { $in: examIds }, classId: oid(classId) })
+        .select({ examId: 1, studentId: 1 })
+        .lean<ExamNoShowDoc[]>(),
+    ]);
+    return {
+      exams: exams.map((e) => ({
+        id: String(e._id),
+        name: e.name,
+        opensAt: e.opensAt,
+        closesAt: e.closesAt,
+        archived: e.phase === 'archived',
+        maxScore: setPoints(examContent(e)),
+      })),
+      submissions: attempts.map((a) => ({
+        examId: String(a.examId),
+        studentId: String(a.studentId),
+        score: a.score ?? 0,
+        maxScore: a.maxScore ?? 0,
+        submittedAt: a.submittedAt ?? a.updatedAt,
+      })),
+      noShows: noShows.map((n) => ({ examId: String(n.examId), studentId: String(n.studentId) })),
     };
   }
 

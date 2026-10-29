@@ -55,6 +55,7 @@ export class ExerciseLinks implements LearningData, ClassLearning, StepPractice 
         submittedAt: 1,
         score: 1,
         maxScore: 1,
+        regrades: 1,
       })
       .lean<AttemptDoc[]>();
     return rows.map((r) => ({
@@ -63,7 +64,12 @@ export class ExerciseLinks implements LearningData, ClassLearning, StepPractice 
       inProgress: r.status === 'doing',
       submission:
         r.status === 'submitted' && r.submittedAt
-          ? { score: r.score ?? 0, maxScore: r.maxScore ?? 0, at: r.submittedAt }
+          ? {
+              score: r.score ?? 0,
+              maxScore: r.maxScore ?? 0,
+              at: r.submittedAt,
+              regradedAt: r.regrades?.at(-1)?.at ?? null,
+            }
           : null,
     }));
   }

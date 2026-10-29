@@ -63,6 +63,19 @@ export class StudentDirectory {
     return docs.map(info);
   }
 
+  /** When each of `ids` was first activated (008 AC-5.7); absent = never, or before this was recorded. */
+  async activatedAt(workspaceId: string, ids: readonly string[]): Promise<Map<string, Date>> {
+    const valid = ids
+      .filter((id) => Types.ObjectId.isValid(id))
+      .map((id) => new Types.ObjectId(id));
+    if (!valid.length) return new Map();
+    const docs = await scoped(this.users, workspaceId)
+      .find({ role: 'HV', _id: { $in: valid }, activatedAt: { $exists: true } })
+      .select({ activatedAt: 1 })
+      .lean<Pick<UserDoc, '_id' | 'activatedAt'>[]>();
+    return new Map(docs.flatMap((d) => (d.activatedAt ? [[String(d._id), d.activatedAt]] : [])));
+  }
+
   /**
    * Whether any of `ids` is a user of another workspace (003 AC-14.6: such a reference is answered like a missing
    * page, not like a deleted student). Existence only — nothing of the other workspace is read.
