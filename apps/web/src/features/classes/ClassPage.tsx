@@ -1,5 +1,6 @@
 import {
   CLASS_MESSAGES as M,
+  RANKING_MESSAGES,
   deleteConfirm,
   deletedMessage,
   endConfirm,
@@ -12,6 +13,7 @@ import { ApiError } from '../../lib/api-client';
 import { useDocumentTitle } from '../../lib/use-document-title';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { curriculumPath } from '../curriculum/paths';
+import { RankingTab } from '../scoring/RankingTab';
 import { useToastStore } from '../toast/toast-store';
 import { ClassStatusChip } from './ClassBits';
 import { useClassesStore } from './classes-store';
@@ -53,7 +55,9 @@ export function ClassPage() {
     });
   }, [classId, loadDetail]);
 
-  if (missingId === classId) return <NotFoundPage />;
+  // 008 AC-9.4: the ranking tab of a class that is not the GV's says which thing was not found.
+  if (missingId === classId)
+    return <NotFoundPage title={tab === 'xep-hang' ? RANKING_MESSAGES.notFound : undefined} />;
   if (status === 'error' && !detail) return <ErrorState title="Không tải được lớp." />;
   if (!detail || detail.id !== classId) return <Skeleton height={320} />;
 
@@ -167,7 +171,7 @@ export function ClassPage() {
           },
           { id: 'noi-dung', label: 'Nội dung', content: <ContentTab detail={detail} /> },
           { id: 'tien-do', label: 'Tiến độ', content: later('009 (Dashboard giáo viên)') },
-          { id: 'xep-hang', label: 'Xếp hạng', content: later('008 (Điểm & Xếp hạng)') },
+          { id: 'xep-hang', label: 'Xếp hạng', content: <RankingTab classId={classId} /> },
         ]}
       />
 
