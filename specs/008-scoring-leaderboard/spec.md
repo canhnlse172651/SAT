@@ -2,12 +2,14 @@
 id: 008
 slug: scoring-leaderboard
 title: Scoring and Leaderboard
-status: clarified
+status: tasked
 branch: feat/008-scoring-leaderboard
 created: 2026-10-18
 updated: 2026-10-29
-approved_by:
-approved_at:
+approved_by: “canh
+
+node .sdd/scripts/sdd.mjs approve 008 --by “canh
+approved_at: 2026-10-29
 ---
 
 # Scoring and Leaderboard (Điểm & Xếp hạng)
