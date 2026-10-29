@@ -1,5 +1,24 @@
 # Progress — 006-exams
 
+## Handoff 2026-10-29 — /module 006 (implementer, fix mode)
+- Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams
+- Done this session (commit f9bd893): sửa 5 lỗi QA của lần chạy 2026-10-29-0304:
+  - F1 TC-035, TC-036 (AC-5.2): `ExamsService.extend` không dùng update pipeline nữa (Mongoose 9 trả 500); tính lại `endsAt` từng lượt đang làm = min(bắt đầu + thời lượng, giờ đóng mới).
+  - F2 TC-019 (AC-3.3): điều kiện chưa đạt của một trường (tên, lớp, giờ mở, thời lượng, giờ đóng) hiện cả dưới trường đó (`withIssues` trong `exams-store.ts`).
+  - F3 TC-021 (AC-3.5): mục trong danh sách điều kiện tìm trường qua `data-field` (UI kit thay `id` do trang truyền vào bằng id tự sinh).
+  - F4 TC-044 (AC-6.5): hàng "Lưu trữ" làm mờ từng ô trừ ô thao tác, không làm mờ cả hàng → menu "⋯" không bị hàng sau che.
+  - F5 TC-059 (AC-8.4): "Bắt đầu làm bài" bị từ chối (409 `EXAM_SUBMITTED`) ở sảnh cũ → về S07 với trạng thái mới, không mở S08.
+- Checks run this session: `run lint` ✔ ("All matched files use Prettier code style!"); `npm run typecheck --workspaces` ✔ (shared, api, web);
+  `run build` ✔; phát lại toàn bộ script 006 với `--workers=1`: TC-001…059 "59 passed (6.6m)", TC-060…113 "53 passed (6.0m)" = 112/112;
+  `run test -- apps/api packages/shared`: 1208 passed, 3 file lỗi khởi động MongoDB in-memory (đĩa C: còn 3,4 GB), chạy lại riêng "3 passed (3)".
+- In progress: —
+- Next: `/test-module 006` — chạy lại TC-019 TC-021 TC-035 TC-036 TC-044 TC-059 (nên chạy cả bộ, trong phiên mới).
+- Blockers / questions (cho QA):
+  - `run typecheck` gốc đỏ vì script QA `testing/e2e/TC-022.spec.ts(9,25)`: `Property 'pairs' does not exist` (union kiểu câu hỏi chưa thu hẹp). Có từ commit 6e926cd; implementer không sửa script.
+  - `run test:modules` chạy song song và lỗi lọc `-g a|b` trên Windows; ~30 script dời đồng hồ máy chủ → cần `workers: 1` trong `playwright.modules.config.ts` (đề xuất cho chủ hạ tầng test).
+  - Node 20.20.2 trên PATH (dự án cần 24): web Vitest không khởi động được. Đĩa C: gần đầy.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 006 TC-019 TC-021 TC-035 TC-036 TC-044 TC-059
+
 ## Handoff 2026-10-29 03:45 — /test-module 006 (QA)
 - Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams
 - Done this session: QA run 2026-10-29-0304 on commit e91a5aa — 112 replayable scripts `testing/e2e/TC-###.spec.ts` (+ `helpers.ts`),
