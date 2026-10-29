@@ -1,5 +1,5 @@
 /** Rounds half away from zero at `decimals` places, avoiding binary float artefacts (75.95 -> 76). */
-function roundHalfUp(value: number, decimals: number): number {
+export function roundHalfUp(value: number, decimals: number): number {
   const sign = value < 0 ? -1 : 1;
   const abs = Math.abs(value);
   return sign * Number(`${Math.round(Number(`${abs}e${decimals}`))}e-${decimals}`);

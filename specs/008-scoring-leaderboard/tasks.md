@@ -16,7 +16,7 @@ Lean mode (constitution 2.0.0): module behaviour is verified by test-cases.md (Q
 
 ## Phase 1: Foundation
 
-- [ ] T001 [infra] Shared scoring contracts: half-up rounding (item %, TB, Điểm xếp hạng), competition ranks and tie order, messages, Zod response schemas of every endpoint — files: `packages/shared/src/scoring.ts`, `packages/shared/src/scoring.test.ts`, `packages/shared/src/index.ts`
+- [x] T001 [infra] Shared scoring contracts: half-up rounding (item %, TB, Điểm xếp hạng), competition ranks and tie order, messages, Zod response schemas of every endpoint — files: `packages/shared/src/scoring.ts`, `packages/shared/src/scoring.test.ts`, `packages/shared/src/index.ts`
 - [ ] T002 [infra] Scoring inputs and module skeleton: membership `addedAt` / `history` (003), `submission.regradedAt` (005), `ExamResultsService.scoringData` (006), `StudentDirectory.activation` (001), `rank_scores` model, log, module + routes registered — files: `apps/api/src/modules/classes/classes.model.ts`, `apps/api/src/modules/classes/members.service.ts`, `apps/api/src/modules/classes/classes.service.ts`, `apps/api/src/modules/classes/classes.ports.ts`, `apps/api/src/modules/exercises/exercise-links.ts`, `apps/api/src/modules/exams/exam-results.service.ts`, `apps/api/src/modules/accounts/student-directory.ts`, `apps/api/src/modules/scoring/scoring.module.ts`, `apps/api/src/modules/scoring/scoring.model.ts`, `apps/api/src/modules/scoring/scoring.log.ts`, `apps/api/src/app.module.ts`
 
 ## Phase 2: Score engine (US-1, US-6 … US-9)
