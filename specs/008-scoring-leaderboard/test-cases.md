@@ -32,12 +32,15 @@ Văn xuôi tiếng Việt; mã TC, mã AC và đường dẫn giữ nguyên.
   (e-mail `<tên>+<số>@sat.dev`).
 - **Đồng hồ máy chủ:** `POST /api/dev/clock {"advanceMs":<ms>}` dời giờ, `DELETE /api/dev/clock` trả về giờ thật. "Qua Hạn nộp" = đặt Hạn nộp
   hôm nay rồi dời đồng hồ **+24 giờ** (Hạn nộp là 23:59 giờ VN của ngày đó). "Qua giờ đóng" = dời đồng hồ tới sau giờ đóng **+1 phút** (006 xử lý
-  bài thi đóng sau 10 giây). Hạn nộp chỉ đặt được từ hôm nay trở đi (003).
+  bài thi đóng sau 10 giây). Hạn nộp chỉ đặt được từ hôm nay trở đi (003). **Phiên hết hạn khi dời đồng hồ** (GV 8 giờ): sau mỗi lần dời
+  ≥ 8 giờ, đăng nhập lại bằng `POST /api/dev/session`. E-mail HV không dấu (`dung+…`, không `dũng+…`).
 - **Giáo trình chuẩn "R1" (002, phiên GV)** — `POST /api/curricula {"name":"TC-xxx GT <số>","hsk":1}`; Bài `POST /api/curricula/<gt>/lessons {"name":…}`;
   bộ `POST /api/lessons/<bài>/items {"section":"exercise"}` + `PUT /api/lessons/<bài>/items/<bộ> {"expectedVersion","title","content"}`
-  (content: 1 câu Trắc nghiệm một đáp án `{"instructions":"","stepId":null,"questions":[{"kind":"mcq","mode":"single","prompt":"你好?","image":null,
-  "explanation":"","points":1,"options":[{"text":"Xin chào","image":null,"correct":true},{"text":"Tạm biệt","image":null,"correct":false}]}]}`);
-  xuất bản bộ `POST …/items/<bộ>/publish`, xuất bản Bài `POST /api/lessons/<bài>/publish {"expectedVersion","itemIds":[]}`; lưu trữ / khôi phục bộ
+  (content: 1 câu Trắc nghiệm một đáp án — **định dạng thật** (khác ghi chú cũ của 005): `{"instructions":"","stepId":null,"questions":[{"id":"q1a2b3c4d5e6",
+  "type":"mcq","multi":false,"ai":false,"prompt":"你好?","image":null,"explanation":"","points":1,"options":[{"id":"opta1b2c3d4","text":"Xin chào",
+  "image":null,"correct":true},{"id":"optb1b2c3d4","text":"Tạm biệt","image":null,"correct":false}]}]}` — mỗi phương án phải có `id`);
+  xuất bản bộ `POST …/items/<bộ>/publish {"expectedVersion":<version của bộ đọc lại bằng GET /api/lessons/<bài>>,"title","content"}`, xuất bản Bài
+  `POST /api/lessons/<bài>/publish {"expectedVersion","itemIds":[]}`; lưu trữ / khôi phục bộ
   `POST …/items/<bộ>/archive|restore {"expectedVersion"}`; sửa đáp án + chấm lại: `PUT …/items/<bộ>` với `"confirmRegrade":true`.
   Các Bài (đều xuất bản) và bộ bài tập:
   - "Bài 1 – 你好": "Luyện từ mới" (**S1a**), "Luyện mẫu câu" (**S1b**)
@@ -56,12 +59,15 @@ Văn xuôi tiếng Việt; mã TC, mã AC và đường dẫn giữ nguyên.
 - **Bài thi (006, phiên GV):** đề **"E3"** (4 điểm: Câu 1 trắc nghiệm 1 điểm, Câu 2 nối 2 cặp 2 điểm, Câu 3 viết 你好 1 điểm — xem
   `specs/006-exams/test-cases.md`); tạo `POST /api/exams {"name","content","classIds":[…],"opensAt","durationMin","closesAt"}`, lên lịch
   `POST /api/exams/<id>/schedule {"expectedVersion",…}`, lưu trữ `POST /api/exams/<id>/archive`. "Đang mở ngay" = mở ở phút hiện tại của máy chủ,
-  đóng sau 60 phút, thời lượng 45. HV làm bài: `POST /api/learn/exams/<id>/start {"holder"}`, `PUT …/attempt`, `POST …/submit {"holder","submitKey","answers":{}}`
+  đóng sau 60 phút, thời lượng 45 (giờ lấy theo máy chủ: `loadedAt` của `GET /api/classes/<lớp>/ranking`). HV làm bài: `POST /api/learn/exams/<id>/start
+  {"holder"}` (`holder` 8–64 ký tự `[A-Za-z0-9_-]`), `PUT …/attempt`, `POST …/submit {"holder","submitKey","answers":{"<id câu>":{"optionIds":["<id>"]}}}`
   (đúng Câu 1 + Câu 2, sai Câu 3 = **3/4 · 75%**; chỉ đúng Câu 1 = **1/4 · 25%**).
 - **API của 008 (để kiểm dữ liệu gửi về thiết bị):** HV `GET /api/learn/ranking/classes`, `GET /api/learn/ranking/<lớp>`; GV `GET /api/classes/<lớp>/ranking`,
   `GET /api/classes/<lớp>/ranking/<hv>`.
 - **Trang:** S09 `/hv/xep-hang` (chọn lớp: `?lop=<lớp>`), T04 tab Xếp hạng `/gv/lop-hoc/<lớp>?tab=xep-hang`, S02 `/hv/lop/<lớp>`, S06
   `/hv/lop/<lớp>/bai-tap/<bộ>/ket-qua`, S08 `/hv/bai-thi/<id>?ket-qua=1`, S10 `/hv/ho-so`, S12 `/hv/hoc-vien/<hv>`, T15 `/gv/hoc-vien/<hv>`.
+- **Đã dựng (2026-10-29):** S09 `data-screen="S09"`, tab T04 `data-screen="T04-xep-hang"`. Dòng bộ bài tập / bài thi "Đã có điểm" là liên kết; dòng
+  khác `aria-disabled="true"`. Thời điểm "Cập nhật lúc …" và "Cập nhật lần cuối" theo đồng hồ máy chủ (kể cả khi đã dời).
 - **Nhãn giao diện đã dựng (S09):** bộ chọn "Chọn lớp" (chỉ khi ≥ 2 lớp), phân đoạn "Xếp hạng" / "Điểm của tôi", nút biểu tượng "Cách tính điểm",
   "Cập nhật lúc HH:mm · dd/mm/yyyy" + "Làm mới", nút ghim "Vị trí của tôi", "Top 3" (bục), huy hiệu "Vàng" / "Bạc" / "Đồng".
   "Điểm của tôi": vùng "Tóm tắt Điểm của tôi" (Điểm xếp hạng, "Hạng r/N" hoặc "Chưa có hạng", phép tính, "TB bài tập" + "<n> bộ được tính",
