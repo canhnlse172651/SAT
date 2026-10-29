@@ -2,10 +2,10 @@
 id: 008
 slug: scoring-leaderboard
 title: Scoring and Leaderboard
-status: draft
+status: clarified
 branch: feat/008-scoring-leaderboard
 created: 2026-10-18
-updated: 2026-10-18
+updated: 2026-10-29
 approved_by:
 approved_at:
 ---
@@ -39,8 +39,10 @@ trên thang 0–100: 30% × TB bài tập + 70% × TB bài thi**. TB bài tập 
 tập được tính** — chỉ những bộ bài tập GV đã đặt **Hạn nộp** trong Lớp (bộ không có Hạn nộp vẫn hiển thị nhưng
 không làm được và không tính điểm, 003/005); một bộ được tính khi HV đã nộp (điểm của Bài nộp duy nhất, nộp muộn
 vẫn tính đủ) hoặc khi Hạn nộp đã qua mà HV chưa nộp (0 điểm). TB bài thi là trung bình điểm (0–100) của các **bài
-thi được tính** — bài thi (module 006) được giao cho Lớp mà HV đã nộp, hoặc đã qua giờ đóng mà HV chưa nộp (0
-điểm). Chưa có mục nào được tính thì TB tương ứng bằng 0; nhờ vậy mọi HV trong Lớp được so trên cùng một tập mục.
+thi được tính** — bài thi (module 006) được giao cho Lớp mà HV đã nộp (bài nộp duy nhất của HV được tính ở mọi
+Lớp được giao mà HV là thành viên), hoặc đã qua giờ đóng mà HV chưa nộp (0 điểm). Điểm 0 chỉ áp cho HV đã kích hoạt
+là thành viên của Lớp lúc Hạn nộp / giờ đóng qua. Chưa có mục nào được tính thì TB tương ứng bằng 0; nhờ vậy mọi HV
+trong Lớp được so trên cùng một tập mục.
 Việc xem bài học không được theo dõi và không tạo điểm. Module này định nghĩa công thức, quy tắc mục được tính,
 làm tròn (một chữ số thập phân), các sự kiện làm điểm thay đổi (nộp bài, đến Hạn nộp / giờ đóng, chấm lại khi GV
 sửa đáp án, ẩn section, lưu trữ, đổi/gỡ Hạn nộp, gỡ bài thi, thay đổi thành viên), quy tắc xếp hạng và phá hòa,
@@ -156,17 +158,18 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 
 <!-- Story: US-1, US-9 · Priority: P1 -->
 
-- AC-1.1: THE SYSTEM SHALL tính Điểm xếp hạng của một HV trong một Lớp bằng 30% × TB bài tập + 70% × TB bài thi của HV trong Lớp đó, trên thang 0–100, chỉ dựa trên các bài nộp bộ bài tập và bài nộp bài thi HV đã thực hiện trong chính Lớp đó.
-- AC-1.2: THE SYSTEM SHALL tính điểm của một bộ bài tập hoặc một bài thi cho một HV trong một Lớp bằng tỷ lệ (điểm đạt ÷ điểm tối đa) của bài nộp duy nhất của HV cho mục đó trong Lớp × 100, làm tròn đến số nguyên gần nhất (phần lẻ từ 0,5 làm tròn lên), trong khoảng 0–100.
+- AC-1.1: THE SYSTEM SHALL tính Điểm xếp hạng của một HV trong một Lớp bằng 30% × TB bài tập + 70% × TB bài thi của HV trong Lớp đó, trên thang 0–100, chỉ dựa trên các Bài nộp bộ bài tập HV đã thực hiện trong chính Lớp đó và các bài nộp bài thi được tính cho Lớp đó theo AC-1.9 và AC-1.12.
+- AC-1.2: THE SYSTEM SHALL tính điểm của một bộ bài tập hoặc một bài thi cho một HV trong một Lớp bằng tỷ lệ (điểm đạt ÷ điểm tối đa) × 100 của bài nộp duy nhất của HV cho mục đó (với bộ bài tập: Bài nộp trong Lớp đó; với bài thi: bài nộp duy nhất của HV cho bài thi theo 006), làm tròn đến số nguyên gần nhất (phần lẻ từ 0,5 làm tròn lên), trong khoảng 0–100.
 - AC-1.3: THE SYSTEM SHALL không tính bất kỳ hoạt động nào trong section Bài học, gồm xem bước học và học Bộ thẻ từ vựng, vào Điểm xếp hạng.
 - AC-1.4: IF điểm tối đa của một bộ bài tập hoặc một bài thi bằng 0 THEN THE SYSTEM SHALL loại mục đó khỏi Điểm xếp hạng và khỏi chi tiết điểm của HV.
 - AC-1.5: THE SYSTEM SHALL bảo đảm Điểm xếp hạng hiển thị luôn tính lại được đúng từ TB bài tập và TB bài thi hiển thị cùng lúc theo AC-1.10, và mỗi TB tính lại được đúng từ các dòng chi tiết điểm mà người xem thấy (với HV, kể cả dòng "Nội dung đã ẩn" và dòng "Bài thi đã gỡ"; với GV, kể cả các mục đã ẩn, đã lưu trữ hoặc đã gỡ khỏi Lớp).
 - AC-1.6: THE SYSTEM SHALL tính TB bài tập của một HV trong một Lớp bằng trung bình cộng điểm của mọi bộ bài tập được tính của HV trong Lớp đó theo AC-1.8, và bằng 0 khi HV chưa có bộ bài tập nào được tính.
 - AC-1.7: THE SYSTEM SHALL tính TB bài thi của một HV trong một Lớp bằng trung bình cộng điểm của mọi bài thi được tính của HV trong Lớp đó theo AC-1.9, và bằng 0 khi HV chưa có bài thi nào được tính.
-- AC-1.8: THE SYSTEM SHALL coi một bộ bài tập là được tính cho một HV trong một Lớp khi và chỉ khi bộ bài tập đó có Hạn nộp trong Lớp và hoặc HV đã nộp nó trong Lớp (tính điểm của Bài nộp), hoặc Hạn nộp đã qua trong lúc HV là thành viên của Lớp mà HV chưa nộp (tính 0 điểm), trừ các trường hợp REQ-4 quy định khác.
-- AC-1.9: THE SYSTEM SHALL coi một bài thi là được tính cho một HV trong một Lớp khi và chỉ khi bài thi đó được giao cho Lớp theo 006 và hoặc HV đã nộp nó trong Lớp (tính điểm bài thi), hoặc giờ đóng của bài thi trong Lớp đã qua trong lúc HV là thành viên của Lớp mà HV chưa nộp (tính 0 điểm), trừ các trường hợp REQ-4 quy định khác.
+- AC-1.8: THE SYSTEM SHALL coi một bộ bài tập là được tính cho một HV trong một Lớp khi và chỉ khi bộ bài tập đó có Hạn nộp trong Lớp và hoặc HV đã nộp nó trong Lớp (tính điểm của Bài nộp), hoặc Hạn nộp đã qua trong lúc HV là thành viên đã kích hoạt (§7) của Lớp mà HV chưa nộp (tính 0 điểm), trừ các trường hợp REQ-4 quy định khác.
+- AC-1.9: THE SYSTEM SHALL coi một bài thi là được tính cho một HV trong một Lớp khi và chỉ khi bài thi đó được giao cho Lớp theo 006, HV là thành viên của Lớp và hoặc HV đã có bài nộp cho bài thi đó theo AC-1.12 (tính điểm bài thi), hoặc giờ đóng của bài thi đã qua trong lúc HV là thành viên đã kích hoạt (§7) của Lớp mà HV chưa nộp (tính 0 điểm), trừ các trường hợp REQ-4 quy định khác.
 - AC-1.10: THE SYSTEM SHALL làm tròn TB bài tập và TB bài thi đến một chữ số thập phân (phần lẻ từ 0,05 làm tròn lên), tính Điểm xếp hạng từ hai giá trị đã làm tròn đó rồi làm tròn kết quả đến một chữ số thập phân theo cùng quy tắc, và hiển thị cả ba giá trị với đúng một chữ số thập phân và dấu phẩy thập phân (ví dụ "75,9", "80,0").
 - AC-1.11: IF một bộ bài tập không có Hạn nộp trong Lớp và HV chưa có Bài nộp cho bộ đó trong Lớp THEN THE SYSTEM SHALL không tính bộ bài tập đó vào Điểm xếp hạng của HV và không liệt kê nó trong chi tiết điểm của HV.
+- AC-1.12: WHILE HV có bài nộp duy nhất của một bài thi được giao cho nhiều Lớp THE SYSTEM SHALL tính cùng điểm bài thi đó cho HV ở mọi Lớp được giao mà HV đang là thành viên, kể cả Lớp HV được thêm vào sau khi nộp.
 
 ### REQ-2: Cập nhật điểm khi nộp bài và khi đến hạn
 
@@ -174,12 +177,12 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 
 - AC-2.1: WHEN HV nộp một bộ bài tập trong một Lớp và Bài nộp đó được chấm tự động THE SYSTEM SHALL cập nhật điểm bộ bài tập, TB bài tập, Điểm xếp hạng và hạng của HV trong Lớp đó theo REQ-1 mà không chờ Hạn nộp hay bất kỳ thao tác nào của GV.
 - AC-2.2: THE SYSTEM SHALL tính điểm của mỗi bộ bài tập và mỗi bài thi cho một HV trong một Lớp đúng một lần, khi bài nộp duy nhất của HV cho mục đó có điểm, và sau đó chỉ thay đổi điểm này khi bài nộp đó được chấm lại theo REQ-3.
-- AC-2.3: IF hệ thống nhận thêm một bài nộp có điểm cho một bộ bài tập hoặc một bài thi mà HV đã có bài nộp trong cùng Lớp THEN THE SYSTEM SHALL giữ điểm tính từ bài nộp đã có và không thay đổi Điểm xếp hạng, hạng hay thời điểm đạt Điểm xếp hạng hiện tại của HV.
+- AC-2.3: IF hệ thống nhận thêm một bài nộp có điểm cho một bộ bài tập mà HV đã có Bài nộp trong cùng Lớp, hoặc cho một bài thi mà HV đã có bài nộp THEN THE SYSTEM SHALL giữ điểm tính từ bài nộp đã có và không thay đổi Điểm xếp hạng, hạng hay thời điểm đạt Điểm xếp hạng hiện tại của HV.
 - AC-2.4: WHEN nhiều thay đổi điểm của cùng một HV trong cùng một Lớp được ghi nhận gần như đồng thời (bài nộp của các mục khác nhau, kết quả chấm lại, Hạn nộp hoặc giờ đóng qua) THE SYSTEM SHALL phản ánh tất cả các thay đổi đó vào TB bài tập, TB bài thi và Điểm xếp hạng, không bỏ sót và không tính trùng mục nào.
-- AC-2.5: WHEN Hạn nộp của một bộ bài tập trong một Lớp qua THE SYSTEM SHALL tính 0 điểm cho bộ bài tập đó với mọi HV đang là thành viên của Lớp mà chưa nộp, và cập nhật TB bài tập, Điểm xếp hạng và hạng của các HV đó.
+- AC-2.5: WHEN Hạn nộp của một bộ bài tập trong một Lớp qua THE SYSTEM SHALL tính 0 điểm cho bộ bài tập đó với mọi HV đã kích hoạt (§7) đang là thành viên của Lớp mà chưa nộp, và cập nhật TB bài tập, Điểm xếp hạng và hạng của các HV đó.
 - AC-2.6: WHEN HV nộp muộn (sau Hạn nộp, theo 005) một bộ bài tập đang được tính 0 điểm THE SYSTEM SHALL thay 0 điểm đó bằng điểm của Bài nộp, tính đầy đủ như Bài nộp đúng hạn, và cập nhật TB bài tập, Điểm xếp hạng và hạng của HV.
-- AC-2.7: WHEN HV nộp một bài thi trong một Lớp (kể cả bài được nộp tự động khi hết thời lượng theo 006) và bài nộp đó có điểm THE SYSTEM SHALL cập nhật điểm bài thi, TB bài thi, Điểm xếp hạng và hạng của HV trong Lớp đó mà không chờ giờ đóng hay bất kỳ thao tác nào của GV.
-- AC-2.8: WHEN giờ đóng của một bài thi được giao cho một Lớp qua THE SYSTEM SHALL tính 0 điểm cho bài thi đó với mọi HV đang là thành viên của Lớp mà chưa có bài nộp, và cập nhật TB bài thi, Điểm xếp hạng và hạng của các HV đó.
+- AC-2.7: WHEN HV nộp một bài thi (kể cả bài được nộp tự động khi hết thời lượng theo 006) và bài nộp đó có điểm THE SYSTEM SHALL cập nhật điểm bài thi, TB bài thi, Điểm xếp hạng và hạng của HV ở mọi Lớp được giao mà HV là thành viên, mà không chờ giờ đóng hay bất kỳ thao tác nào của GV.
+- AC-2.8: WHEN giờ đóng của một bài thi được giao cho một Lớp qua THE SYSTEM SHALL tính 0 điểm cho bài thi đó với mọi HV đã kích hoạt (§7) đang là thành viên của Lớp mà chưa có bài nộp, và cập nhật TB bài thi, Điểm xếp hạng và hạng của các HV đó.
 - AC-2.9: WHEN 006 ghi nhận sau giờ đóng bài nộp của một lượt làm bài thi HV đã bắt đầu trước giờ đóng THE SYSTEM SHALL thay 0 điểm của bài thi đó bằng điểm của bài nộp và cập nhật TB bài thi, Điểm xếp hạng và hạng của HV.
 
 ### REQ-3: Điều chỉnh điểm khi chấm lại
@@ -187,7 +190,7 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 <!-- Story: US-7 · Priority: P1 -->
 
 - AC-3.1: WHEN điểm của một hoặc nhiều bài nộp thay đổi do hệ thống chấm lại (bộ bài tập sau khi GV sửa đáp án và xác nhận theo 005, hoặc bài thi theo quy định chấm lại của 006) THE SYSTEM SHALL tính lại điểm của mục đó cho từng HV bị ảnh hưởng từ điểm hiện hành của bài nộp duy nhất của HV, rồi tính lại TB tương ứng và Điểm xếp hạng, kể cả khi kết quả làm giảm Điểm xếp hạng.
-- AC-3.2: WHEN một lần chấm lại ảnh hưởng tới bài nộp ở nhiều Lớp THE SYSTEM SHALL cập nhật TB, Điểm xếp hạng và hạng của từng Lớp riêng biệt, mỗi Lớp chỉ từ các bài nộp làm trong Lớp đó.
+- AC-3.2: WHEN một lần chấm lại ảnh hưởng tới bài nộp ở nhiều Lớp THE SYSTEM SHALL cập nhật TB, Điểm xếp hạng và hạng của từng Lớp riêng biệt, mỗi Lớp chỉ từ các Bài nộp bộ bài tập làm trong Lớp đó và các bài nộp bài thi được tính cho Lớp đó theo AC-1.12.
 - AC-3.3: WHEN chấm lại làm Điểm xếp hạng hiển thị của HV thay đổi THE SYSTEM SHALL lấy thời điểm chấm lại hoàn tất làm thời điểm đạt Điểm xếp hạng hiện tại của HV, hiển thị ở cột "Cập nhật lần cuối" của tab Xếp hạng.
 
 ### REQ-4: Ẩn, lưu trữ, đổi Hạn nộp và gỡ bài thi giữ nguyên kết quả đã nộp
@@ -209,11 +212,12 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 <!-- Story: US-8 · Priority: P1 -->
 
 - AC-5.1: WHEN HV bị gỡ khỏi một Lớp THE SYSTEM SHALL loại HV khỏi Bảng xếp hạng của Lớp đó và tính lại hạng của các HV còn lại.
-- AC-5.2: WHEN một HV đã bị gỡ được thêm lại vào cùng Lớp THE SYSTEM SHALL đưa HV trở lại Bảng xếp hạng với Điểm xếp hạng tính lại theo REQ-1 từ các bài nộp của HV trong Lớp đó vẫn còn được lưu giữ và các Hạn nộp, giờ đóng đã qua trong lúc HV là thành viên của Lớp.
+- AC-5.2: WHEN một HV đã bị gỡ được thêm lại vào cùng Lớp THE SYSTEM SHALL đưa HV trở lại Bảng xếp hạng với Điểm xếp hạng tính lại theo REQ-1 từ các bài nộp của HV được tính cho Lớp đó vẫn còn được lưu giữ và các Hạn nộp, giờ đóng đã qua trong lúc HV là thành viên đã kích hoạt (§7) của Lớp.
 - AC-5.3: WHEN tài khoản HV bị xóa THE SYSTEM SHALL loại HV khỏi Bảng xếp hạng của mọi Lớp và tính lại hạng của các HV còn lại.
 - AC-5.4: WHILE tài khoản HV bị khóa THE SYSTEM SHALL giữ HV cùng Điểm xếp hạng và hạng trên Bảng xếp hạng của các Lớp HV thuộc về.
 - AC-5.5: WHILE Lớp ở trạng thái Đã kết thúc THE SYSTEM SHALL tiếp tục tính và cập nhật Điểm xếp hạng khi một bài nộp của Lớp có điểm hoặc được chấm lại, hoặc khi một Hạn nộp hay giờ đóng của Lớp qua.
-- AC-5.6: WHEN HV được thêm vào một Lớp sau khi Hạn nộp của một bộ bài tập hoặc giờ đóng của một bài thi trong Lớp đã qua THE SYSTEM SHALL không tính 0 điểm cho HV với mục đó, và chỉ tính mục đó khi HV nộp nó.
+- AC-5.6: WHEN HV được thêm vào một Lớp sau khi Hạn nộp của một bộ bài tập hoặc giờ đóng của một bài thi trong Lớp đã qua THE SYSTEM SHALL không tính 0 điểm cho HV với mục đó, và chỉ tính mục đó khi HV có bài nộp cho nó (bộ bài tập: Bài nộp muộn trong Lớp; bài thi: bài nộp duy nhất theo AC-1.12).
+- AC-5.7: WHEN tài khoản của một HV là thành viên của một Lớp trở thành đã kích hoạt (§7) THE SYSTEM SHALL không tính 0 điểm cho HV với các bộ bài tập có Hạn nộp và các bài thi có giờ đóng trong Lớp đã qua trước thời điểm đó, và chỉ tính các mục đó khi HV có bài nộp cho chúng như AC-5.6.
 
 ### REQ-6: Xếp hạng và phá hòa
 
@@ -253,7 +257,7 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 
 <!-- Story: US-5 · Priority: P1 -->
 
-- AC-9.1: THE SYSTEM SHALL chỉ cho HV thấy trên S09 về bạn cùng lớp ảnh đại diện, họ tên, hạng và Điểm xếp hạng của những người nằm trong 10 hạng đầu (hạng và Điểm xếp hạng của mọi bạn có lớp học chung, kể cả ngoài 10 hạng đầu, chỉ xem được trên S12 theo AC-9.6), không hiển thị email, TB bài tập, TB bài thi, chi tiết điểm, điểm từng bài hay trạng thái tài khoản của họ [NEEDS CLARIFICATION: Trên S09, bạn cùng lớp thấy họ tên đầy đủ như GV đã nhập (đề xuất) hay tên rút gọn dạng "An N."?]
+- AC-9.1: THE SYSTEM SHALL chỉ cho HV thấy trên S09 về bạn cùng lớp ảnh đại diện, họ tên đầy đủ như GV đã nhập (001, giống S10 và S12 của 011), hạng và Điểm xếp hạng của những người nằm trong 10 hạng đầu (hạng và Điểm xếp hạng của mọi bạn có lớp học chung, kể cả ngoài 10 hạng đầu, chỉ xem được trên S12 theo AC-9.6), không hiển thị email, TB bài tập, TB bài thi, chi tiết điểm, điểm từng bài hay trạng thái tài khoản của họ.
 - AC-9.2: IF HV mở Bảng xếp hạng của một Lớp mà HV không phải thành viên THEN THE SYSTEM SHALL từ chối, hiển thị "Không tìm thấy lớp." và không tiết lộ Lớp đó có tồn tại hay không.
 - AC-9.3: IF HV yêu cầu xem chi tiết điểm của một HV khác THEN THE SYSTEM SHALL từ chối và không cung cấp bất kỳ dữ liệu nào của HV đó.
 - AC-9.4: IF GV mở xếp hạng của một Lớp không thuộc workspace của mình THEN THE SYSTEM SHALL từ chối và hiển thị "Không tìm thấy lớp."
@@ -281,9 +285,11 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 - AC-11.5: THE SYSTEM SHALL hiển thị đúng chữ Hán giản thể, pinyin có dấu thanh và tiếng Việt có dấu trong tên Bài, tên bộ bài tập, tên bài thi và họ tên HV trên S09 và tab Xếp hạng.
 - AC-11.6: IF Lớp chưa có bộ bài tập nào đang hiển thị với HV mà có Hạn nộp trong Lớp hoặc HV đã nộp THEN THE SYSTEM SHALL hiển thị "Lớp chưa có bài tập nào để tính điểm." thay cho danh sách của nhóm "Bài tập".
 - AC-11.7: THE SYSTEM SHALL không hiển thị trong "Điểm của tôi" bất kỳ nút, liên kết hay gợi ý làm lại hoặc cải thiện điểm nào (ví dụ "Làm lại", "Cải thiện điểm"), kể cả với bộ bài tập hoặc bài thi có điểm dưới 100.
-- AC-11.8: WHEN HV mở mục "Điểm của tôi" trên S09 THE SYSTEM SHALL liệt kê trong nhóm "Bài thi" mọi bài thi được giao cho Lớp đang hiển thị với HV theo 006, theo thứ tự giờ mở (sớm trước), mỗi bài thi gồm tên, giờ đóng, trạng thái (Chưa thi, Đã có điểm hoặc Không làm bài), điểm của bài nộp (ví dụ "42/50 · 84%") và điểm bài thi trên thang 100 (ví dụ "84/100", hoặc "0/100" khi Không làm bài).
-- AC-11.9: IF Lớp chưa có bài thi nào đang hiển thị với HV THEN THE SYSTEM SHALL hiển thị "Lớp chưa có bài thi nào." thay cho danh sách của nhóm "Bài thi".
+- AC-11.8: WHEN HV mở mục "Điểm của tôi" trên S09 THE SYSTEM SHALL liệt kê trong nhóm "Bài thi" mọi bài thi được giao cho Lớp đang hiển thị với HV theo 006, trừ bài thi đã qua giờ đóng mà không được tính cho HV theo AC-1.9 (ví dụ giờ đóng qua trước khi HV vào Lớp và HV không có bài nộp), theo thứ tự giờ mở (sớm trước), mỗi bài thi gồm tên, giờ đóng, trạng thái (Chưa thi, Đã có điểm hoặc Không làm bài), điểm của bài nộp (ví dụ "42/50 · 84%") và điểm bài thi trên thang 100 (ví dụ "84/100", hoặc "0/100" khi Không làm bài).
+- AC-11.9: IF nhóm "Bài thi" không có bài thi nào để liệt kê theo AC-11.8 THEN THE SYSTEM SHALL hiển thị "Lớp chưa có bài thi nào." thay cho danh sách của nhóm "Bài thi".
 - AC-11.10: WHILE HV có ít nhất một bài thi được tính đã bị gỡ khỏi Lớp hoặc đã lưu trữ THE SYSTEM SHALL hiển thị ở cuối nhóm "Bài thi" đúng một dòng "Bài thi đã gỡ: k bài thi · S điểm" (k là số bài thi đó, S là tổng điểm của chúng), không kèm tên hay điểm từng bài thi, và dòng này không mở được màn hình nào.
+- AC-11.11: WHEN HV chọn một bài thi ở trạng thái Đã có điểm trong "Điểm của tôi" THE SYSTEM SHALL mở kết quả bài nộp của HV cho bài thi đó trên S08 (006).
+- AC-11.12: THE SYSTEM SHALL hiển thị các dòng bài thi ở trạng thái Chưa thi hoặc Không làm bài trong "Điểm của tôi" ở dạng không chọn được và không mở màn hình nào từ các dòng đó.
 
 > REQ-12 "Lịch sử điểm của tôi" (AC-12.1 … AC-12.6) bị bỏ ở v11 (2026-10-22) cùng phân đoạn "Lịch sử điểm" của S09; số REQ-12 không được dùng lại.
 
@@ -315,8 +321,13 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
   cho mỗi cặp HV–Lớp khi HV là thành viên của Lớp.
 - **TB bài tập / TB bài thi (của một HV trong một Lớp)** — trung bình cộng điểm của các bộ bài tập được tính /
   bài thi được tính, làm tròn một chữ số thập phân; kèm số mục được tính; bằng 0 khi chưa có mục nào được tính.
+- **HV đã kích hoạt** — HV có tài khoản ở trạng thái khác "Chưa kích hoạt" và "Gửi email thất bại" theo module 001
+  (gồm "Đang gửi email", "Đã kích hoạt", "Đã khóa"); cùng tập HV được đếm vào N của "Hạng r/N" (AC-7.2) và liệt kê
+  ở tab Xếp hạng (AC-10.1). Điểm 0 của mục chưa nộp chỉ áp cho HV đã kích hoạt là thành viên của Lớp tại thời điểm
+  Hạn nộp hoặc giờ đóng qua (AC-1.8, AC-1.9, AC-2.5, AC-2.8, AC-5.7).
 - **Điểm mục (của một HV cho một bộ bài tập hoặc một bài thi trong một Lớp)** — mục (bộ bài tập thuộc một Bài,
-  hoặc bài thi), bài nộp duy nhất của HV (005 hoặc 006) nếu có, điểm đạt / điểm tối đa, tỷ lệ %, điểm 0–100,
+  hoặc bài thi), bài nộp duy nhất của HV nếu có (005: một Bài nộp cho mỗi HV, bộ bài tập và Lớp; 006: một bài nộp
+  cho mỗi HV và bài thi, dùng chung ở mọi Lớp được giao mà HV là thành viên — AC-1.12), điểm đạt / điểm tối đa, tỷ lệ %, điểm 0–100,
   trạng thái (bộ bài tập: Chưa làm / Đã có điểm / Quá hạn; bài thi: Chưa thi / Đã có điểm / Không làm bài), nhãn
   "Nộp muộn", được tính hay không (AC-1.8, AC-1.9, REQ-4), cờ "Đã ẩn trong lớp", "Đã lưu trữ", "Đã gỡ khỏi
   lớp". Điểm 0 của mục Quá hạn / Không làm bài là giá trị suy ra từ Hạn nộp, giờ đóng và thành viên lớp, không phải
@@ -336,8 +347,15 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 
 ## 8. Edge Cases & Error Handling
 
-- HV thuộc 2 Lớp dùng cùng một Giáo trình: mỗi Lớp có Hạn nộp riêng và Điểm xếp hạng riêng; bài nộp chỉ tính
-  cho Lớp mà HV đã làm bài trong đó (AC-1.1, AC-1.8); ẩn section ở Lớp này không ảnh hưởng Lớp kia (AC-4.4).
+- HV thuộc 2 Lớp dùng cùng một Giáo trình: mỗi Lớp có Hạn nộp riêng và Điểm xếp hạng riêng; Bài nộp bộ bài tập
+  chỉ tính cho Lớp mà HV đã làm bài trong đó (AC-1.1, AC-1.8); ẩn section ở Lớp này không ảnh hưởng Lớp kia (AC-4.4).
+- HV thuộc 2 Lớp cùng được giao một bài thi: một lượt, một bài nộp, cùng điểm bài thi ở cả hai Lớp (AC-1.12; 006
+  AC-13.4). HV đã nộp bài thi qua Lớp A rồi được thêm vào Lớp B cũng được giao bài thi đó (kể cả sau giờ đóng): bài
+  nộp được tính cả ở Lớp B và bài thi hiện "Đã có điểm" trong "Điểm của tôi" của Lớp B (AC-1.12, AC-11.8).
+- HV vào Lớp sau giờ đóng của một bài thi và không có bài nộp: bài thi không được tính và không có trong nhóm
+  "Bài thi" của "Điểm của tôi" (AC-5.6, AC-11.8).
+- Dòng bài thi "Đã có điểm" mở kết quả trên S08 (006); dòng "Chưa thi" và "Không làm bài" không chọn được
+  (AC-11.11, AC-11.12).
 - Bộ bài tập chưa có Hạn nộp trong lớp: HV vẫn thấy trong Bài nhưng không làm được (003/005); không được tính,
   không có trong "Điểm của tôi" và không vào y của "x/y" (AC-1.11, AC-11.2).
 - Bộ bài tập có Hạn nộp chưa qua mà HV chưa nộp: "Chưa làm" kèm Hạn nộp, chưa được tính (AC-1.8, AC-11.1).
@@ -402,10 +420,12 @@ và Điểm xếp hạng hiển thị đúng giá trị do 008 tính.
 - HV chưa có ảnh đại diện hoặc ảnh đã bị GV gỡ (011): S09 hiển thị ảnh đại diện mặc định của 011 (AC-7.1).
 - Bạn cùng lớp bị gỡ khỏi lớp sau khi S09 được tải rồi HV chạm dòng của bạn đó: S12 áp dụng quy tắc truy cập của
   011 (chỉ mở khi hai HV còn ít nhất một lớp chung); lần tải S09 kế tiếp không còn dòng đó (AC-7.6, AC-5.1).
-- HV chưa được kích hoạt trong lớp ("Chưa kích hoạt" hoặc "Gửi email thất bại", V4-6): không làm được bài nên
-  chỉ có thể có 0 điểm, chưa có hạng, không xuất hiện với HV khác; không tính vào N của "Hạng r/N"; không có trong
-  tab Xếp hạng của GV (GV xem họ ở tab Học viên, 003); sau khi kích hoạt xong (email đã gửi) thì được tính vào N
-  và xuất hiện ở tab Xếp hạng (AC-7.2, AC-10.1).
+- HV chưa được kích hoạt trong lớp ("Chưa kích hoạt" hoặc "Gửi email thất bại", V4-6): không làm được bài và
+  không bị tính 0 cho Hạn nộp hay giờ đóng qua trong thời gian đó, nên có 0,0 điểm, chưa có hạng, không xuất hiện
+  với HV khác; không tính vào N của "Hạng r/N"; không có trong tab Xếp hạng của GV (GV xem họ ở tab Học viên, 003).
+  Sau khi kích hoạt thì được tính vào N và xuất hiện ở tab Xếp hạng; các mục đã qua Hạn nộp / giờ đóng trước khi
+  kích hoạt được xử lý như HV vào lớp muộn: không tính 0, nộp muộn bộ bài tập thì được tính (AC-1.8, AC-1.9, AC-5.7,
+  AC-7.2, AC-10.1).
 - Hạng của một HV ngoài 10 hạng đầu: không hiện trên S09 của bạn cùng lớp nhưng hiện trên S12 của HV đó (011) với
   đúng giá trị như tab Xếp hạng của GV (AC-9.1, AC-9.6).
 - Kết quả tạo bằng AI (010) chưa được GV "Duyệt": chưa thuộc Bài nên HV không thấy và không có điểm (AC-1.8).
@@ -466,7 +486,8 @@ hiện khi Hạn nộp hoặc giờ đóng qua và luôn hiển thị là "Quá 
 
 Phụ thuộc module:
 
-- **001** — họ tên, email HV; "Tài khoản HV bị khóa / xóa"; trạng thái "Chưa kích hoạt" (V4-6); đăng nhập và
+- **001** — họ tên, email HV; "Tài khoản HV bị khóa / xóa"; trạng thái tài khoản HV và thời điểm HV trở thành đã
+  kích hoạt (§7, AC-5.7; "Chưa kích hoạt", "Gửi email thất bại" — V4-6); đăng nhập và
   định tuyến theo vai trò (A01); quy tắc tách biệt workspace.
 - **002** — danh sách và thứ tự Bài trong Giáo trình; 2 section cố định của mỗi Bài; trạng thái Nháp / Đã xuất
   bản / Lưu trữ của Bài và của từng bộ bài tập (lưu trữ / khôi phục, AC-4.6); "Xem trước như học viên" (T21) không
@@ -480,8 +501,9 @@ Phụ thuộc module:
   trong section; chấm lại sau khi GV sửa đáp án (điểm trước/sau từng Bài nộp, theo lớp) và ghi chú chấm lại trên
   S06, T14; nhận hay từ chối bài nộp khi section bị ẩn; S06 "Xem lại bài làm".
 - **006** — bài thi được giao cho lớp (giao / gỡ / lưu trữ), giờ mở, thời lượng, giờ đóng theo lớp; một lượt làm;
-  bài nộp bài thi có điểm ngay khi nộp, kể cả nộp tự động khi hết thời lượng (điểm đạt, điểm tối đa, Lớp, thời
-  điểm); bài nộp của lượt bắt đầu trước giờ đóng nhưng ghi nhận sau giờ đóng (AC-2.9); quy định chấm lại bài thi
+  bài nộp bài thi có điểm ngay khi nộp, kể cả nộp tự động khi hết thời lượng (điểm đạt, điểm tối đa, thời điểm),
+  dùng làm kết quả ở mọi lớp được giao mà HV là thành viên (006 AC-13.4 — 008 AC-1.12); "Không làm bài" chỉ cho HV
+  đã kích hoạt theo cùng định nghĩa §7 (006 AC-13.3 cần hiểu "Gửi email thất bại" là chưa kích hoạt); bài nộp của lượt bắt đầu trước giờ đóng nhưng ghi nhận sau giờ đóng (AC-2.9); quy định chấm lại bài thi
   (nếu có); bài thi nào HV đang thấy trong lớp (AC-11.8); màn hình kết quả bài thi của HV.
 - **009** — dùng Điểm xếp hạng, TB bài tập, TB bài thi, hạng và quy tắc xếp hạng của 008 cho "top ranks" trên T01
   và cho T15; định nghĩa tiến độ phải dùng cùng mẫu số "bộ bài tập đang hiển thị có Hạn nộp" như "x/y" của AC-11.2.
@@ -494,9 +516,8 @@ Phụ thuộc module:
 
 ## 11. Open Questions
 
-- Q-2 (AC-9.1) [NEEDS CLARIFICATION: Trên S09, bạn cùng lớp thấy họ tên đầy đủ như GV đã nhập (đề xuất) hay tên rút gọn dạng "An N."?] — Đề xuất: họ tên đầy đủ (lớp khép kín, GV thêm từng HV, tránh nhầm khi trùng tên rút gọn); chỉ 10 hạng đầu lộ ra trên S09 nên HV điểm thấp không bị công khai ở bảng xếp hạng. Bổ sung v4: hồ sơ của 011 (S10, S12) cũng hiển thị họ tên đầy đủ, nên dùng họ tên đầy đủ trên S09 giữ cùng một tên khi HV chạm từ S09 sang S12 — củng cố đề xuất; nếu chọn tên rút gọn, S12 sẽ để lộ họ tên đầy đủ mà S09 che.
-- Đã đóng — Q-1 (hệ số bộ bài tập / Bài thi): v3 tạm đóng vì Bài thi bị hoãn; ngày 2026-10-22 stakeholder chốt tỷ trọng 30% TB bài tập + 70% TB bài thi (AC-1.1). Xem §12 Session 2026-10-22 (điểm 30/70).
-- Đã đóng — Q-3 (bản 2026-10-18, giữ hay trừ điểm khi ẩn nội dung hoặc đổi giáo trình): giữ kết quả đã nộp (X2/D5, REQ-4); đổi giáo trình chỉ được khi lớp chưa có bài nộp (003). Sẽ mở lại nếu 003 cho đổi giáo trình khi đã có bài nộp.
+Không còn câu hỏi mở (2026-10-29). Q-1, Q-2 và Q-3 đã đóng — xem §12 (Session 2026-10-22 (điểm 30/70), Session
+2026-10-19 và Session 2026-10-29).
 
 ## 12. Clarifications Log
 
@@ -635,3 +656,12 @@ Phụ thuộc module:
 - Q: Lý do trong nhật ký vận hành? → A: "Điểm mới" (bài nộp có điểm), "Quá hạn" (0 điểm do Hạn nộp / giờ đóng qua), "Điều chỉnh điểm" (chấm lại), "Thay đổi nội dung" (ẩn/hiện, lưu trữ/khôi phục, đặt/đổi/gỡ Hạn nộp, gỡ bài thi, thay đổi thành viên) (NFR-8) (source: assumption — mỗi thay đổi Điểm xếp hạng truy được nguyên nhân)
 - Q: Ví dụ tính đổi thế nào? → A: Ví dụ 1 (An, lớp HSK1-K12, 20/11): 7 bộ bài tập được tính tổng 498 → TB bài tập 71,1; 2 bài thi (84, 72) → TB bài thi 78,0; Điểm xếp hạng 30% × 71,1 + 70% × 78,0 = 75,9. Mốc thời gian các luồng: chấm lại 14/11 (F-3: 79,7 → 79,5), Hạn nộp "Đọc hiểu" 15/11 (F-8: 79,5 → 75,9), ẩn Bài 3 ngày 18/11 (F-2: An giữ 75,9, Dũng 67,4 → 70,5) (source: assumption — giữ số liệu cũ (498) để dễ đối chiếu)
 - Q: Quy mô hiệu năng? → A: 100 HV, 300 bộ bài tập có Hạn nộp và 50 bài thi mỗi Lớp (NFR-2, NFR-4) (source: assumption — dư cho một khóa HSK; 006 chưa nêu số bài thi tối đa)
+
+### Session 2026-10-29
+
+/sdd-clarify tương tác; người dùng chọn phương án đề xuất cho cả 4 câu. Không đánh số lại, không bỏ mã AC nào. Thêm AC-1.12, AC-5.7, AC-11.11, AC-11.12; viết lại AC-1.1, AC-1.2, AC-1.8, AC-1.9, AC-2.3, AC-2.5, AC-2.7, AC-2.8, AC-3.2, AC-5.2, AC-5.6, AC-9.1, AC-11.8, AC-11.9; cập nhật §1, §7 (thêm "HV đã kích hoạt"), §8, §10; §11 không còn câu hỏi mở. Ghi vào docs/steering/decisions.md (V21-1 … V21-4). Chưa có artifact hạ nguồn.
+
+- Q: Một bài thi giao cho nhiều Lớp mà HV cùng thuộc — bài nộp duy nhất được tính ở Lớp nào? → A: Ở mọi Lớp được giao mà HV đang là thành viên, kể cả Lớp HV được thêm vào sau khi nộp (đúng 006 AC-13.4); Bài nộp bộ bài tập vẫn tính theo từng Lớp. Thay câu chữ "bài nộp … trong chính Lớp đó" cho bài thi (AC-1.1, AC-1.2, AC-1.9, AC-1.12, AC-2.3, AC-2.7, AC-3.2, AC-5.2, AC-5.6) (source: user — /sdd-clarify 2026-10-29, phương án A "Mọi lớp HV đang thuộc")
+- Q: Q-2 — Trên S09, bạn cùng lớp thấy họ tên đầy đủ hay tên rút gọn "An N."? → A: Họ tên đầy đủ như GV đã nhập, giống S10/S12 của 011 và prototype S09; Q-2 đóng (AC-9.1) (source: user — /sdd-clarify 2026-10-29, phương án A "Họ tên đầy đủ")
+- Q: HV "Chưa kích hoạt" / "Gửi email thất bại" có bị tính 0 cho Hạn nộp, giờ đóng qua trước khi được kích hoạt không? → A: Không; như HV vào lớp muộn: 0 điểm chỉ áp cho Hạn nộp / giờ đóng qua khi HV là thành viên đã kích hoạt (kể cả "Đã khóa"); mục qua trước khi kích hoạt không tính 0, nộp muộn bộ bài tập thì được tính. "Đã kích hoạt" định nghĩa một lần ở §7, cùng tập với AC-7.2 và AC-10.1 (không gồm "Chưa kích hoạt" và "Gửi email thất bại"); nhất quán với 006 AC-13.3 (AC-1.8, AC-1.9, AC-2.5, AC-2.8, AC-5.2, AC-5.7, §8) (source: user — /sdd-clarify 2026-10-29, phương án A "Như HV vào muộn")
+- Q: Dòng bài thi trong "Điểm của tôi" mở gì, và bài thi đã đóng trước khi HV vào lớp có được liệt kê không? → A: Theo prototype: dòng "Đã có điểm" mở kết quả trên S08 (006); dòng "Chưa thi" và "Không làm bài" không chọn được; bài thi đã qua giờ đóng mà không được tính cho HV (vào lớp sau giờ đóng, không có bài nộp) không được liệt kê (AC-11.8, AC-11.9, AC-11.11, AC-11.12) (source: user — /sdd-clarify 2026-10-29, phương án A "Theo prototype")
