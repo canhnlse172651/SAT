@@ -6,7 +6,7 @@ test('[006:AC-3.5] TC-022 an incomplete question and a past open time are listed
   const [h] = await freshStudents(page, 1);
   const A = await newClass(page, [h!]);
   const content = e3();
-  content.questions[1]!.pairs[1]!.b = '';
+  (content.questions[1] as { pairs: { b: string }[] }).pairs[1]!.b = '';
   const now = minuteOf(await serverNow(page));
   const d = await draftExam(page, {
     content,

@@ -1,5 +1,19 @@
 # Progress — 006-exams
 
+## Handoff 2026-10-29 09:00 — /test-module 006 (QA, phiên độc lập)
+- Status: 006-exams **verified** · 18/18 done   Branch: feat/006-exams
+- Done this session: QA run 2026-10-29-0835 on commit ea4d012 — Playwright MCP chạy được; 6 ca Fail lần trước (TC-019, TC-021, TC-035,
+  TC-036, TC-044, TC-059) chạy lại như người dùng → Pass (F1–F5 đã sửa). Hồi quy cả 112 script tuần tự: 110 Pass, TC-040 / TC-110 Fail ở bước
+  dựng HV rồi Pass khi chạy lại một lần → **112/112 Pass**, 3 Thủ công. `sdd trace 006` → Gaps: None. verification.md Verdict PASS →
+  `set-status 006 verified`. Script `TC-022.spec.ts` sửa kiểu (ép kiểu câu nối cặp) → `run typecheck` gốc xanh.
+- In progress: —
+- Next: `/sdd-ship` cho 006 (hoặc module kế tiếp). Ba ca thủ công TC-112 / TC-114 / TC-115 cần người chạy theo hướng dẫn trong test-cases.md.
+- Blockers / questions:
+  - Câu chữ test case (chủ: `/module 006`): TC-019 bước 2 nên là "Giờ mở hôm kia, Giờ đóng hôm qua"; TC-009 "phương án trùng" (như lần trước).
+  - Kích hoạt HV (001) đôi khi > 15 s (`sending`) trên server e2e đã có hàng trăm HV — theo dõi.
+  - Hạ tầng replay (chưa đổi): `playwright.modules.config.ts` cần `workers: 1`; `-g` có `|` hỏng qua cmd trên Windows. Đĩa C: còn ~3 GB.
+- Verify with: node .sdd/scripts/sdd.mjs run test:modules -- 006 (với --workers=1, xem report)
+
 ## Handoff 2026-10-29 — /module 006 (implementer, fix mode)
 - Status: 006-exams implementing · 18/18 done   Branch: feat/006-exams
 - Done this session (commit f9bd893): sửa 5 lỗi QA của lần chạy 2026-10-29-0304:

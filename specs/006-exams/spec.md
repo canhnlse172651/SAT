@@ -2,10 +2,10 @@
 id: 006
 slug: exams
 title: Exams
-status: implementing
+status: verified
 branch: feat/006-exams
 created: 2026-10-18
-updated: 2026-10-28
+updated: 2026-10-29
 approved_by: “canh
 node .sdd/scripts/sdd.mjs approve 006 --by “canh
 approved_at: 2026-10-28
